@@ -273,7 +273,6 @@ public class UnitMovement
         unitManager.SelectedUnit.UseActionPoints(PathCost);
 
         unitManager.UpdateActionPointsText();
-
         unitManager.Enqueue(MoveToDestinationRoutine(unitManager.SelectedUnit, unitMovementPath));
     }
 

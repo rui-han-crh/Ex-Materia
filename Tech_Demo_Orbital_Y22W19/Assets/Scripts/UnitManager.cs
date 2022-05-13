@@ -63,6 +63,7 @@ public class UnitManager : MonoBehaviour
     public Dictionary<Vector3Int, Unit> PositionsOfUnits => positionUnitMap;
 
     public bool IsOverUI => isOverUI;
+    public bool RoutineIsEmpty => routineQueue.Count == 0;
 
     private void Awake()
     {
@@ -241,7 +242,7 @@ public class UnitManager : MonoBehaviour
 
     public void OnClickAttackUnit()
     {
-        unitCombat.AttackSelectedUnit();
+        unitCombat.AttackTargetedUnit();
         routineQueue.Enqueue(EnterCombatPhaseRoutine());
     }
 
@@ -275,7 +276,6 @@ public class UnitManager : MonoBehaviour
 
     private IEnumerator EndTurnRoutine()
     {
-        Debug.Log("End turn routine begin");
         unitMovement.ClearSelectableTiles();
 
         pathLine.positionCount = 0;
@@ -293,11 +293,11 @@ public class UnitManager : MonoBehaviour
         unitSelected = queueManager.GetCurrentUnit();
         UpdateQueueDisplay();
         UpdateActionPointsText();
-        Debug.Log("current unit selected " + unitSelected);
+
         if (unitSelected.Faction != Faction.Friendly)
         {
             endTurnPressed = false;
-            adversary.Decision();
+            routineQueue.Enqueue(adversary.DecisionRoutine());
         }
         else
         {

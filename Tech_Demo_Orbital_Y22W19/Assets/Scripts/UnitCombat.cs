@@ -67,18 +67,78 @@ public class UnitCombat
         rangeTiles.Clear();
         hasSightToTarget = false;
         lineRenderer.positionCount = 0;
+        targetCoordinates = default;
+        attackFromCoordinates = default;
     }
 
-    public void AttackSelectedUnit()
+    public void SelectUnitToAttack(Vector3Int targetPosition)
+    {
+        ClearAim();
+
+        Vector3Int[] tilesHit;
+        Vector3Int sourcePosition;
+
+        hasSightToTarget = IsTargetAttackable(targetPosition, out sourcePosition, out tilesHit);
+
+        if (hasSightToTarget)
+        {
+            attackFromCoordinates = sourcePosition;
+            targetCoordinates = tilesHit[tilesHit.Length - 1];
+            DrawAim(sourcePosition, tilesHit, true);
+        }
+        else
+        {
+            DrawAim(sourcePosition, tilesHit, false);
+        }
+    }
+
+    public void SelectUnitToAttack(Vector3Int offensivePosition, Vector3Int targetPosition, Unit offensiveUnit, bool showAim = true)
+    {
+        ClearAim();
+
+        Vector3Int[] tilesHit;
+        Vector3Int sourcePosition;
+
+        hasSightToTarget = IsTargetAttackable(  offensivePosition, 
+                                                targetPosition,
+                                                new HashSet<Vector3Int> { targetPosition },
+                                                offensiveUnit.ActionPointsLeft,
+                                                out sourcePosition, 
+                                                out tilesHit);
+
+        if (hasSightToTarget)
+        {
+            attackFromCoordinates = sourcePosition;
+            targetCoordinates = tilesHit[tilesHit.Length - 1];
+            if (showAim)
+            {
+                DrawAim(sourcePosition, tilesHit, true);
+            }
+        }
+        else
+        {
+            if (showAim)
+            {
+                DrawAim(sourcePosition, tilesHit, false);
+            }
+        }
+    }
+
+    public void AttackTargetedUnit()
+    {
+        AttackTargetedUnit(unitManager.GetPositionByUnit(unitManager.SelectedUnit));
+    }
+
+    public void AttackTargetedUnit(Vector3Int unitOriginalPosition)
     {
         Unit selectedUnit = unitManager.SelectedUnit;
 
         if (!hasSightToTarget || selectedUnit.ActionPointsLeft < COST_TO_ATTACK)
         {
+            Debug.Log($"Attack failed, has sight? -> {hasSightToTarget}, enough AP? -> {selectedUnit.ActionPointsLeft >= COST_TO_ATTACK}");
             return;
         }
-
-        Vector3Int unitOriginalPosition = unitManager.GetPositionByUnit(selectedUnit);
+        Debug.Log($"Attacking {targetCoordinates}");
 
         unitManager.Enqueue(
             unitMovement.MoveToDestinationRoutine(unitManager.SelectedUnit, new Queue<Node>(new Node[] { new Node(attackFromCoordinates) }))
@@ -280,33 +340,14 @@ public class UnitCombat
         return false;
     }
 
-    private bool IsTargetAttackable(Vector3Int gridPosition, out Vector3Int sourcePosition, out Vector3Int[] tilesHit)
+    private bool IsTargetAttackable(Vector3Int targetPosition, out Vector3Int sourcePosition, out Vector3Int[] tilesHit)
     {
         return IsTargetAttackable(unitManager.GetPositionByUnit(unitManager.SelectedUnit),
-                                  gridPosition,
+                                  targetPosition,
                                   rangeTiles,
                                   unitManager.SelectedUnit.ActionPointsLeft,
                                   out sourcePosition,
                                   out tilesHit);
-    }
-
-    public void SelectUnitToAttack(Vector3Int gridPosition)
-    {
-        ClearAim();
-
-        Vector3Int[] tilesHit;
-        Vector3Int sourcePosition;
-        hasSightToTarget = IsTargetAttackable(gridPosition, out sourcePosition, out tilesHit);
-
-        if (hasSightToTarget)
-        {
-            attackFromCoordinates = sourcePosition;
-            targetCoordinates = tilesHit[tilesHit.Length - 1];
-            DrawAim(sourcePosition, tilesHit, true);
-        } else
-        {
-            DrawAim(sourcePosition, tilesHit, false);
-        }
     }
 
     private void DrawAim(Vector3Int sourcePosition, Vector3Int[] tilesOverlapping, bool canHit = true)
