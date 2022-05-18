@@ -11,13 +11,16 @@ public class UnitBehaviour : MonoBehaviour
     private int health = 100;
 
     [SerializeField]
-    private int startingExhaustion = 1;
+    private int unitSpeed = 1;
 
     [SerializeField]
     private int attack = 20;
 
     [SerializeField]
     private int defence = 10;
+
+    [SerializeField]
+    private int risk = 10;
 
     [SerializeField]
     private Sprite characterHeadAvatar;
@@ -35,16 +38,7 @@ public class UnitBehaviour : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-        unit = new Unit(
-            this, 
-            name,
-            health,
-            faction, 
-            characterHeadAvatar, 
-            startingExhaustion,
-            attack,
-            defence,
-            actionPointsPerTurn);
+        unit = new Unit(name, health, faction, characterHeadAvatar, attack, defence, unitSpeed, risk, actionPointsPerTurn);
     }
 
     public Unit Unit => unit;
@@ -63,7 +57,8 @@ public class UnitBehaviour : MonoBehaviour
 
     private void Update()
     {
-        if (healthBarElement != null) {
+        if (healthBarElement != null)
+        {
             healthBarElement.GetComponent<RectTransform>().position = Camera.main.WorldToScreenPoint(transform.position + HEALTH_BAR_OFFSET);
         }
     }

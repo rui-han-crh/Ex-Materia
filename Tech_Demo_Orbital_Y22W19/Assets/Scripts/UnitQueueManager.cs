@@ -57,14 +57,14 @@ public class UnitQueueManager
         }
     }
 
-    public void Remove(Unit unit)
-    {
-        if (!unitIndexMap.ContainsKey(unit))
-        {
-            throw new KeyNotFoundException("Unit does not exist in the queue");
-        }
-        unitArray[unitIndexMap[unit]] = null;
-        unitIndexMap.Remove(unit);
-        UpdateQueue();
-    }
+    //public void Remove(Unit unit)
+    //{
+    //    if (!unitIndexMap.ContainsKey(unit))
+    //    {
+    //        throw new KeyNotFoundException("Unit does not exist in the queue");
+    //    }
+    //    unitArray[unitIndexMap[unit]] = null;
+    //    unitIndexMap.Remove(unit);
+    //    UpdateQueue();
+    //}
 }

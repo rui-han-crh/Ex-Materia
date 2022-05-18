@@ -18,19 +18,21 @@ public class Pathfinder2D
 
     public readonly static int DECIMAL_PLACE_MULTIPLIER = 10;
 
-    protected TileManager map;
+    protected GameMapData mapData;
 
     private int pathCost;
     private readonly int initialPathCost;
 
     protected Unit unit;
+    public int PathCost => pathCost;
 
 
-    public Pathfinder2D(Unit unit, Node source, Node destination, TileManager map, int initialPathCost = 0)
+    // CONSTRUCTORS
+    public Pathfinder2D(Unit unit, Vector3Int sourcePosition, Vector3Int destinationPosition, GameMapData mapData, int initialPathCost = 0)
     {
         this.unit = unit;
-        this.map = map;
-        this.source = source;
+        this.mapData = mapData;
+        this.source = new Node(sourcePosition);
         this.pathCost = initialPathCost;
         this.initialPathCost = initialPathCost;
 
@@ -40,7 +42,7 @@ public class Pathfinder2D
 
         priorityQueue = new MinHeap<Node>(mapSize);
 
-        this.destination = destination;
+        this.destination = new Node(destinationPosition);
 
         gScore[source] = 0;
         source.Value = HScore(source);
@@ -48,25 +50,43 @@ public class Pathfinder2D
         childParentMap.Add(source, null);
     }
 
-    /// <summary>
-    /// Gets the cost of the path calculated by latest called GetDirectedPath
-    /// </summary>
-    /// <returns></returns>
-    public int PathCost => pathCost;
-
-    protected int HScore(Node node)
+    private Pathfinder2D(Unit unit, GameMapData mapData)
     {
-        if (destination == null)
-        {
-            return 0;
-        }
-        return (int) (Vector3.Distance(node.Coordinates, destination.Coordinates) * DECIMAL_PLACE_MULTIPLIER);
+        this.unit = unit;
+        this.source = new Node(mapData.GetPositionByUnit(unit));
+        this.mapData = mapData;
+        destination = null;
+        this.initialPathCost = 0;
+
+        int mapSize = INITIAL_PQ_SIZE;
+        childParentMap = new Dictionary<Node, Node>(mapSize);
+        gScore = new Dictionary<Node, int>(mapSize);
+
+        priorityQueue = new MinHeap<Node>(mapSize);
+
+        gScore[source] = 0;
+        source.Value = HScore(source);
+        priorityQueue.Add(source);
+        childParentMap.Add(source, null);
     }
 
+
+    // PUBLIC STATIC METHODS
+    public static Dictionary<Vector3Int, int> GetAllReachableTiles(Unit unit, GameMapData mapData)
+    {
+        Pathfinder2D pathfinder = new Pathfinder2D(unit, mapData);
+        pathfinder.FindDirectedPath();
+        return new Dictionary<Vector3Int, int>(pathfinder.gScore
+                                        .Where(pair => pair.Value <= unit.ActionPointsLeft
+                                                        && mapData.IsWalkableOn(pair.Key.Coordinates)
+                                                        && !mapData.ExistsUnitAt(pair.Key.Coordinates))
+                                        .ToDictionary(pair => pair.Key.Coordinates, pair => pathfinder.gScore[pair.Key]));
+    }
+
+    // PUBLIC METHODS
     public Node[] FindDirectedPath()
     {
-        if (destination != null 
-            && (!map.Ground.HasTile(destination.Coordinates) || map.Obstacles.HasTile(destination.Coordinates)))
+        if (destination != null && !mapData.IsWalkableOn(destination.Coordinates))
         {
             return new Node[0];
         }
@@ -89,20 +109,18 @@ public class Pathfinder2D
             {
                 float angle = i * Mathf.PI / 4;
 
-                Vector3Int nodeCoordinates = new Vector3Int(
+                Vector3Int neighbourCoordinates = new Vector3Int(
                     Mathf.RoundToInt(current.Coordinates.x + Mathf.Sin(angle)),
                     Mathf.RoundToInt(current.Coordinates.y + Mathf.Cos(angle)),
                     0
                     );
 
-
-                Node neighbour = new Node(nodeCoordinates, map.GetTileCost(map.Ground.GetTile<Tile>(nodeCoordinates)));
-
-                if (map.Obstacles.HasTile(nodeCoordinates) || !map.Ground.HasTile(nodeCoordinates))
+                if (!mapData.IsWalkableOn(neighbourCoordinates))
                 {
                     continue;
                 }
 
+                Node neighbour = new Node(neighbourCoordinates, mapData.GetTileCost(neighbourCoordinates));
 
                 int tentative_gScore = gScore[current] + current.DistanceTo(neighbour) + neighbour.Weight;
 
@@ -127,6 +145,7 @@ public class Pathfinder2D
         return new Node[0]; // no path
     }
 
+    // PRIVATE METHODS
     private Node[] ConstructPath(Node current)
     {
         List<Node> result = new List<Node>();
@@ -151,5 +170,14 @@ public class Pathfinder2D
 
         pathCost = initialPathCost + newPathCost;
         return result.ToArray();
+    }
+
+    private int HScore(Node node)
+    {
+        if (destination == null)
+        {
+            return 0;
+        }
+        return (int)(Vector3.Distance(node.Coordinates, destination.Coordinates) * DECIMAL_PLACE_MULTIPLIER);
     }
 }

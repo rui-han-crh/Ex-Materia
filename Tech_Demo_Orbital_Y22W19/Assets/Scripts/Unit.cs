@@ -2,94 +2,149 @@
 using UnityEngine.UI;
 using System;
 using System.Collections.Generic;
-public class Unit : IComparable<Unit>
+
+/// <summary>
+/// Fully immutable struct representing unit data
+/// </summary>
+public struct Unit : IComparable<Unit>
 {
     private readonly string name;
-    private int exhaustion;
+    private readonly int time;
 
     private readonly int maximumActionPoints;
 
-    private Sprite characterHeadAvatar;
-    public UnitBehaviour behaviour;
+    private readonly Sprite characterHeadAvatar;
 
-    private int actionPointsUsed;
+    private readonly int actionPointsUsed;
 
     private readonly int maxHealth;
 
-    private int health;
-    private int attack;
-    private int defence;
+    private readonly int unitSpeed;
+    private readonly int risk;
 
-    private Faction faction;
+    private readonly int health;
+    private readonly int attack;
+    private readonly int defence;
+
+    private readonly Faction faction;
+
+    public string Name => name;
 
 
-    public Unit(UnitBehaviour behaviour, 
-                string name, 
-                int health, 
+    public Unit(string name, 
+                int startingHealth, 
                 Faction faction, 
-                Sprite characterHeadAvatar, 
-                int exhaustion,
+                Sprite characterHeadAvatar,
                 int attack,
                 int defence,
+                int unitSpeed,
+                int confidence,
                 int maximumActionPoints)
     {
         this.name = name;
-        this.maxHealth = health;
-        this.health = health;
+        this.maxHealth = startingHealth;
+        this.health = startingHealth;
         this.characterHeadAvatar = characterHeadAvatar;
-        this.exhaustion = exhaustion;
+        this.time = 0;
         this.attack = attack;
         this.defence = defence;
+        this.unitSpeed = unitSpeed;
+        this.risk = confidence;
         this.maximumActionPoints = maximumActionPoints;
-        this.behaviour = behaviour;
         this.faction = faction;
+        this.actionPointsUsed = 0;
+    }
+
+    private Unit(Unit oldUnit, int newHealth, int newTime, int actionPointsUsed)
+    {
+        this.name = oldUnit.name;
+        this.faction = oldUnit.Faction;
+        this.characterHeadAvatar = oldUnit.CharacterHeadAvatar;
+        this.attack = oldUnit.Attack;
+        this.defence = oldUnit.Defence;
+        this.maximumActionPoints = oldUnit.maximumActionPoints;
+        this.maxHealth = oldUnit.maxHealth;
+        this.unitSpeed = oldUnit.unitSpeed;
+        this.risk = oldUnit.risk;
+
+        this.health = newHealth;
+        this.time = newTime;
+        this.actionPointsUsed = actionPointsUsed;
+    }
+
+    private Unit (Unit oldUnit)
+    {
+        this.name = oldUnit.name;
+        this.faction = oldUnit.Faction;
+        this.characterHeadAvatar = oldUnit.CharacterHeadAvatar;
+        this.attack = oldUnit.Attack;
+        this.defence = oldUnit.Defence;
+        this.maximumActionPoints = oldUnit.maximumActionPoints;
+        this.maxHealth = oldUnit.maxHealth;
+        this.health = oldUnit.health;
+        this.time = oldUnit.time;
+        this.unitSpeed = oldUnit.unitSpeed;
+        this.risk = oldUnit.risk;
+        this.actionPointsUsed = oldUnit.actionPointsUsed;
     }
 
     public Faction Faction => faction;
 
-    public int Exhaustion => exhaustion;
+    public int Exhaustion => time;
 
     public int Attack => attack;
 
     public int Defence => defence;
 
-    public int Range => 5;
+    public int Range => 7;
+
+    public int Risk => risk;
 
     public int ActionPointsLeft => maximumActionPoints - actionPointsUsed;
 
     public Sprite CharacterHeadAvatar => characterHeadAvatar;
 
-    public Vector3 WorldPosition
-    {
-        get { return behaviour.transform.position; }
-        set { behaviour.transform.position = value;  }
-    }
-
     public int ActionPointsUsed => actionPointsUsed;
-
-    public UnitBehaviour Behaviour => behaviour;
 
     public int Health => health;
 
-    public void ChangeHealth(int changeInHealth)
+    public Unit DecreaseHealth(int decreaseAmount)
     {
-        health = Mathf.Clamp(health + changeInHealth, 0, maxHealth);
+        return new Unit(this,
+                        Mathf.Clamp(health - decreaseAmount, 0, maxHealth),
+                        Exhaustion,
+                        ActionPointsUsed);
     }
 
-    public void UseActionPoints(int amount)
+    public Unit IncreaseHealth(int increaseAmount)
     {
-        actionPointsUsed = actionPointsUsed + amount;
-        exhaustion += amount;
+        return DecreaseHealth(-increaseAmount);
     }
 
-    public void ResetActionPoints()
+    public Unit UseActionPoints(int amount)
     {
-        actionPointsUsed = 0;
+        return new Unit(this,
+                        Health,
+                        time + amount * unitSpeed,
+                        actionPointsUsed + amount);
+    }
+
+    public Unit ResetActionPoints()
+    {
+        return new Unit(this,
+                        Health,
+                        time,
+                        0);
+    }
+
+    public Unit AddTime(int amount)
+    {
+        return new Unit(this, Health, time + amount, actionPointsUsed);
     }
 
     public int CompareTo(Unit other)
     {
-        return this.exhaustion - other.exhaustion;
+        return this.time - other.time;
     }
 
     /// <summary>
@@ -113,6 +168,11 @@ public class Unit : IComparable<Unit>
 
     public override string ToString()
     {
-        return name;
+        return $"{name} : HP = {health}, AP = {ActionPointsLeft}, TIME = {time}";
+    }
+
+    public Unit Clone()
+    {
+        return new Unit(this);
     }
 }

@@ -33,12 +33,12 @@ public class LineRaytracer
         public float Priority => IntersectionAlpha;
     }
 
-    public bool Trace(Vector3 source, Vector3 destination, Vector3 offset, TileManager tileManager)
+    public bool Trace(Vector3 source, Vector3 destination, Vector3 offset, GameMapData mapData)
     {
-        return Trace(source + offset, destination + offset, tileManager);
+        return Trace(source + offset, destination + offset, mapData);
     }
 
-    public bool Trace(Vector3 source, Vector3 destination, TileManager tileManager)
+    public bool Trace(Vector3 source, Vector3 destination, GameMapData mapData)
     {
         int maxX = Mathf.FloorToInt(Mathf.Max(source.x, destination.x));
         int minX = Mathf.CeilToInt(Mathf.Min(source.x, destination.x));
@@ -66,6 +66,7 @@ public class LineRaytracer
         List<Vector3Int> tilesHit = new List<Vector3Int>();
 
         Vector3Int currentCoordinates = new Vector3Int(Mathf.FloorToInt(source.x), Mathf.FloorToInt(source.y), 0);
+        tilesHit.Add(currentCoordinates);
 
         float lastPriority = -1;
 
@@ -93,7 +94,7 @@ public class LineRaytracer
 
         this.tilesHit = tilesHit.ToArray();
 
-        return !tilesHit.Any(x => tileManager.Obstacles.HasTile(x));
+        return !tilesHit.Any(x => mapData.HasFullCoverAt(x));
     }
 
     public Vector3Int[] TilesHit => this.tilesHit;

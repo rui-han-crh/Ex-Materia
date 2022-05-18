@@ -1,225 +1,135 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System.Collections;
-using System;
-using UnityEngine.InputSystem;
-using UnityEngine.Tilemaps;
+using ExtensionMethods;
 using System.Linq;
-using static ColorLookUp.ColorPalette;
 
 public class UnitCombat
 {
-    public static int COST_TO_ATTACK = 60;
+    public static readonly int ATTACK_COST = 75;
 
-    private readonly UnitManager unitManager;
-    private readonly TileManager tileManager;
-    private readonly UnitMovement unitMovement;
-    private readonly KeyboardControls keyboardControls;
-    private readonly LineRenderer lineRenderer;
+    private Unit selectedUnitToAttack;
+    private GameMapData mapData;
+    private Unit currentOffensiveUnit;
 
-    private Action<InputAction.CallbackContext> leftClickHandler;
-
-    private Camera mainCamera;
-
-    private HashSet<Vector3Int> rangeTiles = new HashSet<Vector3Int>();
-    private HashSet<Vector3Int> aimTiles = new HashSet<Vector3Int>();
-
-    private Vector3Int attackFromCoordinates;
-    private Vector3Int targetCoordinates;
-    private bool hasSightToTarget;
-
-    public UnitCombat(  KeyboardControls keyboardControls, 
-                        UnitManager unitManager,
-                        LineRenderer lineRenderer,
-                        TileManager tileManager,
-                        UnitMovement unitMovement)
+    // CONSTRUCTORS
+    public UnitCombat(Unit currentOffensiveUnit, GameMapData mapData)
     {
-        this.keyboardControls = keyboardControls;
-        this.lineRenderer = lineRenderer;
-        this.unitManager = unitManager;
-        this.tileManager = tileManager;
-        this.unitMovement = unitMovement;
-        mainCamera = Camera.main;
+        this.currentOffensiveUnit = currentOffensiveUnit;
+        this.mapData = mapData;
     }
 
-    public void SubscribeControls()
+    // PUBLIC STATIC METHODS
+    public static AttackRequest QueryTargetAttackable(GameMap gameMapRequesting, 
+                                                        GameMapData mapData,
+                                                        Vector3Int offensivePosition, 
+                                                        Vector3Int defensivePosition, 
+                                                        int range)
     {
-        leftClickHandler = (InputAction.CallbackContext _) => OnLeftClick();
-        keyboardControls.Mouse.LeftClick.performed += leftClickHandler;
-    }
+        Vector3Int sourcePosition = offensivePosition;
+        Vector3Int[] tilesHit = new Vector3Int[] { offensivePosition, defensivePosition };
 
-    public void UnsubscribeControls()
-    {
-        keyboardControls.Mouse.LeftClick.performed -= leftClickHandler;
-    }
+        HashSet<Vector3Int> tilesInRange = GetAllPositionsInRange(offensivePosition, range);
 
-    public void EnterCombatPhase()
-    {
-        lineRenderer.positionCount = 0;
-        tileManager.TileIndicators.ClearAllTiles();
-        DrawRangeTiles();
-    }
-
-
-    public void ExitCombatPhase()
-    {
-        ClearRangeTiles();
-        rangeTiles.Clear();
-        hasSightToTarget = false;
-        lineRenderer.positionCount = 0;
-        targetCoordinates = default;
-        attackFromCoordinates = default;
-    }
-
-    public void SelectUnitToAttack(Vector3Int targetPosition)
-    {
-        ClearAim();
-
-        Vector3Int[] tilesHit;
-        Vector3Int sourcePosition;
-
-        hasSightToTarget = IsTargetAttackable(targetPosition, out sourcePosition, out tilesHit);
-
-        if (hasSightToTarget)
+        if (!tilesInRange.Contains(defensivePosition))
         {
-            attackFromCoordinates = sourcePosition;
-            targetCoordinates = tilesHit[tilesHit.Length - 1];
-            DrawAim(sourcePosition, tilesHit, true);
+            return new AttackRequest(gameMapRequesting,
+                                        sourcePosition,
+                                        defensivePosition,
+                                        AttackStatus.OutOfRange,
+                                        tilesHit,
+                                        0);
         }
-        else
+
+        LineRaytracer raytracer = new LineRaytracer();
+        bool hasDirectSight = raytracer.Trace(offensivePosition, defensivePosition, GameMap.UNIT_GRID_OFFSET, mapData);
+
+        if (hasDirectSight)
         {
-            DrawAim(sourcePosition, tilesHit, false);
+            sourcePosition = offensivePosition;
+            tilesHit = raytracer.TilesHit;
+            return new AttackRequest(gameMapRequesting,
+                                        sourcePosition,
+                                        defensivePosition,
+                                        AttackStatus.Success,
+                                        tilesHit,
+                                        ATTACK_COST);
         }
-    }
 
-    public void SelectUnitToAttack(Vector3Int offensivePosition, Vector3Int targetPosition, Unit offensiveUnit, bool showAim = true)
-    {
-        ClearAim();
+        Vector3Int tileAhead = raytracer.TilesHit[1];
 
-        Vector3Int[] tilesHit;
-        Vector3Int sourcePosition;
+        float unitVector = Vector3.Distance(tileAhead, offensivePosition);
 
-        hasSightToTarget = IsTargetAttackable(  offensivePosition, 
-                                                targetPosition,
-                                                new HashSet<Vector3Int> { targetPosition },
-                                                offensiveUnit.ActionPointsLeft,
-                                                out sourcePosition, 
-                                                out tilesHit);
-
-        if (hasSightToTarget)
+        if (!mapData.HasFullCoverAt(tileAhead) || unitVector > 1)
         {
-            attackFromCoordinates = sourcePosition;
-            targetCoordinates = tilesHit[tilesHit.Length - 1];
-            if (showAim)
+            // The unit is not against a wall
+            sourcePosition = offensivePosition;
+            tilesHit = raytracer.TilesHit;
+            return new AttackRequest(gameMapRequesting,
+                                        sourcePosition,
+                                        defensivePosition,
+                                        AttackStatus.NoLineOfSight,
+                                        tilesHit,
+                                        0);
+        }
+
+        Vector3Int vectorToWall = tileAhead - offensivePosition;
+        Vector3Int peekCoordinates;
+        bool canPeekAndShoot;
+
+        for (float angle = -Mathf.PI / 2; angle <= Mathf.PI / 2; angle += Mathf.PI)
+        {
+            peekCoordinates = offensivePosition + vectorToWall.RotateVector(angle);
+            if (mapData.HasFullCoverAt(peekCoordinates))
             {
-                DrawAim(sourcePosition, tilesHit, true);
+                // There is an obstacle obstructing a peek
+                continue;
+            }
+
+            canPeekAndShoot = raytracer.Trace(peekCoordinates, defensivePosition, GameMap.UNIT_GRID_OFFSET, mapData);
+
+            if (canPeekAndShoot)
+            {
+                sourcePosition = peekCoordinates;
+                tilesHit = raytracer.TilesHit;
+                return new AttackRequest(gameMapRequesting,
+                                        sourcePosition,
+                                        defensivePosition,
+                                        AttackStatus.Success,
+                                        tilesHit,
+                                        ATTACK_COST);
             }
         }
-        else
-        {
-            if (showAim)
-            {
-                DrawAim(sourcePosition, tilesHit, false);
-            }
-        }
-    }
 
-    public void AttackTargetedUnit()
-    {
-        AttackTargetedUnit(unitManager.GetPositionByUnit(unitManager.SelectedUnit));
-    }
+        // Peeking and firing is also not possible
+        return new AttackRequest(gameMapRequesting,
+                                    sourcePosition,
+                                    defensivePosition,
+                                    AttackStatus.PeekUnsuccessful,
+                                    tilesHit,
+                                    0);
 
-    public void AttackTargetedUnit(Vector3Int unitOriginalPosition)
-    {
-        Unit selectedUnit = unitManager.SelectedUnit;
-
-        if (!hasSightToTarget || selectedUnit.ActionPointsLeft < COST_TO_ATTACK)
-        {
-            Debug.Log($"Attack failed, has sight? -> {hasSightToTarget}, enough AP? -> {selectedUnit.ActionPointsLeft >= COST_TO_ATTACK}");
-            return;
-        }
-        Debug.Log($"Attacking {targetCoordinates}");
-
-        unitManager.Enqueue(
-            unitMovement.MoveToDestinationRoutine(unitManager.SelectedUnit, new Queue<Node>(new Node[] { new Node(attackFromCoordinates) }))
-            );
-
-        unitManager.Enqueue(
-            DecreaseTargetHealth(unitManager.GetUnitByPosition(targetCoordinates))
-            );
-
-        unitManager.Enqueue(
-            unitMovement.MoveToDestinationRoutine(unitManager.SelectedUnit, new Queue<Node>(new Node[] { new Node(unitOriginalPosition) }))
-            );
-
-        unitManager.SelectedUnit.UseActionPoints(COST_TO_ATTACK);
-        unitManager.UpdateActionPointsText();
-    }
-
-    public HashSet<Unit> GetAttackableUnits(Unit unit, Vector3Int source, int range)
-    {
-        HashSet<Vector3Int> rangeTiles = GetRangedTiles(source, range);
-
-        return new HashSet<Unit>(rangeTiles
-                                    .Intersect(unitManager.PositionsOfUnits.Keys)
-                                    .Where(x => IsTargetAttackable(source, x, rangeTiles, unit.ActionPointsLeft, out _, out _))
-                                    .Select(x => unitManager.GetUnitByPosition(x)));
-    }
-
-    public HashSet<Unit> GetReceivableAttacks(Vector3Int tilePosition)
-    {
-        HashSet<Unit> units = new HashSet<Unit>();
-        foreach (KeyValuePair<Vector3Int, Unit> positionAndUnit in unitManager.PositionsOfUnits)
-        {
-            Vector3Int position = positionAndUnit.Key;
-            Unit unit = positionAndUnit.Value;
-
-            HashSet<Vector3Int> unitRange = GetRangedTiles(position, unit.Range);
-            if (IsTargetAttackable(position, tilePosition, unitRange, unit.ActionPointsLeft, out _, out _))
-            {
-                units.Add(unit);
-            }
-        }
-        return units;
     }
 
 
-    private void OnLeftClick()
+    public static HashSet<Vector3Int> GetAllPositionsInRange(Vector3Int source, int range)
     {
-        if (unitManager.IsOverUI)
-        {
-            return;
-        }
-
-        Vector2 mousePosition = keyboardControls.Mouse.MousePosition.ReadValue<Vector2>();
-        Tilemap tileMap = tileManager.Ground;
-
-        mousePosition = mainCamera.ScreenToWorldPoint(mousePosition);
-        Vector3Int gridPosition = tileMap.WorldToCell(mousePosition);
-
-        // Removed the ability to select units, the queue will do it for us
-
-        if (unitManager.SelectedUnit.Faction == Faction.Friendly && unitManager.PositionsOfUnits.ContainsKey(gridPosition)) 
-        {
-            SelectUnitToAttack(gridPosition);
-        }
-    }
-
-    private static HashSet<Vector3Int> GetRangedTiles(Vector3Int source, int range)
-    {
-        Vector3Int[] rangeBorder = ReachableTilesFinder.GetRangeBorder(source, range);
-        HashSet<Vector3Int> rangeBorderHashed = new HashSet<Vector3Int>(rangeBorder);
+        HashSet<Vector3Int> rangeBorder = GetRangeBorder(source, range);
 
         Queue<Vector3Int> pollingQueue = new Queue<Vector3Int>();
         Queue<Vector3Int> offerQueue = new Queue<Vector3Int>();
         pollingQueue.Enqueue(source);
 
         HashSet<Vector3Int> visited = new HashSet<Vector3Int>();
+        visited.Add(source);
 
-        while (offerQueue.Count > 0 || pollingQueue.Count > 0)
+        int k = 0;
+        while ((offerQueue.Count > 0 || pollingQueue.Count > 0) && k < 300)
         {
-            while (pollingQueue.Count > 0)
+            k++;
+            int j = 0;
+            while (pollingQueue.Count > 0 && j < 25)
             {
+                j++;
                 Vector3Int current = pollingQueue.Dequeue();
 
                 for (float angle = 0; angle < Mathf.PI * 2; angle += Mathf.PI / 2)
@@ -227,179 +137,287 @@ public class UnitCombat
                     Vector3Int directionVector = new Vector3Int((int)Mathf.Sin(angle), (int)Mathf.Cos(angle), 0);
                     Vector3Int neighbourVector = current + directionVector;
 
-                    if (!visited.Contains(neighbourVector) && !rangeBorderHashed.Contains(neighbourVector))
+                    if (!visited.Contains(neighbourVector) && !rangeBorder.Contains(neighbourVector))
                     {
                         visited.Add(neighbourVector);
                         offerQueue.Enqueue(neighbourVector);
                     }
                 }
             }
+            Debug.Assert(j < 300, $"Failed 3 j = {j} {pollingQueue.Count}");
             Queue<Vector3Int> temp = pollingQueue;
             pollingQueue = offerQueue;
             offerQueue = temp;
         }
-
-        visited.UnionWith(rangeBorderHashed);
+        Debug.Assert(k < 300, "failed 1");
+        visited.UnionWith(rangeBorder);
 
         return visited;
     }
 
-    private void DrawRangeTiles()
-    {
-        ClearRangeTiles();
+    // PRIVATE STATIC METHODS
 
-        if (rangeTiles.Count > 0)
+    private static HashSet<Vector3Int> GetRangeBorder(Vector3Int unitPosition, int range)
+    {
+        int radius = range;
+        int maxX = range;
+        int minX = -range;
+
+        int maxY = range;
+        int minY = -range;
+
+        IPriorityQueue<CircleLineIntersection> priorityQueue = new MinHeap<CircleLineIntersection>();
+
+        for (int x = minX; x <= maxX; x++)
         {
-            foreach (Vector3Int tilePosition in rangeTiles)
+            Vector2Int startingVector = new Vector2Int(x, minY);
+            Vector2Int endingVector = new Vector2Int(x, maxY);
+
+            int dX = endingVector.x - startingVector.x;
+            int dY = endingVector.y - startingVector.y;
+
+            int dRSquared = (int)Mathf.Pow(dX, 2) + (int)Mathf.Pow(dY, 2);
+
+            int determinant = startingVector.x * endingVector.y - endingVector.x * startingVector.y;
+
+            if (Mathf.Pow(range, 2) * dRSquared - Mathf.Pow(determinant, 2) < 0)
             {
-                tileManager.TileIndicators.SetTile(tilePosition, tileManager.SelectorTile);
-                tileManager.TileIndicators.SetTileFlags(tilePosition, TileFlags.None);
-                tileManager.TileIndicators.SetColor(tilePosition, YELLOW_TRANSLUCENT);
+                continue;
+            }
+
+            float discriminant = Mathf.Pow(range, 2) * dRSquared - Mathf.Pow(determinant, 2);
+            if (discriminant < 0)
+            {
+                continue;
+            }
+
+            Vector2 intersectionA = new Vector2(
+                (determinant * dY + Mathf.Sign(dY) * dX * Mathf.Sqrt(Mathf.Pow(radius, 2) * dRSquared - Mathf.Pow(determinant, 2))) / dRSquared,
+                (-determinant * dX + Mathf.Abs(dY) * Mathf.Sqrt(Mathf.Pow(radius, 2) * dRSquared - Mathf.Pow(determinant, 2))) / dRSquared
+                );
+
+            CircleLineIntersection circleLineIntersectionA = new CircleLineIntersection(intersectionA,
+                                                                                        Mathf.Atan2(intersectionA.y,
+                                                                                                    intersectionA.x));
+            priorityQueue.Add(circleLineIntersectionA);
+
+            if (Mathf.Approximately(discriminant, 0))
+            {
+                continue;
+            }
+
+            Vector2 intersectionB = new Vector2(
+                (determinant * dY - Mathf.Sign(dY) * dX * Mathf.Sqrt(Mathf.Pow(radius, 2) * dRSquared - Mathf.Pow(determinant, 2))) / dRSquared,
+                (-determinant * dX - Mathf.Abs(dY) * Mathf.Sqrt(Mathf.Pow(radius, 2) * dRSquared - Mathf.Pow(determinant, 2))) / dRSquared
+                );
+
+            CircleLineIntersection circleLineIntersectionB = new CircleLineIntersection(intersectionB,
+                                                                                        Mathf.Atan2(intersectionB.y,
+                                                                                                    intersectionB.x));
+            priorityQueue.Add(circleLineIntersectionB);
+        }
+
+        for (int y = minY; y <= maxY; y++)
+        {
+            Vector2Int startingVector = new Vector2Int(minX, y);
+            Vector2Int endingVector = new Vector2Int(maxX, y);
+
+            int dX = endingVector.x - startingVector.x;
+            int dY = endingVector.y - startingVector.y;
+
+            int dRSquared = (int)Mathf.Pow(dX, 2) + (int)Mathf.Pow(dY, 2);
+
+            int determinant = startingVector.x * endingVector.y - endingVector.x * startingVector.y;
+
+            float discriminant = Mathf.Pow(range, 2) * dRSquared - Mathf.Pow(determinant, 2);
+            if (discriminant < 0)
+            {
+                continue;
+            }
+
+            Vector2 intersectionA = new Vector2(
+                (determinant * dY + Mathf.Sign(dY) * dX * Mathf.Sqrt(Mathf.Pow(radius, 2) * dRSquared - Mathf.Pow(determinant, 2))) / dRSquared,
+                (-determinant * dX + Mathf.Abs(dY) * Mathf.Sqrt(Mathf.Pow(radius, 2) * dRSquared - Mathf.Pow(determinant, 2))) / dRSquared
+                );
+
+            CircleLineIntersection circleLineIntersectionA = new CircleLineIntersection(intersectionA,
+                                                                                        Mathf.Atan2(intersectionA.y,
+                                                                                                    intersectionA.x));
+            priorityQueue.Add(circleLineIntersectionA);
+
+            if (Mathf.Approximately(discriminant, 0))
+            {
+                continue;
+            }
+
+            Vector2 intersectionB = new Vector2(
+                (determinant * dY - Mathf.Sign(dY) * dX * Mathf.Sqrt(Mathf.Pow(radius, 2) * dRSquared - Mathf.Pow(determinant, 2))) / dRSquared,
+                (-determinant * dX - Mathf.Abs(dY) * Mathf.Sqrt(Mathf.Pow(radius, 2) * dRSquared - Mathf.Pow(determinant, 2))) / dRSquared
+                );
+
+            CircleLineIntersection circleLineIntersectionB = new CircleLineIntersection(intersectionB,
+                                                                                        Mathf.Atan2(intersectionB.y,
+                                                                                                    intersectionB.x));
+            priorityQueue.Add(circleLineIntersectionB);
+        }
+
+        HashSet<Vector3Int> visited = new HashSet<Vector3Int>();
+
+        int k = 0;
+        while (!priorityQueue.IsEmpty() && k < 300)
+        {
+            k++;
+            CircleLineIntersection current = priorityQueue.Extract();
+            Vector2 coordinates = current.Coordinates;
+
+            Vector3Int gridCoordinates = new Vector3Int(Mathf.RoundToInt(coordinates.x), Mathf.RoundToInt(coordinates.y), 0);
+            if (!visited.Contains(gridCoordinates + unitPosition))
+            {
+                visited.Add(gridCoordinates + unitPosition);
             }
         }
 
-        rangeTiles = GetRangedTiles(unitManager.GetPositionByUnit(unitManager.SelectedUnit), unitManager.SelectedUnit.Range);
-
-        foreach(Vector3Int tilePosition in rangeTiles)
-        {
-            tileManager.TileIndicators.SetTile(tilePosition, tileManager.SelectorTile);
-            tileManager.TileIndicators.SetTileFlags(tilePosition, TileFlags.None);
-            tileManager.TileIndicators.SetColor(tilePosition, YELLOW_TRANSLUCENT);
-        }
+        Debug.Assert(k < 300, "Failed 2");
+        return visited;
     }
 
-    private void ClearRangeTiles()
+    // PUBLIC METHODS
+
+    public HashSet<Vector3Int> GetAllPositionsInRange()
     {
-        foreach(Vector3Int tilePosition in rangeTiles)
-        {
-            tileManager.TileIndicators.SetTile(tilePosition, null);
-        }
+        return GetAllPositionsInRange(mapData.GetPositionByUnit(currentOffensiveUnit), currentOffensiveUnit.Range);
     }
 
-    private bool IsTargetAttackable(Vector3Int offensiveUnitPosition,
-                                    Vector3Int targetPosition,
-                                    HashSet<Vector3Int> rangeTiles,
-                                    int actionsPointsOfUnit,
-                                    out Vector3Int sourcePosition, 
-                                    out Vector3Int[] tilesHit)
+    public HashSet<Vector3Int> GetAllPositionsAttackable(GameMap gameMap)
     {
-        if (actionsPointsOfUnit < COST_TO_ATTACK || !rangeTiles.Contains(targetPosition))
+        return new HashSet<Vector3Int> (mapData.PositionUnitMapping.Keys
+                                    .Where(x => QueryTargetAttackable(gameMap, mapData.GetUnitByPosition(x)).Successful));
+    }
+
+    public IEnumerable<AttackRequest> GetAllPossibleAttacks(GameMap gameMap)
+    {
+        return new HashSet<AttackRequest>(mapData.PositionUnitMapping.Keys
+                                            .Select(x => QueryTargetAttackable(gameMap, mapData.GetUnitByPosition(x)))
+                                            .Where(x => x.Status == AttackStatus.Success));
+    }
+
+    public AttackRequest QueryTargetAttackable(GameMap gameMapRequesting, Unit target)
+    {
+        Vector3Int offensiveUnitPosition = mapData.GetPositionByUnit(currentOffensiveUnit);
+        Vector3Int targetUnitPosition = mapData.GetPositionByUnit(target);
+
+        Vector3Int sourcePosition = offensiveUnitPosition;
+        Vector3Int[] tilesHit = new Vector3Int[] { offensiveUnitPosition , targetUnitPosition };
+
+        if (target.Faction == currentOffensiveUnit.Faction)
+        {
+            return new AttackRequest(gameMapRequesting, 
+                                        sourcePosition,
+                                        targetUnitPosition, 
+                                        AttackStatus.IllegalTarget,
+                                        tilesHit,
+                                        0);
+        }
+
+        if (currentOffensiveUnit.ActionPointsLeft < ATTACK_COST)
+        {
+            return new AttackRequest(gameMapRequesting,
+                                        sourcePosition,
+                                        targetUnitPosition,
+                                        AttackStatus.NotEnoughAP,
+                                        tilesHit,
+                                        0);
+        }
+
+        HashSet<Vector3Int> tilesInRange = GetAllPositionsInRange(offensiveUnitPosition, currentOffensiveUnit.Range);
+
+        if (!tilesInRange.Contains(targetUnitPosition))
+        {
+            return new AttackRequest(gameMapRequesting,
+                                        sourcePosition,
+                                        targetUnitPosition,
+                                        AttackStatus.OutOfRange,
+                                        tilesHit,
+                                        0);
+        }
+
+        LineRaytracer raytracer = new LineRaytracer();
+        bool hasDirectSight = raytracer.Trace(offensiveUnitPosition, targetUnitPosition, GameMap.UNIT_GRID_OFFSET, mapData);
+
+        if (hasDirectSight)
         {
             sourcePosition = offensiveUnitPosition;
-            tilesHit = new Vector3Int[] { targetPosition };
-            return false; // Not in range or not enough AP
+            tilesHit = raytracer.TilesHit;
+            return new AttackRequest(gameMapRequesting,
+                                        sourcePosition,
+                                        targetUnitPosition,
+                                        AttackStatus.Success,
+                                        tilesHit,
+                                        ATTACK_COST);
         }
 
-        LineRaytracer lineRaytracer = new LineRaytracer();
+        Vector3Int tileAhead = raytracer.TilesHit[1];
 
-        bool hasSightToTarget = lineRaytracer.Trace(offensiveUnitPosition, targetPosition, UnitManager.UNIT_GRID_OFFSET, tileManager);
+        float unitVector = Vector3.Distance(tileAhead, offensiveUnitPosition);
 
-        if (hasSightToTarget)
+        if (!mapData.HasFullCoverAt(tileAhead) || unitVector > 1)
         {
+            // The unit is not against a wall
             sourcePosition = offensiveUnitPosition;
-            tilesHit = lineRaytracer.TilesHit;
-            return true;
+            tilesHit = raytracer.TilesHit;
+            return new AttackRequest(gameMapRequesting,
+                                        sourcePosition,
+                                        targetUnitPosition,
+                                        AttackStatus.NoLineOfSight,
+                                        tilesHit,
+                                        0);
         }
-        else
-        {
-            Vector3Int tileAhead = lineRaytracer.TilesHit[0];
-            float unitVector = Vector3.Distance(tileAhead, offensiveUnitPosition);
 
-            if (!tileManager.Obstacles.HasTile(tileAhead) || unitVector > 1)
+        Vector3Int vectorToWall = tileAhead - offensiveUnitPosition;
+        Vector3Int peekCoordinates;
+        bool canPeekAndShoot;
+
+        for (float angle = -Mathf.PI / 2; angle <= Mathf.PI / 2; angle += Mathf.PI)
+        {
+            peekCoordinates = offensiveUnitPosition + vectorToWall.RotateVector(angle);
+            if (mapData.HasFullCoverAt(peekCoordinates))
             {
-                sourcePosition = offensiveUnitPosition;
-                tilesHit = lineRaytracer.TilesHit;
-                return false; // The unit is not against a wall
+                // There is an obstacle obstructing a peek
+                continue;
             }
 
-            Vector3Int vectorToWall = tileAhead - offensiveUnitPosition;
-            Vector3Int peekCoordinates;
-            bool canPeekAndShoot;
+            canPeekAndShoot = raytracer.Trace(peekCoordinates, targetUnitPosition, GameMap.UNIT_GRID_OFFSET, mapData);
 
-            for (float angle = -Mathf.PI / 2; angle <= Mathf.PI / 2; angle += Mathf.PI)
+            if (canPeekAndShoot)
             {
-                peekCoordinates = offensiveUnitPosition + RotateVector(vectorToWall, angle);
-                if (tileManager.Obstacles.HasTile(peekCoordinates))
-                {
-                    continue; // There is an obstacle obstructing a peek
-                }
-
-                canPeekAndShoot = lineRaytracer.Trace(peekCoordinates, targetPosition, UnitManager.UNIT_GRID_OFFSET, tileManager);
-
-                if (canPeekAndShoot)
-                {
-                    sourcePosition = peekCoordinates;
-                    tilesHit = lineRaytracer.TilesHit;
-                    return true;
-                }
+                sourcePosition = peekCoordinates;
+                tilesHit = raytracer.TilesHit;
+                return new AttackRequest(gameMapRequesting,
+                                        sourcePosition,
+                                        targetUnitPosition,
+                                        AttackStatus.Success,
+                                        tilesHit,
+                                        ATTACK_COST);
             }
         }
 
-        sourcePosition = offensiveUnitPosition;
-        tilesHit = lineRaytracer.TilesHit;
-        return false;
+        raytracer.Trace(offensiveUnitPosition, targetUnitPosition, GameMap.UNIT_GRID_OFFSET, mapData);
+        // Peeking and firing is also not possible
+        return new AttackRequest(gameMapRequesting,
+                                    sourcePosition,
+                                    targetUnitPosition,
+                                    AttackStatus.PeekUnsuccessful,
+                                    raytracer.TilesHit,
+                                    0);
+
     }
 
-    private bool IsTargetAttackable(Vector3Int targetPosition, out Vector3Int sourcePosition, out Vector3Int[] tilesHit)
+    // PRIVATE METHODS
+
+    private bool HasLineOfSight(Vector3Int offensivePosition, Vector3Int targetPosition)
     {
-        return IsTargetAttackable(unitManager.GetPositionByUnit(unitManager.SelectedUnit),
-                                  targetPosition,
-                                  rangeTiles,
-                                  unitManager.SelectedUnit.ActionPointsLeft,
-                                  out sourcePosition,
-                                  out tilesHit);
+
+        return new LineRaytracer().Trace(offensivePosition, targetPosition, mapData);
     }
 
-    private void DrawAim(Vector3Int sourcePosition, Vector3Int[] tilesOverlapping, bool canHit = true)
-    {
-        if (tilesOverlapping.Length == 0)
-        {
-            return;
-        }
-
-        tileManager.TileIndicators.SetColor(sourcePosition, canHit ? LIGHT_GREEN_TRANSLUCENT : LIGHT_RED_TRANSLUCENT);
-        aimTiles.Add(sourcePosition);
-        lineRenderer.positionCount = 2;
-
-        lineRenderer.startColor = canHit ? DARK_GREEN : Color.red;
-        lineRenderer.endColor = canHit ? DARK_GREEN : Color.red;
-        lineRenderer.SetPosition(0, tileManager.Ground.CellToWorld(sourcePosition) + UnitManager.UNIT_WORLD_OFFSET);
-        lineRenderer.SetPosition(1, tileManager.Ground.CellToWorld(tilesOverlapping[tilesOverlapping.Length - 1]) + UnitManager.UNIT_WORLD_OFFSET);
-
-        foreach (Vector3Int tile in tilesOverlapping)
-        {
-            aimTiles.Add(tile);
-            tileManager.TileIndicators.SetColor(tile, canHit ? LIGHT_GREEN_TRANSLUCENT : LIGHT_RED_TRANSLUCENT);
-        }
-    }
-
-    private void ClearAim()
-    {
-        lineRenderer.positionCount = 0;
-
-        foreach (Vector3Int tile in aimTiles)
-        {
-            tileManager.TileIndicators.SetColor(tile, YELLOW);
-        }
-        aimTiles.Clear();
-    }
-
-    private IEnumerator DecreaseTargetHealth(Unit unit)
-    {
-        int effectiveDamage = Math.Min(unit.Defence - unitManager.SelectedUnit.Attack, 0);
-        unit.ChangeHealth(effectiveDamage);
-        unit.Behaviour.UpdateHealthBar();
-        yield return null;
-    }
-
-    private Vector3Int RotateVector(Vector3Int vector, float radians)
-    {
-        float sin = Mathf.Sin(radians);
-        float cos = Mathf.Cos(radians);
-
-        return new Vector3Int(
-            Mathf.RoundToInt(cos * vector.x - sin * vector.y),
-            Mathf.RoundToInt(sin * vector.x + cos * vector.y),
-            0);
-    }
 }
