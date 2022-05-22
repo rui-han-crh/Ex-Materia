@@ -2,6 +2,7 @@
 {
     Movement = 5,
     Attack = 4,
-    Wait = 3,
+    Overwatch = 3,
+    Wait = 2,
     Failed = 0
 }

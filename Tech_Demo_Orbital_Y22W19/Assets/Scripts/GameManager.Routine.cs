@@ -46,6 +46,8 @@ public partial class GameManager
         {
             MovementRequest movementRequest = new MovementRequest(currentMap, CurrentUnitPosition, checkpoints.Last(), actionPointsUsed);
             currentMap = currentMap.DoAction(movementRequest);
+            RedrawHealthBar();
+            Debug.Log(currentMap);
             gameState = GameState.Selection;
         }
     }
@@ -54,6 +56,7 @@ public partial class GameManager
     {
         AttackRequest attackRequest = new AttackRequest(currentMap, CurrentUnitPosition, targetPosition, AttackStatus.Success, tilesHit, cost);
         currentMap = currentMap.DoAction(attackRequest);
+        RedrawHealthBar();
         gameState = GameState.Selection;
         Debug.Log(currentMap);
         yield return null;
@@ -62,6 +65,16 @@ public partial class GameManager
     private IEnumerator CurrentUnitRecoverAP(WaitRequest request)
     {
         currentMap = currentMap.DoAction(request);
+        RedrawHealthBar();
+        gameState = GameState.Selection;
+        Debug.Log(currentMap);
+        yield return null;
+    }
+
+    private IEnumerator CurrentUnitOverwatch(OverwatchRequest request)
+    {
+        currentMap = currentMap.DoAction(request);
+        RedrawHealthBar();
         gameState = GameState.Selection;
         Debug.Log(currentMap);
         yield return null;

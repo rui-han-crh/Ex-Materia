@@ -31,10 +31,6 @@ public class UnitBehaviour : MonoBehaviour
     [SerializeField]
     private Faction faction;
 
-    private GameObject healthBarElement;
-
-    private static Vector3 HEALTH_BAR_OFFSET = new Vector2(0, 0.9f);
-
     // Start is called before the first frame update
     private void Awake()
     {
@@ -44,22 +40,4 @@ public class UnitBehaviour : MonoBehaviour
     public Unit Unit => unit;
 
     public Faction Faction => faction;
-
-    public void AssignHealthBarElement(GameObject healthBar)
-    {
-        healthBarElement = healthBar;
-    }
-
-    public void UpdateHealthBar()
-    {
-        healthBarElement.GetComponent<HealthBarBehaviour>().UpdateHealthBarImage(unit.Health, health);
-    }
-
-    private void Update()
-    {
-        if (healthBarElement != null)
-        {
-            healthBarElement.GetComponent<RectTransform>().position = Camera.main.WorldToScreenPoint(transform.position + HEALTH_BAR_OFFSET);
-        }
-    }
 }

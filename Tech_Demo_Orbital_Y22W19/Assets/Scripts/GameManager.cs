@@ -14,6 +14,7 @@ using System.Threading;
 public partial class GameManager : MonoBehaviour
 {
     public static Vector3 UNIT_WORLD_OFFSET = new Vector3(0, 0.25f, 0);
+    public static Vector3 HEALTH_BAR_WORLD_OFFSET = new Vector3(0, 1f, 0);
 
     [SerializeField]
     private float interpolationSpeed = 2.5f;
@@ -42,11 +43,10 @@ public partial class GameManager : MonoBehaviour
     private KeyboardControls keyboardControls;
     private Camera mainCamera;
 
-    private int turnsElapsed = 0;
-
     private bool endTurnPressed = false;
 
     private Dictionary<string, GameObject> nameUnitGameObjectMapping = new Dictionary<string, GameObject>();
+    private Dictionary<GameObject, GameObject> unitToHealthbarMapping = new Dictionary<GameObject, GameObject>();
 
     [SerializeField]
     private GameObject queueDisplay;
@@ -158,10 +158,7 @@ public partial class GameManager : MonoBehaviour
         currentMap = new GameMap(unitPositionMap, fullCoverPositions, halfCoverPositions, groundTileData.Keys, groundTileData);
         Debug.Log($"Initialised: {currentMap}");
 
-        MapActionRequest testRequest = new MovementRequest(currentMap, Vector3Int.zero, Vector3Int.zero, 0);
-        MapActionRequest testARequest = new AttackRequest(currentMap, Vector3Int.zero, Vector3Int.zero, AttackStatus.IllegalTarget, new Vector3Int[0], 0);
-
-        List<MapActionRequest> actions = new List<MapActionRequest>() { testARequest, testRequest };
+        InitialiseHealthBar();
     }
 
     private void OnEnable()
@@ -330,6 +327,25 @@ public partial class GameManager : MonoBehaviour
         }
     }
 
+    private void InitialiseHealthBar()
+    {
+        foreach (GameObject unit in unitGameObjects)
+        {
+            GameObject healthbar = Instantiate(healthBarPrefab, healthBarCollection);
+            unitToHealthbarMapping[unit] = healthbar;
+            healthbar.GetComponent<HealthBarBehaviour>().SetParent(unit.transform);
+        }
+    }
+
+    private void RedrawHealthBar()
+    {
+        foreach (Unit unit in currentMap.AllUnits)
+        {
+            GameObject unitGameObject = nameUnitGameObjectMapping[unit.Name];
+            unitToHealthbarMapping[unitGameObject].GetComponent<HealthBarBehaviour>().UpdateHealthBarImage(unit.Health, unit.MaxHealth);
+        }
+    }
+
     public void ClearAllHighlights()
     {
         tileHighlights.ClearAllTiles();
@@ -364,65 +380,12 @@ public partial class GameManager : MonoBehaviour
 
     public void OnClickWait()
     {
-        executeLastActionAllowed = true;
-        if (routineQueue.Count == 0 && executeLastActionAllowed)
+        Debug.Log("Wait pressed");
+        if (routineQueue.Count == 0)
         {
             WaitRequest waitRequest = new WaitRequest(CurrentMap, CurrentUnitPosition);
             routineQueue.Enqueue(CurrentUnitRecoverAP(waitRequest));
         }
-    }
-
-    public void OnClickEndTurn()
-    {
-        //prepares the EndTurn Coroutine
-
-        if (!endTurnPressed)
-        {
-            endTurnPressed = true;
-            routineQueue.Enqueue(EndTurnRoutine());
-        }
-        else
-        {
-            Debug.LogError("End turn was already pressed");
-        }
-    }
-
-    // All queueable routines must be suffixed with ...Routine
-
-    private IEnumerator EndTurnRoutine()
-    {
-        yield break;
-        //unitMovement.ClearSelectableTiles();
-
-        pathLine.positionCount = 0;
-        // queue update does not depend on current unit position -> It is safe to update while unit is moving
-        // Just in case, only updates queue once unit has stopped
-        
-        //while (unitIsMoving)
-        //{
-        //    yield return null;
-        //}
-
-        queueManager.GetCurrentUnit().ResetActionPoints();
-
-        queueManager.UpdateQueue();
-
-        //unitSelected = queueManager.GetCurrentUnit();
-        UpdateQueueDisplay();
-        UpdateActionPointsText();
-
-        //if (unitSelected.Faction != Faction.Friendly)
-        //{
-        //    endTurnPressed = false;
-        //    routineQueue.Enqueue(adversary.DecisionRoutine());
-        //}
-        //else
-        //{
-        //    EnterMovementPhase();
-        //    endTurnPressed = false;
-        //}
-        //CheckUnitAndPositionsMatch();
-        yield return null;
     }
 
     private void UpdateQueueDisplay()

@@ -26,6 +26,7 @@ public struct GameMap
     public Vector3Int CurrentUnitPosition => mapData.UnitPositionMapping[currentTurnUnit];
 
     public HashSet<Vector3Int> AllUnitPositions => new HashSet<Vector3Int> (mapData.PositionUnitMapping.Keys);
+    public HashSet<Unit> AllUnits => new HashSet<Unit> (mapData.UnitPositionMapping.Keys);
 
     // CONSTRUCTORS
 
@@ -212,7 +213,9 @@ public struct GameMap
 
                 if (Random.Range(0, 1.0f) <= attackRequest.ChanceToHit)
                 {
-                    unitAttacked = unitAttacked.DecreaseHealth(attackRequest.ActingUnit.Attack - unitAttacked.Defence);
+                    unitAttacked = unitAttacked.DecreaseHealth(
+                        Mathf.Max(UnitCombat.MINIMUM_DAMAGE_DEALT, attackRequest.ActingUnit.Attack - unitAttacked.Defence));
+
                     Debug.Log($"Attack was successful {unitAttacked}");
                     newPositionUnitMap[attackRequest.TargetPosition] = unitAttacked;
                 } else
@@ -248,37 +251,60 @@ public struct GameMap
                 newPositionUnitMap.Remove(waitRequest.ActingUnitPosition);
                 newPositionUnitMap[waitRequest.ActingUnitPosition] = recoveringUnit;
                 break;
+
+            case MapActionType.Overwatch:
+                OverwatchRequest overwatchRequest = (OverwatchRequest)action;
+                Unit overwatchingUnit = newPositionUnitMap[overwatchRequest.ActingUnitPosition];
+
+                overwatchingUnit = overwatchingUnit.AddTime(OverwatchRequest.TIME_CONSUMED).ApplyOverwatchStatus();
+
+                newPositionUnitMap.Remove(overwatchRequest.ActingUnitPosition);
+                newPositionUnitMap[overwatchRequest.ActingUnitPosition] = overwatchingUnit;
+                break;
         }
-
-        Unit currentTurnUnit = GetUnitWithLeastExhaustion(newPositionUnitMap.Values);
-
         return new GameMap(this, newPositionUnitMap, action);
     }
 
     public IEnumerable<MapActionRequest> GetOrderedMapActions()
     {
+        List<MapActionRequest> requests = new List<MapActionRequest>();
+        if (currentTurnUnit.ActionPointsLeft >= UnitCombat.ATTACK_COST)
+        {
+            IEnumerable<MovementRequest> movementRequests = GetAllMovementRequestsPossible();
+            IEnumerable<AttackRequest> attacks = GetAllAttackRequestsPossible();
 
-        IEnumerable<MovementRequest> movementRequests = GetAllMovementRequestsPossible();
-        IEnumerable<AttackRequest> attacks = GetAllAttackRequestsPossible();
-
-        List<MapActionRequest> requests = movementRequests.Concat<MapActionRequest>(attacks).ToList();
+            requests = movementRequests.Concat<MapActionRequest>(attacks).ToList();
+        }
 
         requests.Add(new WaitRequest(this, GetPositionByUnit(currentTurnUnit)));
+        requests.Add(new OverwatchRequest(this, GetPositionByUnit(currentTurnUnit)));
 
         requests.Sort((x, y) => {
             Debug.Assert(x != null, $"{x} is null");
-            if (x.ActionType == y.ActionType)
-            {
-                float xUtility = x.GetUtility();
-                float yUtility = y.GetUtility();
+            float xUtility = x.GetUtility();
+            float yUtility = y.GetUtility();
 
+            if (    (x.ActionType == y.ActionType)
+                ||  (x.ActionType == MapActionType.Overwatch && y.ActionType == MapActionType.Movement) 
+                ||  (x.ActionType == MapActionType.Movement && y.ActionType == MapActionType.Overwatch))
+            {
                 if (xUtility != yUtility)
                 {
                     return (int)Mathf.Sign(xUtility - yUtility);
                 }
-                else if (x.ActionType == MapActionType.Movement)
+                else if (x.ActionType == MapActionType.Movement && y.ActionType == MapActionType.Movement)
                 {
                     return (int)Mathf.Sign(((MovementRequest)x).GetAttackRating() - ((MovementRequest)y).GetAttackRating());
+                }
+                else if (x.ActionType == MapActionType.Movement && y.ActionType == MapActionType.Overwatch 
+                        && ((MovementRequest)x).GetAttackRating() > 0)
+                {
+                    return 1;
+                } 
+                else if (y.ActionType == MapActionType.Movement && x.ActionType == MapActionType.Overwatch 
+                        && ((MovementRequest)y).GetAttackRating() > 0)
+                {
+                    return -1;
                 }
                 else
                 {
@@ -287,18 +313,23 @@ public struct GameMap
             }
             else
             {
-                if (x.ActionType == MapActionType.Attack && x.PreviousMap.EvaluateCurrentUnitPosition() >= x.ActingUnit.Risk)
+                if (x.ActionType == MapActionType.Attack || y.ActionType == MapActionType.Attack)
                 {
-                    return 1;
-                }
-                else if (y.ActionType == MapActionType.Attack && y.PreviousMap.EvaluateCurrentUnitPosition() >= y.ActingUnit.Risk)
+                    if (x.ActionType == MapActionType.Attack && -x.PreviousMap.EvaluateCurrentPositionSafety() <= x.ActingUnit.Risk)
+                    {
+                        return 1;
+                    }
+                    else if (y.ActionType == MapActionType.Attack && -y.PreviousMap.EvaluateCurrentPositionSafety() <= y.ActingUnit.Risk)
+                    {
+                        return -1;
+                    }
+                } 
+                else if (x.ActingUnit.ActionPointsLeft < UnitCombat.ATTACK_COST)
                 {
-                    return -1;
+                    return x.ActionType == MapActionType.Wait ? 1 : -1;
                 }
-                else
-                {
-                    return x.ActionType - y.ActionType;
-                }
+
+                return x.ActionType - y.ActionType;
             }
         });
         Debug.Assert(requests.Count > 0, "There are no actions");
@@ -337,11 +368,14 @@ public struct GameMap
         }
     }
 
-
-    // PRIVATE METHODS
-
-    public float EvaluateCurrentUnitPosition()
+    /// <summary>
+    /// Returns a NON-POSITIVE float that specifies the safety of the current turn unit's position
+    /// </summary>
+    /// <returns></returns>
+    public float EvaluateCurrentPositionSafety()
     {
+        // must be non-positive
+
         List<Vector3Int> allRivalPositions = new List<Vector3Int>();
         foreach (Vector3Int rivalPosition in AllUnitPositions) 
         {
@@ -351,19 +385,22 @@ public struct GameMap
             } 
         }
 
-        float rivalAttackRating = 0;
+        float safety = 0;
 
         foreach (Vector3Int rivalPosition in allRivalPositions)
         {
             Unit rivalUnit = GetUnitByPosition(rivalPosition);
 
-            AttackRequest hypotheticalRequest = QueryAttackability(rivalPosition, CurrentUnitPosition, rivalUnit.Range * 2);
+            AttackRequest hypotheticalRequest = QueryAttackability(rivalPosition, CurrentUnitPosition, rivalUnit.Range);
             if (hypotheticalRequest.Successful)
             {
-                rivalAttackRating += hypotheticalRequest.ChanceToHit * rivalUnit.Attack;
+                safety += Mathf.Min(-UnitCombat.MINIMUM_DAMAGE_DEALT, 
+                    currentTurnUnit.Defence - hypotheticalRequest.ChanceToHit * rivalUnit.Attack);
             }
         }
 
-        return currentTurnUnit.Defence - rivalAttackRating;
+        return safety;
     }
+
+    // PRIVATE METHODS
 }

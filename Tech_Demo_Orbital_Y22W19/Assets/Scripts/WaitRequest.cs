@@ -2,7 +2,7 @@
 
 public class WaitRequest :MapActionRequest
 {
-    public static readonly int TIME_CONSUMED = 150;
+    public static readonly int TIME_CONSUMED = 500;
     public WaitRequest(GameMap previousMap, Vector3Int sourcePosition) :
         base (previousMap, MapActionType.Wait, sourcePosition, 0)
     {
@@ -11,6 +11,6 @@ public class WaitRequest :MapActionRequest
 
     public override float GetUtility()
     {
-        return -TIME_CONSUMED;
+        return PreviousMap.EvaluateCurrentPositionSafety();
     }
 }

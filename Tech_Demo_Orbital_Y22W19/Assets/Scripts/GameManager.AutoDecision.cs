@@ -24,7 +24,11 @@ public partial class GameManager
         }, 
         tokenSource.Token);
 
-        Debug.Log($"{turnsElapsed++} {bestRequest} {bestRequest.PreviousMap.EvaluateCurrentUnitPosition()}");
+        Debug.Log($"{bestRequest} Safety: {bestRequest.GetNextMap().EvaluateCurrentPositionSafety()}");
+        if (bestRequest.ActionType == MapActionType.Movement)
+        {
+            Debug.Log(((MovementRequest)bestRequest).GetAttackRating());
+        }
 
         int cost;
         switch(bestRequest.ActionType)
@@ -52,9 +56,14 @@ public partial class GameManager
 
             case MapActionType.Wait:
                 WaitRequest waitRequest = (WaitRequest)bestRequest;
-                cost = waitRequest.ActionPointCost;
                 routineQueue.Enqueue(CurrentUnitRecoverAP(waitRequest));
                 break;
+
+            case MapActionType.Overwatch:
+                OverwatchRequest overwatchRequest = (OverwatchRequest)bestRequest;
+                routineQueue.Enqueue(CurrentUnitOverwatch(overwatchRequest));
+                break;
+
             default:
                 break;
         }

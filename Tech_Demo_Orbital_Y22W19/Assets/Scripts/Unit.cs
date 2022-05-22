@@ -26,9 +26,9 @@ public struct Unit : IComparable<Unit>
     private readonly int attack;
     private readonly int defence;
 
-    private readonly Faction faction;
+    private readonly UnitStatusEffects unitStatusEffects;
 
-    public string Name => name;
+    private readonly Faction faction;
 
 
     public Unit(string name, 
@@ -39,7 +39,8 @@ public struct Unit : IComparable<Unit>
                 int defence,
                 int unitSpeed,
                 int confidence,
-                int maximumActionPoints)
+                int maximumActionPoints,
+                bool onOverwatch = false)
     {
         this.name = name;
         this.maxHealth = startingHealth;
@@ -53,6 +54,8 @@ public struct Unit : IComparable<Unit>
         this.maximumActionPoints = maximumActionPoints;
         this.faction = faction;
         this.actionPointsUsed = 0;
+
+        this.unitStatusEffects = new UnitStatusEffects();
     }
 
     private Unit(Unit oldUnit, int newHealth, int newTime, int actionPointsUsed)
@@ -70,6 +73,8 @@ public struct Unit : IComparable<Unit>
         this.health = newHealth;
         this.time = newTime;
         this.actionPointsUsed = actionPointsUsed;
+
+        this.unitStatusEffects = oldUnit.unitStatusEffects;
     }
 
     private Unit (Unit oldUnit)
@@ -86,9 +91,33 @@ public struct Unit : IComparable<Unit>
         this.unitSpeed = oldUnit.unitSpeed;
         this.risk = oldUnit.risk;
         this.actionPointsUsed = oldUnit.actionPointsUsed;
+
+        this.unitStatusEffects = oldUnit.unitStatusEffects;
+    }
+
+    private Unit(Unit oldUnit, UnitStatusEffects unitStatusEffects)
+    {
+        this.name = oldUnit.name;
+        this.faction = oldUnit.Faction;
+        this.characterHeadAvatar = oldUnit.CharacterHeadAvatar;
+        this.attack = oldUnit.Attack;
+        this.defence = oldUnit.Defence;
+        this.maximumActionPoints = oldUnit.maximumActionPoints;
+        this.maxHealth = oldUnit.maxHealth;
+        this.health = oldUnit.health;
+        this.time = oldUnit.time;
+        this.unitSpeed = oldUnit.unitSpeed;
+        this.risk = oldUnit.risk;
+        this.actionPointsUsed = oldUnit.actionPointsUsed;
+
+        this.unitStatusEffects = unitStatusEffects;
     }
 
     public Faction Faction => faction;
+
+    public string Name => name;
+
+    public int MaxHealth => maxHealth;
 
     public int Exhaustion => time;
 
@@ -140,6 +169,13 @@ public struct Unit : IComparable<Unit>
     public Unit AddTime(int amount)
     {
         return new Unit(this, Health, time + amount, actionPointsUsed);
+    }
+
+    public Unit ApplyOverwatchStatus()
+    {
+        UnitStatusEffects newStatus = new UnitStatusEffects();
+        newStatus.OnOverwatch = true;
+        return new Unit(this, newStatus);
     }
 
     public int CompareTo(Unit other)

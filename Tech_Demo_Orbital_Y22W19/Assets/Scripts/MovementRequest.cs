@@ -16,27 +16,33 @@ public class MovementRequest : MapActionRequest
 
     public override float GetUtility()
     {
+        // Must be non-positive
+
         GameMap nextMap = PreviousMap.DoAction(this);
 
         List<Vector3Int> allRivalPosition = nextMap.AllUnitPositions
             .Where(rivalPosition => nextMap.GetUnitByPosition(rivalPosition).Faction != ActingUnit.Faction).ToList();
 
-        float rivalAttackRating = 0;
+        float utility = 0;
 
         foreach (Vector3Int rivalPosition in allRivalPosition)
         {
             Unit rivalUnit = nextMap.GetUnitByPosition(rivalPosition);
-            AttackRequest hypotheticalRequest = nextMap.QueryAttackability(rivalPosition, destinationPosition, rivalUnit.Range * 2);
+            AttackRequest hypotheticalRequest = nextMap.QueryAttackability(rivalPosition, destinationPosition, rivalUnit.Range);
             if (hypotheticalRequest.Successful)
             {
-                rivalAttackRating += hypotheticalRequest.ChanceToHit * rivalUnit.Attack;
+                // must be negative here
+                utility += Mathf.Min(-UnitCombat.MINIMUM_DAMAGE_DEALT, ActingUnit.Defence - hypotheticalRequest.ChanceToHit * rivalUnit.Attack);
             }
         }
-        return ActingUnit.Defence - rivalAttackRating;
+        
+        return -utility > ActingUnit.Risk ? utility : 0;
     }
 
     public float GetAttackRating()
     {
+        // Must be postive
+
         GameMap nextMap = PreviousMap.DoAction(this);
 
         List<Vector3Int> allRivalPosition = nextMap.AllUnitPositions
@@ -50,7 +56,7 @@ public class MovementRequest : MapActionRequest
             AttackRequest hypotheticalRequest = nextMap.QueryAttackability(destinationPosition, rivalPosition, ActingUnit.Range);
             if (hypotheticalRequest.Successful)
             {
-                attackRating += hypotheticalRequest.ChanceToHit * ActingUnit.Attack - rivalUnit.Defence;
+                attackRating += Mathf.Max(UnitCombat.MINIMUM_DAMAGE_DEALT, hypotheticalRequest.ChanceToHit * ActingUnit.Attack - rivalUnit.Defence);
             }
         }
         return attackRating;
