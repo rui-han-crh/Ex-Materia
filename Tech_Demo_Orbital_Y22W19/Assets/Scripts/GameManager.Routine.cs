@@ -8,6 +8,12 @@ public partial class GameManager
 {
     private IEnumerator LerpGameObject(GameObject gameObject, IEnumerable<Vector3Int> checkpoints, int actionPointsUsed, bool setAction = true)
     {
+        if (setAction)
+        {
+            MovementRequest movementRequest = new MovementRequest(currentMap, CurrentUnitPosition, checkpoints.Last(), actionPointsUsed);
+            currentMap = currentMap.DoAction(movementRequest);
+            gameState = GameState.TurnEnded;
+        }
         ClearAllHighlights();
 
         if (checkpoints.Count() == 0)
@@ -41,42 +47,27 @@ public partial class GameManager
             }
             gameObject.transform.position = currentWorldDestination;
         }
-
-        if (setAction)
-        {
-            MovementRequest movementRequest = new MovementRequest(currentMap, CurrentUnitPosition, checkpoints.Last(), actionPointsUsed);
-            currentMap = currentMap.DoAction(movementRequest);
-            RedrawHealthBar();
-            Debug.Log(currentMap);
-            gameState = GameState.Selection;
-        }
     }
 
     private IEnumerator DoAttackAction(Vector3Int targetPosition, Vector3Int[] tilesHit, int cost)
     {
         AttackRequest attackRequest = new AttackRequest(currentMap, CurrentUnitPosition, targetPosition, AttackStatus.Success, tilesHit, cost);
         currentMap = currentMap.DoAction(attackRequest);
-        RedrawHealthBar();
-        gameState = GameState.Selection;
-        Debug.Log(currentMap);
+        gameState = GameState.TurnEnded;
         yield return null;
     }
 
     private IEnumerator CurrentUnitRecoverAP(WaitRequest request)
     {
         currentMap = currentMap.DoAction(request);
-        RedrawHealthBar();
-        gameState = GameState.Selection;
-        Debug.Log(currentMap);
+        gameState = GameState.TurnEnded;
         yield return null;
     }
 
     private IEnumerator CurrentUnitOverwatch(OverwatchRequest request)
     {
         currentMap = currentMap.DoAction(request);
-        RedrawHealthBar();
-        gameState = GameState.Selection;
-        Debug.Log(currentMap);
+        gameState = GameState.TurnEnded;
         yield return null;
     }
 }

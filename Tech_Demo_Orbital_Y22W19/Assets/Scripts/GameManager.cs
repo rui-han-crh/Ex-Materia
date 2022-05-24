@@ -11,8 +11,24 @@ using System;
 using ColorLookUp;
 using System.Threading;
 
+// maybe split this class up more, theres like 600 lines here
 public partial class GameManager : MonoBehaviour
 {
+    private static GameManager instance;
+
+    public static GameManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<GameManager>();
+            }
+            return instance;
+        }
+    }
+
+
     public static Vector3 UNIT_WORLD_OFFSET = new Vector3(0, 0.25f, 0);
     public static Vector3 HEALTH_BAR_WORLD_OFFSET = new Vector3(0, 1f, 0);
 
@@ -43,16 +59,11 @@ public partial class GameManager : MonoBehaviour
     private KeyboardControls keyboardControls;
     private Camera mainCamera;
 
-    private bool endTurnPressed = false;
-
     private Dictionary<string, GameObject> nameUnitGameObjectMapping = new Dictionary<string, GameObject>();
     private Dictionary<GameObject, GameObject> unitToHealthbarMapping = new Dictionary<GameObject, GameObject>();
 
     [SerializeField]
-    private GameObject queueDisplay;
-
-    [SerializeField]
-    private TMP_Text actionPointsLeftField;
+    private CharacterSheetBehaviour characterSheetBehaviour;
 
     [SerializeField]
     private GameObject healthBarPrefab;
@@ -63,7 +74,9 @@ public partial class GameManager : MonoBehaviour
     [SerializeField]
     private LineRenderer pathLine;
 
+    [SerializeField]
     private UnitQueueManager queueManager;
+
 
     private Queue<IEnumerator> routineQueue = new Queue<IEnumerator>();
     private Task lastRoutine;
@@ -159,6 +172,8 @@ public partial class GameManager : MonoBehaviour
         Debug.Log($"Initialised: {currentMap}");
 
         InitialiseHealthBar();
+        queueManager.InitialiseQueue(unitGameObjects, currentMap.AllUnits.ToDictionary(unit => unit.Name, unit => unit));
+        gameState = GameState.TurnEnded;
     }
 
     private void OnEnable()
@@ -200,6 +215,13 @@ public partial class GameManager : MonoBehaviour
         keyboardControls.Mouse.LeftClick.performed += leftClickHandler;
     }
 
+    public void UnsubscribeAllControls()
+    {
+        keyboardControls.Mouse.LeftClick.performed -= leftClickHandler;
+        keyboardControls.Mouse.RightClick.performed -= rightClickHandler;
+        StateReset();
+    }
+
     public void StateReset()
     {
         currentTileSelected = null;
@@ -209,66 +231,9 @@ public partial class GameManager : MonoBehaviour
         executeLastActionAllowed = false;
     }
 
-    private void MovementSelectionListener()
+    public void UpdateCharacterSheet()
     {
-        if (isOverUI)
-            return;
-        
-        Vector2 mousePosition = keyboardControls.Mouse.MousePosition.ReadValue<Vector2>();
-        mousePosition = mainCamera.ScreenToWorldPoint(mousePosition);
-
-        Vector3Int gridPosition = groundTilemap.WorldToCell(mousePosition);
-
-        TileDrawer.SetColorToTiles(tileHighlights, pathPositionsLastDrawn, tileHighlightIndicator.color);
-
-        if (groundTilemap.HasTile(gridPosition))
-        {
-            currentTileSelected = gridPosition;
-            currentMap.FindShortestPathTo(gridPosition, out IEnumerable<Vector3Int> pathPositions);
-            pathPositionsLastDrawn = pathPositions;
-            TileDrawer.SetColorToTiles(tileHighlights, pathPositions, ColorPalette.LIGHT_BLUE_TRANSLUCENT);
-            LineDrawer.DrawLineOnTileMap(tileHighlights, pathLine, pathPositions, currentMap.CurrentUnitPosition);
-            LineDrawer.ColorLine(pathLine, Color.blue);
-            executeLastActionAllowed = true;
-        }
-    }
-
-    private void CombatSelectionListener()
-    {
-        if (isOverUI)
-            return;
-
-        Vector2 mousePosition = keyboardControls.Mouse.MousePosition.ReadValue<Vector2>();
-        mousePosition = mainCamera.ScreenToWorldPoint(mousePosition);
-
-        Vector3Int gridPosition = groundTilemap.WorldToCell(mousePosition);
-
-        TileDrawer.SetColorToTiles(tileHighlights, pathPositionsLastDrawn, ColorPalette.YELLOW_TRANSLUCENT);
-        AttackRequest request = currentMap.IsAttackableAt(gridPosition);
-        AttackStatus status = request.Status;
-
-        switch (status)
-        {
-            case AttackStatus.Success:
-                pathPositionsLastDrawn = request.TilesHit;
-                TileDrawer.SetColorToTiles(tileHighlights, request.TilesHit, ColorPalette.LIGHT_GREEN_TRANSLUCENT);
-                LineDrawer.DrawLineOnTileMap(groundTilemap, pathLine, new Vector3Int[] { request.TilesHit.First(), request.TilesHit.Last() });
-                LineDrawer.ColorLine(pathLine, ColorPalette.DARK_GREEN);
-                executeLastActionAllowed = true;
-                break;
-
-            case AttackStatus.IllegalTarget:
-                StateReset();
-                break;
-
-            default:
-                pathPositionsLastDrawn = request.TilesHit;
-                TileDrawer.SetColorToTiles(tileHighlights, request.TilesHit, ColorPalette.LIGHT_RED_TRANSLUCENT);
-                LineDrawer.DrawLineOnTileMap(groundTilemap, pathLine, new Vector3Int[] { request.TilesHit.First(), request.TilesHit.Last() });
-                LineDrawer.ColorLine(pathLine, Color.red);
-                executeLastActionAllowed = false;
-                break;
-        }
+        characterSheetBehaviour.SetCurrentUnitShowing(currentMap.CurrentUnit);
     }
 
     private void Update()
@@ -309,13 +274,16 @@ public partial class GameManager : MonoBehaviour
             case GameState.Selection:
                 StateReset();
                 break;
+
+            case GameState.TurnEnded:
+                queueManager.UpdateUnitQueue(currentMap.AllUnits.ToDictionary(unit => unit.Name, unit => unit));
+                RedrawHealthBar();
+                UpdateCharacterSheet();
+                Debug.Log(currentMap);
+                gameState = GameState.Selection;
+                break;
         }
         
-    }
-
-    public void UpdateActionPointsText()
-    {
-        actionPointsLeftField.text = queueManager.GetCurrentUnit().ActionPointsLeft.ToString();
     }
 
     private void RepresentMapToScene()
@@ -333,7 +301,7 @@ public partial class GameManager : MonoBehaviour
         {
             GameObject healthbar = Instantiate(healthBarPrefab, healthBarCollection);
             unitToHealthbarMapping[unit] = healthbar;
-            healthbar.GetComponent<HealthBarBehaviour>().SetParent(unit.transform);
+            healthbar.GetComponent<BarFillBehaviour>().SetParent(unit.transform);
         }
     }
 
@@ -342,7 +310,7 @@ public partial class GameManager : MonoBehaviour
         foreach (Unit unit in currentMap.AllUnits)
         {
             GameObject unitGameObject = nameUnitGameObjectMapping[unit.Name];
-            unitToHealthbarMapping[unitGameObject].GetComponent<HealthBarBehaviour>().UpdateHealthBarImage(unit.Health, unit.MaxHealth);
+            unitToHealthbarMapping[unitGameObject].GetComponent<BarFillBehaviour>().UpdateBarFillImage(unit.Health, unit.MaxHealth);
         }
     }
 
@@ -385,15 +353,6 @@ public partial class GameManager : MonoBehaviour
         {
             WaitRequest waitRequest = new WaitRequest(CurrentMap, CurrentUnitPosition);
             routineQueue.Enqueue(CurrentUnitRecoverAP(waitRequest));
-        }
-    }
-
-    private void UpdateQueueDisplay()
-    {
-        foreach (Transform headAvatarHolder in queueDisplay.transform)
-        {
-            Unit unit = headAvatarHolder.GetComponent<CharacterHeadAvatarBehaviour>().Unit;
-            headAvatarHolder.SetSiblingIndex(queueManager.GetUnitIndex(unit));
         }
     }
 }

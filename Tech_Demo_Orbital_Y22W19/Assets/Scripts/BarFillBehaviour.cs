@@ -3,7 +3,7 @@ using System;
 using UnityEngine.UI;
 using TMPro;
 
-public class HealthBarBehaviour : MonoBehaviour
+public class BarFillBehaviour : MonoBehaviour
 {
     [SerializeField]
     private Image healthBar;
@@ -33,11 +33,11 @@ public class HealthBarBehaviour : MonoBehaviour
         parentFollowing = parent;
     }
 
-    public void UpdateHealthBarImage(int currentHealth, int totalHealth)
+    public void UpdateBarFillImage(int currentAmount, int totalAmount)
     {
-        healthBarText.text = $"{currentHealth} / {totalHealth}";
+        healthBarText.text = $"{currentAmount} / {totalAmount}";
         Vector2 newAnchorMax = healthBar.rectTransform.anchorMax;
-        newAnchorMax.x = fullWidth * ((float) currentHealth / totalHealth);
+        newAnchorMax.x = fullWidth * ((float) currentAmount / totalAmount);
         healthBar.rectTransform.anchorMax = newAnchorMax;
     }
 }

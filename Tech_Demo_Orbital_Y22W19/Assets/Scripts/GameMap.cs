@@ -70,7 +70,7 @@ public struct GameMap
         Unit leastExhaustedUnit = units.First();
         foreach (Unit unit in units)
         {
-            if (unit.Health > 0 && (unit.Exhaustion < leastExhaustedUnit.Exhaustion))
+            if (unit.Health > 0 && (unit.Time < leastExhaustedUnit.Time))
             {
                 leastExhaustedUnit = unit;
             }

@@ -4,5 +4,6 @@
     Movement,
     Selection,
     AwaitMovement,
-    AwaitCombat
+    AwaitCombat,
+    TurnEnded
 }

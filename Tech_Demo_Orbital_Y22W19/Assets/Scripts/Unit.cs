@@ -118,8 +118,11 @@ public struct Unit : IComparable<Unit>
     public string Name => name;
 
     public int MaxHealth => maxHealth;
+    public int MaxActionPoints => maximumActionPoints;
 
-    public int Exhaustion => time;
+    public int Time => time;
+
+    public int Speed => unitSpeed;
 
     public int Attack => attack;
 
@@ -141,7 +144,7 @@ public struct Unit : IComparable<Unit>
     {
         return new Unit(this,
                         Mathf.Clamp(health - decreaseAmount, 0, maxHealth),
-                        Exhaustion,
+                        Time,
                         ActionPointsUsed);
     }
 

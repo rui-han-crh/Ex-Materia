@@ -40,4 +40,6 @@ public class UnitBehaviour : MonoBehaviour
     public Unit Unit => unit;
 
     public Faction Faction => faction;
+
+    public Sprite CharacterAvatar => characterHeadAvatar;
 }

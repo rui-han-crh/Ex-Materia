@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using System.Linq;
 
 /// <summary>
 /// A specific structure that managed Unit turns
@@ -11,60 +12,66 @@ using UnityEngine;
 /// 
 /// Unit will ONLY be removed from the structure if dead.
 /// </summary>
-public class UnitQueueManager
+public class UnitQueueManager : MonoBehaviour
 {
-    private Unit[] unitArray;
-    private Dictionary<Unit, int> unitIndexMap;
-    private int count = 0;
+    [SerializeField]
+    private Transform content;
+    [SerializeField]
+    private GameObject characterHeadPrefab;
 
-    private Unit currentUnit;
 
-    public UnitQueueManager(Unit[] unitArray)
+    public void InitialiseQueue(GameObject[] units, Dictionary<string, Unit> nameUnitMapping)
     {
-        this.unitArray = unitArray;
-        count = unitArray.Length;
-        Array.Sort(unitArray);
-
-        unitIndexMap = new Dictionary<Unit, int>();
-        for (int i = 0; i < unitArray.Length; i++)
+        foreach (GameObject unit in units)
         {
-            unitIndexMap[unitArray[i]] = i;
+            GameObject characterHead = Instantiate(characterHeadPrefab, content);
+            characterHead.name = characterHeadPrefab.name + "_" + unit.name;
+            characterHead.GetComponent<HeadAvatarBehaviour>().SetBoundGameObject(unit);
+        }
+
+        UpdateUnitQueue(nameUnitMapping);
+
+    }
+
+    public void UpdateUnitQueue(Dictionary<string, Unit> nameUnitMapping)
+    {
+        LinearAnimation linAnim = GetComponent<LinearAnimation>();
+
+        List<LinearAnimation.LinearAnimationTarget> targets = new List<LinearAnimation.LinearAnimationTarget>();
+
+        Unit[] orderedUnit = nameUnitMapping.Values.OrderBy(x => x.Time).ToArray();
+
+        Dictionary<string, int> unitOrder = new Dictionary<string, int>();
+
+        for (int i = 0; i< orderedUnit.Length; i++)
+        {
+            unitOrder.Add(orderedUnit[i].Name, i);
+        }
+
+        RectTransform characterHeadRectTransform = characterHeadPrefab.GetComponent<RectTransform>();
+        Vector2 minOrigin = characterHeadRectTransform.anchorMin;
+        Vector2 displacement = new Vector2(characterHeadRectTransform.anchorMax.x - characterHeadRectTransform.anchorMin.x, 0);
+
+        foreach (Transform character in content)
+        {
+            HeadAvatarBehaviour characterHeadAvatar = character.GetComponent<HeadAvatarBehaviour>();
+            characterHeadAvatar.UpdateHealthBar(nameUnitMapping[characterHeadAvatar.BoundGameObject.name]);
+
+            int index = unitOrder[characterHeadAvatar.BoundGameObject.name];
+
+            targets.Add(new LinearAnimation.LinearAnimationTarget(character.gameObject,
+                                                                minOrigin + index * displacement,
+                                                                minOrigin + (index + 1) * displacement + Vector2.up,
+                                                                1));
+            character.gameObject.SetActive(false);
+        }
+
+        linAnim.StopAllCoroutines();
+        linAnim.SetTargets(targets.ToArray());
+
+        for (int i = 0; i < targets.Count; i++)
+        {
+            linAnim.ToggleUI(i);
         }
     }
-
-    public int ActiveUnitCount => count;
-
-    public IReadOnlyCollection<Unit> AllUnits => Array.AsReadOnly(unitArray);
-
-    public int GetUnitIndex(Unit unit)
-    {
-        return unitIndexMap[unit];
-    }
-
-    public Unit GetCurrentUnit()
-    {
-        currentUnit = unitArray[0];
-        return currentUnit;
-    }
-
-    public void UpdateQueue()
-    {
-        Array.Sort(unitArray);
-        currentUnit = unitArray[0];
-        for (int i = 0; i < unitArray.Length; i++)
-        {
-            unitIndexMap[unitArray[i]] = i;
-        }
-    }
-
-    //public void Remove(Unit unit)
-    //{
-    //    if (!unitIndexMap.ContainsKey(unit))
-    //    {
-    //        throw new KeyNotFoundException("Unit does not exist in the queue");
-    //    }
-    //    unitArray[unitIndexMap[unit]] = null;
-    //    unitIndexMap.Remove(unit);
-    //    UpdateQueue();
-    //}
 }
