@@ -250,7 +250,11 @@ public partial class GameManager : MonoBehaviour
 
     private void Update()
     {
+        /////////////////////////////////////
+        //          Mouse Over UI          //
+        /////////////////////////////////////
         isOverUI = EventSystem.current.IsPointerOverGameObject();
+
 
         //////////////////////////////////////
         //          Routine related         //
@@ -267,6 +271,7 @@ public partial class GameManager : MonoBehaviour
             AutoPlay();
             gameState = GameState.OpponentTurn;
         }
+
 
         ////////////////////////////////////
         //          State related         //
