@@ -8,12 +8,6 @@ public partial class GameManager
 {
     private IEnumerator LerpGameObject(GameObject gameObject, IEnumerable<Vector3Int> checkpoints, int actionPointsUsed, bool setAction = true)
     {
-        if (setAction)
-        {
-            MovementRequest movementRequest = new MovementRequest(currentMap, CurrentUnitPosition, checkpoints.Last(), actionPointsUsed);
-            currentMap = currentMap.DoAction(movementRequest);
-            gameState = GameState.TurnEnded;
-        }
         ClearAllHighlights();
 
         if (checkpoints.Count() == 0)
@@ -47,10 +41,18 @@ public partial class GameManager
             }
             gameObject.transform.position = currentWorldDestination;
         }
+
+        if (setAction)
+        {
+            MovementRequest movementRequest = new MovementRequest(currentMap, CurrentUnitPosition, checkpoints.Last(), actionPointsUsed);
+            currentMap = currentMap.DoAction(movementRequest);
+            gameState = GameState.TurnEnded;
+        }
     }
 
     private IEnumerator DoAttackAction(Vector3Int targetPosition, Vector3Int[] tilesHit, int cost)
     {
+        yield return new WaitForSeconds(0.25f);
         AttackRequest attackRequest = new AttackRequest(currentMap, CurrentUnitPosition, targetPosition, AttackStatus.Success, tilesHit, cost);
         currentMap = currentMap.DoAction(attackRequest);
         gameState = GameState.TurnEnded;
@@ -59,6 +61,7 @@ public partial class GameManager
 
     private IEnumerator CurrentUnitRecoverAP(WaitRequest request)
     {
+        yield return new WaitForSeconds(0.25f);
         currentMap = currentMap.DoAction(request);
         gameState = GameState.TurnEnded;
         yield return null;
@@ -66,6 +69,7 @@ public partial class GameManager
 
     private IEnumerator CurrentUnitOverwatch(OverwatchRequest request)
     {
+        yield return new WaitForSeconds(0.25f);
         currentMap = currentMap.DoAction(request);
         gameState = GameState.TurnEnded;
         yield return null;

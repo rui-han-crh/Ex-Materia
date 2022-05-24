@@ -77,13 +77,18 @@ public partial class GameManager : MonoBehaviour
     [SerializeField]
     private UnitQueueManager queueManager;
 
+    [SerializeField]
+    private LinearAnimation canvasLinearAnimation;
+    [SerializeField]
+    private int characterSheetIndex;
 
+    // Routine Queue
     private Queue<IEnumerator> routineQueue = new Queue<IEnumerator>();
     private Task lastRoutine;
 
-    protected GameMap currentMap;
+    private GameMap currentMap;
 
-    protected bool isOverUI;
+    private bool isOverUI;
 
     private GameState gameState = GameState.Selection;
 
@@ -111,6 +116,12 @@ public partial class GameManager : MonoBehaviour
     {
         return routineQueue.Count == 0;
     }
+
+    public bool IsRoutineQueueDormant()
+    {
+        return lastRoutine == null || !lastRoutine.Running;
+    }
+
     private void Awake()
     {
         keyboardControls = new KeyboardControls();
@@ -236,23 +247,30 @@ public partial class GameManager : MonoBehaviour
         characterSheetBehaviour.SetCurrentUnitShowing(currentMap.CurrentUnit);
     }
 
+
     private void Update()
     {
-        if ((lastRoutine == null || !lastRoutine.Running) && routineQueue.Count > 0)
+        isOverUI = EventSystem.current.IsPointerOverGameObject();
+
+        //////////////////////////////////////
+        //          Routine related         //
+        //////////////////////////////////////
+        if (IsRoutineQueueDormant() && !IsRoutineEmpty())
         {
             lastRoutine = new Task(routineQueue.Dequeue());
         }
-
-        if (routineQueue.Count == 0 && (lastRoutine == null || !lastRoutine.Running) 
+        else if (IsRoutineEmpty() && IsRoutineQueueDormant()
             && !autoPlayQueued && currentMap.CurrentUnit.Faction != Faction.Friendly)
         {
             Debug.Log($"The map now is {currentMap}");
             autoPlayQueued = true;
             AutoPlay();
+            gameState = GameState.OpponentTurn;
         }
 
-        isOverUI = EventSystem.current.IsPointerOverGameObject();
-
+        ////////////////////////////////////
+        //          State related         //
+        ////////////////////////////////////
         switch (gameState)
         {
             case GameState.AwaitMovement:
@@ -268,11 +286,10 @@ public partial class GameManager : MonoBehaviour
                 TileDrawer.SetColorToTiles(tileHighlights, currentMap.GetRange(), ColorPalette.YELLOW_TRANSLUCENT);
                 break;
 
-            case GameState.Combat:
-                break;
-
-            case GameState.Selection:
+            case GameState.Refresh:
                 StateReset();
+                canvasLinearAnimation.UIToActivePosition(characterSheetIndex);
+                gameState = GameState.Selection;
                 break;
 
             case GameState.TurnEnded:
@@ -280,7 +297,10 @@ public partial class GameManager : MonoBehaviour
                 RedrawHealthBar();
                 UpdateCharacterSheet();
                 Debug.Log(currentMap);
-                gameState = GameState.Selection;
+                gameState = currentMap.CurrentUnit.Faction == Faction.Friendly ? GameState.Refresh : GameState.OpponentTurn;
+                break;
+
+            default:
                 break;
         }
         

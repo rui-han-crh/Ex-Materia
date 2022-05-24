@@ -27,6 +27,16 @@ public class ScriptedAnimations : MonoBehaviour
     private Dictionary<GameObject, Vector2[]> buttonOriginalAnchors = new Dictionary<GameObject, Vector2[]>();
     private Dictionary<GameObject, bool> isButtonSelected = new Dictionary<GameObject, bool>();
 
+    private void OnEnable()
+    {
+        foreach (KeyValuePair<GameObject, Vector2[]> buttonAnchor in buttonOriginalAnchors)
+        {
+            RectTransform rect = buttonAnchor.Key.GetComponent<RectTransform>();
+            rect.anchorMin = buttonAnchor.Value[0];
+            rect.anchorMax = buttonAnchor.Value[1];
+        }
+    }
+
     private void Start()
     {
         informationSpaceCanvasGroup = informationSpace.GetComponent<CanvasGroup>();

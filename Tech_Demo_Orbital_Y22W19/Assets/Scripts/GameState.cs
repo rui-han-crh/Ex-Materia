@@ -5,5 +5,8 @@
     Selection,
     AwaitMovement,
     AwaitCombat,
-    TurnEnded
+    TurnEnded,
+    OpponentHandOver,
+    OpponentTurn,
+    Refresh
 }

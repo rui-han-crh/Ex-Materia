@@ -8,6 +8,7 @@ using AsyncTask = System.Threading.Tasks.Task;
 // Autodecisions
 public partial class GameManager
 {
+
     private async void AutoPlay()
     {
         if (currentMap.CurrentUnit.Faction == Faction.Friendly)

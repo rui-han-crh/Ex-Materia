@@ -104,4 +104,14 @@ public class LinearAnimation : MonoBehaviour
             StartCoroutine(Lerp(target, !target.GameObject.activeInHierarchy));
     }
 
+    public void UIToActivePosition(int index)
+    {
+        if (targets[index].GameObject.activeInHierarchy)
+        {
+            return;
+        }
+
+        ToggleUI(index);
+    }
+
 }
