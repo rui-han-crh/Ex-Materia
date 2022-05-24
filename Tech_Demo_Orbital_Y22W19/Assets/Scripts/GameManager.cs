@@ -268,6 +268,8 @@ public partial class GameManager : MonoBehaviour
             gameState = GameState.OpponentTurn;
         }
 
+        //This is a change!
+
         ////////////////////////////////////
         //          State related         //
         ////////////////////////////////////
