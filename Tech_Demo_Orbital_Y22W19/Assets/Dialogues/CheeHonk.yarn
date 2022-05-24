@@ -1,0 +1,102 @@
+﻿title: Start
+---
+<<set $knowsDP to false>>
+<<set $spokenEvelyn to false>>
+
+Colin: This is the start node, which will be where the context is set after a fight. 
+
+Colin: I will test some options here 
+-> Gosh!
+-> Incredible!
+-> Insane!
+-> Big if True!
+
+<B> Please stand up for the arrival of the smartest man in CS </B>
+
+CheeHeng: So Anyways, what's my real name?
+-> Chi Hong 
+	CheeHeng: Among all the common misspellings of my name, this is <B> not </B> one of them 
+
+-> Chee Henkt
+	CheeHeng: Among all the common misspellings of my name, this  <B> is one of the more common ones </B> 
+
+-> Chan Heng Huat
+	CheeHeng: I am not professor chan
+
+-> Chu Hong
+	CheeHeng: Correct
+
+Colin: Now we can go to the next node
+
+
+<<jump StartSecond>>
+
+
+===
+title: StartSecond
+---
+CheeHeng: Anyways, time to ORD!
+Evelyn: Aren't you Pes F
+CheeHeng: Oh yes 
+-> I automatically ORD 
+
+ChuHong: Now, please click on each character model exactly once
+
+
+//each node is enclosed within ===
+// --> just means options 
+// <charName> : <text> 
+// <<jump <nodeName> >> just means when it will hop to a second node
+
+===
+title: CheeHeng
+---
+<<if $knowsDP>>
+	CheeHeng: Go Disturb someone else
+	CheeHeng: I am busy preparing for CS2050
+<<else>>
+	CheeHeng: *wails*
+	CheeHeng: Do you know <B> Dynamic Programming? </B>
+
+	-> Yes
+		CheeHeng: That's good!
+		<<set $knowsDP to true>>
+		<<if $spokenEvelyn and $knowsDP>>
+			<<jump End>>
+		<<endif>>
+		CheeHeng: Now, speak to Evelyn to find out more about the world 
+	-> No
+		CheeHeng: I actually know Dynamic Programming, please try again.
+<<endif>>
+<<if $spokenEvelyn and $knowsDP>>
+	<<jump End>>
+<<endif>>
+===
+title: Evelyn
+---
+<<if $spokenEvelyn>>
+	Evelyn: Please talk to Chee Heng, he needs a friend too!
+	CheeHeng: Yes please, I would like to tell you more about dynamic programming.
+
+<<else>>
+
+	<<set $spokenEvelyn to true>>
+	Evelyn: At this point of the story, I have just taken out a computer tower!
+	Evelyn: Now Lucien will see me as a great leader 
+	-> Not really
+	Evelyn: Aw man 
+	Evelyn: One paragraph of backstory including sisters 
+
+	<<if $spokenEvelyn and $knowsDP>>
+		<<jump End>>
+	<<else>>
+		Evelyn: You should really talk to CheeHeng, preferably know dynamic programming as well
+	<<endif>>
+
+<<endif>>
+
+===
+title: End
+---
+CheeHeng: This concludes the playtest
+===

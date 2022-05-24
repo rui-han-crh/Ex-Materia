@@ -1,0 +1,40 @@
+title: Start
+tags: 
+colorID: 0
+position: 422,283
+---
+Colin: Do You Know the Muffin Man? 
+
+-> [[ Yes! He lives on Dury Lane! |DuryLane]]
+-> [[ No! I only know Chee Henkt |CheeHenkt]]
+===
+title: DuryLane
+tags: 
+colorID: 0
+position: 544,65
+---
+Woohooo You've reached the end!
+===
+title: CheeHenkt
+tags: 
+colorID: 0
+position: 762,63
+---
+CheeHeng: Among my most common mispellings, what is best name?
+-> [[Chi Honk |CheeHonk]]
+-> [[Chee Hong |CheeHong]]
+===
+title: CheeHonk
+tags: 
+colorID: 0
+position: 881,-157
+---
+Correct!
+===
+title: CheeHong
+tags: 
+colorID: 0
+position: 1099,-156
+---
+Correct!
+===
