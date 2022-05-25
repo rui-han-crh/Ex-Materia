@@ -6,10 +6,11 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-public class YarnInteractable : MonoBehaviour,IPointerClickHandler
+public class YarnInteractable : MonoBehaviour
 {
     // internal properties exposed to editor
-    [SerializeField] private string conversationStartNode;
+    [SerializeField] 
+    private string conversationStartNode;
 
     // internal properties not exposed to editor
     private DialogueRunner dialogueRunner;
@@ -50,7 +51,7 @@ public class YarnInteractable : MonoBehaviour,IPointerClickHandler
     //    }
     //}
 
-    public void OnPointerClick(PointerEventData eventData)
+    public void Interact()
     {
         if(interactable && !dialogueRunner.IsDialogueRunning)
         {
