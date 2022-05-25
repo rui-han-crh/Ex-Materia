@@ -2,55 +2,74 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Yarn.Unity;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
-public class YarnInteractable : MonoBehaviour, IPointerDownHandler
+public class YarnInteractable : MonoBehaviour,IPointerClickHandler
 {
     // internal properties exposed to editor
     [SerializeField] private string conversationStartNode;
 
     // internal properties not exposed to editor
     private DialogueRunner dialogueRunner;
-    private Renderer renderer;
     private bool interactable = true;
+    // I need my outline / something else here
     private bool isCurrentConversation = false;
     private float defaultIndicatorIntensity;
+    private Outline redOutline; 
 
     public void Start()
     {
+        redOutline = GetComponent<Outline>();
         dialogueRunner = FindObjectOfType<Yarn.Unity.DialogueRunner>();
         dialogueRunner.onDialogueComplete.AddListener(EndConversation);
-        renderer = GetComponent<Renderer>();
-        // get starter intensity of light then
-        // if we're using it as an indicator => hide it 
-        //if (lightIndicatorObject != null)
+
         //{
         //    defaultIndicatorIntensity = lightIndicatorObject.intensity;
         //    lightIndicatorObject.intensity = 0;
         //}
     }
 
-    public void OnPointerDown(PointerEventData pointerEventData)
+    //public void FixedUpdate()
+    //{
+    //    //on the frame the LMB is pressed, start the dialogue runner!
+    //    if (Input.GetMouseButtonDown(0) && interactable && !dialogueRunner.IsDialogueRunning)
+    //    {
+    //        StartConversation();
+    //    }
+    //}
+
+
+
+    //public void OnClick()
+    //{
+    //    if (interactable && !dialogueRunner.IsDialogueRunning)
+    //    {
+    //        StartConversation();
+    //    }
+    //}
+
+    public void OnPointerClick(PointerEventData eventData)
     {
-        if (interactable && !dialogueRunner.IsDialogueRunning)
+        if(interactable && !dialogueRunner.IsDialogueRunning)
         {
             StartConversation();
         }
     }
-
     private void StartConversation()
     {
         Debug.Log($"Started conversation with {name}.");
         isCurrentConversation = true;
-        if (renderer != null)
-        {
-            renderer.material.color = Color.red;
-        }
         // if (lightIndicatorObject != null) {
         //     lightIndicatorObject.intensity = defaultIndicatorIntensity;
         // }
+        
         dialogueRunner.StartDialogue(conversationStartNode);
+        if (redOutline != null)
+        {
+            redOutline.enabled = true;
+        }
     }
 
     private void EndConversation()
@@ -64,9 +83,9 @@ public class YarnInteractable : MonoBehaviour, IPointerDownHandler
             Debug.Log($"Started conversation with {name}.");
         }
 
-        if (renderer != null)
+        if (redOutline != null)
         {
-            renderer.material.color = Color.clear;
+            redOutline.enabled = false;
         }
     }
 
