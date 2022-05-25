@@ -7,17 +7,10 @@ using UnityEngine.EventSystems;
 public class ScriptedAnimations : MonoBehaviour
 {
     private static readonly float INTERPOLATION_CONSTANT = 5f;
-    private static readonly string QUEUE_SHOW_NAME = "showQueue";
 
     [SerializeField]
     private Transform[] allButtonTransforms;
 
-    [SerializeField]
-    private GameObject cancelButtonPrefab;
-    [SerializeField]
-    private GameManager gameManager;
-    [SerializeField]
-    private Animator turnQueueAnimator;
     [SerializeField]
     private GameObject informationSpace;
     private CanvasGroup informationSpaceCanvasGroup;
