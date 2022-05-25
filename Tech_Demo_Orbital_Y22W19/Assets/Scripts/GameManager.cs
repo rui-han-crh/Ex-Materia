@@ -134,14 +134,16 @@ public partial class GameManager : MonoBehaviour
         mainCamera = Camera.main;
 
         Dictionary<Vector3Int, Unit> unitPositionMap = new Dictionary<Vector3Int, Unit>();
-        foreach (GameObject unitObject in unitGameObjects)
+        for (int i = 0; i < unitGameObjects.Length; i++)
         {
+            GameObject unitObject = unitGameObjects[i];
+
             if (!unitObject.activeSelf)
             {
                 continue;
             }
 
-            Unit unit = unitObject.GetComponentInChildren<UnitBehaviour>().Unit;
+            Unit unit = unitObject.GetComponentInChildren<UnitBehaviour>().InitialiseUnit(i);
             Debug.Assert(unit.Name != null);
             Vector3Int unitCellPosition = groundTilemap.WorldToCell(unitObject.transform.position);
             unitPositionMap.Add(unitCellPosition, unit);
@@ -256,23 +258,6 @@ public partial class GameManager : MonoBehaviour
         isOverUI = EventSystem.current.IsPointerOverGameObject();
 
 
-        //////////////////////////////////////
-        //          Routine related         //
-        //////////////////////////////////////
-        if (IsRoutineQueueDormant() && !IsRoutineEmpty())
-        {
-            lastRoutine = new Task(routineQueue.Dequeue());
-        }
-        else if (IsRoutineEmpty() && IsRoutineQueueDormant()
-            && !autoPlayQueued && currentMap.CurrentUnit.Faction != Faction.Friendly)
-        {
-            Debug.Log($"The map now is {currentMap}");
-            autoPlayQueued = true;
-            AutoPlay();
-            gameState = GameState.OpponentTurn;
-        }
-
-
         ////////////////////////////////////
         //          State related         //
         ////////////////////////////////////
@@ -298,9 +283,9 @@ public partial class GameManager : MonoBehaviour
                 break;
 
             case GameState.TurnEnded:
-                queueManager.UpdateUnitQueue(currentMap.AllUnits.ToDictionary(unit => unit.Name, unit => unit));
                 RedrawHealthBar();
                 UpdateCharacterSheet();
+                queueManager.UpdateUnitQueue(currentMap.AllUnits.ToDictionary(unit => unit.Name, unit => unit));
                 Debug.Log(currentMap);
                 gameState = currentMap.CurrentUnit.Faction == Faction.Friendly ? GameState.Refresh : GameState.OpponentTurn;
                 break;
@@ -308,7 +293,22 @@ public partial class GameManager : MonoBehaviour
             default:
                 break;
         }
-        
+
+        //////////////////////////////////////
+        //          Routine related         //
+        //////////////////////////////////////
+        if (IsRoutineQueueDormant())
+        {
+            if (!IsRoutineEmpty())
+            {
+                lastRoutine = new Task(routineQueue.Dequeue());
+            } 
+            else if (!queueManager.IsPlayingAnimation && !autoPlayQueued && gameState == GameState.OpponentTurn)
+            {
+                AutoPlay();
+            }
+        }
+
     }
 
     private void RepresentMapToScene()

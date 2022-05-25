@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class UnitBehaviour : MonoBehaviour
 {
-    private Unit unit;
-
     [SerializeField]
     private int health = 100;
 
@@ -31,13 +29,10 @@ public class UnitBehaviour : MonoBehaviour
     [SerializeField]
     private Faction faction;
 
-    // Start is called before the first frame update
-    private void Awake()
+    public Unit InitialiseUnit(int startingTime)
     {
-        unit = new Unit(name, health, faction, characterHeadAvatar, attack, defence, unitSpeed, risk, actionPointsPerTurn);
+        return new Unit(name, health, faction, characterHeadAvatar, attack, defence, unitSpeed, risk, actionPointsPerTurn).AddTime(startingTime);
     }
-
-    public Unit Unit => unit;
 
     public Faction Faction => faction;
 

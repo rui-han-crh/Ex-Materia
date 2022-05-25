@@ -72,7 +72,7 @@ public struct Unit : IComparable<Unit>
 
         this.health = newHealth;
         this.time = newTime;
-        this.actionPointsUsed = actionPointsUsed;
+        this.actionPointsUsed = Mathf.Max(0, actionPointsUsed);
 
         this.unitStatusEffects = oldUnit.unitStatusEffects;
     }
@@ -167,6 +167,11 @@ public struct Unit : IComparable<Unit>
                         Health,
                         time,
                         0);
+    }
+
+    public Unit ReplenishActionPoints(int amountToReplenish)
+    {
+        return new Unit(this, Health, Time, actionPointsUsed - amountToReplenish);
     }
 
     public Unit AddTime(int amount)

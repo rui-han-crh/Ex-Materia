@@ -11,6 +11,7 @@ public partial class GameManager
 
     private async void AutoPlay()
     {
+        autoPlayQueued = true;
         if (currentMap.CurrentUnit.Faction == Faction.Friendly)
         {
             autoPlayQueued = false;

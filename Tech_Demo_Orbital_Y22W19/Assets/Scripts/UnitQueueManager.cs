@@ -19,6 +19,9 @@ public class UnitQueueManager : MonoBehaviour
     [SerializeField]
     private GameObject characterHeadPrefab;
 
+    private bool isPlayingAnimation;
+    public bool IsPlayingAnimation => isPlayingAnimation;
+
 
     public void InitialiseQueue(GameObject[] units, Dictionary<string, Unit> nameUnitMapping)
     {
@@ -66,12 +69,23 @@ public class UnitQueueManager : MonoBehaviour
             character.gameObject.SetActive(false);
         }
 
-        linAnim.StopAllCoroutines();
+        StopAllCoroutines();
+        isPlayingAnimation = true;
         linAnim.SetTargets(targets.ToArray());
 
         for (int i = 0; i < targets.Count; i++)
         {
             linAnim.ToggleUI(i);
         }
+        new Task(CheckAllTargetsStopped(targets));
+    }
+
+    private IEnumerator CheckAllTargetsStopped(IEnumerable<LinearAnimation.LinearAnimationTarget> targets)
+    {
+        while(targets.Any(x => x.AnimationIsRunning))
+        {
+            yield return null;
+        }
+        isPlayingAnimation = false;
     }
 }

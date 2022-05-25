@@ -246,7 +246,12 @@ public struct GameMap
 
                 Unit recoveringUnit = newPositionUnitMap[waitRequest.ActingUnitPosition];
 
-                recoveringUnit = recoveringUnit.ResetActionPoints().AddTime(WaitRequest.TIME_CONSUMED);
+                Unit nextUnitAfterCurrent = AllUnits.OrderBy(x => x.Time).ToArray()[1];
+
+                int timeDifference = nextUnitAfterCurrent.Time - recoveringUnit.Time;
+                int apReplenished = recoveringUnit.Speed * (30);
+
+                recoveringUnit = recoveringUnit.ReplenishActionPoints(apReplenished).AddTime(timeDifference + 1);
 
                 newPositionUnitMap.Remove(waitRequest.ActingUnitPosition);
                 newPositionUnitMap[waitRequest.ActingUnitPosition] = recoveringUnit;

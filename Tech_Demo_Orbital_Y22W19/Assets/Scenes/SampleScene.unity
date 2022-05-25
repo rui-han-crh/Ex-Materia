@@ -78206,7 +78206,7 @@ MonoBehaviour:
   risk: 25
   characterHeadAvatar: {fileID: 21300000, guid: 2ab7f173c0645c24384da9d2e101048b, type: 3}
   actionPointsPerTurn: 150
-  faction: 0
+  faction: 2
 --- !u!1 &1859403010
 GameObject:
   m_ObjectHideFlags: 0
