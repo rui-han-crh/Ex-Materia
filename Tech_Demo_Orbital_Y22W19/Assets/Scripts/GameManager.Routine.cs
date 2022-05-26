@@ -74,4 +74,18 @@ public partial class GameManager
         gameState = GameState.TurnEnded;
         yield return null;
     }
+
+    private IEnumerator DestroyUnitDelayed(string name, float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+
+        GameObject unitGO = nameUnitGameObjectMapping[name];
+        GameObject unitHealthBar = unitToHealthbarMapping[unitGO];
+
+        nameUnitGameObjectMapping.Remove(name);
+        unitToHealthbarMapping.Remove(unitGO);
+
+        Destroy(unitGO);
+        Destroy(unitHealthBar);
+    }
 }

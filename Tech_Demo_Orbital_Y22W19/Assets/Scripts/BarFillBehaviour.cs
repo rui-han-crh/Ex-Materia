@@ -13,6 +13,12 @@ public class BarFillBehaviour : MonoBehaviour
     private Transform parentFollowing;
     private Camera mainCamera;
 
+    private int currentSetHealth;
+    private int currentMaxHealth;
+
+    public int CurrentHealth => currentSetHealth;
+    public int CurrentMaxHealth => currentMaxHealth;
+
     private void Awake()
     {
         fullWidth = healthBar.rectTransform.anchorMax.x - healthBar.rectTransform.anchorMin.x;
@@ -35,6 +41,9 @@ public class BarFillBehaviour : MonoBehaviour
 
     public void UpdateBarFillImage(int currentAmount, int totalAmount)
     {
+        currentSetHealth = currentAmount;
+        currentMaxHealth = totalAmount;
+
         healthBarText.text = $"{currentAmount} / {totalAmount}";
         Vector2 newAnchorMax = healthBar.rectTransform.anchorMax;
         newAnchorMax.x = fullWidth * ((float) currentAmount / totalAmount);

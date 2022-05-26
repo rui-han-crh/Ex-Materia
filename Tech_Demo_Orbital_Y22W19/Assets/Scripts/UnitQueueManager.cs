@@ -18,6 +18,8 @@ public class UnitQueueManager : MonoBehaviour
     private Transform content;
     [SerializeField]
     private GameObject characterHeadPrefab;
+    [SerializeField]
+    private RectTransform waitSlider;
 
     private bool isPlayingAnimation;
     public bool IsPlayingAnimation => isPlayingAnimation;
@@ -58,6 +60,13 @@ public class UnitQueueManager : MonoBehaviour
         foreach (Transform character in content)
         {
             HeadAvatarBehaviour characterHeadAvatar = character.GetComponent<HeadAvatarBehaviour>();
+
+            if (!nameUnitMapping.ContainsKey(characterHeadAvatar.BoundGameObject.name))
+            {
+                Destroy(characterHeadAvatar.gameObject);
+                continue;
+            }
+
             characterHeadAvatar.UpdateHealthBar(nameUnitMapping[characterHeadAvatar.BoundGameObject.name]);
 
             int index = unitOrder[characterHeadAvatar.BoundGameObject.name];
@@ -68,6 +77,8 @@ public class UnitQueueManager : MonoBehaviour
                                                                 1));
             character.gameObject.SetActive(false);
         }
+
+        SetWaitSliderLength(minOrigin.x, displacement.x * unitOrder.Count);
 
         StopAllCoroutines();
         isPlayingAnimation = true;
@@ -87,5 +98,11 @@ public class UnitQueueManager : MonoBehaviour
             yield return null;
         }
         isPlayingAnimation = false;
+    }
+
+    private void SetWaitSliderLength(float minX, float maxX)
+    {
+        waitSlider.anchorMin = new Vector2(minX, waitSlider.anchorMin.y);
+        waitSlider.anchorMax = new Vector2(maxX, waitSlider.anchorMax.y);
     }
 }

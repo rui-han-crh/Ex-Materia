@@ -1,12 +1,16 @@
 ﻿using UnityEngine;
+using System.Linq;
 
 public class WaitRequest :MapActionRequest
 {
-    public static readonly int TIME_CONSUMED = 500;
-    public WaitRequest(GameMap previousMap, Vector3Int sourcePosition) :
-        base (previousMap, MapActionType.Wait, sourcePosition, 0)
-    {
+    private int waitTime;
 
+    public int WaitTime => waitTime;
+
+    public WaitRequest(GameMap previousMap, Vector3Int sourcePosition, int waitTime) :
+        base(previousMap, MapActionType.Wait, sourcePosition, 0)
+    {
+        this.waitTime = waitTime;
     }
 
     public override float GetUtility()

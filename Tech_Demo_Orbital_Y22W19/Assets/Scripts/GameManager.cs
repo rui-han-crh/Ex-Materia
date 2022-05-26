@@ -143,7 +143,7 @@ public partial class GameManager : MonoBehaviour
                 continue;
             }
 
-            Unit unit = unitObject.GetComponentInChildren<UnitBehaviour>().InitialiseUnit(i);
+            Unit unit = unitObject.GetComponentInChildren<UnitBehaviour>().InitialiseUnit(i * 2);
             Debug.Assert(unit.Name != null);
             Vector3Int unitCellPosition = groundTilemap.WorldToCell(unitObject.transform.position);
             unitPositionMap.Add(unitCellPosition, unit);
@@ -283,6 +283,7 @@ public partial class GameManager : MonoBehaviour
                 break;
 
             case GameState.TurnEnded:
+                RemoveDeadUnits();
                 RedrawHealthBar();
                 UpdateCharacterSheet();
                 queueManager.UpdateUnitQueue(currentMap.AllUnits.ToDictionary(unit => unit.Name, unit => unit));
@@ -332,10 +333,29 @@ public partial class GameManager : MonoBehaviour
 
     private void RedrawHealthBar()
     {
+        foreach (string name in nameUnitGameObjectMapping.Keys)
+        {
+            if (!currentMap.AllUnits.Select(x => x.Name).Contains(name))
+            {
+                GameObject unitGameObject = nameUnitGameObjectMapping[name];
+                BarFillBehaviour barFillBehaviour = unitToHealthbarMapping[unitGameObject].GetComponent<BarFillBehaviour>();
+                barFillBehaviour.UpdateBarFillImage(0, barFillBehaviour.CurrentMaxHealth);
+            }
+        }
+
         foreach (Unit unit in currentMap.AllUnits)
         {
             GameObject unitGameObject = nameUnitGameObjectMapping[unit.Name];
             unitToHealthbarMapping[unitGameObject].GetComponent<BarFillBehaviour>().UpdateBarFillImage(unit.Health, unit.MaxHealth);
+        }
+    }
+
+    private void RemoveDeadUnits()
+    {
+        IEnumerable<string> differenceUnitNames = nameUnitGameObjectMapping.Keys.ToArray().Except(currentMap.AllUnits.Select(x => x.Name));
+        foreach (string differenceUnitName in differenceUnitNames)
+        {
+            Enqueue(DestroyUnitDelayed(differenceUnitName, 1));
         }
     }
 
@@ -376,8 +396,9 @@ public partial class GameManager : MonoBehaviour
         Debug.Log("Wait pressed");
         if (routineQueue.Count == 0)
         {
-            WaitRequest waitRequest = new WaitRequest(CurrentMap, CurrentUnitPosition);
+            WaitRequest waitRequest = new WaitRequest(CurrentMap, CurrentUnitPosition, timeToWait);
             routineQueue.Enqueue(CurrentUnitRecoverAP(waitRequest));
+            timeToWait = 0;
         }
     }
 }

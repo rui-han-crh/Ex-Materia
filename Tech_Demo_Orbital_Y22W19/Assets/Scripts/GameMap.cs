@@ -1,6 +1,6 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 /// <summary>
 /// An immutable data structure that comprises of map data, such as the unit positions,
@@ -25,17 +25,17 @@ public struct GameMap
     public Unit CurrentUnit => currentTurnUnit;
     public Vector3Int CurrentUnitPosition => mapData.UnitPositionMapping[currentTurnUnit];
 
-    public HashSet<Vector3Int> AllUnitPositions => new HashSet<Vector3Int> (mapData.PositionUnitMapping.Keys);
-    public HashSet<Unit> AllUnits => new HashSet<Unit> (mapData.UnitPositionMapping.Keys);
+    public HashSet<Vector3Int> AllUnitPositions => new HashSet<Vector3Int>(mapData.PositionUnitMapping.Keys);
+    public HashSet<Unit> AllUnits => new HashSet<Unit>(mapData.UnitPositionMapping.Keys);
 
     // CONSTRUCTORS
 
     // Creates a new map from scratch
-    public GameMap( Dictionary<Vector3Int, Unit> positionUnitMap, 
+    public GameMap(Dictionary<Vector3Int, Unit> positionUnitMap,
                 IEnumerable<Vector3Int> fullCoverPositions,
                 IEnumerable<Vector3Int> halfCoverPositions,
                 IEnumerable<Vector3Int> groundPositions,
-                Dictionary<Vector3Int, int> groundTileCosts) 
+                Dictionary<Vector3Int, int> groundTileCosts)
     {
         this.currentTurnUnit = GetUnitWithLeastExhaustion(positionUnitMap.Values);
         this.lastAction = null;
@@ -47,7 +47,7 @@ public struct GameMap
 
     // Clones a new map from the oldmap with new updates units
     private GameMap(GameMap oldMap,
-                Dictionary<Vector3Int, Unit> positionUnitMap, 
+                Dictionary<Vector3Int, Unit> positionUnitMap,
                 MapActionRequest lastAction)
     {
         this.currentTurnUnit = GetUnitWithLeastExhaustion(positionUnitMap.Values);
@@ -104,9 +104,9 @@ public struct GameMap
     {
         if (!mapData.PositionUnitMapping.ContainsKey(position))
         {
-            return new AttackRequest(this, 
+            return new AttackRequest(this,
                                     CurrentUnitPosition,
-                                    position, 
+                                    position,
                                     AttackStatus.IllegalTarget,
                                     new Vector3Int[] { CurrentUnitPosition, position },
                                     UnitCombat.ATTACK_COST);
@@ -217,8 +217,17 @@ public struct GameMap
                         Mathf.Max(UnitCombat.MINIMUM_DAMAGE_DEALT, attackRequest.ActingUnit.Attack - unitAttacked.Defence));
 
                     Debug.Log($"Attack was successful {unitAttacked}");
-                    newPositionUnitMap[attackRequest.TargetPosition] = unitAttacked;
-                } else
+
+                    if (unitAttacked.Health == 0)
+                    {
+                        newPositionUnitMap.Remove(attackRequest.TargetPosition);
+                    }
+                    else
+                    {
+                        newPositionUnitMap[attackRequest.TargetPosition] = unitAttacked;
+                    }
+                }
+                else
                 {
                     Debug.Log("Attack failed");
                 }
@@ -246,12 +255,9 @@ public struct GameMap
 
                 Unit recoveringUnit = newPositionUnitMap[waitRequest.ActingUnitPosition];
 
-                Unit nextUnitAfterCurrent = AllUnits.OrderBy(x => x.Time).ToArray()[1];
+                int apReplenished = recoveringUnit.Speed * waitRequest.WaitTime;
 
-                int timeDifference = nextUnitAfterCurrent.Time - recoveringUnit.Time;
-                int apReplenished = recoveringUnit.Speed * (30);
-
-                recoveringUnit = recoveringUnit.ReplenishActionPoints(apReplenished).AddTime(timeDifference + 1);
+                recoveringUnit = recoveringUnit.ReplenishActionPoints(apReplenished).AddTime(waitRequest.WaitTime);
 
                 newPositionUnitMap.Remove(waitRequest.ActingUnitPosition);
                 newPositionUnitMap[waitRequest.ActingUnitPosition] = recoveringUnit;
@@ -267,6 +273,7 @@ public struct GameMap
                 newPositionUnitMap[overwatchRequest.ActingUnitPosition] = overwatchingUnit;
                 break;
         }
+
         return new GameMap(this, newPositionUnitMap, action);
     }
 
@@ -281,17 +288,18 @@ public struct GameMap
             requests = movementRequests.Concat<MapActionRequest>(attacks).ToList();
         }
 
-        requests.Add(new WaitRequest(this, GetPositionByUnit(currentTurnUnit)));
+        requests.Add(new WaitRequest(this, GetPositionByUnit(currentTurnUnit), new System.Random().Next(0, currentTurnUnit.ActionPointsUsed)));
         requests.Add(new OverwatchRequest(this, GetPositionByUnit(currentTurnUnit)));
 
-        requests.Sort((x, y) => {
+        requests.Sort((x, y) =>
+        {
             Debug.Assert(x != null, $"{x} is null");
             float xUtility = x.GetUtility();
             float yUtility = y.GetUtility();
 
-            if (    (x.ActionType == y.ActionType)
-                ||  (x.ActionType == MapActionType.Overwatch && y.ActionType == MapActionType.Movement) 
-                ||  (x.ActionType == MapActionType.Movement && y.ActionType == MapActionType.Overwatch))
+            if ((x.ActionType == y.ActionType)
+                || (x.ActionType == MapActionType.Overwatch && y.ActionType == MapActionType.Movement)
+                || (x.ActionType == MapActionType.Movement && y.ActionType == MapActionType.Overwatch))
             {
                 if (xUtility != yUtility)
                 {
@@ -301,12 +309,12 @@ public struct GameMap
                 {
                     return (int)Mathf.Sign(((MovementRequest)x).GetAttackRating() - ((MovementRequest)y).GetAttackRating());
                 }
-                else if (x.ActionType == MapActionType.Movement && y.ActionType == MapActionType.Overwatch 
+                else if (x.ActionType == MapActionType.Movement && y.ActionType == MapActionType.Overwatch
                         && ((MovementRequest)x).GetAttackRating() > 0)
                 {
                     return 1;
-                } 
-                else if (y.ActionType == MapActionType.Movement && x.ActionType == MapActionType.Overwatch 
+                }
+                else if (y.ActionType == MapActionType.Movement && x.ActionType == MapActionType.Overwatch
                         && ((MovementRequest)y).GetAttackRating() > 0)
                 {
                     return -1;
@@ -328,7 +336,7 @@ public struct GameMap
                     {
                         return -1;
                     }
-                } 
+                }
                 else if (x.ActingUnit.ActionPointsLeft < UnitCombat.ATTACK_COST)
                 {
                     return x.ActionType == MapActionType.Wait ? 1 : -1;
@@ -352,7 +360,8 @@ public struct GameMap
         if (!(obj is GameMap))
         {
             return false;
-        } else
+        }
+        else
         {
             GameMap otherMap = (GameMap)obj;
             return mapData.Equals(otherMap.mapData);
@@ -382,12 +391,12 @@ public struct GameMap
         // must be non-positive
 
         List<Vector3Int> allRivalPositions = new List<Vector3Int>();
-        foreach (Vector3Int rivalPosition in AllUnitPositions) 
+        foreach (Vector3Int rivalPosition in AllUnitPositions)
         {
             if (GetUnitByPosition(rivalPosition).Faction != currentTurnUnit.Faction)
             {
                 allRivalPositions.Add(rivalPosition);
-            } 
+            }
         }
 
         float safety = 0;
@@ -399,7 +408,7 @@ public struct GameMap
             AttackRequest hypotheticalRequest = QueryAttackability(rivalPosition, CurrentUnitPosition, rivalUnit.Range);
             if (hypotheticalRequest.Successful)
             {
-                safety += Mathf.Min(-UnitCombat.MINIMUM_DAMAGE_DEALT, 
+                safety += Mathf.Min(-UnitCombat.MINIMUM_DAMAGE_DEALT,
                     currentTurnUnit.Defence - hypotheticalRequest.ChanceToHit * rivalUnit.Attack);
             }
         }

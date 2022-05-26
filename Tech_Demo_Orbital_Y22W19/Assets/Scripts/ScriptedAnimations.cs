@@ -123,7 +123,7 @@ public class ScriptedAnimations : MonoBehaviour
 
         IEnumerator Fade(CanvasGroup component, bool opaque)
         {
-            informationSpace.SetActive(true);
+            component.gameObject.SetActive(true);
             float source = component.alpha;
             float destination = opaque ? 1 : 0;
 
@@ -137,7 +137,7 @@ public class ScriptedAnimations : MonoBehaviour
                 yield return null;
             }
             component.alpha = destination;
-            informationSpace.SetActive(opaque);
+            component.gameObject.SetActive(opaque);
         }
 
         GameObject selectedGameObject = EventSystem.current.currentSelectedGameObject;
