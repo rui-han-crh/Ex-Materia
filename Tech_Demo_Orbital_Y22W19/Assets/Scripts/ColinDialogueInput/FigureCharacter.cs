@@ -7,7 +7,7 @@ public class FigureCharacter : ScriptableObject
 {
     
     public string CharName;
-    public Sprite Angry, Disgusted, Elated, Frightened, Happy, Neutral, Sad, Surprised;
+    public Sprite Angry, Disgusted, Elated, Happy, Neutral, Sad, Surprised;
     // Start is called before the first frame update
 
     public Sprite GetEmotion(string emotion)
@@ -20,8 +20,6 @@ public class FigureCharacter : ScriptableObject
                 return Disgusted;
             case "Elated":
                 return Elated;
-            case "Frightened":
-                return Frightened;
             case "Happy":
                 return Happy;
             case "Neutral":

@@ -13,11 +13,10 @@ MonoBehaviour:
   m_Name: Olivia
   m_EditorClassIdentifier: 
   CharName: Olivia
-  Angry: {fileID: 21300000, guid: 33d876f74d114dc448e251041685f7d9, type: 3}
-  Disgusted: {fileID: 21300000, guid: 01b4c8272e990c94ab881d70187a1849, type: 3}
-  Elated: {fileID: 21300000, guid: 12b266c0f9cdd5d448cd393ce2a27e3f, type: 3}
-  Frightened: {fileID: 21300000, guid: 3ab0de765d11d2a468283378673f0425, type: 3}
-  Happy: {fileID: 21300000, guid: 37bc986792a58d240b590e713f42073e, type: 3}
-  Neutral: {fileID: 21300000, guid: fd8b9dcbb7a4f2644a82d02e7a4c30b9, type: 3}
-  Sad: {fileID: 21300000, guid: 1157becfe5b33c14f90df197dab46792, type: 3}
-  Surprised: {fileID: 21300000, guid: 00d7709f8480dce4d84c77da691977f1, type: 3}
+  Angry: {fileID: 21300000, guid: 43d295c1540a4934c99f707527a08696, type: 3}
+  Disgusted: {fileID: 21300000, guid: 4de0a7b3a15eab84eb3794e6f7ff17e6, type: 3}
+  Elated: {fileID: 21300000, guid: 52f178e319ca178469abd3d7746a6e11, type: 3}
+  Happy: {fileID: 21300000, guid: 07ad0d4a607d5a94abafc8f2600a6e48, type: 3}
+  Neutral: {fileID: 21300000, guid: c61a2d9b6d6d09f42a495b7f91c07c3c, type: 3}
+  Sad: {fileID: 21300000, guid: 812e4744fcca39046ad338339d5dcbe5, type: 3}
+  Surprised: {fileID: 21300000, guid: 7050c02a72902614b869fc3a14db784d, type: 3}

@@ -16,7 +16,6 @@ MonoBehaviour:
   Angry: {fileID: 21300000, guid: ce56359af750f7246a19cb172baad345, type: 3}
   Disgusted: {fileID: 21300000, guid: 2271d7bbe432eb2468a82b39f985641e, type: 3}
   Elated: {fileID: 21300000, guid: 70f229560a2817b44a08bca131996f10, type: 3}
-  Frightened: {fileID: 21300000, guid: 3ab0de765d11d2a468283378673f0425, type: 3}
   Happy: {fileID: 21300000, guid: 867bb39a81665704a8f227b6d883f444, type: 3}
   Neutral: {fileID: 21300000, guid: bc0a7dc332b38cc44a19b47a4507fe18, type: 3}
   Sad: {fileID: 21300000, guid: f6d9c2c911945eb44a4d783b6012121a, type: 3}
