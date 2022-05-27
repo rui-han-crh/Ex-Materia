@@ -1,0 +1,51 @@
+﻿//Not sure how to load the beginning nodes 
+
+title: Start
+---
+Narrator: Welcome to Ex-Materia!
+Narrator: We will follow the tale of the Progeny as they attempt to take down PAM
+Narrator: More Backstory 
+
+Narrator: Make a choice! 
+-> Option A 
+-> Option B
+
+Narrator: Brilliant
+Narrator: Click on the twins to get started!
+===
+
+title: StartEvelynAndOlivia
+tags:
+---
+<<load Speaker Evelyn Neutral>> //no need for indicator, call them all speaker!
+
+
+
+Evelyn: Oh hi there sister Olivia! 
+
+<<load Speaker Olivia Neutral>>
+Olivia: The weather is really great! 
+Olivia: You know... 
+<<load Speaker Olivia Sad>>
+Olivia: This really reminds me of the day we left home 
+
+<<load Speaker Evelyn Sad>>
+Evelyn: Do you really wanna talk about this again? 
+-> Yes
+	<<load Speaker Olivia Angry>>
+	Olivia: <Backstory on dad> 
+-> No 
+
+<<load Speaker Olivia Surprised>>
+Olivia: Oh, that reminds me, we were expecting new blood today right?
+
+<<load Speaker Evelyn Happy>>
+Evelyn: Yeah 
+Evelyn: I heard he's the son of a former PAM researcher
+<<load Speaker Evelyn Disgusted>>
+Evelyn: Disgusting...
+Evelyn: Anyways, his name is Emanuel, let's go meet him!
+
+<<disable Speaker>>
+
+===

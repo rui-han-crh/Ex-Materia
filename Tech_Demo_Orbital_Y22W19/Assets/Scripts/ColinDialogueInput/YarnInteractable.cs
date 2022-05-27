@@ -9,8 +9,12 @@ using UnityEngine.InputSystem;
 public class YarnInteractable : MonoBehaviour
 {
     // internal properties exposed to editor
+    // TODO: pass a string as the starting node 
     [SerializeField] 
     private string conversationStartNode;
+
+    [SerializeField]
+    private CharacterDatabase db;
 
     // internal properties not exposed to editor
     private DialogueRunner dialogueRunner;
@@ -18,13 +22,23 @@ public class YarnInteractable : MonoBehaviour
     // I need my outline / something else here
     private bool isCurrentConversation = false;
     private float defaultIndicatorIntensity;
-    private Outline redOutline; 
+    private Outline redOutline;
+    private Image expression;
+    private Dictionary<string, FigureCharacter> characterMap = new Dictionary<string, FigureCharacter>();   
 
     public void Start()
     {
+        expression = GetComponent<Image>();
         redOutline = GetComponent<Outline>();
-        dialogueRunner = FindObjectOfType<Yarn.Unity.DialogueRunner>();
+  
+        foreach (FigureCharacter c in db.characterList)
+        {
+            characterMap.Add(c.CharName, c);
+        }
+        //actually not v sure if the dictionary should be initialized here or in CharacterDat
+        dialogueRunner = FindObjectOfType<Yarn.Unity.DialogueRunner>(); //potentially need to redo
         dialogueRunner.onDialogueComplete.AddListener(EndConversation);
+        
 
         //{
         //    defaultIndicatorIntensity = lightIndicatorObject.intensity;
@@ -58,6 +72,26 @@ public class YarnInteractable : MonoBehaviour
             StartConversation();
         }
     }
+
+    [YarnCommand("indicatorOn")]
+    public void indicatorOn()
+    {
+        if (redOutline != null)
+        {
+            redOutline.enabled = true;
+        }
+    }
+
+    [YarnCommand("indicatorOff")]
+
+    public void indicatorOff()
+    {
+        if (redOutline != null)
+        {
+            redOutline.enabled = false;
+        }
+    }
+
     private void StartConversation()
     {
         Debug.Log($"Started conversation with {name}.");
@@ -90,9 +124,16 @@ public class YarnInteractable : MonoBehaviour
         }
     }
 
-        [YarnCommand("disable")]
+    [YarnCommand("disable")]
     public void DisableConversation()
     {
         interactable = false;
+    }
+
+    [YarnCommand("load")]
+
+    public void StartingLoad(string charName, string emotion)
+    {
+        expression.sprite = characterMap[charName].GetEmotion(emotion);
     }
 }
