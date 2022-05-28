@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: brown_block_up_turn
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 21300000, guid: b4f39d0fd914d5e4baa5f104fd1b3c4c, type: 3}
-  m_Color: {r: 1, g: 0.69803923, b: 0.3921569, a: 1}
+  m_Color: {r: 0.7169812, g: 0.28312624, b: 0.11273284, a: 1}
   m_Transform:
     e00: 1
     e01: 0

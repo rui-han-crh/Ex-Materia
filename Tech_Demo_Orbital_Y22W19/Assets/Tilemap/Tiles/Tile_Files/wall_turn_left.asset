@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: wall_turn_left
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 21300000, guid: cfe3411531424a54d95b81b2444904a1, type: 3}
-  m_Color: {r: 1, g: 0.69803923, b: 0.3921569, a: 1}
+  m_Color: {r: 0.7169812, g: 0.28312624, b: 0.11273284, a: 1}
   m_Transform:
     e00: 1
     e01: 0
