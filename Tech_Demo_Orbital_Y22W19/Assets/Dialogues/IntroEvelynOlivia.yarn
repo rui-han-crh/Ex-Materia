@@ -1,4 +1,5 @@
-﻿//Not sure how to load the beginning nodes 
+﻿//Not sure how to load the beginning nodes
+// Emotions: 
 
 title: Start
 ---
@@ -17,7 +18,7 @@ Narrator: Click on the twins to get started!
 title: StartEvelynAndOlivia
 tags:
 ---
-<<load Speaker Evelyn Neutral>> //no need for indicator, call them all speaker!
+<<load Speaker Evelyn Neutral>> 
 
 
 
@@ -33,7 +34,17 @@ Olivia: This really reminds me of the day we left home
 Evelyn: Do you really wanna talk about this again? 
 -> Yes
 	<<load Speaker Olivia Angry>>
-	Olivia: <Backstory on dad> 
+	Olivia: I remember
+	Olivia: That bastard beating us when we were little
+	Olivia: And mum..
+	<<load Speaker Evelyn Sad>>
+	Evelyn: It's alright...
+	Evelyn: We did learn some useful skills from the military right?
+	<<load Speaker Olivia Neutral>>
+	Olivia: I suppose
+	Olivia: Today just feels like the day he clobbered us into submission 
+	Olivia: Sad times 
+	<<load Speaker Olivia Sad>>
 -> No 
 
 <<load Speaker Olivia Surprised>>
@@ -42,10 +53,16 @@ Olivia: Oh, that reminds me, we were expecting new blood today right?
 <<load Speaker Evelyn Happy>>
 Evelyn: Yeah 
 Evelyn: I heard he's the son of a former PAM researcher
-<<load Speaker Evelyn Disgusted>>
-Evelyn: Disgusting...
-Evelyn: Anyways, his name is Emanuel, let's go meet him!
+<<load Speaker Olivia Disgusted>>
+Olivia: Disgusting...
+Olivia: So his dad created the very thing we seek to destroy...
 
-<<disable Speaker>>
+<<load Speaker Evelyn Happy>>
+Evelyn: I'm sure he has his regions for joining us!
+Evelyn: Anyways, his name is Lucien, let's go meet him!
+
+//<<jump FirstMeetLucien>>
 
 ===
+
+
