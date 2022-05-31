@@ -26,6 +26,11 @@ namespace System.Collections.Generic
 
             public IEnumerable<T3> Keys => _dictionary.Keys;
 
+            public KeyValuePair<T3, T4>[] ToArray()
+            {
+                return _dictionary.ToArray();
+            } 
+
             public bool ContainsKey(T3 key)
             {
                 return _dictionary.ContainsKey(key);
@@ -35,11 +40,6 @@ namespace System.Collections.Generic
             {
                 get { return _dictionary[index]; }
                 set { _dictionary[index] = value; }
-            }
-
-            public override string ToString()
-            {
-                return string.Join(", ", _dictionary.Select(x => x.Key + ": " + x.Value));
             }
         }
 

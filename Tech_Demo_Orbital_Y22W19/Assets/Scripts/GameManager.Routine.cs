@@ -6,6 +6,14 @@ using System.Collections;
 
 public partial class GameManager
 {
+    /// <summary>
+    /// Moves the given gameObject from its current position along a specified path of checkpoints.
+    /// </summary>
+    /// <param name="gameObject"></param>
+    /// <param name="checkpoints"></param>
+    /// <param name="actionPointsUsed"></param>
+    /// <param name="setAction"> Optional to choose if this action affect the data of the underlying GameMap</param>
+    /// <returns>A coroutine to perform the linear interpolation</returns>
     private IEnumerator LerpGameObject(GameObject gameObject, IEnumerable<Vector3Int> checkpoints, int actionPointsUsed, bool setAction = true)
     {
         ClearAllHighlights();
@@ -44,34 +52,70 @@ public partial class GameManager
 
         if (setAction)
         {
-            MovementRequest movementRequest = new MovementRequest(currentMap, CurrentUnitPosition, checkpoints.Last(), actionPointsUsed);
+            MovementRequest movementRequest = new MovementRequest(currentMap, CurrentUnitPosition, checkpoints.ToArray(), actionPointsUsed);
             currentMap = currentMap.DoAction(movementRequest);
             gameState = GameState.TurnEnded;
         }
     }
 
-    private IEnumerator DoAttackAction(Vector3Int targetPosition, Vector3Int[] tilesHit, int cost)
+    private IEnumerator DoAttackAction(Vector3Int targetPosition, Vector3Int[] tilesHit, int cost, bool endsTurn = true)
     {
         yield return new WaitForSeconds(0.25f);
         AttackRequest attackRequest = new AttackRequest(currentMap, CurrentUnitPosition, targetPosition, AttackStatus.Success, tilesHit, cost);
         currentMap = currentMap.DoAction(attackRequest);
-        gameState = GameState.TurnEnded;
+
+        if (endsTurn)
+        {
+            gameState = GameState.TurnEnded;
+        }
+
         yield return null;
     }
 
-    private IEnumerator CurrentUnitRecoverAP(WaitRequest request)
+    private IEnumerator ApplyAttackAction(AttackRequest attackRequest, bool endsTurn = true)
     {
         yield return new WaitForSeconds(0.25f);
-        currentMap = currentMap.DoAction(request);
-        gameState = GameState.TurnEnded;
+        currentMap = currentMap.DoAction(attackRequest);
+
+        if (endsTurn)
+        {
+            gameState = GameState.TurnEnded;
+        }
+
         yield return null;
     }
 
-    private IEnumerator CurrentUnitOverwatch(OverwatchRequest request)
+    private IEnumerator CurrentUnitRecoverAP(WaitRequest request, bool endsTurn = true)
     {
         yield return new WaitForSeconds(0.25f);
         currentMap = currentMap.DoAction(request);
-        gameState = GameState.TurnEnded;
+
+        if (endsTurn)
+        {
+            gameState = GameState.TurnEnded;
+        }
+
+        yield return null;
+    }
+
+    private IEnumerator CurrentUnitOverwatch(OverwatchRequest request, bool endsTurn = true)
+    {
+        yield return new WaitForSeconds(0.25f);
+        currentMap = currentMap.DoAction(request);
+
+        if (endsTurn)
+        {
+            gameState = GameState.TurnEnded;
+        }
+
+        yield return null;
+    }
+
+    private IEnumerator RemoveStatusEffectFromUnit(Unit unit, UnitStatusEffects.Status effect)
+    {
+        yield return new WaitForSeconds(0.25f);
+        currentMap = currentMap.RemoveStatusEffectFromUnit(unit, effect);
+
         yield return null;
     }
 
@@ -87,5 +131,10 @@ public partial class GameManager
 
         Destroy(unitGO);
         Destroy(unitHealthBar);
+    }
+
+    private IEnumerator Wait(float second)
+    {
+        yield return new WaitForSeconds(second);
     }
 }

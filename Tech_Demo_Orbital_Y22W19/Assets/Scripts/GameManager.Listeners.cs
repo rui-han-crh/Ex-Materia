@@ -24,12 +24,12 @@ public partial class GameManager : MonoBehaviour
         if (groundTilemap.HasTile(gridPosition))
         {
             currentTileSelected = gridPosition;
-            int cost = currentMap.FindShortestPathTo(gridPosition, out IEnumerable<Vector3Int> pathPositions);
+            lastActionCost = currentMap.FindShortestPathTo(gridPosition, out IEnumerable<Vector3Int> pathPositions);
             pathPositionsLastDrawn = pathPositions;
 
-            InformationUIManager.Instance.APNeededUI.GetComponentInChildren<TMP_Text>().text = cost.ToString();
+            InformationUIManager.Instance.APNeededUI.GetComponentInChildren<TMP_Text>().text = lastActionCost.ToString();
             InformationUIManager.Instance.TimeUI.GetComponentInChildren<TMP_Text>().text = 
-                (Mathf.CeilToInt((float)cost / currentMap.CurrentUnit.Speed)).ToString();
+                (Mathf.CeilToInt((float)lastActionCost / currentMap.CurrentUnit.Speed)).ToString();
 
             TileDrawer.SetColorToTiles(tileHighlights, pathPositions, ColorPalette.LIGHT_BLUE_TRANSLUCENT);
             LineDrawer.DrawLineOnTileMap(tileHighlights, pathLine, pathPositions, currentMap.CurrentUnitPosition);

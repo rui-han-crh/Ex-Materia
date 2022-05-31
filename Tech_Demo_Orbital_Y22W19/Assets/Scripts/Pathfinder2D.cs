@@ -6,6 +6,42 @@ using UnityEngine.Tilemaps;
 
 public class Pathfinder2D
 {
+    public class ShortestPathTree
+    {
+        private readonly Dictionary<Vector3Int, Vector3Int> childParentMap;
+        private readonly Dictionary<Vector3Int, int> costs;
+
+        public IEnumerable<Vector3Int> Children => childParentMap.Keys;
+        public Dictionary<Vector3Int, int> Costs => costs;
+
+        public ShortestPathTree(Dictionary<Vector3Int, Vector3Int> childParentMap, Dictionary<Vector3Int, int> costs)
+        {
+            this.childParentMap = childParentMap;
+            this.costs = costs;
+        }
+
+        public int GetCostToPosition(Vector3Int position)
+        {
+            return costs.ContainsKey(position) ? costs[position] : int.MaxValue;
+        }
+
+        public Vector3Int[] GetShortestPathToPosition(Vector3Int position)
+        {
+            List<Vector3Int> result = new List<Vector3Int>();
+
+            Vector3Int current = position;
+
+            while (childParentMap.ContainsKey(current) && childParentMap[current] != null)
+            {
+                result.Add(current);
+                current = childParentMap[current];
+            }
+
+            result.Reverse();
+            return result.ToArray();
+        }
+    }
+
     private const int INITIAL_PQ_SIZE = 3;
 
     private readonly IPriorityQueue<Node> priorityQueue;
@@ -72,7 +108,7 @@ public class Pathfinder2D
 
 
     // PUBLIC STATIC METHODS
-    public static Dictionary<Vector3Int, int> GetAllReachableTiles(Unit unit, GameMapData mapData)
+    public static Dictionary<Vector3Int, int> GetAllReachablePositions(Unit unit, GameMapData mapData)
     {
         Pathfinder2D pathfinder = new Pathfinder2D(unit, mapData);
         pathfinder.FindDirectedPath();
@@ -81,6 +117,23 @@ public class Pathfinder2D
                                                         && mapData.IsWalkableOn(pair.Key.Coordinates)
                                                         && !mapData.ExistsUnitAt(pair.Key.Coordinates))
                                         .ToDictionary(pair => pair.Key.Coordinates, pair => pathfinder.gScore[pair.Key]));
+    }
+
+    public static ShortestPathTree GetShortestPathTree(Unit unit, GameMapData mapData)
+    {
+        Pathfinder2D pathfinder = new Pathfinder2D(unit, mapData);
+        pathfinder.FindDirectedPath();
+        Dictionary<Vector3Int, int> allReachablePositions = new Dictionary<Vector3Int, int>(pathfinder.gScore
+                                        .Where(pair => pair.Value <= unit.ActionPointsLeft
+                                                        && mapData.IsWalkableOn(pair.Key.Coordinates)
+                                                        && !mapData.ExistsUnitAt(pair.Key.Coordinates))
+                                        .ToDictionary(pair => pair.Key.Coordinates, pair => pathfinder.gScore[pair.Key]));
+
+        return new ShortestPathTree(pathfinder
+                                    .childParentMap
+                                    .Where(x => allReachablePositions.ContainsKey(x.Key.Coordinates))
+                                    .ToDictionary(x => x.Key.Coordinates, x => x.Value.Coordinates),
+                                    allReachablePositions);
     }
 
     // PUBLIC METHODS

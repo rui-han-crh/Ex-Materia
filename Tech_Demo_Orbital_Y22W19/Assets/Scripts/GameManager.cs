@@ -99,6 +99,7 @@ public partial class GameManager : MonoBehaviour
     // Cached variables
     private Vector3Int? currentTileSelected;
     private IEnumerable<Vector3Int> pathPositionsLastDrawn = new List<Vector3Int>();
+    private int lastActionCost;
     private bool executeLastActionAllowed;
     private bool autoPlayQueued;
 
@@ -242,6 +243,7 @@ public partial class GameManager : MonoBehaviour
         pathLine.positionCount = 0;
         pathPositionsLastDrawn = new List<Vector3Int>();
         executeLastActionAllowed = false;
+        lastActionCost = 0;
     }
 
     public void UpdateCharacterSheet()
@@ -369,8 +371,8 @@ public partial class GameManager : MonoBehaviour
     {
         if (routineQueue.Count == 0 && executeLastActionAllowed)
         {
-            int cost = currentMap.FindShortestPathTo(currentTileSelected.Value, out IEnumerable<Vector3Int> path);
-            Enqueue(LerpGameObject(nameUnitGameObjectMapping[currentMap.CurrentUnit.Name], path, cost));
+            MovementRequest movementRequest = new MovementRequest(CurrentMap, CurrentUnitPosition, pathPositionsLastDrawn.ToArray(), lastActionCost);
+            ParseRequest(movementRequest);
         }
     }
 
@@ -378,16 +380,15 @@ public partial class GameManager : MonoBehaviour
     {
         if (routineQueue.Count == 0 && executeLastActionAllowed)
         {
-            int cost = UnitCombat.ATTACK_COST;
+            lastActionCost = UnitCombat.ATTACK_COST;
             Vector3Int initialUnitPosition = currentMap.CurrentUnitPosition;
-
-            routineQueue.Enqueue(LerpGameObject(nameUnitGameObjectMapping[currentMap.CurrentUnit.Name],
-                                    new Vector3Int[] { pathPositionsLastDrawn.First() }, 0, false));
-
-            routineQueue.Enqueue(DoAttackAction(pathPositionsLastDrawn.Last(), pathPositionsLastDrawn.ToArray(), cost));
-
-            routineQueue.Enqueue(LerpGameObject(nameUnitGameObjectMapping[currentMap.CurrentUnit.Name],
-                                    new Vector3Int[] { initialUnitPosition }, 0, false));
+            AttackRequest attackRequest = new AttackRequest(CurrentMap,
+                                                            pathPositionsLastDrawn.First(),
+                                                            pathPositionsLastDrawn.Last(),
+                                                            AttackStatus.Success,
+                                                            pathPositionsLastDrawn.ToArray(),
+                                                            lastActionCost);
+            ParseRequest(attackRequest);
         }
     }
 
@@ -397,8 +398,103 @@ public partial class GameManager : MonoBehaviour
         if (routineQueue.Count == 0)
         {
             WaitRequest waitRequest = new WaitRequest(CurrentMap, CurrentUnitPosition, timeToWait);
-            routineQueue.Enqueue(CurrentUnitRecoverAP(waitRequest));
+            ParseRequest(waitRequest);
             timeToWait = 0;
+        }
+    }
+
+    public void OnClickOverwatch()
+    {
+        Debug.Log("Overwatch pressed");
+        if (routineQueue.Count == 0)
+        {
+            OverwatchRequest overwatchRequest = new OverwatchRequest(CurrentMap, CurrentUnitPosition);
+            ParseRequest(overwatchRequest);
+        }
+    }
+
+    /// <summary>
+    /// Applies the information contained by the MapAction to the representation of
+    /// the game map shown on screen.
+    /// </summary>
+    /// <param name="request"></param>
+    public void ParseRequest(MapActionRequest request)
+    {
+        int cost;
+        switch (request.ActionType)
+        {
+            case MapActionType.Movement:
+                MovementRequest movementRequest = (MovementRequest)request;
+                cost = movementRequest.ActionPointCost;
+
+                List<Vector3Int> pathList = movementRequest.Path.ToList();
+
+                IEnumerable<AttackRequest> positionsAttacked = currentMap.OverwatchersCanAttackAny(movementRequest.Path);
+                positionsAttacked.OrderBy(x => Vector3.Magnitude(CurrentUnitPosition - x.TargetPosition));
+                int startingIndex = 0;
+
+                foreach (AttackRequest attackRequestByOverwatch in positionsAttacked)
+                {
+                    if (attackRequestByOverwatch.ActingUnit.Faction == movementRequest.ActingUnit.Faction)
+                    {
+                        continue;
+                    }
+
+                    int endingIndex = pathList.IndexOf(attackRequestByOverwatch.TargetPosition);
+
+                    ////////////////////// Move current unit to a segment of the path ////////////////////
+                    Enqueue(LerpGameObject(nameUnitGameObjectMapping[CurrentUnit.Name],
+                        pathList.GetRange(startingIndex, endingIndex - startingIndex + 1), 0));
+
+
+                    ///////////////////////////// Overwatching unit attacks /////////////////////////////
+                    Vector3Int originalPosition = attackRequestByOverwatch.ActingUnitPosition;
+                    string nameOfOverwatchingUnit = attackRequestByOverwatch.ActingUnit.Name;
+                    routineQueue.Enqueue(LerpGameObject(nameUnitGameObjectMapping[attackRequestByOverwatch.ActingUnit.Name],
+                                        new Vector3Int[] { attackRequestByOverwatch.ShootFromPosition }, 0, false));
+
+                    routineQueue.Enqueue(ApplyAttackAction(attackRequestByOverwatch));
+                    routineQueue.Enqueue(RemoveStatusEffectFromUnit(attackRequestByOverwatch.ActingUnit, UnitStatusEffects.Status.Overwatch));
+
+                    routineQueue.Enqueue(LerpGameObject(nameUnitGameObjectMapping[attackRequestByOverwatch.ActingUnit.Name],
+                                            new Vector3Int[] { originalPosition }, 0, false));
+
+
+                    startingIndex = endingIndex;
+                }
+
+                Enqueue(LerpGameObject(nameUnitGameObjectMapping[CurrentUnit.Name],
+                    pathList.GetRange(startingIndex, pathList.Count - startingIndex), cost));
+
+                break;
+
+            case MapActionType.Attack:
+                AttackRequest attackRequest = (AttackRequest)request;
+                cost = attackRequest.ActionPointCost;
+
+                Vector3Int initialUnitPosition = request.ActingUnitPosition;
+
+                routineQueue.Enqueue(LerpGameObject(nameUnitGameObjectMapping[currentMap.CurrentUnit.Name],
+                                        new Vector3Int[] { attackRequest.ShootFromPosition }, 0, false));
+
+                routineQueue.Enqueue(DoAttackAction(attackRequest.TargetPosition, attackRequest.TilesHit, cost));
+
+                routineQueue.Enqueue(LerpGameObject(nameUnitGameObjectMapping[currentMap.CurrentUnit.Name],
+                                        new Vector3Int[] { initialUnitPosition }, 0, false));
+                break;
+
+            case MapActionType.Wait:
+                WaitRequest waitRequest = (WaitRequest)request;
+                routineQueue.Enqueue(CurrentUnitRecoverAP(waitRequest));
+                break;
+
+            case MapActionType.Overwatch:
+                OverwatchRequest overwatchRequest = (OverwatchRequest)request;
+                routineQueue.Enqueue(CurrentUnitOverwatch(overwatchRequest));
+                break;
+
+            default:
+                break;
         }
     }
 }

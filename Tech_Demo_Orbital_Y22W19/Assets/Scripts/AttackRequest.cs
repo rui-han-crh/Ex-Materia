@@ -29,14 +29,34 @@ public class AttackRequest : MapActionRequest
     public Unit TargetUnit => defendingUnit;
 
     public AttackRequest(GameMap previousMap,
+                        Vector3Int shootFromPosition,
+                        Vector3Int shootToPosition,
+                        AttackStatus status,
+                        Vector3Int[] tilesHit,
+                        int actionPoints)
+        : base(previousMap,
+            status == AttackStatus.Success ? MapActionType.Attack : MapActionType.Failed,
+            previousMap.CurrentUnitPosition,
+            actionPoints)
+    {
+        this.shootFromPosition = shootFromPosition;
+        this.defendingUnit = previousMap.ExistsUnitAt(shootToPosition) ? previousMap.GetUnitByPosition(shootToPosition) : new Unit();
+        this.tilesHit = tilesHit;
+        this.shootToPosition = shootToPosition;
+        this.status = status;
+        this.chanceToHit = CalculateHitChance();
+    }
+
+    public AttackRequest(GameMap previousMap,
+                        Unit attacker,
                         Vector3Int shootFromPosition, 
                         Vector3Int shootToPosition,
                         AttackStatus status,
                         Vector3Int[] tilesHit,
                         int actionPoints) 
-        : base(previousMap, 
-            status == AttackStatus.Success ? MapActionType.Attack : MapActionType.Failed, 
-            previousMap.CurrentUnitPosition, 
+        : base(previousMap,
+            attacker,
+            status == AttackStatus.Success ? MapActionType.Attack : MapActionType.Failed,
             actionPoints)
     {
         this.shootFromPosition = shootFromPosition;
@@ -72,7 +92,7 @@ public class AttackRequest : MapActionRequest
 
     public override string ToString()
     {
-        return $"Attack | {shootFromPosition} to {shootToPosition}| Status: {status} | Chance: {chanceToHit}";
+        return $"Attack | Initiator : {ActingUnit.Name} | {shootFromPosition} to {shootToPosition}| Status: {status} | Chance: {chanceToHit}";
     }
 
     public override float GetUtility()

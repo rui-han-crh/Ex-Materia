@@ -34,6 +34,15 @@ public abstract class MapActionRequest
         this.actionPointCost = actionPoints;
     }
 
+    public MapActionRequest(GameMap previousMap, Unit actingUnit, MapActionType actionType, int actionPoints)
+    {
+        this.previousMap = previousMap;
+        this.actingUnit = actingUnit;
+        this.sourcePosition = previousMap.GetPositionByUnit(actingUnit);
+        this.mapActionType = actionType;
+        this.actionPointCost = actionPoints;
+    }
+
     public GameMap GetNextMap()
     {
         return previousMap.DoAction(this);

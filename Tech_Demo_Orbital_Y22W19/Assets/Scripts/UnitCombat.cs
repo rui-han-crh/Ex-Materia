@@ -20,12 +20,24 @@ public class UnitCombat
     }
 
     // PUBLIC STATIC METHODS
+    /// <summary>
+    /// Determines if an attack initiated from an offensive position towards a
+    /// defensive position is valid on the given game map, regardless if there exists a 
+    /// unit at the defensive position. The returned attack request always has a cost of zero.
+    /// </summary>
+    /// <param name="gameMapRequesting"></param>
+    /// <param name="mapData"></param>
+    /// <param name="offensivePosition"></param>
+    /// <param name="defensivePosition"></param>
+    /// <param name="range"></param>
+    /// <returns>An AttackRequest with zero cost</returns>
     public static AttackRequest QueryTargetAttackable(GameMap gameMapRequesting, 
-                                                        GameMapData mapData,
                                                         Vector3Int offensivePosition, 
                                                         Vector3Int defensivePosition, 
                                                         int range)
     {
+        GameMapData mapData = gameMapRequesting.MapData;
+
         Vector3Int sourcePosition = offensivePosition;
         Vector3Int[] tilesHit = new Vector3Int[] { offensivePosition, defensivePosition };
 
@@ -53,7 +65,7 @@ public class UnitCombat
                                         defensivePosition,
                                         AttackStatus.Success,
                                         tilesHit,
-                                        ATTACK_COST);
+                                        0);
         }
 
         Vector3Int tileAhead = raytracer.TilesHit[1];
@@ -97,7 +109,7 @@ public class UnitCombat
                                         defensivePosition,
                                         AttackStatus.Success,
                                         tilesHit,
-                                        ATTACK_COST);
+                                        0);
             }
         }
 
@@ -111,7 +123,14 @@ public class UnitCombat
 
     }
 
-
+    /// <summary>
+    /// Finds all the positions in a grid of squares with sides one unit
+    /// that are within a radius of the given range from the given source
+    /// position.
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="range"></param>
+    /// <returns></returns>
     public static HashSet<Vector3Int> GetAllPositionsInRange(Vector3Int source, int range)
     {
         HashSet<Vector3Int> rangeBorder = GetRangeBorder(source, range);
@@ -156,8 +175,17 @@ public class UnitCombat
         return visited;
     }
 
-    // PRIVATE STATIC METHODS
-
+    /// <summary>
+    /// Using Weisstein, Eric W.'s Circle-Line Intersection method, finds the border of
+    /// the circle with a radius of the given range, centered at the given unit's position,
+    /// superimposed onto a grid of squares with sides of one unit, as a hash set.
+    /// <para>
+    /// https://mathworld.wolfram.com/Circle-LineIntersection.html
+    /// </para>
+    /// </summary>
+    /// <param name="unitPosition"></param>
+    /// <param name="range"></param>
+    /// <returns></returns>
     private static HashSet<Vector3Int> GetRangeBorder(Vector3Int unitPosition, int range)
     {
         int radius = range;
@@ -169,6 +197,7 @@ public class UnitCombat
 
         IPriorityQueue<CircleLineIntersection> priorityQueue = new MinHeap<CircleLineIntersection>();
 
+        // Finds the continuous intersection points of the horizontal grid lines with the circle
         for (int x = minX; x <= maxX; x++)
         {
             Vector2Int startingVector = new Vector2Int(x, minY);
@@ -218,6 +247,7 @@ public class UnitCombat
             priorityQueue.Add(circleLineIntersectionB);
         }
 
+        // Finds the continuous intersection points of the vertical grid lines with the circle
         for (int y = minY; y <= maxY; y++)
         {
             Vector2Int startingVector = new Vector2Int(minX, y);
@@ -264,10 +294,8 @@ public class UnitCombat
 
         HashSet<Vector3Int> visited = new HashSet<Vector3Int>();
 
-        int k = 0;
-        while (!priorityQueue.IsEmpty() && k < 300)
+        while (!priorityQueue.IsEmpty())
         {
-            k++;
             CircleLineIntersection current = priorityQueue.Extract();
             Vector2 coordinates = current.Coordinates;
 
@@ -277,31 +305,55 @@ public class UnitCombat
                 visited.Add(gridCoordinates + unitPosition);
             }
         }
-
-        Debug.Assert(k < 300, "Failed 2");
         return visited;
     }
 
     // PUBLIC METHODS
 
+    /// <summary>
+    /// Gives all the positions of tiles within the range of
+    /// the current active unit.
+    /// </summary>
+    /// <returns>A hash set of all positions of tiles in range</returns>
     public HashSet<Vector3Int> GetAllPositionsInRange()
     {
         return GetAllPositionsInRange(mapData.GetPositionByUnit(currentOffensiveUnit), currentOffensiveUnit.Range);
     }
 
+    /// <summary>
+    /// From the given gameMap, retrieves a set of all possible attack positions
+    /// that could be targetted by the current active unit.
+    /// </summary>
+    /// <param name="gameMap"></param>
+    /// <returns>A hash set of attackable positions</returns>
     public HashSet<Vector3Int> GetAllPositionsAttackable(GameMap gameMap)
     {
         return new HashSet<Vector3Int> (mapData.PositionUnitMapping.Keys
                                     .Where(x => QueryTargetAttackable(gameMap, mapData.GetUnitByPosition(x)).Successful));
     }
 
-    public IEnumerable<AttackRequest> GetAllPossibleAttacks(GameMap gameMap)
+    /// <summary>
+    /// From the given gameMap, retrieves a set of all possible attacks 
+    /// that could be potentially issued by the current active unit.
+    /// </summary>
+    /// <param name="gameMap"></param>
+    /// <returns>A hash set of possible AttackRequests</returns>
+    public HashSet<AttackRequest> GetAllPossibleAttacks(GameMap gameMap)
     {
         return new HashSet<AttackRequest>(mapData.PositionUnitMapping.Keys
                                             .Select(x => QueryTargetAttackable(gameMap, mapData.GetUnitByPosition(x)))
                                             .Where(x => x.Status == AttackStatus.Success));
     }
 
+
+    /// <summary>
+    /// Determines if the current active unit of the GameMap is able
+    /// to issue an attack against a target unit. If an attack is possible,
+    /// an attack cost is pegged to the AttackRequest.
+    /// </summary>
+    /// <param name="gameMapRequesting"></param>
+    /// <param name="target"></param>
+    /// <returns></returns>
     public AttackRequest QueryTargetAttackable(GameMap gameMapRequesting, Unit target)
     {
         Vector3Int offensiveUnitPosition = mapData.GetPositionByUnit(currentOffensiveUnit);

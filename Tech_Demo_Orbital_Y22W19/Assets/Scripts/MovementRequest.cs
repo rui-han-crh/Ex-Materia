@@ -4,14 +4,17 @@ using System.Linq;
 
 public class MovementRequest : MapActionRequest
 {
-    private readonly Vector3Int destinationPosition;
+    private readonly Vector3Int[] path;
 
-    public Vector3Int DestinationPosition => destinationPosition;
+    public Vector3Int DestinationPosition => path[path.Length - 1];
 
-    public MovementRequest(GameMap previousMap, Vector3Int sourcePosition, Vector3Int targetPosition, int actionPoints)
+    public Vector3Int[] Path => path;
+
+
+    public MovementRequest(GameMap previousMap, Vector3Int sourcePosition, Vector3Int[] path, int actionPoints)
         : base(previousMap, MapActionType.Movement, sourcePosition, actionPoints)
     {
-        destinationPosition = targetPosition;
+        this.path = path;
     }
 
     public override float GetUtility()
@@ -28,7 +31,7 @@ public class MovementRequest : MapActionRequest
         foreach (Vector3Int rivalPosition in allRivalPosition)
         {
             Unit rivalUnit = nextMap.GetUnitByPosition(rivalPosition);
-            AttackRequest hypotheticalRequest = nextMap.QueryAttackability(rivalPosition, destinationPosition, rivalUnit.Range);
+            AttackRequest hypotheticalRequest = nextMap.QueryAttackability(rivalPosition, DestinationPosition, rivalUnit.Range);
             if (hypotheticalRequest.Successful)
             {
                 // must be negative here
@@ -53,7 +56,7 @@ public class MovementRequest : MapActionRequest
         foreach (Vector3Int rivalPosition in allRivalPosition)
         {
             Unit rivalUnit = nextMap.GetUnitByPosition(rivalPosition);
-            AttackRequest hypotheticalRequest = nextMap.QueryAttackability(destinationPosition, rivalPosition, ActingUnit.Range);
+            AttackRequest hypotheticalRequest = nextMap.QueryAttackability(DestinationPosition, rivalPosition, ActingUnit.Range);
             if (hypotheticalRequest.Successful)
             {
                 attackRating += Mathf.Max(UnitCombat.MINIMUM_DAMAGE_DEALT, hypotheticalRequest.ChanceToHit * ActingUnit.Attack - rivalUnit.Defence);

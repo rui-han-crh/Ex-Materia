@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -19,6 +20,7 @@ public struct GameMap
 
     private readonly MapActionRequest lastAction;
 
+    public GameMapData MapData => mapData;
 
     public MapActionRequest LastAction => lastAction;
 
@@ -82,7 +84,13 @@ public struct GameMap
 
     public Dictionary<Vector3Int, int> GetReachableTiles()
     {
-        return unitMovement.GetReachableTiles();
+        Pathfinder2D.ShortestPathTree shortestPathTree = unitMovement.GetShortestPaths();
+        return shortestPathTree.Costs;
+    }
+
+    public Pathfinder2D.ShortestPathTree GetShortestPaths()
+    {
+        return unitMovement.GetShortestPaths();
     }
 
     public HashSet<Vector3Int> GetAttackablePositions()
@@ -100,11 +108,18 @@ public struct GameMap
         return unitMovement.GetAllMovementsPossible(this);
     }
 
+    /// <summary>
+    /// Determines if the current active unit is able to issue an attack
+    /// towards the specified tile position.
+    /// </summary>
+    /// <param name="position"></param>
+    /// <returns>An AttackRequest describing the issued attack</returns>
     public AttackRequest IsAttackableAt(Vector3Int position)
     {
         if (!mapData.PositionUnitMapping.ContainsKey(position))
         {
             return new AttackRequest(this,
+                                    CurrentUnit,
                                     CurrentUnitPosition,
                                     position,
                                     AttackStatus.IllegalTarget,
@@ -114,46 +129,94 @@ public struct GameMap
         return unitCombat.QueryTargetAttackable(this, GetUnitByPosition(position));
     }
 
+    public GameMap RemoveStatusEffectFromUnit(Unit unit, UnitStatusEffects.Status status)
+    {
+        if (!AllUnits.Contains(unit))
+        {
+            return this;
+        }
+
+        Dictionary<Vector3Int, Unit> newPositionUnitMap = new Dictionary<Vector3Int, Unit>();
+        foreach (Unit copiedUnit in mapData.UnitPositionMapping.Keys)
+        {
+            Unit clonedUnit = copiedUnit.Clone();
+            newPositionUnitMap[mapData.UnitPositionMapping[copiedUnit]] = clonedUnit;
+        }
+
+        newPositionUnitMap[mapData.UnitPositionMapping[unit]] = unit.RemoveStatus(status);
+        return new GameMap(this, newPositionUnitMap, LastAction);
+    }
+
+
+    /// <summary>
+    /// Finds all the positions of tiles in range of the current active unit.
+    /// </summary>
+    /// <returns>A hash set of all positions within the range of the current active unit</returns>
     public HashSet<Vector3Int> GetRange()
     {
         return unitCombat.GetAllPositionsInRange();
     }
 
+
+    /// <summary>
+    /// Retrives the position of a given unit from the map data.
+    /// </summary>
+    /// <param name="unit"></param>
+    /// <returns>The position of this unit</returns>
     public Vector3Int GetPositionByUnit(Unit unit)
     {
         return mapData.GetPositionByUnit(unit);
     }
 
+
+    /// <summary>
+    /// Retrieves the unit at the given position from the map data.
+    /// </summary>
+    /// <param name="position"></param>
+    /// <returns>The unit at this position</returns>
     public Unit GetUnitByPosition(Vector3Int position)
     {
         return mapData.GetUnitByPosition(position);
     }
+
 
     public bool ExistsUnitAt(Vector3Int position)
     {
         return mapData.ExistsUnitAt(position);
     }
 
+
     public bool HasFullCoverAt(Vector3Int position)
     {
         return mapData.HasFullCoverAt(position);
     }
+
 
     public bool HasHalfCoverAt(Vector3Int position)
     {
         return mapData.HasHalfCoverAt(position);
     }
 
+
     public bool IsWalkableOn(Vector3Int position)
     {
         return mapData.IsWalkableOn(position);
     }
+
 
     public int GetTileCost(Vector3Int position)
     {
         return mapData.GetTileCost(position);
     }
 
+
+    /// <summary>
+    /// Find the shortest path from the position of the acting unit to a specified destination
+    /// in this current map.
+    /// </summary>
+    /// <param name="destination"></param>
+    /// <param name="path">A reference variable that stores the path</param>
+    /// <returns>An integer value describing the cost of the path taken</returns>
     public int FindShortestPathTo(Vector3Int destination, out IEnumerable<Vector3Int> path)
     {
         Pathfinder2D pathfinder = new Pathfinder2D(currentTurnUnit, GetPositionByUnit(currentTurnUnit), destination, mapData);
@@ -161,6 +224,11 @@ public struct GameMap
         return pathfinder.PathCost;
     }
 
+
+    /// <summary>
+    /// Determines if one side has won in this current state of the game map.
+    /// </summary>
+    /// <returns>A boolean describing if the game is over</returns>
     public bool IsGameOver()
     {
         // Either there is no unit who is an enemy, or there is no unit who is a friendly
@@ -168,11 +236,74 @@ public struct GameMap
             || mapData.UnitPositionMapping.Keys.Where(unit => unit.Faction == Faction.Friendly).All(unit => unit.Health == 0);
     }
 
+
+    /// <summary>
+    /// Determines if an attack initiated from an attacking position towards 
+    /// a defending position is valid, regardless of whether there exists any 
+    /// unit at either position. The cost of the returned request is always zero.
+    /// </summary>
+    /// <param name="offensivePosition"></param>
+    /// <param name="defensivePosition"></param>
+    /// <param name="range"></param>
+    /// <returns>An AttackRequest with zero cost</returns>
     public AttackRequest QueryAttackability(Vector3Int offensivePosition, Vector3Int defensivePosition, int range)
     {
-        return UnitCombat.QueryTargetAttackable(this, mapData, offensivePosition, defensivePosition, range);
+        return UnitCombat.QueryTargetAttackable(this, offensivePosition, defensivePosition, range);
     }
 
+
+    /// <summary>
+    /// Determines if an attack initiated by the attacker unit towards a position is valid,
+    /// regardless of whether there exists any unit at the position. The cost of the returned
+    /// request is always zero.
+    /// </summary>
+    /// <param name="attacker"></param>
+    /// <param name="defensivePosition"></param>
+    /// <param name="range"></param>
+    /// <returns>An AttackRequest with zero cost</returns>
+    public AttackRequest QueryAttackability(Unit attacker, Vector3Int defensivePosition, int range)
+    {
+        AttackRequest request = UnitCombat.QueryTargetAttackable(this, mapData.GetPositionByUnit(attacker), defensivePosition, range);
+        return new AttackRequest(request.PreviousMap,
+                                attacker,
+                                request.ShootFromPosition,
+                                request.TargetPosition,
+                                request.Status,
+                                request.TilesHit,
+                                0);
+    }
+
+
+    /// <summary>
+    /// Returns the positions that overwatching units will shoot at when an enemy moves along a given path.
+    /// Each overwatching unit will only fire once at the first time when the enemy is attackable, but will
+    /// not fire subsequently even if the enemy is still in view.
+    /// </summary>
+    /// <param name="path"></param>
+    /// <returns>An enumerable collection of attack requests that have zero cost.</returns>
+    public IEnumerable<AttackRequest> OverwatchersCanAttackAny(IEnumerable<Vector3Int> path)
+    {
+        IEnumerable<Unit> overwatchingUnits = AllUnits.Where(x => x.UnitStatusEffects.OnOverwatch);
+        List<AttackRequest> result = new List<AttackRequest>();
+
+        foreach (Unit unit in overwatchingUnits)
+        {
+            foreach (Vector3Int position in path)
+            {
+                AttackRequest request = QueryAttackability(unit, position, unit.Range);
+                if (request.Successful)
+                {
+                    result.Add(request);
+                    break;
+                }
+            }
+        }
+
+        return result;
+    } 
+
+
+    [Obsolete("Evaluate is no longer supported in GameMaps, do not use.")]
     public int Evaluate()
     {
         IEnumerable<Unit> friendlyUnits = mapData.UnitPositionMapping
@@ -189,6 +320,12 @@ public struct GameMap
                 - enemyUnits.Sum(x => x.Health) / enemyUnits.Count();
     }
 
+
+    /// <summary>
+    /// Propagates to the next iteration from this GameMap when supplied with a MapAction.
+    /// </summary>
+    /// <param name="action"></param>
+    /// <returns>The resultant propagation of the GameMap</returns>
     public GameMap DoAction(MapActionRequest action)
     {
         if (action.ActionType == MapActionType.Failed)
@@ -197,7 +334,6 @@ public struct GameMap
         }
 
         Dictionary<Vector3Int, Unit> newPositionUnitMap = new Dictionary<Vector3Int, Unit>();
-
         foreach (Unit unit in mapData.UnitPositionMapping.Keys)
         {
             Unit clonedUnit = unit.Clone();
@@ -211,7 +347,7 @@ public struct GameMap
 
                 Unit unitAttacked = newPositionUnitMap[attackRequest.TargetPosition];
 
-                if (Random.Range(0, 1.0f) <= attackRequest.ChanceToHit)
+                if (UnityEngine.Random.Range(0, 1.0f) <= attackRequest.ChanceToHit)
                 {
                     unitAttacked = unitAttacked.DecreaseHealth(
                         Mathf.Max(UnitCombat.MINIMUM_DAMAGE_DEALT, attackRequest.ActingUnit.Attack - unitAttacked.Defence));
@@ -267,7 +403,7 @@ public struct GameMap
                 OverwatchRequest overwatchRequest = (OverwatchRequest)action;
                 Unit overwatchingUnit = newPositionUnitMap[overwatchRequest.ActingUnitPosition];
 
-                overwatchingUnit = overwatchingUnit.AddTime(OverwatchRequest.TIME_CONSUMED).ApplyOverwatchStatus();
+                overwatchingUnit = overwatchingUnit.AddTime(OverwatchRequest.TIME_CONSUMED).ApplyStatus(UnitStatusEffects.Status.Overwatch);
 
                 newPositionUnitMap.Remove(overwatchRequest.ActingUnitPosition);
                 newPositionUnitMap[overwatchRequest.ActingUnitPosition] = overwatchingUnit;
@@ -277,6 +413,12 @@ public struct GameMap
         return new GameMap(this, newPositionUnitMap, action);
     }
 
+
+    /// <summary>
+    /// Gets a collection of MapActions that are ordered by their utilities, 
+    /// based on the map data of this current game map
+    /// </summary>
+    /// <returns>A collection of MapActions, ordered by worse utility first</returns>
     public IEnumerable<MapActionRequest> GetOrderedMapActions()
     {
         List<MapActionRequest> requests = new List<MapActionRequest>();
@@ -288,7 +430,9 @@ public struct GameMap
             requests = movementRequests.Concat<MapActionRequest>(attacks).ToList();
         }
 
-        requests.Add(new WaitRequest(this, GetPositionByUnit(currentTurnUnit), new System.Random().Next(0, currentTurnUnit.ActionPointsUsed)));
+        requests.Add(new WaitRequest(this, GetPositionByUnit(currentTurnUnit), 
+            new System.Random().Next(0, currentTurnUnit.ActionPointsUsed)));
+
         requests.Add(new OverwatchRequest(this, GetPositionByUnit(currentTurnUnit)));
 
         requests.Sort((x, y) =>
@@ -346,14 +490,16 @@ public struct GameMap
             }
         });
         Debug.Assert(requests.Count > 0, "There are no actions");
-
         return requests;
     }
 
+
     public override string ToString()
     {
-        return $"GameMap | {currentTurnUnit.Name}'s turn | {string.Join(", ", mapData.UnitPositionMapping)}";
+        return $"GameMap | {currentTurnUnit.Name}'s turn | AP: {currentTurnUnit.ActionPointsLeft} " +
+            $"\n{string.Join("\n", mapData.UnitPositionMapping.ToArray())}";
     }
+
 
     public override bool Equals(object obj)
     {
@@ -368,8 +514,10 @@ public struct GameMap
         }
     }
 
+    
     public override int GetHashCode()
     {
+        // Using factored sum
         unchecked
         {
             int hash = 17;
@@ -382,10 +530,11 @@ public struct GameMap
         }
     }
 
+
     /// <summary>
-    /// Returns a NON-POSITIVE float that specifies the safety of the current turn unit's position
+    /// Evaluates to a signed utility of the current active unit's position tile
     /// </summary>
-    /// <returns></returns>
+    /// <returns>A NON-POSITIVE float that specifies the safety of the current turn unit's position</returns>
     public float EvaluateCurrentPositionSafety()
     {
         // must be non-positive

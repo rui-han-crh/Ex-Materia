@@ -94,5 +94,6 @@ public class InformationUIManager : MonoBehaviour
         attackButtonGameObject.SetActive(false);
         overwatchButtonGameObject.SetActive(false);
         waitButtonGameObject.SetActive(false);
+        
     }
 }

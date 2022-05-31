@@ -55,7 +55,7 @@ public struct Unit : IComparable<Unit>
         this.faction = faction;
         this.actionPointsUsed = 0;
 
-        this.unitStatusEffects = new UnitStatusEffects();
+        this.unitStatusEffects = default;
     }
 
     private Unit(Unit oldUnit, int newHealth, int newTime, int actionPointsUsed)
@@ -134,6 +134,8 @@ public struct Unit : IComparable<Unit>
 
     public int ActionPointsLeft => maximumActionPoints - actionPointsUsed;
 
+    public UnitStatusEffects UnitStatusEffects => unitStatusEffects;
+
     public Sprite CharacterHeadAvatar => characterHeadAvatar;
 
     public int ActionPointsUsed => actionPointsUsed;
@@ -179,10 +181,15 @@ public struct Unit : IComparable<Unit>
         return new Unit(this, Health, time + amount, actionPointsUsed);
     }
 
-    public Unit ApplyOverwatchStatus()
+    public Unit ApplyStatus(UnitStatusEffects.Status status)
     {
-        UnitStatusEffects newStatus = new UnitStatusEffects();
-        newStatus.OnOverwatch = true;
+        UnitStatusEffects newStatus = unitStatusEffects.ApplyStatus(status);
+        return new Unit(this, newStatus);
+    }
+
+    public Unit RemoveStatus(UnitStatusEffects.Status status)
+    {
+        UnitStatusEffects newStatus = unitStatusEffects.RemoveStatus(status);
         return new Unit(this, newStatus);
     }
 

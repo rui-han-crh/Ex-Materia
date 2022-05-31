@@ -30,16 +30,22 @@ public class UnitMovement
 
     public Dictionary<Vector3Int, int> GetReachableTiles()
     {
-        return Pathfinder2D.GetAllReachableTiles(currentTurnUnit, mapData);
+        return Pathfinder2D.GetAllReachablePositions(currentTurnUnit, mapData);
+    }
+
+    public Pathfinder2D.ShortestPathTree GetShortestPaths()
+    {
+        return Pathfinder2D.GetShortestPathTree(currentTurnUnit, mapData);
     }
 
     public IEnumerable<MovementRequest> GetAllMovementsPossible(GameMap gameMapRequesting)
     {
         Vector3Int currentUnitPosition = gameMapRequesting.GetPositionByUnit(currentTurnUnit);
-        return GetReachableTiles().Select(kvp => new MovementRequest(gameMapRequesting,
-                                                                    mapData.GetPositionByUnit(currentTurnUnit), 
-                                                                    kvp.Key, 
-                                                                    kvp.Value));
+        Pathfinder2D.ShortestPathTree shortestPathTree = GetShortestPaths();
+        return shortestPathTree.Children.Select(child => new MovementRequest(gameMapRequesting,
+                                                                            mapData.GetPositionByUnit(currentTurnUnit),
+                                                                            shortestPathTree.GetShortestPathToPosition(child),
+                                                                            shortestPathTree.GetCostToPosition(child)));
     }
 
     // PRIVATE METHODS
