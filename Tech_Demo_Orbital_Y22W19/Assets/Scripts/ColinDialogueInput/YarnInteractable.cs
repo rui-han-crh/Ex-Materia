@@ -6,7 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-public class YarnInteractable : MonoBehaviour
+public class  YarnInteractable : MonoBehaviour
 {
     // internal properties exposed to editor
     // TODO: pass a string as the starting node 
@@ -73,24 +73,24 @@ public class YarnInteractable : MonoBehaviour
         }
     }
 
-    [YarnCommand("indicatorOn")]
-    public void indicatorOn()
-    {
-        if (redOutline != null)
-        {
-            redOutline.enabled = true;
-        }
-    }
+    //[YarnCommand("indicatorOn")]
+    //public void indicatorOn()
+    //{
+    //    if (redOutline != null)
+    //    {
+    //        redOutline.enabled = true;
+    //    }
+    //}
 
-    [YarnCommand("indicatorOff")]
+    //[YarnCommand("indicatorOff")]
 
-    public void indicatorOff()
-    {
-        if (redOutline != null)
-        {
-            redOutline.enabled = false;
-        }
-    }
+    //public void indicatorOff()
+    //{
+    //    if (redOutline != null)
+    //    {
+    //        redOutline.enabled = false;
+    //    }
+    //}
 
     private void StartConversation()
     {
