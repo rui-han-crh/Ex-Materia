@@ -6,134 +6,95 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-public class  YarnInteractable : MonoBehaviour
+public class YarnInteractable : MonoBehaviour
 {
     // internal properties exposed to editor
     // TODO: pass a string as the starting node 
-    [SerializeField] 
-    private string conversationStartNode;
-
-    [SerializeField]
-    private CharacterDatabase db;
+    private string startNode = "";
 
     // internal properties not exposed to editor
     private DialogueRunner dialogueRunner;
-    private bool interactable = true;
+    public bool interactable = false;
     // I need my outline / something else here
     private bool isCurrentConversation = false;
-    private float defaultIndicatorIntensity;
-    private Outline redOutline;
-    private Image expression;
+    private Button expression;
     private Dictionary<string, FigureCharacter> characterMap = new Dictionary<string, FigureCharacter>();   
 
     public void Start()
     {
-        expression = GetComponent<Image>();
-        redOutline = GetComponent<Outline>();
-  
-        foreach (FigureCharacter c in db.characterList)
-        {
-            characterMap.Add(c.CharName, c);
-        }
-        //actually not v sure if the dictionary should be initialized here or in CharacterDat
+        expression = GetComponent<Button>();
         dialogueRunner = FindObjectOfType<Yarn.Unity.DialogueRunner>(); //potentially need to redo
-        dialogueRunner.onDialogueComplete.AddListener(EndConversation);
-        
+        dialogueRunner.onDialogueComplete.AddListener(EndConversation); //called whenever the conversation reaches the end of the file?
+        //For a test, uncomment this! The following function should be hooked from somewhere else//
+        //this.SetInterctable("StartEvelynAndOlivia"); --> Small test to ensure this works?
 
-        //{
-        //    defaultIndicatorIntensity = lightIndicatorObject.intensity;
-        //    lightIndicatorObject.intensity = 0;
-        //}
+    }
+    
+    public void SetInterctable(string startingNode)
+    {
+        interactable = true; //this means he's already awaiting for a call!
+        startNode = startingNode;
     }
 
-    //public void FixedUpdate()
-    //{
-    //    //on the frame the LMB is pressed, start the dialogue runner!
-    //    if (Input.GetMouseButtonDown(0) && interactable && !dialogueRunner.IsDialogueRunning)
-    //    {
-    //        StartConversation();
-    //    }
-    //}
+    /*
+     * BUG: OBJECT REF NOT SET TO INSTANCE OF OBJ
+     */
 
-
-
-    //public void OnClick()
-    //{
-    //    if (interactable && !dialogueRunner.IsDialogueRunning)
-    //    {
-    //        StartConversation();
-    //    }
-    //}
-
-    public void Interact()
+    public void StartImmediate(string nextNode)
     {
-        if(interactable && !dialogueRunner.IsDialogueRunning)
+        startNode = nextNode;
+        interactable = true; 
+        if (!dialogueRunner.IsDialogueRunning)
         {
             StartConversation();
         }
     }
 
-    //[YarnCommand("indicatorOn")]
-    //public void indicatorOn()
-    //{
-    //    if (redOutline != null)
-    //    {
-    //        redOutline.enabled = true;
-    //    }
-    //}
-
-    //[YarnCommand("indicatorOff")]
-
-    //public void indicatorOff()
-    //{
-    //    if (redOutline != null)
-    //    {
-    //        redOutline.enabled = false;
-    //    }
-    //}
+    public void Interact()
+    {
+        //check 3 things: Correct startNode, interactable AND legit dialogue running
+        if(interactable && !dialogueRunner.IsDialogueRunning && startNode != "")
+        {
+            StartConversation();
+        }
+    }
 
     private void StartConversation()
     {
         Debug.Log($"Started conversation with {name}.");
         isCurrentConversation = true;
-        // if (lightIndicatorObject != null) {
-        //     lightIndicatorObject.intensity = defaultIndicatorIntensity;
-        // }
-        
-        dialogueRunner.StartDialogue(conversationStartNode);
-        if (redOutline != null)
-        {
-            redOutline.enabled = true;
-        }
+        dialogueRunner.StartDialogue(startNode);
     }
 
     private void EndConversation()
     {
         if (isCurrentConversation)
         {
-            // if (lightIndicatorObject != null) {
-            //     lightIndicatorObject.intensity = 0;
-            // }
             isCurrentConversation = false;
             Debug.Log($"Started conversation with {name}.");
         }
-
-        if (redOutline != null)
-        {
-            redOutline.enabled = false;
-        }
     }
 
+    [YarnCommand("continue")]
+    public void ContinueConversation()
+    {
+        interactable = false;
+    }
+
+
+    //I don't see the difference between endConvo and disableConvo :(
     [YarnCommand("disable")]
     public void DisableConversation()
     {
+        dialogueRunner.Stop();
         interactable = false;
+        startNode = ""; //for failsafe purposes :(
     }
 
     [YarnCommand("load")]
 
     public void StartingLoad(string charName, string emotion)
     {
-        expression.sprite = characterMap[charName].GetEmotion(emotion);
+        expression.image.sprite = YarnManager.Instance.characterMap[charName].GetEmotion(emotion);
     }
 }

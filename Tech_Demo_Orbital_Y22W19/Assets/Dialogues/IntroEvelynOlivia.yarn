@@ -9,12 +9,16 @@ Narrator: More Backstory
 
 Narrator: Make a choice! 
 -> Option A 
+	Narrator: Amazing
 -> Option B
+	Narrator: Brilliant
 
-Narrator: Brilliant
 Narrator: Click on the twins to get started!
-===
 
+
+
+
+===
 title: StartEvelynAndOlivia
 tags:
 ---
@@ -60,8 +64,29 @@ Olivia: So his dad created the very thing we seek to destroy...
 <<load Speaker Evelyn Happy>>
 Evelyn: I'm sure he has his regions for joining us!
 Evelyn: Anyways, his name is Lucien, let's go meet him!
+<<jump FirstMeetLucien>>
 
-//<<jump FirstMeetLucien>>
+===
+title: FirstMeetLucien
+tags:
+---
+<<continue Speaker>>
+<<load Speaker Lucien Neutral>>
+Lucien: God I hope I know what I'm doing 
+<<load Speaker Evelyn Neutral>>
+Evelyn: Oh..
+<<load Speaker Evelyn Happy>>
+Evelyn: You must be Lucien!
+<<load Speaker Evelyn Surprised>>
+Evelyn: Wait... your eyes 
+Evelyn: You look like you've seen a lot
+<<load Speaker Lucien Sad>>
+Lucien: Yes
+Lucien: Would you like to know more?
+-> Yes
+	<<load Speaker Lucien Neutral>>
+	Lucien: When I was born, my
+->No 
 
 ===
 
