@@ -4,8 +4,9 @@ using UnityEngine;
 
 namespace ExtensionMethods
 {
-    public static class MyExtensions
+    public static class MathExtensions
     {
+
         public static Vector3Int RotateVector(this Vector3Int vector, float radians)
         {
             float sin = Mathf.Sin(radians);
@@ -15,6 +16,11 @@ namespace ExtensionMethods
                 Mathf.RoundToInt(cos * vector.x - sin * vector.y),
                 Mathf.RoundToInt(sin * vector.x + cos * vector.y),
                 0);
+        }
+
+        public static bool Approximately(float a, float b, float threshold)
+        {
+            return ((a - b) < 0 ? ((a - b) * -1) : (a - b)) <= threshold;
         }
     }
 }

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: low_rough_brick_wall_NESE
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 21300000, guid: 6357c0734e1bdb04a8c807c675236c51, type: 3}
-  m_Color: {r: 0.7421383, g: 0.80972064, b: 1, a: 1}
+  m_Color: {r: 0.76100624, g: 0.80223674, b: 1, a: 1}
   m_Transform:
     e00: 1
     e01: 0

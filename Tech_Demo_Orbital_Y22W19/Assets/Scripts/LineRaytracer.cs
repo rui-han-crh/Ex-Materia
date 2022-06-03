@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static ExtensionMethods.MathExtensions;
 public class LineRaytracer
 {
+    private static readonly float THRESHOLD = 0.01f;
     private Vector3Int[] tilesHit;
 
     /// <summary>
@@ -73,8 +75,7 @@ public class LineRaytracer
         while (!priorityQueue.IsEmpty())
         {
             LineIntersectionComparable extractedIntersection = priorityQueue.Extract();
-
-            if (Mathf.Approximately(extractedIntersection.Priority, lastPriority))
+            if (Approximately(extractedIntersection.Priority, lastPriority, THRESHOLD))
             {
                 tilesHit.RemoveAt(tilesHit.Count - 1);
             }

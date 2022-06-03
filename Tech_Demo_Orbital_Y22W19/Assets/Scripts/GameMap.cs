@@ -129,12 +129,14 @@ public struct GameMap
         return unitCombat.QueryTargetAttackable(this, GetUnitByPosition(position));
     }
 
-    public GameMap RemoveStatusEffectFromUnit(Unit unit, UnitStatusEffects.Status status)
+    public GameMap RemoveStatusEffectFromUnitAtPosition(Vector3Int position, UnitStatusEffects.Status status)
     {
-        if (!AllUnits.Contains(unit))
+        if (!AllUnitPositions.Contains(position))
         {
             return this;
         }
+
+        Unit unit = GetUnitByPosition(position);
 
         Dictionary<Vector3Int, Unit> newPositionUnitMap = new Dictionary<Vector3Int, Unit>();
         foreach (Unit copiedUnit in mapData.UnitPositionMapping.Keys)

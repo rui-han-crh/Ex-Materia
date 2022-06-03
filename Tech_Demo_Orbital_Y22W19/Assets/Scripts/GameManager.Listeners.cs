@@ -8,6 +8,8 @@ using System.Linq;
 
 public partial class GameManager : MonoBehaviour
 {
+    private static readonly int ONE_HUNDRED_PERCENT = 100;
+
     private int timeToWait;
     private void MovementSelectionListener()
     {
@@ -21,14 +23,16 @@ public partial class GameManager : MonoBehaviour
 
         TileDrawer.SetColorToTiles(tileHighlights, pathPositionsLastDrawn, tileHighlightIndicator.color);
 
+        InformationUIManager.Instance.SetAllTextToDefault();
+
         if (groundTilemap.HasTile(gridPosition))
         {
             currentTileSelected = gridPosition;
             lastActionCost = currentMap.FindShortestPathTo(gridPosition, out IEnumerable<Vector3Int> pathPositions);
             pathPositionsLastDrawn = pathPositions;
 
-            InformationUIManager.Instance.APNeededUI.GetComponentInChildren<TMP_Text>().text = lastActionCost.ToString();
-            InformationUIManager.Instance.TimeUI.GetComponentInChildren<TMP_Text>().text = 
+            InformationUIManager.Instance.APNeededText.text = lastActionCost.ToString();
+            InformationUIManager.Instance.TimeNeededText.text = 
                 (Mathf.CeilToInt((float)lastActionCost / currentMap.CurrentUnit.Speed)).ToString();
 
             TileDrawer.SetColorToTiles(tileHighlights, pathPositions, ColorPalette.LIGHT_BLUE_TRANSLUCENT);
@@ -52,6 +56,8 @@ public partial class GameManager : MonoBehaviour
         AttackRequest request = currentMap.IsAttackableAt(gridPosition);
         AttackStatus status = request.Status;
 
+        InformationUIManager.Instance.SetAllTextToDefault();
+
         switch (status)
         {
             case AttackStatus.Success:
@@ -59,11 +65,17 @@ public partial class GameManager : MonoBehaviour
                 TileDrawer.SetColorToTiles(tileHighlights, request.TilesHit, ColorPalette.LIGHT_GREEN_TRANSLUCENT);
                 LineDrawer.DrawLineOnTileMap(groundTilemap, pathLine, new Vector3Int[] { request.TilesHit.First(), request.TilesHit.Last() });
                 LineDrawer.ColorLine(pathLine, ColorPalette.DARK_GREEN);
+
+                InformationUIManager.Instance.ChanceToHitText.text = (request.ChanceToHit * ONE_HUNDRED_PERCENT).ToString();
+                InformationUIManager.Instance.APNeededText.text = request.ActionPointCost.ToString();
+                InformationUIManager.Instance.TimeNeededText.text =
+                    (Mathf.CeilToInt((float)request.ActionPointCost / currentMap.CurrentUnit.Speed)).ToString();
+
                 executeLastActionAllowed = true;
                 break;
 
             case AttackStatus.IllegalTarget:
-                StateReset();
+                gameState = GameState.AwaitCombat;
                 break;
 
             default:
@@ -78,7 +90,10 @@ public partial class GameManager : MonoBehaviour
 
     public void WaitListener(Slider slider)
     {
-        IEnumerable<Unit> orderedUnitsByTime = currentMap.AllUnits.OrderBy(unit => unit.Time);
+        IEnumerable<Unit> orderedUnitsByTime = currentMap.AllUnits
+                                                        .OrderBy(unit => unit.Time)
+                                                        .SkipWhile(x => x.Time == currentMap.CurrentUnit.Time);
+
         int numberOfUnits = orderedUnitsByTime.Count();
 
         float positionInQueue = numberOfUnits * slider.value;
@@ -88,9 +103,10 @@ public partial class GameManager : MonoBehaviour
         int timeAfter = numberOfUnitsPassed == numberOfUnits - 1 ? 
                             orderedUnitsByTime.Last().Time + 200 : 
                             orderedUnitsByTime.ElementAt(numberOfUnitsPassed + 1).Time;
+
         int timeBefore = orderedUnitsByTime.ElementAt(numberOfUnitsPassed).Time;
 
-        int offsetTime = timeBefore - orderedUnitsByTime.First().Time;
+        int offsetTime = timeBefore - currentMap.CurrentUnit.Time;
 
         int differenceTime = Mathf.CeilToInt((timeAfter - timeBefore) * excess);
 

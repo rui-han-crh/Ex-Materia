@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: rough_brick_wall_SESW
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 21300000, guid: 242fa9b9d8e632748a132ba4d6c0ceb6, type: 3}
-  m_Color: {r: 0.7421383, g: 0.80972064, b: 1, a: 1}
+  m_Color: {r: 0.76100624, g: 0.80223674, b: 1, a: 1}
   m_Transform:
     e00: 1
     e01: 0

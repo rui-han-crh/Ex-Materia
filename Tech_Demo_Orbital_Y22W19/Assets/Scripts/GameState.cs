@@ -8,5 +8,6 @@
     TurnEnded,
     OpponentHandOver,
     OpponentTurn,
-    Refresh
+    Refresh,
+    GameOver
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class InformationUIManager : MonoBehaviour
 {
@@ -23,16 +24,16 @@ public class InformationUIManager : MonoBehaviour
 
     [SerializeField]
     private GameObject apUIGameObject;
+    private TMP_Text apNeededText;
 
-    public GameObject APNeededUI => apUIGameObject;
 
     [SerializeField]
     private GameObject timeUIGameObject;
-
-    public GameObject TimeUI => timeUIGameObject;
+    private TMP_Text timeNeededText;
 
     [SerializeField]
     private GameObject aimUIGameObject;
+    private TMP_Text chanceToHitText;
 
     [SerializeField]
     private GameObject moveButtonGameObject;
@@ -46,9 +47,21 @@ public class InformationUIManager : MonoBehaviour
     [SerializeField]
     private GameObject waitButtonGameObject;
 
+    public TMP_Text TimeNeededText => timeNeededText;
+    public TMP_Text APNeededText => apNeededText;
+    public GameObject TimeUI => timeUIGameObject;
+    public TMP_Text ChanceToHitText => chanceToHitText;
+
     private void OnDisable()
     {
         TurnAllUIOff();
+    }
+
+    private void Awake()
+    {
+        chanceToHitText = aimUIGameObject.GetComponentInChildren<TMP_Text>();
+        timeNeededText = timeUIGameObject.GetComponentInChildren<TMP_Text>();
+        apNeededText = apUIGameObject.GetComponentInChildren<TMP_Text>();
     }
 
     public void WaitButtonActivated()
@@ -79,7 +92,10 @@ public class InformationUIManager : MonoBehaviour
     public void OverwatchButtonActivated()
     {
         TurnAllUIOff();
-        Debug.Log("Plong");
+
+        InformationUIManager.Instance.TimeNeededText.text =
+            (OverwatchRequest.TIME_CONSUMED).ToString();
+
         overwatchButtonGameObject.SetActive(true);
         apUIGameObject.SetActive(true);
         timeUIGameObject.SetActive(true);
@@ -94,6 +110,13 @@ public class InformationUIManager : MonoBehaviour
         attackButtonGameObject.SetActive(false);
         overwatchButtonGameObject.SetActive(false);
         waitButtonGameObject.SetActive(false);
-        
+        SetAllTextToDefault();
+    }
+
+    public void SetAllTextToDefault()
+    {
+        chanceToHitText.text = "0";
+        APNeededText.text = "0";
+        timeNeededText.text = "0";
     }
 }

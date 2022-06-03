@@ -15,6 +15,8 @@ using System.Linq;
 public class UnitQueueManager : MonoBehaviour
 {
     [SerializeField]
+    private Transform avatarHolder;
+    [SerializeField]
     private Transform content;
     [SerializeField]
     private GameObject characterHeadPrefab;
@@ -29,17 +31,19 @@ public class UnitQueueManager : MonoBehaviour
     {
         foreach (GameObject unit in units)
         {
-            GameObject characterHead = Instantiate(characterHeadPrefab, content);
+            GameObject characterHead = Instantiate(characterHeadPrefab, avatarHolder);
             characterHead.name = characterHeadPrefab.name + "_" + unit.name;
             characterHead.GetComponent<HeadAvatarBehaviour>().SetBoundGameObject(unit);
         }
 
-        UpdateUnitQueue(nameUnitMapping);
+        new Task(LateInvoke(UpdateUnitQueue, nameUnitMapping));
 
     }
 
     public void UpdateUnitQueue(Dictionary<string, Unit> nameUnitMapping)
     {
+        int numberOfUnitsRemoved = RemoveDeadUnitsAvatar(nameUnitMapping);
+
         LinearAnimation linAnim = GetComponent<LinearAnimation>();
 
         List<LinearAnimation.LinearAnimationTarget> targets = new List<LinearAnimation.LinearAnimationTarget>();
@@ -53,23 +57,37 @@ public class UnitQueueManager : MonoBehaviour
             unitOrder.Add(orderedUnit[i].Name, i);
         }
 
-        RectTransform characterHeadRectTransform = characterHeadPrefab.GetComponent<RectTransform>();
-        Vector2 minOrigin = characterHeadRectTransform.anchorMin;
-        Vector2 displacement = new Vector2(characterHeadRectTransform.anchorMax.x - characterHeadRectTransform.anchorMin.x, 0);
+        RectTransform characterHeadRectTransform = avatarHolder.GetChild(0).GetComponent<RectTransform>();
+        RectTransform contentTransform = content.GetComponent<RectTransform>();
 
-        foreach (Transform character in content)
+        Vector2 size = contentTransform.sizeDelta;
+        int childCount = avatarHolder.childCount - numberOfUnitsRemoved;
+        size.x = characterHeadRectTransform.rect.width * childCount;
+        
+        contentTransform.sizeDelta = size;
+
+        Vector2 minOrigin = Vector2.zero;
+        Vector2 displacement = new Vector2(1.0f / childCount, 0);
+
+        int skippedUnitsForWaiting = 0;
+
+        foreach (Transform character in avatarHolder)
         {
             HeadAvatarBehaviour characterHeadAvatar = character.GetComponent<HeadAvatarBehaviour>();
 
             if (!nameUnitMapping.ContainsKey(characterHeadAvatar.BoundGameObject.name))
             {
-                Destroy(characterHeadAvatar.gameObject);
                 continue;
             }
 
-            characterHeadAvatar.UpdateHealthBar(nameUnitMapping[characterHeadAvatar.BoundGameObject.name]);
+            Unit unit = nameUnitMapping[characterHeadAvatar.BoundGameObject.name];
+            characterHeadAvatar.UpdateHealthBar(unit);
 
             int index = unitOrder[characterHeadAvatar.BoundGameObject.name];
+            if (unit.Time == GameManager.Instance.CurrentUnit.Time)
+            {
+                skippedUnitsForWaiting++;
+            }
 
             targets.Add(new LinearAnimation.LinearAnimationTarget(character.gameObject,
                                                                 minOrigin + index * displacement,
@@ -78,9 +96,8 @@ public class UnitQueueManager : MonoBehaviour
             character.gameObject.SetActive(false);
         }
 
-        SetWaitSliderLength(minOrigin.x, displacement.x * unitOrder.Count);
+        SetWaitSliderLength(minOrigin.x + displacement.x * skippedUnitsForWaiting, displacement.x * unitOrder.Count);
 
-        StopAllCoroutines();
         isPlayingAnimation = true;
         linAnim.SetTargets(targets.ToArray());
 
@@ -91,6 +108,29 @@ public class UnitQueueManager : MonoBehaviour
         new Task(CheckAllTargetsStopped(targets));
     }
 
+    /// <summary>
+    /// From the queue describe the unit turns, removes the unit avatars that are no longer involved in
+    /// the game map. The avatars will be removed on the next frame, when Update() is called.
+    /// </summary>
+    /// <param name="nameUnitMapping"></param>
+    /// <returns>The number of units avatars that have been removed.</returns>
+    private int RemoveDeadUnitsAvatar(Dictionary<string, Unit> nameUnitMapping)
+    {
+        int numberOfUnitsRemoved = 0;
+        foreach (Transform character in avatarHolder)
+        {
+            HeadAvatarBehaviour characterHeadAvatar = character.GetComponent<HeadAvatarBehaviour>();
+
+            if (!nameUnitMapping.ContainsKey(characterHeadAvatar.BoundGameObject.name))
+            {
+                numberOfUnitsRemoved++;
+                Destroy(characterHeadAvatar.gameObject);
+                continue;
+            }
+        }
+        return numberOfUnitsRemoved;
+    }
+
     private IEnumerator CheckAllTargetsStopped(IEnumerable<LinearAnimation.LinearAnimationTarget> targets)
     {
         while(targets.Any(x => x.AnimationIsRunning))
@@ -98,6 +138,12 @@ public class UnitQueueManager : MonoBehaviour
             yield return null;
         }
         isPlayingAnimation = false;
+    }
+
+    private IEnumerator LateInvoke<T>(Action<T> func, T args)
+    {
+        yield return new WaitForEndOfFrame();
+        func.Invoke(args);
     }
 
     private void SetWaitSliderLength(float minX, float maxX)

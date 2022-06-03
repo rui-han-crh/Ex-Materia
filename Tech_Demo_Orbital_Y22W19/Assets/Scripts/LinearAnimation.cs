@@ -114,4 +114,14 @@ public class LinearAnimation : MonoBehaviour
         ToggleUI(index);
     }
 
+    public void UIToDeactivePosition(int index)
+    {
+        if (!targets[index].GameObject.activeInHierarchy)
+        {
+            return;
+        }
+
+        ToggleUI(index);
+    }
+
 }

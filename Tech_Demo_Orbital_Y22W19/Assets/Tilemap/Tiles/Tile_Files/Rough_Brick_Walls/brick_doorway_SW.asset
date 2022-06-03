@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: brick_doorway_SW
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 21300000, guid: ddae4fe95509d384a83f801758810fc9, type: 3}
-  m_Color: {r: 0.7421383, g: 0.80972064, b: 1, a: 1}
+  m_Color: {r: 0.76100624, g: 0.80223674, b: 1, a: 1}
   m_Transform:
     e00: 1
     e01: 0

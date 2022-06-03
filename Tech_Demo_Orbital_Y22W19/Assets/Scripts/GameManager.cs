@@ -42,7 +42,7 @@ public partial class GameManager : MonoBehaviour
     [SerializeField]
     private Tilemap halfCoverTilemap;
     [SerializeField]
-    private Tilemap groundTilemap;
+    public Tilemap groundTilemap;
     [SerializeField]
     private Tilemap tileHighlights;
 
@@ -60,6 +60,7 @@ public partial class GameManager : MonoBehaviour
     private Camera mainCamera;
 
     private Dictionary<string, GameObject> nameUnitGameObjectMapping = new Dictionary<string, GameObject>();
+    private HashSet<GameObject> markedForDeletion = new HashSet<GameObject>();
     private Dictionary<GameObject, GameObject> unitToHealthbarMapping = new Dictionary<GameObject, GameObject>();
 
     [SerializeField]
@@ -81,6 +82,9 @@ public partial class GameManager : MonoBehaviour
     private LinearAnimation canvasLinearAnimation;
     [SerializeField]
     private int characterSheetIndex;
+
+    [SerializeField] // temporary, will remove
+    private GameObject mainLight;
 
     // Routine Queue
     private Queue<IEnumerator> routineQueue = new Queue<IEnumerator>();
@@ -144,7 +148,7 @@ public partial class GameManager : MonoBehaviour
                 continue;
             }
 
-            Unit unit = unitObject.GetComponentInChildren<UnitBehaviour>().InitialiseUnit(i * 2);
+            Unit unit = unitObject.GetComponentInChildren<UnitBehaviour>().InitialiseUnit(1 + i * 2);
             Debug.Assert(unit.Name != null);
             Vector3Int unitCellPosition = groundTilemap.WorldToCell(unitObject.transform.position);
             unitPositionMap.Add(unitCellPosition, unit);
@@ -188,6 +192,13 @@ public partial class GameManager : MonoBehaviour
         InitialiseHealthBar();
         queueManager.InitialiseQueue(unitGameObjects, currentMap.AllUnits.ToDictionary(unit => unit.Name, unit => unit));
         gameState = GameState.TurnEnded;
+
+        LineRaytracer r = new LineRaytracer();
+        bool res = r.Trace(groundTilemap.WorldToCell(unitGameObjects[0].transform.position), 
+            groundTilemap.WorldToCell(unitGameObjects[1].transform.position), 
+            GameMap.UNIT_GRID_OFFSET, 
+            currentMap.MapData);
+        print($"{groundTilemap.WorldToCell(unitGameObjects[0].transform.position)} {groundTilemap.WorldToCell(unitGameObjects[1].transform.position)} {res}");
     }
 
     private void OnEnable()
@@ -288,9 +299,26 @@ public partial class GameManager : MonoBehaviour
                 RemoveDeadUnits();
                 RedrawHealthBar();
                 UpdateCharacterSheet();
+                
                 queueManager.UpdateUnitQueue(currentMap.AllUnits.ToDictionary(unit => unit.Name, unit => unit));
                 Debug.Log(currentMap);
-                gameState = currentMap.CurrentUnit.Faction == Faction.Friendly ? GameState.Refresh : GameState.OpponentTurn;
+
+                InformationUIManager.Instance.SetAllTextToDefault();
+
+                if (currentMap.IsGameOver())
+                {
+                    gameState = GameState.GameOver;
+                }
+                else
+                {
+                    gameState = currentMap.CurrentUnit.Faction == Faction.Friendly ? GameState.Refresh : GameState.OpponentTurn;
+                }
+                break;
+
+            case GameState.GameOver:
+                // temporary
+                if (mainLight != null)
+                    Destroy(mainLight);
                 break;
 
             default:
@@ -305,7 +333,7 @@ public partial class GameManager : MonoBehaviour
             if (!IsRoutineEmpty())
             {
                 lastRoutine = new Task(routineQueue.Dequeue());
-            } 
+            }
             else if (!queueManager.IsPlayingAnimation && !autoPlayQueued && gameState == GameState.OpponentTurn)
             {
                 AutoPlay();
@@ -357,6 +385,7 @@ public partial class GameManager : MonoBehaviour
         IEnumerable<string> differenceUnitNames = nameUnitGameObjectMapping.Keys.ToArray().Except(currentMap.AllUnits.Select(x => x.Name));
         foreach (string differenceUnitName in differenceUnitNames)
         {
+            markedForDeletion.Add(nameUnitGameObjectMapping[differenceUnitName]);
             Enqueue(DestroyUnitDelayed(differenceUnitName, 1));
         }
     }
@@ -367,11 +396,14 @@ public partial class GameManager : MonoBehaviour
         pathLine.positionCount = 0;
     }
 
+    // TODO: All click actions in one function, take in an enum
+
     public void OnClickMoveUnit()
     {
         if (routineQueue.Count == 0 && executeLastActionAllowed)
         {
             MovementRequest movementRequest = new MovementRequest(CurrentMap, CurrentUnitPosition, pathPositionsLastDrawn.ToArray(), lastActionCost);
+            canvasLinearAnimation.ToggleUI(0);
             ParseRequest(movementRequest);
         }
     }
@@ -388,16 +420,17 @@ public partial class GameManager : MonoBehaviour
                                                             AttackStatus.Success,
                                                             pathPositionsLastDrawn.ToArray(),
                                                             lastActionCost);
+            canvasLinearAnimation.ToggleUI(0);
             ParseRequest(attackRequest);
         }
     }
 
     public void OnClickWait()
     {
-        Debug.Log("Wait pressed");
         if (routineQueue.Count == 0)
         {
             WaitRequest waitRequest = new WaitRequest(CurrentMap, CurrentUnitPosition, timeToWait);
+            canvasLinearAnimation.ToggleUI(0);
             ParseRequest(waitRequest);
             timeToWait = 0;
         }
@@ -405,13 +438,64 @@ public partial class GameManager : MonoBehaviour
 
     public void OnClickOverwatch()
     {
-        Debug.Log("Overwatch pressed");
         if (routineQueue.Count == 0)
         {
             OverwatchRequest overwatchRequest = new OverwatchRequest(CurrentMap, CurrentUnitPosition);
+
+            canvasLinearAnimation.ToggleUI(0);
             ParseRequest(overwatchRequest);
         }
     }
+
+    /// <summary>
+    /// Sets the appropriate flags and values for the unit's animator to derive the appropriate
+    /// animation to play.
+    /// </summary>
+    /// <param name="unitName"></param>
+    /// <param name="booleanFlag"></param>
+    /// <param name="state"></param>
+    /// <param name="xDirection"></param>
+    /// <param name="yDirection"></param>
+    public void UnitAnimatorPerform(string unitName, string booleanFlag, bool state, float xDirection, float yDirection)
+    {
+        GameObject unitGameObject = nameUnitGameObjectMapping[unitName];
+        Animator unitAnimator = unitGameObject.GetComponentInChildren<Animator>();
+        UnitAnimatorPerform(unitAnimator, booleanFlag, state, xDirection, yDirection);
+    }
+
+    public void UnitAnimatorPerform(Animator animator, string booleanFlag, bool state, float xDirection, float yDirection)
+    {
+        if (animator == null)
+        {
+            return;
+        }
+
+        if (xDirection != 0f || yDirection != 0f)
+        {
+            animator.SetFloat("xDirection", xDirection);
+            animator.SetFloat("yDirection", yDirection);
+        }
+
+        animator.SetBool(booleanFlag, state);
+    }
+
+    public void UnitAnimatorPerform(Animator animator, string booleanFlag, bool state)
+    {
+        if (animator == null)
+        {
+            return;
+        }
+
+        animator.SetBool(booleanFlag, state);
+    }
+
+    public void UnitAnimatorPerform(string unitName, string booleanFlag, bool state)
+    {
+        GameObject unitGameObject = nameUnitGameObjectMapping[unitName];
+        Animator unitAnimator = unitGameObject.GetComponentInChildren<Animator>();
+        UnitAnimatorPerform(unitAnimator, booleanFlag, state);
+    }
+
 
     /// <summary>
     /// Applies the information contained by the MapAction to the representation of
@@ -425,6 +509,8 @@ public partial class GameManager : MonoBehaviour
         {
             case MapActionType.Movement:
                 MovementRequest movementRequest = (MovementRequest)request;
+                Unit movingUnit = request.ActingUnit;
+
                 cost = movementRequest.ActionPointCost;
 
                 List<Vector3Int> pathList = movementRequest.Path.ToList();
@@ -443,27 +529,17 @@ public partial class GameManager : MonoBehaviour
                     int endingIndex = pathList.IndexOf(attackRequestByOverwatch.TargetPosition);
 
                     ////////////////////// Move current unit to a segment of the path ////////////////////
-                    Enqueue(LerpGameObject(nameUnitGameObjectMapping[CurrentUnit.Name],
+                    Enqueue(LerpGameObjectByUnitID(CurrentUnit.Name,
                         pathList.GetRange(startingIndex, endingIndex - startingIndex + 1), 0));
 
 
                     ///////////////////////////// Overwatching unit attacks /////////////////////////////
-                    Vector3Int originalPosition = attackRequestByOverwatch.ActingUnitPosition;
-                    string nameOfOverwatchingUnit = attackRequestByOverwatch.ActingUnit.Name;
-                    routineQueue.Enqueue(LerpGameObject(nameUnitGameObjectMapping[attackRequestByOverwatch.ActingUnit.Name],
-                                        new Vector3Int[] { attackRequestByOverwatch.ShootFromPosition }, 0, false));
-
-                    routineQueue.Enqueue(ApplyAttackAction(attackRequestByOverwatch));
-                    routineQueue.Enqueue(RemoveStatusEffectFromUnit(attackRequestByOverwatch.ActingUnit, UnitStatusEffects.Status.Overwatch));
-
-                    routineQueue.Enqueue(LerpGameObject(nameUnitGameObjectMapping[attackRequestByOverwatch.ActingUnit.Name],
-                                            new Vector3Int[] { originalPosition }, 0, false));
-
+                    Enqueue(MoveToPositionAndAttack(attackRequestByOverwatch));
 
                     startingIndex = endingIndex;
                 }
 
-                Enqueue(LerpGameObject(nameUnitGameObjectMapping[CurrentUnit.Name],
+                Enqueue(LerpGameObjectByUnitID(CurrentUnit.Name,
                     pathList.GetRange(startingIndex, pathList.Count - startingIndex), cost));
 
                 break;
@@ -473,14 +549,7 @@ public partial class GameManager : MonoBehaviour
                 cost = attackRequest.ActionPointCost;
 
                 Vector3Int initialUnitPosition = request.ActingUnitPosition;
-
-                routineQueue.Enqueue(LerpGameObject(nameUnitGameObjectMapping[currentMap.CurrentUnit.Name],
-                                        new Vector3Int[] { attackRequest.ShootFromPosition }, 0, false));
-
-                routineQueue.Enqueue(DoAttackAction(attackRequest.TargetPosition, attackRequest.TilesHit, cost));
-
-                routineQueue.Enqueue(LerpGameObject(nameUnitGameObjectMapping[currentMap.CurrentUnit.Name],
-                                        new Vector3Int[] { initialUnitPosition }, 0, false));
+                Enqueue(MoveToPositionAndAttack(attackRequest));
                 break;
 
             case MapActionType.Wait:

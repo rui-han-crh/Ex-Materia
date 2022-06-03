@@ -445,6 +445,7 @@ public class UnitCombat
             {
                 sourcePosition = peekCoordinates;
                 tilesHit = raytracer.TilesHit;
+                Debug.Log("Only peek");
                 return new AttackRequest(gameMapRequesting,
                                         sourcePosition,
                                         targetUnitPosition,

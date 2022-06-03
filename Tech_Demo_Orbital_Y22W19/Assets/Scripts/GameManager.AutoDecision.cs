@@ -18,7 +18,6 @@ public partial class GameManager
             autoPlayQueued = false;
             return;
         }
-
         
         MapActionRequest bestRequest = await AsyncTask.Run(() =>
         {
