@@ -94,4 +94,17 @@ public class YarnInteractable : MonoBehaviour
     {
         expression.image.sprite = YarnManager.Instance.characterMap[charName].GetEmotion(emotion);
     }
+
+    /*
+     * An endScene triggers an end of conversation;
+     * And signals YarnManager to close shop
+     */
+
+    [YarnCommand("endScene")]
+    public void EndScene()
+    {
+        this.DisableConversation();
+        YarnManager.Instance.EndConvoSequence();
+        
+    }
 }

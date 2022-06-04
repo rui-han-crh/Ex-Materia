@@ -49,12 +49,21 @@ public class YarnManager : MonoBehaviour
     }
 
 
+    //Just displays the UI, and can only be accessed within YarnManager 
+    private void DisplayUI()
+    {
+        isActive = true;
+        DialogueUI.SetActive(true);
+
+    }
+
 
     //2 choices --> start immediately, or start with an await to a button press!
 
     /*
      * Needs a button press on the character to start
      */
+
 
     public void StartConvoButton(string startingNode)
     {
@@ -79,7 +88,7 @@ public class YarnManager : MonoBehaviour
 
     public void EndConvoSequence()
     {
-        
+        DialogueUI.SetActive(false);
     }
 
 }
