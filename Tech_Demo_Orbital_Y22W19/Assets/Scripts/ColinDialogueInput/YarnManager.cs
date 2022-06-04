@@ -12,13 +12,18 @@ public class YarnManager : MonoBehaviour
 {
     public static YarnManager Instance;
     public YarnInteractable YI;
-    //Not sure if DialogueRunner should end up here 
 
     [SerializeField]
     public CharacterDatabase CharacterDB;
 
+    [SerializeField]
+    public GameObject DialogueUI;
+
     //everybody can acceess this!
     public Dictionary<string, FigureCharacter> characterMap = new Dictionary<string, FigureCharacter>();
+    public bool isActive = false; //basically to tell anyone that talking is/might be enabled 
+
+
 
    void Awake()
     {
@@ -39,6 +44,8 @@ public class YarnManager : MonoBehaviour
         {
             characterMap.Add(c.CharName, c); //each character can switch expressions
         }
+
+
     }
 
 
@@ -53,6 +60,8 @@ public class YarnManager : MonoBehaviour
     {
         if (startingNode != null) //TODO: probably need to check for legit startNode for the scene somewhere, probably in the DB?
         {
+
+            isActive = true;
             YI.SetInterctable(startingNode);
         }
     }
@@ -63,8 +72,14 @@ public class YarnManager : MonoBehaviour
     {
         if (nextNode != null) //TODO: probably need to check for legit startNode for the scene somewhere, probably in the DB?
         {
+            isActive = true;
             YI.StartImmediate(nextNode);
         }
+    }
+
+    public void EndConvoSequence()
+    {
+        
     }
 
 }

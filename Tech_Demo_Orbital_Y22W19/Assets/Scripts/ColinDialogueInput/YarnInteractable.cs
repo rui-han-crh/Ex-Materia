@@ -25,12 +25,6 @@ public class YarnInteractable : MonoBehaviour
         expression = GetComponent<Button>();
         dialogueRunner = FindObjectOfType<Yarn.Unity.DialogueRunner>(); //potentially need to redo
         dialogueRunner.Stop(); //Bug: Whenever a DL is found, the given UI will start it from the scene immediately!
-
-
-
-
-
-
         //dialogueRunner.onDialogueComplete.AddListener(EndConversation); //called whenever the conversation reaches the end of the file?
         //For a test, uncomment this! The following function should be hooked from somewhere else//
         //this.SetInterctable("StartEvelynAndOlivia"); --> Small test to ensure this works?
@@ -57,6 +51,7 @@ public class YarnInteractable : MonoBehaviour
         }
     }
 
+    //this is just a placholder for another action to be added?
     public void Interact()
     {
         //check 3 things: Correct startNode, interactable AND legit dialogue running
@@ -73,26 +68,21 @@ public class YarnInteractable : MonoBehaviour
         dialogueRunner.StartDialogue(startNode);
     }
 
-    private void EndConversation()
-    {
-        if (isCurrentConversation)
-        {
-            isCurrentConversation = false;
-            Debug.Log($"Started conversation with {name}.");
-        }
-    }
-
-    [YarnCommand("continue")]
-    public void ContinueConversation()
-    {
-        interactable = false;
-    }
+    //private void EndConversation()
+    //{
+    //    if (isCurrentConversation)
+    //    {
+    //        isCurrentConversation = false;
+    //        Debug.Log($"Started conversation with {name}.");
+    //    }
+    //}
 
 
     //I don't see the difference between endConvo and disableConvo :(
     [YarnCommand("disable")]
     public void DisableConversation()
     {
+        isCurrentConversation=false;
         dialogueRunner.Stop();
         interactable = false;
         startNode = ""; //for failsafe purposes :(
