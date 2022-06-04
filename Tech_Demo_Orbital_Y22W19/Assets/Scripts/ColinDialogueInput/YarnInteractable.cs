@@ -24,7 +24,14 @@ public class YarnInteractable : MonoBehaviour
     {
         expression = GetComponent<Button>();
         dialogueRunner = FindObjectOfType<Yarn.Unity.DialogueRunner>(); //potentially need to redo
-        dialogueRunner.onDialogueComplete.AddListener(EndConversation); //called whenever the conversation reaches the end of the file?
+        dialogueRunner.Stop(); //Bug: Whenever a DL is found, the given UI will start it from the scene immediately!
+
+
+
+
+
+
+        //dialogueRunner.onDialogueComplete.AddListener(EndConversation); //called whenever the conversation reaches the end of the file?
         //For a test, uncomment this! The following function should be hooked from somewhere else//
         //this.SetInterctable("StartEvelynAndOlivia"); --> Small test to ensure this works?
 
@@ -43,7 +50,7 @@ public class YarnInteractable : MonoBehaviour
     public void StartImmediate(string nextNode)
     {
         startNode = nextNode;
-        interactable = true; 
+        interactable = false; //failSafe in case DL.isDLRunning doesn't work
         if (!dialogueRunner.IsDialogueRunning)
         {
             StartConversation();
