@@ -1,26 +1,25 @@
 ﻿//Not sure how to load the beginning nodes
-// Emotions: 
+// Emotions:
 
 title: Start
+tags:
 ---
 Narrator: Welcome to Ex-Materia!
-Narrator: We will follow the tale of the Progeny as they attempt to take down PAM
-Narrator: More Backstory 
-
-Narrator: Make a choice! 
--> Option A 
--> Option B
-
-Narrator: Brilliant
-Narrator: Click on the twins to get started!
+Narrator: The game takes place in a new-age Technocracy
+Narrator: named <B>Cajovia</B>
+Narrator: You will follow the journey of a team of 5 rebels, known as the Progeny 
+Narrator: Choose your fate and steps carefully! 
+Narrator: When you're ready, click on the option to begin 
+-> Yes
+<<disable Speaker>>
 ===
+
+
 
 title: StartEvelynAndOlivia
 tags:
 ---
 <<load Speaker Evelyn Neutral>> 
-
-
 
 Evelyn: Oh hi there sister Olivia! 
 
@@ -60,9 +59,33 @@ Olivia: So his dad created the very thing we seek to destroy...
 <<load Speaker Evelyn Happy>>
 Evelyn: I'm sure he has his regions for joining us!
 Evelyn: Anyways, his name is Lucien, let's go meet him!
+<<jump FirstMeetLucien>>
 
-//<<jump FirstMeetLucien>>
 
 ===
+title: FirstMeetLucien
+tags:
+---
+<<load Speaker Lucien Neutral>>
+Lucien: God I hope I know what I'm doing 
+<<load Speaker Evelyn Neutral>>
+Evelyn: Oh..
+<<load Speaker Evelyn Happy>>
+Evelyn: You must be Lucien!
+<<load Speaker Evelyn Surprised>>
+Evelyn: Wait... your eyes 
+Evelyn: You look like you've seen a lot
+<<load Speaker Lucien Sad>>
+Lucien: Yes
+Lucien: Why?
+Lucien: Would you like to know more about my origin?
+-> Yes
+	<<load Speaker Lucien Neutral>>
+	Lucien: I used to be a historian
+	Lucien: More backstory :(
+->No 
+===
+
+
 
 
