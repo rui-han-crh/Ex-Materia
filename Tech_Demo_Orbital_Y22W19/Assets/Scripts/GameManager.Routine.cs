@@ -73,7 +73,7 @@ public partial class GameManager
 
             while (Vector3.Distance(gameObject.transform.position, currentWorldDestination) > Mathf.Epsilon)
             {
-                float distanceCovered = (Time.time - startTime) * interpolationSpeed;
+                float distanceCovered = (Time.time - startTime) * UNIT_INTERPOLATION_SPEED;
                 float fractionOfJourney = Mathf.Min(1, distanceCovered / journeyLength);
                 gameObject.transform.position = Vector3.Lerp(source, currentWorldDestination, fractionOfJourney);
                 yield return null;
@@ -150,6 +150,8 @@ public partial class GameManager
         UnitAnimatorPerform(attackRequest.ActingUnit.Name, "isShooting", true, direction.x, direction.y);
 
         currentMap = currentMap.DoAction(attackRequest);
+        AudioManager.Instance.PlayTrack("RifleFire");
+
         yield return new WaitForSeconds(ANIMATION_SPEED);
 
         if (endsTurn)

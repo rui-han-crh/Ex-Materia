@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class InformationUIManager : MonoBehaviour
 {
-    // so much hard coding ughhhhh >:(
+    private static readonly int ONE_HUNDRED_PERCENT = 100;
+    private static readonly string TWO_DECIMAL_PLACES = "n2";
 
     private static InformationUIManager instance;
 
@@ -23,100 +25,103 @@ public class InformationUIManager : MonoBehaviour
     }
 
     [SerializeField]
-    private GameObject apUIGameObject;
-    private TMP_Text apNeededText;
-
+    private CommandButtonsBehaviour commandButtonsBehaviour;
 
     [SerializeField]
-    private GameObject timeUIGameObject;
-    private TMP_Text timeNeededText;
+    private CharacterStatsUIBehaviour opponentUIBehaviour;
+
+    public TMP_Text TimeNeededText => commandButtonsBehaviour.TimeText;
+    public TMP_Text ActionPointText => commandButtonsBehaviour.ActionPointText;
 
     [SerializeField]
-    private GameObject aimUIGameObject;
+    private TMP_Text resultantDamageText;
+
+    [SerializeField]
     private TMP_Text chanceToHitText;
 
-    [SerializeField]
-    private GameObject moveButtonGameObject;
 
-    [SerializeField]
-    private GameObject attackButtonGameObject;
-
-    [SerializeField]
-    private GameObject overwatchButtonGameObject;
-
-    [SerializeField]
-    private GameObject waitButtonGameObject;
-
-    public TMP_Text TimeNeededText => timeNeededText;
-    public TMP_Text APNeededText => apNeededText;
-    public GameObject TimeUI => timeUIGameObject;
-    public TMP_Text ChanceToHitText => chanceToHitText;
+    private void Awake()
+    {
+        opponentUIBehaviour.gameObject.SetActive(false);
+    }
 
     private void OnDisable()
     {
         TurnAllUIOff();
     }
 
-    private void Awake()
+    public void SetOpponentDetails(Unit unit)
     {
-        chanceToHitText = aimUIGameObject.GetComponentInChildren<TMP_Text>();
-        timeNeededText = timeUIGameObject.GetComponentInChildren<TMP_Text>();
-        apNeededText = apUIGameObject.GetComponentInChildren<TMP_Text>();
+        opponentUIBehaviour.SetName(unit.Name);
+        opponentUIBehaviour.SetAvatar(unit.CharacterHeadAvatar);
+        opponentUIBehaviour.SetUnitStats(unit);
+    }
+
+    public void SetResultantDamageDealt(int resultantDamage)
+    {
+        resultantDamageText.text = resultantDamage.ToString();
+    }
+
+    public void SetChanceToHitText(float chanceToHit)
+    {
+        chanceToHitText.text = (chanceToHit * ONE_HUNDRED_PERCENT).ToString(TWO_DECIMAL_PLACES);
     }
 
     public void WaitButtonActivated()
     {
         TurnAllUIOff();
-        waitButtonGameObject.SetActive(true);
-        apUIGameObject.SetActive(true);
-        timeUIGameObject.SetActive(true);
+        commandButtonsBehaviour.SetButtonActive(GameManager.Command.Wait, true);
+        commandButtonsBehaviour.SetPromptActive(CommandButtonsBehaviour.Prompt.Time, true);
+        commandButtonsBehaviour.SetPromptActive(CommandButtonsBehaviour.Prompt.ActionPoints, true);
     }
 
     public void MoveButtonActivated()
     {
         TurnAllUIOff();
-        moveButtonGameObject.SetActive(true);
-        apUIGameObject.SetActive(true);
-        timeUIGameObject.SetActive(true);
+        commandButtonsBehaviour.SetButtonActive(GameManager.Command.Movement, true);
+        commandButtonsBehaviour.SetPromptActive(CommandButtonsBehaviour.Prompt.Time, true);
+        commandButtonsBehaviour.SetPromptActive(CommandButtonsBehaviour.Prompt.ActionPoints, true);
     }
 
     public void CombatButtonActivated()
     {
         TurnAllUIOff();
-        attackButtonGameObject.SetActive(true);
-        apUIGameObject.SetActive(true);
-        aimUIGameObject.SetActive(true);
-        timeUIGameObject.SetActive(true);
+        commandButtonsBehaviour.SetButtonActive(GameManager.Command.Attack, true);
+        commandButtonsBehaviour.SetPromptActive(CommandButtonsBehaviour.Prompt.Time, true);
+        commandButtonsBehaviour.SetPromptActive(CommandButtonsBehaviour.Prompt.ActionPoints, true);
     }
 
     public void OverwatchButtonActivated()
     {
         TurnAllUIOff();
 
-        InformationUIManager.Instance.TimeNeededText.text =
-            (OverwatchRequest.TIME_CONSUMED).ToString();
+        TimeNeededText.text = (OverwatchRequest.TIME_CONSUMED).ToString();
 
-        overwatchButtonGameObject.SetActive(true);
-        apUIGameObject.SetActive(true);
-        timeUIGameObject.SetActive(true);
+        commandButtonsBehaviour.SetButtonActive(GameManager.Command.Overwatch, true);
+        commandButtonsBehaviour.SetPromptActive(CommandButtonsBehaviour.Prompt.Time, true);
+        commandButtonsBehaviour.SetPromptActive(CommandButtonsBehaviour.Prompt.ActionPoints, true);
     }
 
     public void TurnAllUIOff()
     {
-        apUIGameObject.SetActive(false);
-        timeUIGameObject.SetActive(false);
-        aimUIGameObject.SetActive(false);
-        moveButtonGameObject.SetActive(false);
-        attackButtonGameObject.SetActive(false);
-        overwatchButtonGameObject.SetActive(false);
-        waitButtonGameObject.SetActive(false);
         SetAllTextToDefault();
+        commandButtonsBehaviour.DisableAllUI();
     }
 
     public void SetAllTextToDefault()
     {
-        chanceToHitText.text = "0";
-        APNeededText.text = "0";
-        timeNeededText.text = "0";
+        commandButtonsBehaviour.SetPromptTextToDefault();
+    }
+
+    public void SetTimeAndAPRequiredText(int timeNeeded, int apNeeded)
+    {
+        commandButtonsBehaviour.TimeText.text = timeNeeded.ToString();
+        commandButtonsBehaviour.ActionPointText.text = apNeeded.ToString();
+    }
+
+    public void SetTimeAndAPRequiredText(int apNeeded)
+    {
+        commandButtonsBehaviour.TimeText.text = Mathf.CeilToInt((float)apNeeded / GameManager.Instance.CurrentUnit.Speed).ToString();
+        commandButtonsBehaviour.ActionPointText.text = apNeeded.ToString();
     }
 }

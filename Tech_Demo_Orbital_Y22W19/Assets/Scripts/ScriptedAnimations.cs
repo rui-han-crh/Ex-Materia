@@ -4,8 +4,26 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
+/// <summary>
+/// The scripted animations used for the information panel
+/// </summary>
 public class ScriptedAnimations : MonoBehaviour
 {
+    private static ScriptedAnimations instance;
+
+    public static ScriptedAnimations Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<ScriptedAnimations>();
+            }
+            return instance;
+        }
+    }
+
+
     private static readonly float INTERPOLATION_CONSTANT = 5f;
 
     [SerializeField]
@@ -19,6 +37,8 @@ public class ScriptedAnimations : MonoBehaviour
 
     private Dictionary<GameObject, Vector2[]> buttonOriginalAnchors = new Dictionary<GameObject, Vector2[]>();
     private Dictionary<GameObject, bool> isButtonSelected = new Dictionary<GameObject, bool>();
+
+    private List<Task> tasks = new List<Task>();
 
     private void OnEnable()
     {
@@ -43,6 +63,18 @@ public class ScriptedAnimations : MonoBehaviour
             isButtonSelected[buttonTransform.gameObject] = false;
         }
     }
+
+    public bool AllTasksFinished()
+    {
+        return tasks.TrueForAll(x => !x.Running);
+    }
+
+    public void StartTask(Task task)
+    {
+        task.Finished += _ => tasks.Remove(task);
+        tasks.Add(task);
+    }
+
     public void ToggleUI()
     {
         IEnumerator Lerp(GameObject buttonGameObject, bool horizontally, bool toActivePosition)
@@ -142,15 +174,17 @@ public class ScriptedAnimations : MonoBehaviour
 
         GameObject selectedGameObject = EventSystem.current.currentSelectedGameObject;
 
-        StopAllCoroutines();
 
         if (!isButtonSelected.ContainsKey(selectedGameObject))
         {
             selectedGameObject = selectedGameObject.transform.parent.gameObject;
         }
 
-        StartCoroutine(Lerp(selectedGameObject, true, !isButtonSelected[selectedGameObject]));
-        StartCoroutine(Fade(informationSpaceCanvasGroup, isButtonSelected[selectedGameObject]));
+        bool selected = isButtonSelected[selectedGameObject];
+
+        StartTask(new Task(Lerp(selectedGameObject, true, !selected)));
+        StartTask(new Task(Fade(informationSpaceCanvasGroup, !selected)));
+
         foreach (Transform otherButton in allButtonTransforms)
         {
             if (otherButton.gameObject.Equals(selectedGameObject) || otherButton.gameObject.Equals(cancelButton))
@@ -158,7 +192,7 @@ public class ScriptedAnimations : MonoBehaviour
                 continue;
             }
 
-            StartCoroutine(Lerp(otherButton.gameObject, false, isButtonSelected[selectedGameObject]));
+            StartTask(new Task(Lerp(otherButton.gameObject, false, !selected)));
         }
     }
 }

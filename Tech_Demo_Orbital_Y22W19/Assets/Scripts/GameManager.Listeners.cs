@@ -8,7 +8,7 @@ using System.Linq;
 
 public partial class GameManager : MonoBehaviour
 {
-    private static readonly int ONE_HUNDRED_PERCENT = 100;
+    private static readonly int OPPONENT_UI_INDEX = 1;
 
     private int timeToWait;
     private void MovementSelectionListener()
@@ -21,7 +21,7 @@ public partial class GameManager : MonoBehaviour
 
         Vector3Int gridPosition = groundTilemap.WorldToCell(mousePosition);
 
-        TileDrawer.SetColorToTiles(tileHighlights, pathPositionsLastDrawn, tileHighlightIndicator.color);
+        TileDrawer.SetColorToTiles(tileHighlights, pathPositionsLastDrawn, blockSelectorTile.color);
 
         InformationUIManager.Instance.SetAllTextToDefault();
 
@@ -31,9 +31,7 @@ public partial class GameManager : MonoBehaviour
             lastActionCost = currentMap.FindShortestPathTo(gridPosition, out IEnumerable<Vector3Int> pathPositions);
             pathPositionsLastDrawn = pathPositions;
 
-            InformationUIManager.Instance.APNeededText.text = lastActionCost.ToString();
-            InformationUIManager.Instance.TimeNeededText.text = 
-                (Mathf.CeilToInt((float)lastActionCost / currentMap.CurrentUnit.Speed)).ToString();
+            InformationUIManager.Instance.SetTimeAndAPRequiredText(lastActionCost);
 
             TileDrawer.SetColorToTiles(tileHighlights, pathPositions, ColorPalette.LIGHT_BLUE_TRANSLUCENT);
             LineDrawer.DrawLineOnTileMap(tileHighlights, pathLine, pathPositions, currentMap.CurrentUnitPosition);
@@ -62,27 +60,42 @@ public partial class GameManager : MonoBehaviour
         {
             case AttackStatus.Success:
                 pathPositionsLastDrawn = request.TilesHit;
+                lastActionCost = request.ActionPointCost;
+
                 TileDrawer.SetColorToTiles(tileHighlights, request.TilesHit, ColorPalette.LIGHT_GREEN_TRANSLUCENT);
                 LineDrawer.DrawLineOnTileMap(groundTilemap, pathLine, new Vector3Int[] { request.TilesHit.First(), request.TilesHit.Last() });
                 LineDrawer.ColorLine(pathLine, ColorPalette.DARK_GREEN);
 
-                InformationUIManager.Instance.ChanceToHitText.text = (request.ChanceToHit * ONE_HUNDRED_PERCENT).ToString();
-                InformationUIManager.Instance.APNeededText.text = request.ActionPointCost.ToString();
-                InformationUIManager.Instance.TimeNeededText.text =
-                    (Mathf.CeilToInt((float)request.ActionPointCost / currentMap.CurrentUnit.Speed)).ToString();
+                canvasLinearAnimation.UIToActivePosition(OPPONENT_UI_INDEX);
+
+                InformationUIManager.Instance.SetChanceToHitText(request.ChanceToHit);
+                InformationUIManager.Instance.SetTimeAndAPRequiredText(request.ActionPointCost);
+                InformationUIManager.Instance.SetOpponentDetails(request.TargetUnit);
+                InformationUIManager.Instance.SetResultantDamageDealt(Mathf.Max(1, request.ActingUnit.Attack - request.TargetUnit.Defence));
 
                 executeLastActionAllowed = true;
                 break;
 
             case AttackStatus.IllegalTarget:
+                canvasLinearAnimation.UIToDeactivePosition(OPPONENT_UI_INDEX);
                 gameState = GameState.AwaitCombat;
                 break;
 
+
             default:
                 pathPositionsLastDrawn = request.TilesHit;
+                lastActionCost = request.ActionPointCost;
+
                 TileDrawer.SetColorToTiles(tileHighlights, request.TilesHit, ColorPalette.LIGHT_RED_TRANSLUCENT);
                 LineDrawer.DrawLineOnTileMap(groundTilemap, pathLine, new Vector3Int[] { request.TilesHit.First(), request.TilesHit.Last() });
                 LineDrawer.ColorLine(pathLine, Color.red);
+
+                canvasLinearAnimation.UIToActivePosition(OPPONENT_UI_INDEX);
+
+                InformationUIManager.Instance.SetChanceToHitText(0);
+                InformationUIManager.Instance.SetOpponentDetails(request.TargetUnit);
+                InformationUIManager.Instance.SetResultantDamageDealt(0);
+
                 executeLastActionAllowed = false;
                 break;
         }
@@ -97,13 +110,15 @@ public partial class GameManager : MonoBehaviour
         int numberOfUnits = orderedUnitsByTime.Count();
 
         float positionInQueue = numberOfUnits * slider.value;
+
         int numberOfUnitsPassed = Mathf.Min((int)(positionInQueue), numberOfUnits - 1);
         float excess = positionInQueue - numberOfUnitsPassed;
 
+        Debug.Log(CurrentUnit.ActionPointsUsed);
         int timeAfter = numberOfUnitsPassed == numberOfUnits - 1 ? 
-                            orderedUnitsByTime.Last().Time + 200 : 
+                            Mathf.Max(orderedUnitsByTime.Last().Time + 1, CurrentUnit.ActionPointsUsed + CurrentUnit.Time): 
                             orderedUnitsByTime.ElementAt(numberOfUnitsPassed + 1).Time;
-
+        Debug.Log(timeAfter);
         int timeBefore = orderedUnitsByTime.ElementAt(numberOfUnitsPassed).Time;
 
         int offsetTime = timeBefore - currentMap.CurrentUnit.Time;
@@ -112,6 +127,6 @@ public partial class GameManager : MonoBehaviour
 
         timeToWait = offsetTime + differenceTime;
 
-        InformationUIManager.Instance.TimeUI.GetComponentInChildren<TMP_Text>().text = timeToWait.ToString();
+        InformationUIManager.Instance.SetTimeAndAPRequiredText(timeToWait, 0);
     }
 }

@@ -6,6 +6,7 @@ using UnityEngine.Tilemaps;
 [System.Serializable]
 public struct TileCost
 {
+    public string name;
     public TileBase tileBase;
     public int cost;
 }

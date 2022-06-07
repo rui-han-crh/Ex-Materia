@@ -10,6 +10,7 @@ using UnityEngine.InputSystem;
 using System;
 using ColorLookUp;
 using System.Threading;
+using Banzan.Lib.Utility;
 
 // maybe split this class up more, theres like 600 lines here
 public partial class GameManager : MonoBehaviour
@@ -28,63 +29,27 @@ public partial class GameManager : MonoBehaviour
         }
     }
 
+    public enum Command
+    {
+        Movement,
+        Attack,
+        Wait,
+        Overwatch
+    }
 
-    public static Vector3 UNIT_WORLD_OFFSET = new Vector3(0, 0.25f, 0);
-    public static Vector3 HEALTH_BAR_WORLD_OFFSET = new Vector3(0, 1f, 0);
 
-    [SerializeField]
-    private float interpolationSpeed = 2.5f;
-    [SerializeField]
-    private GameObject[] unitGameObjects;
+    public static readonly Vector3 UNIT_WORLD_OFFSET = new Vector3(0, 0.25f, 0);
+    public static readonly Vector3 HEALTH_BAR_WORLD_OFFSET = new Vector3(0, 1f, 0);
+    public static readonly float UNIT_INTERPOLATION_SPEED = 2f;
 
-    [SerializeField]
-    protected Tilemap fullCoverTilemap;
-    [SerializeField]
+
+    private Tilemap fullCoverTilemap;
     private Tilemap halfCoverTilemap;
-    [SerializeField]
-    public Tilemap groundTilemap;
-    [SerializeField]
+    private Tilemap groundTilemap;
     private Tilemap tileHighlights;
-
-    [SerializeField]
-    private Tile tileHighlightIndicator;
-
-    // no property drawers :(
-    [SerializeField]
+    private Tile blockSelectorTile;
     private TileCost[] tileCosts;
-    // END
 
-    private Dictionary<TileBase, int> tileCostMapping = new Dictionary<TileBase, int>();
-
-    private KeyboardControls keyboardControls;
-    private Camera mainCamera;
-
-    private Dictionary<string, GameObject> nameUnitGameObjectMapping = new Dictionary<string, GameObject>();
-    private HashSet<GameObject> markedForDeletion = new HashSet<GameObject>();
-    private Dictionary<GameObject, GameObject> unitToHealthbarMapping = new Dictionary<GameObject, GameObject>();
-
-    [SerializeField]
-    private CharacterSheetBehaviour characterSheetBehaviour;
-
-    [SerializeField]
-    private GameObject healthBarPrefab;
-
-    [SerializeField]
-    private RectTransform healthBarCollection;
-
-    [SerializeField]
-    private LineRenderer pathLine;
-
-    [SerializeField]
-    private UnitQueueManager queueManager;
-
-    [SerializeField]
-    private LinearAnimation canvasLinearAnimation;
-    [SerializeField]
-    private int characterSheetIndex;
-
-    [SerializeField] // temporary, will remove
-    private GameObject mainLight;
 
     // Routine Queue
     private Queue<IEnumerator> routineQueue = new Queue<IEnumerator>();
@@ -95,6 +60,16 @@ public partial class GameManager : MonoBehaviour
     private bool isOverUI;
 
     private GameState gameState = GameState.Selection;
+
+    private KeyboardControls keyboardControls;
+    private Camera mainCamera;
+
+    // Mappers:
+    private Dictionary<TileBase, int> tileCostMapping = new Dictionary<TileBase, int>();
+
+    private Dictionary<string, GameObject> nameUnitGameObjectMapping = new Dictionary<string, GameObject>();
+    private HashSet<GameObject> markedForDeletion = new HashSet<GameObject>();
+    private Dictionary<GameObject, GameObject> unitToHealthbarMapping = new Dictionary<GameObject, GameObject>();
 
     // ActionHandlers:
     private Action<InputAction.CallbackContext> leftClickHandler;
@@ -130,6 +105,19 @@ public partial class GameManager : MonoBehaviour
     private void Awake()
     {
         keyboardControls = new KeyboardControls();
+
+        fullCoverTilemap = tileMapCollection.FullCoverTilemap;
+        halfCoverTilemap = tileMapCollection.HalfCoverTilemap;
+        groundTilemap = tileMapCollection.GroundTilemap;
+        tileHighlights = tileMapCollection.TileHighlights;
+        blockSelectorTile = tileMapCollection.BlockSelectorTile;
+        tileCosts = tileMapCollection.TileCosts;
+
+        queueManager = UnitQueueManager.Instance;
+        characterStatsUIBehaviour = screenUI.CharacterStatsUIBehaviour;
+        canvasLinearAnimation = screenUI.CanvasLinearAnimation;
+
+        pathLine = GetComponent<LineRenderer>();
     }
 
     private void Start()
@@ -259,7 +247,7 @@ public partial class GameManager : MonoBehaviour
 
     public void UpdateCharacterSheet()
     {
-        characterSheetBehaviour.SetCurrentUnitShowing(currentMap.CurrentUnit);
+        characterStatsUIBehaviour.SetUnitStats(currentMap.CurrentUnit);
     }
 
 
@@ -279,13 +267,13 @@ public partial class GameManager : MonoBehaviour
             case GameState.AwaitMovement:
                 StateReset();
                 gameState = GameState.Movement;
-                TileDrawer.Draw(tileHighlights, currentMap.GetReachableTiles().Keys, tileHighlightIndicator);
+                TileDrawer.Draw(tileHighlights, currentMap.GetReachableTiles().Keys, blockSelectorTile);
                 break;
 
             case GameState.AwaitCombat:
                 StateReset();
                 gameState = GameState.Combat;
-                TileDrawer.Draw(tileHighlights, currentMap.GetRange(), tileHighlightIndicator);
+                TileDrawer.Draw(tileHighlights, currentMap.GetRange(), blockSelectorTile);
                 TileDrawer.SetColorToTiles(tileHighlights, currentMap.GetRange(), ColorPalette.YELLOW_TRANSLUCENT);
                 break;
 
@@ -355,7 +343,7 @@ public partial class GameManager : MonoBehaviour
     {
         foreach (GameObject unit in unitGameObjects)
         {
-            GameObject healthbar = Instantiate(healthBarPrefab, healthBarCollection);
+            GameObject healthbar = Instantiate(healthBarDataBag.HealthBarPrefab, healthBarDataBag.HealthBarCollection);
             unitToHealthbarMapping[unit] = healthbar;
             healthbar.GetComponent<BarFillBehaviour>().SetParent(unit.transform);
         }
@@ -396,55 +384,72 @@ public partial class GameManager : MonoBehaviour
         pathLine.positionCount = 0;
     }
 
-    // TODO: All click actions in one function, take in an enum
 
-    public void OnClickMoveUnit()
+    
+    [EnumAction(typeof(Command))]
+    // Unity will not expose enums in the inspector for event so we have to resort to some weird hacks
+    // Read: https://forum.unity.com/threads/ability-to-add-enum-argument-to-button-functions.270817/
+    public void SelectCommand(int commandEnumIndex)
     {
-        if (routineQueue.Count == 0 && executeLastActionAllowed)
-        {
-            MovementRequest movementRequest = new MovementRequest(CurrentMap, CurrentUnitPosition, pathPositionsLastDrawn.ToArray(), lastActionCost);
-            canvasLinearAnimation.ToggleUI(0);
-            ParseRequest(movementRequest);
-        }
+        SelectCommand((Command)commandEnumIndex);
     }
 
-    public void OnClickAttackUnit()
-    {
-        if (routineQueue.Count == 0 && executeLastActionAllowed)
-        {
-            lastActionCost = UnitCombat.ATTACK_COST;
-            Vector3Int initialUnitPosition = currentMap.CurrentUnitPosition;
-            AttackRequest attackRequest = new AttackRequest(CurrentMap,
-                                                            pathPositionsLastDrawn.First(),
-                                                            pathPositionsLastDrawn.Last(),
-                                                            AttackStatus.Success,
-                                                            pathPositionsLastDrawn.ToArray(),
-                                                            lastActionCost);
-            canvasLinearAnimation.ToggleUI(0);
-            ParseRequest(attackRequest);
-        }
-    }
 
-    public void OnClickWait()
+    /// <summary>
+    /// Performs a command as a request given to the current game map.
+    /// </summary>
+    /// <param name="command"></param>
+    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    public void SelectCommand(Command command)
     {
-        if (routineQueue.Count == 0)
+        if (!IsRoutineQueueDormant())
         {
-            WaitRequest waitRequest = new WaitRequest(CurrentMap, CurrentUnitPosition, timeToWait);
-            canvasLinearAnimation.ToggleUI(0);
-            ParseRequest(waitRequest);
-            timeToWait = 0;
+            return;
         }
-    }
 
-    public void OnClickOverwatch()
-    {
-        if (routineQueue.Count == 0)
+        MapActionRequest request;
+
+        switch (command)
         {
-            OverwatchRequest overwatchRequest = new OverwatchRequest(CurrentMap, CurrentUnitPosition);
+            case Command.Movement:
+                if (!executeLastActionAllowed)
+                {
+                    return;
+                }
 
-            canvasLinearAnimation.ToggleUI(0);
-            ParseRequest(overwatchRequest);
+                request = new MovementRequest(CurrentMap, CurrentUnitPosition, pathPositionsLastDrawn.ToArray(), lastActionCost);
+                break;
+
+            case Command.Attack:
+                if (!executeLastActionAllowed)
+                {
+                    return;
+                }
+                canvasLinearAnimation.UIToDeactivePosition(OPPONENT_UI_INDEX);
+
+                request = new AttackRequest(CurrentMap,
+                                            pathPositionsLastDrawn.First(),
+                                            pathPositionsLastDrawn.Last(),
+                                            AttackStatus.Success,
+                                            pathPositionsLastDrawn.ToArray(),
+                                            lastActionCost);
+                break;
+
+            case Command.Wait:
+                request = new WaitRequest(CurrentMap, CurrentUnitPosition, timeToWait);
+                break;
+
+            case Command.Overwatch:
+                request = new OverwatchRequest(CurrentMap, CurrentUnitPosition);
+                break;
+
+            default:
+                throw new ArgumentOutOfRangeException(nameof(command), $"SelectCommand does not take the parameter {nameof(command)}");
         }
+
+        canvasLinearAnimation.ToggleUIWhen(ScriptedAnimations.Instance.AllTasksFinished, characterSheetIndex);
+
+        ParseRequest(request);
     }
 
     /// <summary>
@@ -463,6 +468,7 @@ public partial class GameManager : MonoBehaviour
         UnitAnimatorPerform(unitAnimator, booleanFlag, state, xDirection, yDirection);
     }
 
+
     public void UnitAnimatorPerform(Animator animator, string booleanFlag, bool state, float xDirection, float yDirection)
     {
         if (animator == null)
@@ -479,6 +485,7 @@ public partial class GameManager : MonoBehaviour
         animator.SetBool(booleanFlag, state);
     }
 
+
     public void UnitAnimatorPerform(Animator animator, string booleanFlag, bool state)
     {
         if (animator == null)
@@ -488,6 +495,7 @@ public partial class GameManager : MonoBehaviour
 
         animator.SetBool(booleanFlag, state);
     }
+
 
     public void UnitAnimatorPerform(string unitName, string booleanFlag, bool state)
     {

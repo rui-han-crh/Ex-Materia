@@ -14,6 +14,8 @@ public class AttackRequest : MapActionRequest
     private readonly AttackStatus status;
     private readonly Vector3Int[] tilesHit;
 
+    private readonly bool hasDefender;
+
     public bool Successful => status == AttackStatus.Success;
 
     public AttackStatus Status => status;
@@ -26,7 +28,7 @@ public class AttackRequest : MapActionRequest
 
     public Vector3Int TargetPosition => shootToPosition;
 
-    public Unit TargetUnit => defendingUnit;
+    public Unit TargetUnit => hasDefender ? defendingUnit : throw new NotSupportedException("There is no defending unit");
 
     public AttackRequest(GameMap previousMap,
                         Vector3Int shootFromPosition,
@@ -40,7 +42,18 @@ public class AttackRequest : MapActionRequest
             actionPoints)
     {
         this.shootFromPosition = shootFromPosition;
-        this.defendingUnit = previousMap.ExistsUnitAt(shootToPosition) ? previousMap.GetUnitByPosition(shootToPosition) : new Unit();
+
+        if (previousMap.ExistsUnitAt(shootToPosition))
+        {
+            hasDefender = true;
+            this.defendingUnit = previousMap.GetUnitByPosition(shootToPosition);
+        }
+        else
+        {
+            hasDefender = false;
+            this.defendingUnit = new Unit();
+        }
+
         this.tilesHit = tilesHit;
         this.shootToPosition = shootToPosition;
         this.status = status;

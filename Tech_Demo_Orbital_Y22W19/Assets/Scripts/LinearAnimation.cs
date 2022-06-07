@@ -124,4 +124,17 @@ public class LinearAnimation : MonoBehaviour
         ToggleUI(index);
     }
 
+    public void ToggleUIWhen(Func<bool> query, int characterSheetIndex)
+    {
+        IEnumerator Invoke()
+        {
+            while (!query.Invoke())
+            {
+                yield return null;
+            }
+            ToggleUI(characterSheetIndex);
+        }
+
+        StartCoroutine(Invoke());
+    }
 }

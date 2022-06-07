@@ -14,6 +14,21 @@ using System.Linq;
 /// </summary>
 public class UnitQueueManager : MonoBehaviour
 {
+    private static UnitQueueManager instance;
+
+    public static UnitQueueManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<UnitQueueManager>();
+            }
+            return instance;
+        }
+    }
+
+
     [SerializeField]
     private Transform avatarHolder;
     [SerializeField]
@@ -105,6 +120,9 @@ public class UnitQueueManager : MonoBehaviour
         {
             linAnim.ToggleUI(i);
         }
+
+        AudioManager.Instance.PlayTrack("QueueUpdated");
+
         new Task(CheckAllTargetsStopped(targets));
     }
 

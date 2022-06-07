@@ -8,7 +8,6 @@ public class UnitCombat
     public static readonly int ATTACK_COST = 75;
     public static readonly int MINIMUM_DAMAGE_DEALT = 1;
 
-    private Unit selectedUnitToAttack;
     private GameMapData mapData;
     private Unit currentOffensiveUnit;
 
