@@ -1,6 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using Yarn.Unity;
+
 
 //this is just a test class out of context to load stuff in and out//
 
@@ -18,24 +22,69 @@ using UnityEngine;
 //Another singleton test?
 public class DialogueManager : MonoBehaviour
 {
+    private static DialogueManager instance;
+    public static DialogueManager Instance 
+    { 
+        get 
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<DialogueManager>();
+            }
+            return instance; 
+        } 
+    }
+
+
     public float NextActionTime = 30.0f;
     public float interpolationPeriod = 20.0f;
     public int sceneNumber = 0;
     public Dictionary<int, string> startingNodeDB;
-    public static DialogueManager Instance;
 
-    //Singleton check?
+    private KeyboardControls keyboardControls;
+
+    [SerializeField]
+    private LineView lineView;
+
+    private Action<InputAction.CallbackContext> singleLeftClick;
+
+    //private void OnEnable()
+    //{
+    //    SubscribeLeftClick();
+    //}
+
+    //private void OnDisable()
+    //{
+    //    UnsubscribeLeftClick();
+    //}
+
+    public void EnableContinue()
+    {
+        SubscribeLeftClickContinue();
+    }
+
+    public void DisableContinue()
+    {
+        UnsubscribeLeftClickContinue();
+    }
     void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        keyboardControls = new KeyboardControls();
+    }
+
+    private void SubscribeLeftClickContinue() //this is only for continuing dialogue!
+    {
+       
+        print("Left Click Continue Enabled, should only be dialogue!");
+        keyboardControls.Enable();
+        singleLeftClick = _ => lineView.OnContinueClicked(); //arrowFunction continuing LC!
+        keyboardControls.Mouse.LeftClick.performed += singleLeftClick;
+    }
+
+    private void UnsubscribeLeftClickContinue()
+    {
+        keyboardControls.Mouse.LeftClick.performed -= singleLeftClick;
+        keyboardControls.Disable(); 
     }
     // Start is called before the first frame update
     void Start()
@@ -44,18 +93,16 @@ public class DialogueManager : MonoBehaviour
         //increment dialogueNumber and play dialogue
         sceneNumber += 1;
         YarnManager.Instance.StartConvoAuto("StartEvelynAndOlivia"); //just to test if i can do this?
-        //InvokeRepeating("TestAction", 50.0f, 30.0f);
         //doesn't go to the next one?
         
     }
 
     void Update()
     {
-        //if (Time.time > NextActionTime)
-        //{
-        //    NextActionTime += interpolationPeriod;
-        //    TestAction();
-        //}
+        if (Time.time >= NextActionTime) {
+           TestAction();
+        }
+        
     }
     // Update is called once per frame
     void TestAction()

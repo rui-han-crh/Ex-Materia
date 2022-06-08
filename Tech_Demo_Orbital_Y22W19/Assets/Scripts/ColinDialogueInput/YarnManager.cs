@@ -16,6 +16,9 @@ public class YarnManager : MonoBehaviour
     [SerializeField]
     public CharacterDatabase CharacterDB;
 
+    [SerializeField]
+    public Button eventButton;
+
     //everybody can acceess this!
     public Dictionary<string, FigureCharacter> characterMap = new Dictionary<string, FigureCharacter>();
     public bool isActive = false; //basically to tell anyone that talking is/might be enabled 
@@ -33,15 +36,17 @@ public class YarnManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-    }
-    void Start()
-    {
+
         YI = FindObjectOfType<YarnInteractable>();
         foreach (FigureCharacter c in CharacterDB.characterList)
         {
             characterMap.Add(c.CharName, c); //each character can switch expressions
         }
 
+        foreach (FigureCharacter character in characterMap.Values)
+        {
+            character.InitializeDict();
+        }
 
     }
 
@@ -60,11 +65,12 @@ public class YarnManager : MonoBehaviour
      * Needs a button press on the character to start
      */
 
-
+    
     public void StartConvoButton(string startingNode)
     {
         if (startingNode != null) //TODO: probably need to check for legit startNode for the scene somewhere, probably in the DB?
         {
+            //any event related stuff, in this case enabling a button 
             isActive = true;
             YI.Rewake();
             YI.SetInterctable(startingNode);
@@ -86,6 +92,7 @@ public class YarnManager : MonoBehaviour
     public void EndConvoSequence()
     {
         isActive = false;
+        DialogueManager.Instance.DisableContinue();
     }
 
 }

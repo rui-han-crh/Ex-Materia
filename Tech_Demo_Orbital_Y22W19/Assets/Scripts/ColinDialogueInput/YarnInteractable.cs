@@ -9,9 +9,6 @@ using UnityEngine.InputSystem;
 public class YarnInteractable : MonoBehaviour
 {
     // internal properties exposed to editor
-    [SerializeField]
-    public Sprite Empty;
-    // TODO: pass a string as the starting node 
     private string beginNode = "";
     // internal properties not exposed to editor
     private DialogueRunner dialogueRunner;
@@ -33,11 +30,14 @@ public class YarnInteractable : MonoBehaviour
 
     }
 
+    //when you set interactable, you have to bring up the button!
     public void SetInterctable(string startingNode)
     {
         expression.gameObject.SetActive(true);
+        expression.interactable = true;
         interactable = true; //this means he's already awaiting for a call!
         beginNode = startingNode;
+        YarnManager.Instance.eventButton.gameObject.SetActive(true); //set active eventbutton!
     }
 
     /*
@@ -52,9 +52,11 @@ public class YarnInteractable : MonoBehaviour
         Interact(); //auto interact?
     }
 
-    //this is just a placholder for another action to be added?
+    //the Interact just kick starts the entire process
+    //how you get to here depends!
     public void Interact()
     {
+        YarnManager.Instance.eventButton.gameObject.SetActive(false); //always set false regardless after an interact!
         //check 3 things: Correct startNode, interactable AND legit dialogue running
         if (interactable && !dialogueRunner.IsDialogueRunning && beginNode != "")
         {
@@ -67,6 +69,7 @@ public class YarnInteractable : MonoBehaviour
     {
         Debug.Log($"Started conversation with {name}. at " + beginNode);
         isCurrentConversation = true;
+        DialogueManager.Instance.EnableContinue();
         dialogueRunner.StartDialogue(beginNode);
     }
 
@@ -83,7 +86,6 @@ public class YarnInteractable : MonoBehaviour
 
 
     //disable can leave the button there, but not exit the scene? 
-    //I can't think of a use for it 
     [YarnCommand("disable")]
     public void DisableConversation()
     {
@@ -108,8 +110,13 @@ public class YarnInteractable : MonoBehaviour
     [YarnCommand("endScene")]
     public void EndScene()
     {
+        //step1) Disable all the states / flags within YI (including resetting nodes)
         DisableConversation();
+
+        //Step2) Disable gameobject 
         expression.gameObject.SetActive(false);
+
+        //step3) end convo! (this also includes un-subbing to LC!)
         YarnManager.Instance.EndConvoSequence();
 
     }

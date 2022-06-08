@@ -19,7 +19,7 @@ Narrator: When you're ready, click on the option to begin
 title: StartEvelynAndOlivia
 tags:
 ---
-<<load Speaker Evelyn Neutral>> 
+<<load Speaker Evelyn Neutral>>  //function, gameObject, String(SpeakerName), String(Emotion)
 
 Evelyn: Oh hi there sister Olivia! 
 
