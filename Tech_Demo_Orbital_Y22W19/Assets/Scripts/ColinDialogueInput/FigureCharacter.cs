@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Assets/Dialogues/Characters")]
 public class FigureCharacter : ScriptableObject
 {
-
+    //may find a use one day
     public enum EmotionType
     {
         Angry, 
@@ -23,10 +23,6 @@ public class FigureCharacter : ScriptableObject
     // Start is called before the first frame update
     private Dictionary<string, Sprite> emotions = new Dictionary<string, Sprite>();
 
-
-    // Start is called before the first frame update
-    //public FigureCharacter()
-    //{   if (DictionaryBase == null) DictionaryBase = new Dictionary<string, FigureCharacter>(); }
 
     public Sprite GetEmotion(string emotion)
     {

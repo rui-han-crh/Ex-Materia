@@ -10,7 +10,18 @@ using UnityEngine.UI;
 
 public class YarnManager : MonoBehaviour
 {
-    public static YarnManager Instance;
+    private static YarnManager instance;
+    public static YarnManager Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<YarnManager>();
+            }
+            return instance;
+        }
+    }
     public YarnInteractable YI;
 
     [SerializeField]
@@ -21,22 +32,12 @@ public class YarnManager : MonoBehaviour
 
     //everybody can acceess this!
     public Dictionary<string, FigureCharacter> characterMap = new Dictionary<string, FigureCharacter>();
-    public bool isActive = false; //basically to tell anyone that talking is/might be enabled 
+    public bool isActive = false; //I guess this can be used to signpost to everyone when a dialogue scene is active.
 
 
 
     void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
         YI = FindObjectOfType<YarnInteractable>();
         foreach (FigureCharacter c in CharacterDB.characterList)
         {
@@ -52,6 +53,8 @@ public class YarnManager : MonoBehaviour
 
 
     //Just displays the UI, and can only be accessed within YarnManager 
+    //This can be used if there's more UI elements, but if there's only the dialogue 
+    // +  a picture, there's actually no need for this
     private void DisplayUI()
     {
         isActive = true;
@@ -59,7 +62,13 @@ public class YarnManager : MonoBehaviour
     }
 
 
-    //2 choices --> start immediately, or start with an await to a button press!
+    /// <summary>
+    /// THERE ARE 2 ENTRY POINTS TO ACTIVATE A THE DIALOGUE, IT IS IN YARNMANAGER!
+    /// (A) StartConvoButton --> Takes in the starting node, and awaits for a trigger to start the dialogue (Interact).
+    /// Basically, it's awaiting for an event to kickstart the dialogue
+    /// (B) StartConvoAuto --> Immediately starts the convo, and you can click anywhere to continue
+    /// </summary>
+    /// <param name="startingNode"></param>
 
     /*
      * Needs a button press on the character to start

@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 using Yarn.Unity;
 
 
-//this is just a test class out of context to load stuff in and out//
+//I don't actually have a real purpose for this class yet
 
 /*
  * The DialogueManager could possible hold the flow of starting nodes?
@@ -16,10 +16,10 @@ using Yarn.Unity;
  * 2 --> first boss post credit
  * 3 --> second boss post credit
  * .... 5 --> ending scene 
+ * We can have a hashmap, that has a list of nodes that I can launch sequentially based on the curr scene 
  * 
  */
 
-//Another singleton test?
 public class DialogueManager : MonoBehaviour
 {
     private static DialogueManager instance;
@@ -36,27 +36,12 @@ public class DialogueManager : MonoBehaviour
     }
 
 
-    public float NextActionTime = 30.0f;
-    public float interpolationPeriod = 20.0f;
-    public int sceneNumber = 0;
-    public Dictionary<int, string> startingNodeDB;
-
     private KeyboardControls keyboardControls;
 
     [SerializeField]
     private LineView lineView;
 
     private Action<InputAction.CallbackContext> singleLeftClick;
-
-    //private void OnEnable()
-    //{
-    //    SubscribeLeftClick();
-    //}
-
-    //private void OnDisable()
-    //{
-    //    UnsubscribeLeftClick();
-    //}
 
     public void EnableContinue()
     {
@@ -72,10 +57,13 @@ public class DialogueManager : MonoBehaviour
         keyboardControls = new KeyboardControls();
     }
 
+    /**
+     * In subscribing / unsubbing, I only enable it when I need it
+     * My KBC are switched off whenever I'm not actively using them!
+     */
+
     private void SubscribeLeftClickContinue() //this is only for continuing dialogue!
     {
-       
-        print("Left Click Continue Enabled, should only be dialogue!");
         keyboardControls.Enable();
         singleLeftClick = _ => lineView.OnContinueClicked(); //arrowFunction continuing LC!
         keyboardControls.Mouse.LeftClick.performed += singleLeftClick;
@@ -91,7 +79,6 @@ public class DialogueManager : MonoBehaviour
     {
         //initialize startingNode DB, if not already initialized 
         //increment dialogueNumber and play dialogue
-        sceneNumber += 1;
         YarnManager.Instance.StartConvoAuto("StartEvelynAndOlivia"); //just to test if i can do this?
         //doesn't go to the next one?
         
@@ -99,14 +86,7 @@ public class DialogueManager : MonoBehaviour
 
     void Update()
     {
-        if (Time.time >= NextActionTime) {
-           TestAction();
-        }
-        
+
     }
     // Update is called once per frame
-    void TestAction()
-    {
-       YarnManager.Instance.StartConvoButton("FirstMeetLucien");
-    }
 }

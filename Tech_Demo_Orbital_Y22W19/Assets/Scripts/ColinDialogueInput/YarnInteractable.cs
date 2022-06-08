@@ -6,6 +6,13 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
+
+/*
+ * Every object that can talk to a person has a yarn interactable 
+ * Ideally, there is one speaker, and this gameObject must be named speaker
+ * if not, need to rehook yarn script, because it is calling by gameobject name
+ */
+
 public class YarnInteractable : MonoBehaviour
 {
     // internal properties exposed to editor
@@ -15,10 +22,13 @@ public class YarnInteractable : MonoBehaviour
     public bool interactable = false;
     // I need my outline / something else here
     private bool isCurrentConversation = false;
-    private Button expression;
+    private Button expression; //for now this button doesn't work, but it doesn't need to
     private Dictionary<string, FigureCharacter> characterMap = new Dictionary<string, FigureCharacter>();
 
-
+    /*Rewake is essentially a function that awakes the dialogue runner
+     * and gathers whatever components are necessary 
+     * I have no idea what else to call it 
+     */
     public void Rewake()
     {
         expression = GetComponent<Button>();
@@ -30,7 +40,6 @@ public class YarnInteractable : MonoBehaviour
 
     }
 
-    //when you set interactable, you have to bring up the button!
     public void SetInterctable(string startingNode)
     {
         expression.gameObject.SetActive(true);
@@ -40,22 +49,20 @@ public class YarnInteractable : MonoBehaviour
         YarnManager.Instance.eventButton.gameObject.SetActive(true); //set active eventbutton!
     }
 
-    /*
-     * BUG: OBJECT REF NOT SET TO INSTANCE OF OBJ
-     */
 
     public void StartImmediate(string nextNode)
     {
         beginNode = nextNode;
         expression.gameObject.SetActive(true);
         interactable = true; //failSafe in case DL.isDLRunning doesn't work
-        Interact(); //auto interact?
+        Interact(); 
     }
 
     //the Interact just kick starts the entire process
     //how you get to here depends!
     public void Interact()
     {
+        //it depends what we show on interact
         YarnManager.Instance.eventButton.gameObject.SetActive(false); //always set false regardless after an interact!
         //check 3 things: Correct startNode, interactable AND legit dialogue running
         if (interactable && !dialogueRunner.IsDialogueRunning && beginNode != "")
@@ -85,20 +92,22 @@ public class YarnInteractable : MonoBehaviour
     }
 
 
-    //disable can leave the button there, but not exit the scene? 
-    [YarnCommand("disable")]
+    
     public void DisableConversation()
     {
         isCurrentConversation = false;
         interactable = false;
-        beginNode = ""; //for failsafe purposes :(
+        beginNode = ""; 
     }
+
+    /*
+     * Load is called within yarn whenever I need to change an expression
+     */
 
     [YarnCommand("load")]
 
     public void StartingLoad(string charName, string emotion)
     {
-        print("Loading " + charName + " with emotion: " + emotion);
         expression.image.sprite = YarnManager.Instance.characterMap[charName].GetEmotion(emotion);
     }
 

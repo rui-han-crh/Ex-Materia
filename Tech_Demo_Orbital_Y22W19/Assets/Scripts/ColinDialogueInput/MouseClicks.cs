@@ -1,8 +1,18 @@
 using UnityEngine.InputSystem;
 using UnityEngine;
 
+
+/*
+ * this has to be attatched to something in the scene 
+ * Preferably the GameManager
+ */
+
+
 public class MouseClicks : MonoBehaviour
 {
+    /*
+     * need to serialize the gameCam for this
+     */
     [SerializeField]
     private Camera gameCamera;
     private InputAction click;
