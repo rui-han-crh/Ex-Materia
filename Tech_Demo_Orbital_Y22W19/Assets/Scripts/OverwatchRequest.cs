@@ -11,7 +11,7 @@ public class OverwatchRequest : MapActionRequest
 
     public override float GetUtility()
     {
-        return PreviousMap.EvaluateCurrentPositionSafety();
+        return PreviousMap.EvaluateCurrentPositionSafety() - PreviousMap.EuclideanDistanceToNearestRival(ActingUnitPosition);
     }
 
     public override string ToString()

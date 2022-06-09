@@ -6,35 +6,28 @@ using UnityEngine.UI;
 public class UnitBehaviour : MonoBehaviour
 {
     [SerializeField]
-    private int health = 100;
-
-    [SerializeField]
-    private int unitSpeed = 1;
-
-    [SerializeField]
-    private int attack = 20;
-
-    [SerializeField]
-    private int defence = 10;
-
-    [SerializeField]
-    private int risk = 10;
-
-    [SerializeField]
     private Sprite characterHeadAvatar;
+    [SerializeField]
+    private UnitData originalUnitData;
+    [SerializeField]
+    private UnitData currentUnitData;
 
     [SerializeField]
-    private int actionPointsPerTurn;
-
-    [SerializeField]
-    private Faction faction;
+    private bool isCompletelyNew;
 
     public Unit InitialiseUnit(int startingTime)
     {
-        return new Unit(name, health, faction, characterHeadAvatar, attack, defence, unitSpeed, risk, actionPointsPerTurn).AddTime(startingTime);
+        if (isCompletelyNew)
+        {
+            return new Unit(name, characterHeadAvatar, originalUnitData).AddTime(startingTime);
+        }
+        else
+        {
+            return new Unit(name, characterHeadAvatar, originalUnitData, currentUnitData).AddTime(startingTime);
+        }
     }
 
-    public Faction Faction => faction;
+    public Faction Faction => currentUnitData.Faction;
 
     public Sprite CharacterAvatar => characterHeadAvatar;
 }

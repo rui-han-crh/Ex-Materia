@@ -137,7 +137,7 @@ public class Pathfinder2D
     }
 
     // PUBLIC METHODS
-    public Node[] FindDirectedPath()
+    public Node[] FindDirectedPath(bool unboundedActionPoints = false)
     {
         if (destination != null && !mapData.IsWalkableOn(destination.Coordinates))
         {
@@ -148,7 +148,7 @@ public class Pathfinder2D
         {
             Node current = priorityQueue.Extract();
 
-            if (gScore[current] > unit.ActionPointsLeft)
+            if (!unboundedActionPoints && gScore[current] > unit.ActionPointsLeft)
             {
                 return new Node[0];
             }

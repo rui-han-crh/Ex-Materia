@@ -113,7 +113,6 @@ public partial class GameManager : MonoBehaviour
         blockSelectorTile = tileMapCollection.BlockSelectorTile;
         tileCosts = tileMapCollection.TileCosts;
 
-        queueManager = UnitQueueManager.Instance;
         characterStatsUIBehaviour = screenUI.CharacterStatsUIBehaviour;
         canvasLinearAnimation = screenUI.CanvasLinearAnimation;
 
@@ -178,7 +177,7 @@ public partial class GameManager : MonoBehaviour
         Debug.Log($"Initialised: {currentMap}");
 
         InitialiseHealthBar();
-        queueManager.InitialiseQueue(unitGameObjects, currentMap.AllUnits.ToDictionary(unit => unit.Name, unit => unit));
+        UnitQueueManager.Instance.InitialiseQueue(unitGameObjects, currentMap.AllUnits.ToDictionary(unit => unit.Name, unit => unit));
         gameState = GameState.TurnEnded;
 
         LineRaytracer r = new LineRaytracer();
@@ -186,7 +185,6 @@ public partial class GameManager : MonoBehaviour
             groundTilemap.WorldToCell(unitGameObjects[1].transform.position), 
             GameMap.UNIT_GRID_OFFSET, 
             currentMap.MapData);
-        print($"{groundTilemap.WorldToCell(unitGameObjects[0].transform.position)} {groundTilemap.WorldToCell(unitGameObjects[1].transform.position)} {res}");
     }
 
     private void OnEnable()
@@ -288,8 +286,7 @@ public partial class GameManager : MonoBehaviour
                 RedrawHealthBar();
                 UpdateCharacterSheet();
                 
-                queueManager.UpdateUnitQueue(currentMap.AllUnits.ToDictionary(unit => unit.Name, unit => unit));
-                Debug.Log(currentMap);
+                UnitQueueManager.Instance.UpdateUnitQueue(currentMap.AllUnits.ToDictionary(unit => unit.Name, unit => unit));
 
                 InformationUIManager.Instance.SetAllTextToDefault();
 
@@ -322,7 +319,7 @@ public partial class GameManager : MonoBehaviour
             {
                 lastRoutine = new Task(routineQueue.Dequeue());
             }
-            else if (!queueManager.IsPlayingAnimation && !autoPlayQueued && gameState == GameState.OpponentTurn)
+            else if (!UnitQueueManager.Instance.IsPlayingAnimation && !autoPlayQueued && gameState == GameState.OpponentTurn)
             {
                 AutoPlay();
             }

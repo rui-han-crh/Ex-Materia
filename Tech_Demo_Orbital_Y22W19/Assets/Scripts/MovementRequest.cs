@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 public class MovementRequest : MapActionRequest
 {
@@ -19,9 +20,12 @@ public class MovementRequest : MapActionRequest
 
     public override float GetUtility()
     {
-        // Must be non-positive
+        // Must be NON-POSITIVE, represents the potential damage received at destination
 
         GameMap nextMap = PreviousMap.DoAction(this);
+
+        // Evaluates THIS ACTING UNIT safety according to the NEXT MAP.
+        // **This is not the same as EvaluateCurrentPositionSafety!**
 
         List<Vector3Int> allRivalPosition = nextMap.AllUnitPositions
             .Where(rivalPosition => nextMap.GetUnitByPosition(rivalPosition).Faction != ActingUnit.Faction).ToList();
@@ -39,9 +43,17 @@ public class MovementRequest : MapActionRequest
             }
         }
         
-        return -utility > ActingUnit.Risk ? utility : 0;
+        utility = -utility > ActingUnit.Risk ? utility : 0;
+
+        return utility - PreviousMap.EuclideanDistanceToNearestRival(DestinationPosition) + GetAttackRating();
     }
 
+
+    /// <summary>
+    /// Evaluates the potential to attack another rival unit from the destination
+    /// as a result of carrying out this movement request onto the game map.
+    /// </summary>
+    /// <returns></returns>
     public float GetAttackRating()
     {
         // Must be postive

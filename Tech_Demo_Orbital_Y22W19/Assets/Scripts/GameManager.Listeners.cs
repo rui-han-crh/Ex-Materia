@@ -114,11 +114,10 @@ public partial class GameManager : MonoBehaviour
         int numberOfUnitsPassed = Mathf.Min((int)(positionInQueue), numberOfUnits - 1);
         float excess = positionInQueue - numberOfUnitsPassed;
 
-        Debug.Log(CurrentUnit.ActionPointsUsed);
         int timeAfter = numberOfUnitsPassed == numberOfUnits - 1 ? 
                             Mathf.Max(orderedUnitsByTime.Last().Time + 1, CurrentUnit.ActionPointsUsed + CurrentUnit.Time): 
                             orderedUnitsByTime.ElementAt(numberOfUnitsPassed + 1).Time;
-        Debug.Log(timeAfter);
+
         int timeBefore = orderedUnitsByTime.ElementAt(numberOfUnitsPassed).Time;
 
         int offsetTime = timeBefore - currentMap.CurrentUnit.Time;

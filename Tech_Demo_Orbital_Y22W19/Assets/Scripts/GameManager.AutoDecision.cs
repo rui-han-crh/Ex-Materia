@@ -26,11 +26,8 @@ public partial class GameManager
         }, 
         tokenSource.Token);
 
-        Debug.Log($"{bestRequest} Safety: {bestRequest.GetNextMap().EvaluateCurrentPositionSafety()}");
-        if (bestRequest.ActionType == MapActionType.Movement)
-        {
-            Debug.Log(((MovementRequest)bestRequest).GetAttackRating());
-        }
+        Debug.Log($"{bestRequest} Utility: {bestRequest.GetUtility()}");
+        
 
         ParseRequest(bestRequest);
         autoPlayQueued = false;

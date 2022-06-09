@@ -354,8 +354,6 @@ public struct GameMap
                     unitAttacked = unitAttacked.DecreaseHealth(
                         Mathf.Max(UnitCombat.MINIMUM_DAMAGE_DEALT, attackRequest.ActingUnit.Attack - unitAttacked.Defence));
 
-                    Debug.Log($"Attack was successful {unitAttacked}");
-
                     if (unitAttacked.Health == 0)
                     {
                         newPositionUnitMap.Remove(attackRequest.TargetPosition);
@@ -364,10 +362,6 @@ public struct GameMap
                     {
                         newPositionUnitMap[attackRequest.TargetPosition] = unitAttacked;
                     }
-                }
-                else
-                {
-                    Debug.Log("Attack failed");
                 }
 
                 Unit newMapAttackingUnit = newPositionUnitMap[attackRequest.ActingUnitPosition];
@@ -424,6 +418,7 @@ public struct GameMap
     public IEnumerable<MapActionRequest> GetOrderedMapActions()
     {
         List<MapActionRequest> requests = new List<MapActionRequest>();
+
         if (currentTurnUnit.ActionPointsLeft >= UnitCombat.ATTACK_COST)
         {
             IEnumerable<MovementRequest> movementRequests = GetAllMovementRequestsPossible();
@@ -437,38 +432,23 @@ public struct GameMap
 
         requests.Add(new OverwatchRequest(this, GetPositionByUnit(currentTurnUnit)));
 
+        // wtf
         requests.Sort((x, y) =>
         {
             Debug.Assert(x != null, $"{x} is null");
             float xUtility = x.GetUtility();
             float yUtility = y.GetUtility();
 
-            if ((x.ActionType == y.ActionType)
-                || (x.ActionType == MapActionType.Overwatch && y.ActionType == MapActionType.Movement)
-                || (x.ActionType == MapActionType.Movement && y.ActionType == MapActionType.Overwatch))
+            if (    (x.ActionType == y.ActionType)
+                ||  (x.ActionType == MapActionType.Overwatch && y.ActionType == MapActionType.Movement)
+                ||  (x.ActionType == MapActionType.Movement && y.ActionType == MapActionType.Overwatch))
             {
                 if (xUtility != yUtility)
                 {
                     return (int)Mathf.Sign(xUtility - yUtility);
                 }
-                else if (x.ActionType == MapActionType.Movement && y.ActionType == MapActionType.Movement)
-                {
-                    return (int)Mathf.Sign(((MovementRequest)x).GetAttackRating() - ((MovementRequest)y).GetAttackRating());
-                }
-                else if (x.ActionType == MapActionType.Movement && y.ActionType == MapActionType.Overwatch
-                        && ((MovementRequest)x).GetAttackRating() > 0)
-                {
-                    return 1;
-                }
-                else if (y.ActionType == MapActionType.Movement && x.ActionType == MapActionType.Overwatch
-                        && ((MovementRequest)y).GetAttackRating() > 0)
-                {
-                    return -1;
-                }
-                else
-                {
-                    return y.ActionPointCost - x.ActionPointCost;
-                }
+                
+                return y.ActionPointCost - x.ActionPointCost;
             }
             else
             {
@@ -530,6 +510,22 @@ public struct GameMap
             hash = hash * 23 + lastAction.GetHashCode();
             return hash;
         }
+    }
+
+    public float EuclideanDistanceToNearestRival(Vector3Int position, bool printArray = false)
+    {
+        GameMap map = this;
+        float[] array = map.AllUnitPositions
+                            .Where(x => !map.GetUnitByPosition(x).Faction.Equals(map.CurrentUnit.Faction))
+                            .Select(x => Vector3.Distance(x, position))
+                            .ToArray();
+
+        if (printArray)
+        {
+            Debug.Log($"Current Unit: {map.CurrentUnit.Name}, {string.Join(", ", array)}");
+        }
+        
+        return Mathf.Min(array);
     }
 
 

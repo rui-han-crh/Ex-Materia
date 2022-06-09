@@ -93,7 +93,6 @@ public partial class GameManager : MonoBehaviour
     private CharacterStatsUIBehaviour characterStatsUIBehaviour;
     private LinearAnimation canvasLinearAnimation;
     private int characterSheetIndex;
-    private UnitQueueManager queueManager;
     private LineRenderer pathLine;
 
     ////////////////////////////////////////// END ////////////////////////////////////////////////////
