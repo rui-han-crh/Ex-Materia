@@ -1,0 +1,91 @@
+﻿//Not sure how to load the beginning nodes
+// Emotions:
+
+title: Start
+tags:
+---
+Narrator: Welcome to Ex-Materia!
+Narrator: The game takes place in a new-age Technocracy
+Narrator: named <B>Cajovia</B>
+Narrator: You will follow the journey of a team of 5 rebels, known as the Progeny 
+Narrator: Choose your fate and steps carefully! 
+Narrator: When you're ready, click on the option to begin 
+-> Yes
+<<disable Speaker>>
+===
+
+
+
+title: StartEvelynAndOlivia
+tags:
+---
+<<load Speaker Evelyn Neutral>>  //function, gameObject, String(SpeakerName), String(Emotion)
+
+Evelyn: Oh hi there sister Olivia! 
+
+<<load Speaker Olivia Neutral>>
+Olivia: The weather is really great! 
+Olivia: You know... 
+<<load Speaker Olivia Sad>>
+Olivia: This really reminds me of the day we left home 
+
+<<load Speaker Evelyn Sad>>
+Evelyn: Do you really wanna talk about this again? 
+-> Yes
+	<<load Speaker Olivia Angry>>
+	Olivia: I remember
+	Olivia: That bastard beating us when we were little
+	Olivia: And mum..
+	<<load Speaker Evelyn Sad>>
+	Evelyn: It's alright...
+	Evelyn: We did learn some useful skills from the military right?
+	<<load Speaker Olivia Neutral>>
+	Olivia: I suppose
+	Olivia: Today just feels like the day he clobbered us into submission 
+	Olivia: Sad times 
+	<<load Speaker Olivia Sad>>
+-> No 
+
+<<load Speaker Olivia Surprised>>
+Olivia: Oh, that reminds me, we were expecting new blood today right?
+
+<<load Speaker Evelyn Happy>>
+Evelyn: Yeah 
+Evelyn: I heard he's the son of a former PAM researcher
+<<load Speaker Olivia Disgusted>>
+Olivia: Disgusting...
+Olivia: So his dad created the very thing we seek to destroy...
+
+<<load Speaker Evelyn Happy>>
+Evelyn: I'm sure he has his regions for joining us!
+Evelyn: Anyways, his name is Lucien, let's go meet him!
+<<jump FirstMeetLucien>>
+
+
+===
+title: FirstMeetLucien
+tags:
+---
+<<load Speaker Lucien Neutral>>
+Lucien: God I hope I know what I'm doing 
+<<load Speaker Evelyn Neutral>>
+Evelyn: Oh..
+<<load Speaker Evelyn Happy>>
+Evelyn: You must be Lucien!
+<<load Speaker Evelyn Surprised>>
+Evelyn: Wait... your eyes 
+Evelyn: You look like you've seen a lot
+<<load Speaker Lucien Sad>>
+Lucien: Yes
+Lucien: Why?
+Lucien: Would you like to know more about my origin?
+-> Yes
+	<<load Speaker Lucien Neutral>>
+	Lucien: I used to be a historian
+	Lucien: More backstory :(
+->No 
+===
+
+
+
+
