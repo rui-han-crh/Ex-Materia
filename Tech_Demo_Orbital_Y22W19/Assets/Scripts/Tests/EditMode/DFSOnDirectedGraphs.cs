@@ -94,5 +94,33 @@ namespace AlgorithmsTest
 
             Assert.AreEqual("a, b, c, d, e, f, g, h, ", output);
         }
+
+        [Test]
+        public void DFSTestNonreachable()
+        {
+            string[] strings = { "a", "b", "c" };
+
+            IDirectedGraph<string> directedGraph = new DirectedGraph<string>(strings);
+
+            // a -> b <- c
+
+            directedGraph.Connect("a", "b");
+            directedGraph.Connect("c", "b");
+
+            string output = "";
+
+            SearchAlgorithms.DepthFirstSearch("a", x => directedGraph.GetConnected(x),
+                                                x => output += x + ", ");
+
+            Assert.AreEqual("a, b, ", output);
+
+            output = "";
+
+            SearchAlgorithms.DepthFirstSearch("c", x => directedGraph.GetConnected(x),
+                                                x => output += x + ", ");
+
+            Assert.AreEqual("c, b, ", output);
+
+        }
     }
 }
