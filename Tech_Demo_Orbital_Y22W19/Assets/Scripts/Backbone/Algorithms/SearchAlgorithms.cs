@@ -7,7 +7,7 @@ using DataStructures;
 
 namespace Algorithms
 {
-    public class SearchAlgorithms
+    public static class SearchAlgorithms
     {
         public static void DepthFirstSearch<T>(T root, Func<T, IEnumerable<T>> GetChildren, Action<T> ThenDo)
         {
