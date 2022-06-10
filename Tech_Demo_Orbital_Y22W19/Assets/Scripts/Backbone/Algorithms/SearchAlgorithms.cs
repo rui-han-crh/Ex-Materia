@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using DataStructures;
 
 namespace Algorithms
 {
@@ -10,19 +11,32 @@ namespace Algorithms
     {
         public static void DepthFirstSearch<T>(T root, Func<T, IEnumerable<T>> GetChildren, Action<T> ThenDo)
         {
-            ThenDo(root);
+            ICollection<T> visited = new HashSet<T>() { root };
 
-            IEnumerable<T> children = GetChildren(root);
-
-            if (children.Count() == 0)
+            void DFS(T root, Func<T, IEnumerable<T>> GetChildren, Action<T> ThenDo)
             {
-                return;
+                ThenDo(root);
+
+                IEnumerable<T> children = GetChildren(root);
+
+                if (children.Count() == 0)
+                {
+                    return;
+                }
+
+                foreach (T child in children)
+                {
+                    if (visited.Contains(child))
+                    {
+                        continue;
+                    }
+
+                    visited.Add(child);
+                    DFS(child, GetChildren, ThenDo);
+                }
             }
 
-            foreach (T child in children)
-            {
-                DepthFirstSearch(child, GetChildren, ThenDo);
-            }
+            DFS(root, GetChildren, ThenDo);
         }
 
         public static int BreadthFirstSearch<T>(T root, Func<T, IEnumerable<T>> GetChildren, Action<T> ThenDo)

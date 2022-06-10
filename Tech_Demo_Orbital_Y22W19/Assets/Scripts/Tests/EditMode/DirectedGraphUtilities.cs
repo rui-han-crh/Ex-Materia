@@ -14,7 +14,7 @@ namespace DirectedGraphTests
         public void GraphDiameterLine()
         {
             string[] strings = { "a", "b", "c", "d", "e", "f", "g" };
-            IGraph<string> graph = new DirectedGraph<string>(strings);
+            IGraphable<string> graph = new DirectedGraph<string>(strings);
 
             graph.Connect("a", "b");
             graph.Connect("b", "c");
@@ -30,7 +30,7 @@ namespace DirectedGraphTests
         public void GraphDiameterCircle()
         {
             string[] strings = { "a", "b", "c", "d", "e", "f", "g" };
-            IGraph<string> graph = new DirectedGraph<string>(strings);
+            IGraphable<string> graph = new DirectedGraph<string>(strings);
 
             graph.Connect("a", "b");
             graph.Connect("b", "c");
@@ -47,7 +47,7 @@ namespace DirectedGraphTests
         public void GraphDiameterCircleUndirected()
         {
             string[] strings = { "a", "b", "c", "d", "e", "f", "g" };
-            IGraph<string> graph = new DirectedGraph<string>(strings);
+            IGraphable<string> graph = new DirectedGraph<string>(strings);
 
             graph.Connect("a", "b");
             graph.Connect("b", "a");
@@ -77,7 +77,7 @@ namespace DirectedGraphTests
         public void GraphCycleSimple()
         {
             string[] strings = { "a", "b", "c", "d", "e", "f", "g" };
-            IGraph<string> graph = new DirectedGraph<string>(strings);
+            IGraphable<string> graph = new DirectedGraph<string>(strings);
 
             graph.Connect("a", "b");
             graph.Connect("b", "c");
@@ -94,7 +94,7 @@ namespace DirectedGraphTests
         public void GraphCycleFalse()
         {
             string[] strings = { "a", "b", "c", "d", "e", "f", "g" };
-            IGraph<string> graph = new DirectedGraph<string>(strings);
+            IGraphable<string> graph = new DirectedGraph<string>(strings);
 
             graph.Connect("a", "b");
             graph.Connect("b", "c");
@@ -110,7 +110,7 @@ namespace DirectedGraphTests
         public void GraphCycleDouble()
         {
             string[] strings = { "a", "b", "c", "d", "e", "f", "g" };
-            IGraph<string> graph = new DirectedGraph<string>(strings);
+            IGraphable<string> graph = new DirectedGraph<string>(strings);
 
             graph.Connect("a", "b");
             graph.Connect("b", "c");
@@ -128,7 +128,7 @@ namespace DirectedGraphTests
         public void GraphCycleNineShape()
         {
             string[] strings = { "a", "b", "c", "d", "e", "f", "g" };
-            IGraph<string> graph = new DirectedGraph<string>(strings);
+            IGraphable<string> graph = new DirectedGraph<string>(strings);
 
             graph.Connect("a", "b");
             graph.Connect("b", "c");
@@ -145,7 +145,7 @@ namespace DirectedGraphTests
         public void GraphCycleDisconnected()
         {
             string[] strings = { "a", "b", "c", "d", "e", "f", "g" };
-            IGraph<string> graph = new DirectedGraph<string>(strings);
+            IGraphable<string> graph = new DirectedGraph<string>(strings);
 
             graph.Connect("a", "b");
             graph.Connect("b", "c");
@@ -162,7 +162,7 @@ namespace DirectedGraphTests
         public void GraphCycleDisconnectedMany()
         {
             string[] strings = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k" };
-            IGraph<string> graph = new DirectedGraph<string>(strings);
+            IGraphable<string> graph = new DirectedGraph<string>(strings);
 
             graph.Connect("j", "d");
             graph.Connect("d", "j");
@@ -174,7 +174,7 @@ namespace DirectedGraphTests
         public void GraphCycleTotallyDisconnected()
         {
             string[] strings = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k" };
-            IGraph<string> graph = new DirectedGraph<string>(strings);
+            IGraphable<string> graph = new DirectedGraph<string>(strings);
 
 
             Assert.IsFalse(graph.HasCycle());
@@ -184,7 +184,7 @@ namespace DirectedGraphTests
         public void GraphStarDegree()
         {
             string[] strings = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k" };
-            IGraph<string> graph = new DirectedGraph<string>(strings);
+            IGraphable<string> graph = new DirectedGraph<string>(strings);
 
             graph.Connect("a", "b");
             graph.Connect("a", "c");
@@ -205,7 +205,7 @@ namespace DirectedGraphTests
         public void GraphLineDegree()
         {
             string[] strings = { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k" };
-            IGraph<string> graph = new DirectedGraph<string>(strings);
+            IGraphable<string> graph = new DirectedGraph<string>(strings);
 
             graph.Connect("a", "b");
             graph.Connect("b", "c");

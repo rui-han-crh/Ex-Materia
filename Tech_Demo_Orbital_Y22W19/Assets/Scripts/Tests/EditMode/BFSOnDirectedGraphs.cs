@@ -9,7 +9,7 @@ using UnityEngine.TestTools;
 
 namespace AlgorithmsTest
 {
-    public class BFSOnDirectGraphs
+    public class BFSOnDirectedGraphs
     {
         [Test]
         public void BFSTest()
