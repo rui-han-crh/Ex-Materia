@@ -6,7 +6,7 @@ namespace DataStructures
 {
     public interface IUndirectedGraph<T> : IGraphable<T>
     {
-        public IUndirectedGraph<T> ContractEdgeBetween(T a, T b);
+        public IUndirectedGraph<T> ContractEdgeBetween(T a, T b, T c);
 
 
     }

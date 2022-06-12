@@ -179,17 +179,8 @@ namespace DataStructures
             return storedItems.Keys.GetEnumerator();
         }
 
-        public bool Connect(T a, T b)
-        {
-            if (!this.Contains(a) || !this.Contains(b))
-            {
-                return false;
-            }
-
-            GraphNode graphNodeA = storedItems[a];
-            GraphNode graphNodeB = storedItems[b];
-            return graphNodeA.Connect(graphNodeB);
-        }
+        public abstract bool Connect(T a, T b);
+  
 
         public bool IsConnected(T a, T b)
         {
@@ -203,18 +194,8 @@ namespace DataStructures
             return graphNodeA.IsConnectedWith(graphNodeB);
         }
 
-        public bool Disconnect(T a, T b)
-        {
-            if (!this.Contains(a) || !this.Contains(b))
-            {
-                return false;
-            }
-
-            GraphNode graphNodeA = storedItems[a];
-            GraphNode graphNodeB = storedItems[b];
-            return graphNodeA.Disconnect(graphNodeB);
-        }
-
+        public abstract bool Disconnect(T a, T b);
+  
         public IEnumerable<T> GetConnected(T item)
         {
             if (!this.Contains(item))

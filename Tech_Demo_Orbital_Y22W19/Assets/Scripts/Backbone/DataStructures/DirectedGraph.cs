@@ -35,6 +35,32 @@ namespace DataStructures
             return GetStronglyConnectedComponents().Count() == 1;
         }
 
+        public override bool Connect(T a, T b)
+        {
+            if (!this.Contains(a) || !this.Contains(b))
+            {
+                return false;
+            }
+
+            GraphNode graphNodeA = StoredItems[a];
+            GraphNode graphNodeB = StoredItems[b];
+            return graphNodeA.Connect(graphNodeB);
+        }
+
+
+        public override bool Disconnect(T a, T b)
+        {
+            if (!this.Contains(a) || !this.Contains(b))
+            {
+                return false;
+            }
+
+            GraphNode graphNodeA = StoredItems[a];
+            GraphNode graphNodeB = StoredItems[b];
+            return graphNodeA.Disconnect(graphNodeB);
+
+        }
+
         public IDirectedGraph<T> Transpose()
         {
             DirectedGraph<T> graph = new DirectedGraph<T>(StoredItems.Keys);
