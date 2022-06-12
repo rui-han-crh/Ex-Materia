@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.TestTools;
 
 namespace DirectedGraphTests {
-    public class StrongConnectivityTest
+    public class StrongConnectivity
     {
         [Test]
         public void GraphTranspose()
@@ -98,55 +98,6 @@ namespace DirectedGraphTests {
         }
 
         [Test]
-        public void GraphTransposeSimple()
-        {
-            IDirectedGraph<string> graph = new DirectedGraph<string>();
-
-            string[] strings = { "a", "b", "c" };
-
-            foreach (string s in strings)
-            {
-                graph.Add(s);
-            }
-
-            // a --> b <-- c
-
-            graph.Connect("a", "b");
-            graph.Connect("c", "b");
-
-            IDirectedGraph<string> transposed = graph.Transpose();
-
-            Assert.IsFalse(transposed.IsConnected("a", "b"));
-            Assert.IsFalse(transposed.IsConnected("c", "b"));
-            Assert.IsTrue(transposed.IsConnected("b", "a"));
-            Assert.IsTrue(transposed.IsConnected("b", "c"));
-            
-        }
-
-        [Test]
-        public void GraphStronglyConnectedCountSimple()
-        {
-            IDirectedGraph<string> graph = new DirectedGraph<string>();
-
-            string[] strings = { "a", "b", "c"};
-
-            foreach (string s in strings)
-            {
-                graph.Add(s);
-            }
-
-            // a --> b <-- c
-
-            graph.Connect("a", "b");
-            graph.Connect("c", "b");
-
-            CollectionAssert.AreEquivalent(new HashSet<string[]>() { new string[] { "a" }, new string[] { "b" }, new string[] { "c" } },
-                                       graph.GetStronglyConnectedComponents());
-
-            Assert.AreEqual(3, graph.GetStronglyConnectedComponents().Count());
-        }
-
-        [Test]
         public void GraphStronglyConnectedCount()
         {
             IDirectedGraph<string> graph = new DirectedGraph<string>();
@@ -234,43 +185,6 @@ namespace DirectedGraphTests {
             graph.Connect("g", "a");
 
             Assert.AreEqual(1, graph.GetStronglyConnectedComponents().Count());
-        }
-
-        [Test]
-        public void GraphStronglyConnectedThreeLoop()
-        {
-            IDirectedGraph<string> graph = new DirectedGraph<string>();
-
-            string[] strings = { "a", "b", "c", "d", "e", "f", "g", "h", "i" };
-
-            foreach (string s in strings)
-            {
-                graph.Add(s);
-            }
-
-            // a --> b      f             h 
-            // ^    /      / ^           ^  \
-            //  \  v      v   \         /    v
-            //    c  --> d --> e <---- g <-- i
-
-            graph.Connect("a", "b");
-            graph.Connect("b", "c");
-            graph.Connect("c", "a");
-
-            graph.Connect("c", "d");
-
-            graph.Connect("d", "e");
-            graph.Connect("e", "f");
-            graph.Connect("f", "d");
-
-            graph.Connect("g", "e");
-
-            graph.Connect("g", "h");
-            graph.Connect("h", "i");
-            graph.Connect("i", "g");
-
-
-            Assert.AreEqual(3, graph.GetStronglyConnectedComponents().Count());
         }
     }
 }
