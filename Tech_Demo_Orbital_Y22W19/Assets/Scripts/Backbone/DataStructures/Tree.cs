@@ -29,7 +29,7 @@ namespace DataStructures
                 return false;
             }
             int numConnected = 0;
-            foreach (GraphNode parent in StoredItems[data].GetConnected())
+            foreach (GraphNode parent in StoredItems[data].IncomingNodes)
             {
                 numConnected++;
             }
@@ -49,7 +49,7 @@ namespace DataStructures
                 return false;
             }
             int numConnected = 0;
-            foreach (GraphNode parent in StoredItems[data].GetConnected())
+            foreach (GraphNode parent in StoredItems[data].IncomingNodes)
             {
                 numConnected++;
             }
@@ -74,7 +74,7 @@ namespace DataStructures
                 return default(T);
             }
             GraphNode dataNode = StoredItems[data];
-            foreach (GraphNode SingleParent in dataNode.GetConnected())
+            foreach (GraphNode SingleParent in dataNode.IncomingNodes)
             {
                 return SingleParent.Data;
             }
