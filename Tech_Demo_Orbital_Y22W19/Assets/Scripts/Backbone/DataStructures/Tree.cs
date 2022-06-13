@@ -10,11 +10,37 @@ namespace DataStructures
     public class Tree<T> : Graph<T>, ITree<T>
     {
 
+        public class TreeNode : GraphNode, IGraphableNode<T>
+        {
+            private TreeNode parent = null;
+            public TreeNode Parent => parent;
+            public TreeNode(T data) : base(data) { }
+
+            public void SetParent(TreeNode newParent)
+            {
+                parent = newParent;
+            }
+
+            public void RemoveParent()
+            {
+                parent = null;
+            }
+
+            public T GetParent()
+            {
+                if (parent == null)
+                {
+                    return default(T);
+                }
+                return parent.Data;
+            }
+
+
+        }
+
         public Tree()
         {
-            //In this tree, I actually don't need a TreeNode 
-            // I can just use getConnected (outgoing nodes) to return me an
-            // Ienumerable!
+
         }
 
         public Tree(IEnumerable<T> items) : base(items)
@@ -22,63 +48,11 @@ namespace DataStructures
 
         }
 
-        public bool HasExactlyOneParent(T data)
-        {
-            if (data == null || !this.Contains(data))
-            {
-                return false;
-            }
-            int numConnected = 0;
-            foreach (GraphNode parent in StoredItems[data].IncomingNodes)
-            {
-                numConnected++;
-            }
-            if (numConnected == 1)
-            {
-                return true;
-            }
-            return false;
-
-
-        }
-
-        public bool HasExactlyNoParent(T data)
-        {
-            if (data == null || !this.Contains(data))
-            {
-                return false;
-            }
-            int numConnected = 0;
-            foreach (GraphNode parent in StoredItems[data].IncomingNodes)
-            {
-                numConnected++;
-            }
-            if (numConnected == 0)
-            {
-                return true;
-            }
-            return false;
-
-
-        }
-
-        /**
-         * GetParent should only have at most one child
-         * There are a bunch of defaults I don't like 
-         */
-
         public T GetParent(T data)
         {
-            if (!this.HasExactlyOneParent(data))
-            {
-                return default(T);
-            }
-            GraphNode dataNode = StoredItems[data];
-            foreach (GraphNode SingleParent in dataNode.IncomingNodes)
-            {
-                return SingleParent.Data;
-            }
-            return default(T);
+            TreeNode treeNode = (TreeNode) StoredItems[data];
+            return treeNode.GetParent();
+
         }
 
         public override bool Connect(T a, T b)
@@ -87,16 +61,16 @@ namespace DataStructures
             {
                 return false;
             }
-            //b must have exactly 0 parents
-            // must a have a parent?
 
-            if (!this.HasExactlyNoParent(b))
-            {
-                return false;
+            //b must be an empty parent (default(T))
+            if (!GetParent(b).Equals(default(T))) {
+                return false; 
             }
 
-            GraphNode graphNodeA = StoredItems[a];
-            GraphNode graphNodeB = StoredItems[b];
+    
+            TreeNode graphNodeA = (TreeNode) StoredItems[a];
+            TreeNode graphNodeB = (TreeNode) StoredItems[b];
+            graphNodeB.SetParent(graphNodeA);
             return graphNodeA.Connect(graphNodeB);
         }
 
@@ -107,8 +81,8 @@ namespace DataStructures
                 return false;
             }
 
-            GraphNode graphNodeA = StoredItems[a];
-            GraphNode graphNodeB = StoredItems[b];
+            TreeNode graphNodeA = (TreeNode) StoredItems[a];
+            TreeNode graphNodeB = (TreeNode) StoredItems[b];
             return graphNodeA.Disconnect(graphNodeB);
 
         }
@@ -118,6 +92,26 @@ namespace DataStructures
             bool destinationReached = false;
             SearchAlgorithms.DepthFirstSearch(a, x => GetConnected(x), x => { if (x.Equals(b)) destinationReached = true; });
             return destinationReached;
+        }
+        //Overriden methods for connect and disconnect 
+
+        public override bool Remove(T a) 
+        {
+            if (!this.Contains(a))
+            {
+                return false;
+            }
+            //Update parents
+            foreach (GraphNode graphNode in StoredItems.Values)
+            {
+                TreeNode treeNode = (TreeNode) graphNode;
+                if (treeNode.GetParent().Equals(a)) 
+                {
+                    treeNode.RemoveParent();
+                }
+            }
+
+            return base.Remove(a);
         }
 
 

@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace DataStructures
 {
-    public interface ITree<T> : IGraphable<T>
+    public interface IGraphableNode<T>
     {
-        public T GetParent(T data);
+        public T GetParent();
     }
 }

@@ -106,7 +106,10 @@ namespace DataStructures
             {
                 return outgoingNodes.Remove(outgoing);
             }
+
         }
+
+
         private readonly Dictionary<T, GraphNode> storedItems = new Dictionary<T, GraphNode>();
 
         protected Dictionary<T, GraphNode> StoredItems => storedItems;
@@ -129,17 +132,17 @@ namespace DataStructures
             }
         }
 
-        void ICollection<T>.Add(T item)
+        public void Add(T item)
         {
             storedItems.Add(item, new GraphNode(item));
         }
 
-        void ICollection<T>.Clear()
+        public void Clear()
         {
             storedItems.Clear();
         }
 
-        bool ICollection<T>.Contains(T item)
+        public bool Contains(T item)
         {
             return storedItems.ContainsKey(item);
         }
@@ -151,7 +154,7 @@ namespace DataStructures
             keyArray.CopyTo(array, arrayIndex);
         }
 
-        bool ICollection<T>.Remove(T item)
+        public virtual bool Remove(T item)
         {
             GraphNode graphNode = storedItems[item];
             foreach (GraphNode incoming in graphNode.IncomingNodes.ToArray())
@@ -169,7 +172,7 @@ namespace DataStructures
             return storedItems.Remove(item);
         }
 
-        IEnumerator<T> IEnumerable<T>.GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
             return storedItems.Keys.GetEnumerator();
         }
