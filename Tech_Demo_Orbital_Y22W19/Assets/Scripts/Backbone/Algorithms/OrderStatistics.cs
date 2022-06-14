@@ -13,61 +13,56 @@ namespace Algorithms
          *From a custom comparer
          */
 
-        public static T QuickSelect<T>(IEnumerable<T> array, IComparer<T> comp, int k)
+        public static T QuickSelect<T>(IEnumerable<T> array, IComparer<T> comp, int k) 
         {
             //Out of bounds check 
             if (k > array.Count() || k < 0)
             {
-                return default(T);
+                throw new IndexOutOfRangeException("k must be more than 0, less than array's size");
             }
 
-
-            int adjustedIndex = array.Count() - k - 1;
-            List<T> PartiallySortedArray = array.ToList(); //I'll be swapping this in place.
-            int startIndex = 0;
-            var endIndex = array.Count() - 1;
-            var pivotIndex = adjustedIndex;
-            System.Random rng = new System.Random();
-            while (endIndex > startIndex)
+            T[] tempCopy=  array.ToArray();
+            int left = 0;
+            int right = array.Count() - 1;
+            while (left <= right)
             {
-                //update pivotIndex
-                pivotIndex = QuickSelectPartition(PartiallySortedArray, startIndex, endIndex, pivotIndex, comp);
-                if (pivotIndex == adjustedIndex)
+                int pivotIndex = QuickSelectPartition(tempCopy, left, right, comp);
+                if (pivotIndex == k -1)
                 {
-                    break;
+                    return tempCopy[pivotIndex];
                 }
-                if (pivotIndex > adjustedIndex)
+                else if (pivotIndex > k - 1)
                 {
-                    endIndex = pivotIndex - 1;
+                    right = pivotIndex--;
                 }
                 else
                 {
-                    startIndex = pivotIndex + 1;
+                    left = pivotIndex++;
                 }
-                pivotIndex = rng.Next(startIndex, endIndex);
             }
-            return PartiallySortedArray[adjustedIndex];
+            throw new Exception("Unreachable Code");
+
         }
 
-        private static int QuickSelectPartition<T>(List<T> array, int startIndex, int endIndex, int pivotIndex, IComparer<T> comp)
+        private static int QuickSelectPartition<T>(T[] array, int startIndex, int endIndex, IComparer<T> comp)
         {
-            T pivotValue = array[pivotIndex];
-            //I can't seem to pass this by reference 
-            Swap(array, startIndex, endIndex);
-            for (int i = startIndex; i < endIndex; i++)
+            T pivot = array[startIndex];
+            int newStart = startIndex - 1;
+            for (int i  = startIndex; i < endIndex; i++)
             {
-                if (comp.Compare(array[i], pivotValue) <= 0 )
+                if(comp.Compare(array[i], pivot) <= 0 ) //array[i]<= pivot
                 {
-                    Swap(array, i, startIndex);
-                    startIndex++;
+                    newStart += 1;
+                    Swap(array, newStart, i); 
                 }
 
             }
-            Swap(array, endIndex, startIndex);
-            return startIndex;
+            newStart += 1;
+            Swap(array, newStart, endIndex);
+            return newStart + 1;
         }
 
-        private static void Swap<T> (List<T> array, int firstIndex, int secondIndex)
+        private static void Swap<T> (T[] array, int firstIndex, int secondIndex)
         {
             T temp = array[firstIndex];
             array[firstIndex] = array[secondIndex];
