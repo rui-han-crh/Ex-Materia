@@ -6,10 +6,10 @@ namespace DataStructures
 {
     public interface IParentable<T>
     {
-        public bool AddParent(T parent);
+        public void SetParent(IParentable<T> node);
 
-        public bool RemoveParent(T parent);
+        public void RemoveParent();
 
-        public T GetParent();
+        public IParentable<T> GetParent();
     }
 }
