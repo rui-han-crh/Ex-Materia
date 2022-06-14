@@ -18,14 +18,14 @@ namespace OrderStatisticsTest
             public override int Compare(string x, string y)
             {
                 //jus tcompares by ASCII
-                return string.CompareOrdinal(x, y);
+                return string.CompareOrdinal(y, x);
             }
         }
         public class SampleIntComparer : Comparer<int>
         {
             public override int Compare(int x, int y)
             {
-                return y - x; //smaller number first
+                return x - y; //smaller number first
             }
         }
         [Test]
