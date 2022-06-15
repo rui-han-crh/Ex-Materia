@@ -96,6 +96,27 @@ namespace CombatSystem.Consultants
             return movementRequests;
         }
 
+        public static HashSet<Vector3Int> GetAllMovementPositions(GameMapData gameMapData, Unit currentActingUnit)
+        {
+            IUndirectedGraph<Vector3Int> graph = gameMapData.ToUndirectedGraph(
+                new HashSet<Vector3Int>() { gameMapData[currentActingUnit] });
+
+            Debug.Log(graph.Count());
+
+            ITree<Vector3Int?> shortestPathTree = PathSearch.AStar(
+                gameMapData[currentActingUnit],
+                null,
+                graph,
+                (current, neighbour) => (int)(Vector3.Distance(current, neighbour) * 10)
+                    + gameMapData.GetTileCost(Vector3Int.FloorToInt(neighbour)),
+                x => 0,
+                currentActingUnit.CurrentActionPoints
+                );
+
+            Debug.Log(shortestPathTree.Count());
+            return new HashSet<Vector3Int>(shortestPathTree.Where(v => v != null).Select(v => v.Value));
+        }
+
         public static int GetPathCost(IEnumerable<Vector3Int> path, GameMapData data)
         {
             int cost = 0;

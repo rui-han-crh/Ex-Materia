@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Managers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -30,6 +31,24 @@ public static class LineDrawer
 
     public static void ColorLine(LineRenderer lineRenderer, Color color)
     {
+        lineRenderer.startColor = color;
+        lineRenderer.endColor = color;
+    }
+
+    public static void DrawLineOnTileMap(Tilemap tilemap, IEnumerable<Vector3Int> pathPosition)
+    {
+        LineRenderer lineRenderer = GlobalResourceManager.Instance.LineRenderer;
+
+        lineRenderer.positionCount = 0;
+        lineRenderer.positionCount = pathPosition.Count();
+
+        lineRenderer.SetPositions(pathPosition.Select(x => tilemap.CellToWorld(x) + WORLD_OFFSET).ToArray());
+    }
+
+    public static void ColorLine(Color color)
+    {
+        LineRenderer lineRenderer = GlobalResourceManager.Instance.LineRenderer;
+
         lineRenderer.startColor = color;
         lineRenderer.endColor = color;
     }

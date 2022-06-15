@@ -9,56 +9,61 @@ namespace Facades
     [RequireComponent(typeof(TileRegisterFacade))]
     public class TileMapFacade : MonoBehaviour
     {
+        private static TileMapFacade instance;
+        public static TileMapFacade Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new TileMapFacade();
+                    Debug.Assert(instance != null, "There is no TileMapFacade in the scene, consider adding one");
+                }
+                return instance;
+            }
+        }
+
         public Tilemap[] groundTilemaps;
         public Tilemap[] halfCoverTilemaps;
         public Tilemap[] fullCoverTilemaps;
+        public Tilemap indicatorMap;
+
         private TileRegisterFacade tileRegisterFacade;
         public TileCensus CreateTileCensus()
         {
             tileRegisterFacade = GetComponent<TileRegisterFacade>();
             IDictionary<Vector3Int, TileData> tileData = new Dictionary<Vector3Int, TileData>();
+
             void AddAllTilesToDictionary(Tilemap map, int cost, TileData.TileType tileType)
             {
-                for (int i = 0; i < map.size.x; i++)
+                foreach (Vector3Int pos in map.cellBounds.allPositionsWithin)
                 {
-                    for (int j = 0; j < map.size.y; j++)
+                    Vector3Int localPlace = new Vector3Int(pos.x, pos.y, pos.z);
+                    if (map.HasTile(localPlace) && !tileData.ContainsKey(localPlace))
                     {
-                        Vector3Int coordinates = new Vector3Int(i, j, 0);
-                        if (map.HasTile(coordinates) && !tileData.ContainsKey(coordinates))
-                        {
-                            tileData.Add(coordinates, new TileData(cost, tileType));
-                        }
+                        tileData.Add(localPlace, new TileData(cost, tileType));
                     }
                 }
             }
+
             foreach (Tilemap fullCoverMap in fullCoverTilemaps)
             {
                 AddAllTilesToDictionary(fullCoverMap, int.MaxValue, TileData.TileType.FullCover);
             }
-            foreach (Tilemap halfCoverMap in fullCoverTilemaps)
+            foreach (Tilemap halfCoverMap in halfCoverTilemaps)
             {
                 AddAllTilesToDictionary(halfCoverMap, int.MaxValue, TileData.TileType.HalfCover);
             }
-            foreach (Tilemap groundMap in fullCoverTilemaps)
+            foreach (Tilemap groundMap in groundTilemaps)
             {
-                for (int i = 0; i < groundMap.size.x; i++)
+                foreach (Vector3Int pos in groundMap.cellBounds.allPositionsWithin)
                 {
-                    for (int j = 0; j < groundMap.size.y; j++)
+                    Vector3Int localPlace = new Vector3Int(pos.x, pos.y, pos.z);
+                    if (groundMap.HasTile(localPlace) && !tileData.ContainsKey(localPlace))
                     {
-                        Vector3Int coordinates = new Vector3Int(i, j, 0);
-                        if (groundMap.HasTile(coordinates) && !tileData.ContainsKey(coordinates))
-                        {
-                            int cost = 0;
-                            Tile tile = groundMap.GetTile<Tile>(coordinates);
-
-                            if (tileRegisterFacade.Contains(tile))
-                            {
-                                cost = tileRegisterFacade[tile];
-                            }
-
-                            tileData.Add(coordinates,
-                                new TileData(cost, TileData.TileType.Ground));
-                        }
+                        Tile tile = groundMap.GetTile<Tile>(localPlace);
+                        int cost = tileRegisterFacade.Contains(tile) ? tileRegisterFacade[tile] : 0;
+                        tileData.Add(localPlace, new TileData(cost, TileData.TileType.Ground));
                     }
                 }
             }

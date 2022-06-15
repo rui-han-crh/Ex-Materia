@@ -71,6 +71,11 @@ public class GameMapData
         return !unitCensus.Contains(position) && tileCensus.GetTileType(position).Equals(TileData.TileType.Ground);
     }
 
+    public bool HasTile(Vector3Int position)
+    {
+        return tileCensus.Contains(position);
+    }
+
     public GameMapData ChangeUnitPosition(Unit unit, Vector3Int position)
     {
         if (!unitCensus.Contains(unit))
@@ -162,7 +167,7 @@ public class GameMapData
             x =>
                 {
                     List<Vector3Int> children = new List<Vector3Int>();
-                    for (float angle = 0; angle <= Mathf.PI * 2; angle += Mathf.PI / 4)
+                    for (float angle = 0; angle < Mathf.PI * 2; angle += Mathf.PI / 4)
                     {
                         Vector3Int child = x + Vector3Int.one.Rotate(angle);
                         

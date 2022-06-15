@@ -52,7 +52,9 @@ namespace Managers
 
             for (int i = 0; i < units.Length; i++)
             {
-                positionToUnitMapping.Add(ground.WorldToCell(unitFacades[i].gameObject.transform.position), units[i]);
+                Vector3Int cellPosition = ground.WorldToCell(unitFacades[i].gameObject.transform.position);
+                positionToUnitMapping.Add(cellPosition, units[i]);
+                unitFacades[i].gameObject.transform.position = ground.CellToWorld(cellPosition);
             }
 
             return new UnitCensus(positionToUnitMapping);

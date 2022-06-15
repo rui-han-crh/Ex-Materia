@@ -10,6 +10,8 @@ using Facades;
 using CombatSystem.Consultants;
 using UnityEngine.Tilemaps;
 using CoroutineGenerators;
+using Managers.Subscribers;
+using CombatSystem.Censuses;
 
 namespace Managers
 {
@@ -127,6 +129,25 @@ namespace Managers
             return ground.CellToWorld(cellCoordinates);
         }
 
+        public Vector3Int WorldToCell(Vector3 worldCoordinates)
+        {
+            return ground.WorldToCell(worldCoordinates);
+        }
+
+        public void SetLastActionAllowed(bool state)
+        {
+            executeLastActionAllowed = state;
+        }
+
+        public void SetIndicatedTiles(IEnumerable<Vector3Int> indicationPositions)
+        {
+            this.indicatedTiles.Clear();
+            foreach (Vector3Int indicationPosition in indicationPositions)
+            {
+                indicatedTiles.Add(indicationPosition);
+            }
+        }
+
         public void BeginCombat()
         {
             SubscribeToCombatListener();
@@ -135,17 +156,20 @@ namespace Managers
 
         public void BeginMovement()
         {
+            TileManager.Instance.IndicatorMap.ClearAllTiles();
             SubscribeToMovementListener();
-
+            TileDrawer.Draw(TileManager.Instance.IndicatorMap, 
+                MovementConsultant.GetAllMovementPositions(currentMap.Data, CurrentActingUnit),
+                TileManager.Instance.Indicator
+                );
         }
 
         private void SubscribeToMovementListener()
         {
-            Debug.Log(currentMap);
             keyboardControls.Mouse.LeftClick.performed -= leftClickHandler;
             keyboardControls.Mouse.RightClick.performed -= rightClickHandler;
 
-            //leftClickHandler = _ => MovementSelectionListener();
+            leftClickHandler = _ => AuxillarySubscribers.SubscribeMovementSelection(keyboardControls.Mouse.MousePosition);
             gameState = SceneState.MovementMode;
 
             keyboardControls.Mouse.LeftClick.performed += leftClickHandler;

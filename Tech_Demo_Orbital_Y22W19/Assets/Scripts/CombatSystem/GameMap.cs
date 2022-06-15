@@ -84,6 +84,11 @@ public class GameMap
         return gameMapData.UnitsInPlay.Where(unit => predicate(unit));
     }
 
+    public bool HasTile(Vector3Int position)
+    {
+        return gameMapData.HasTile(position);
+    }
+
     public MapActionRequest GetKthBestAction(int k)
     {
         IEnumerable<MapActionRequest> actions = CombatConsultant.GetAllAttacks(gameMapData, currentActingUnit)
