@@ -11,18 +11,18 @@ namespace Algorithms
     {
         public static void DepthFirstSearch<T>(T root, Func<T, IEnumerable<T>> GetChildren, Action<T> ThenDo)
         {
-            DepthFirstSearch(root, GetChildren, ThenDo, _ => { });
-        }
-
-        public static void DepthFirstSearch<T>(T root, Func<T, IEnumerable<T>> GetChildren, Action<T> ThenDo, Action<T> Backtrack)
-        {
             ICollection<T> visited = new HashSet<T>() { root };
 
-            void DFS(T root)
+            void DFS(T root, Func<T, IEnumerable<T>> GetChildren, Action<T> ThenDo)
             {
                 ThenDo(root);
 
                 IEnumerable<T> children = GetChildren(root);
+
+                if (children.Count() == 0)
+                {
+                    return;
+                }
 
                 foreach (T child in children)
                 {
@@ -32,13 +32,11 @@ namespace Algorithms
                     }
 
                     visited.Add(child);
-                    DFS(child);
+                    DFS(child, GetChildren, ThenDo);
                 }
-
-                Backtrack(root);
             }
 
-            DFS(root);
+            DFS(root, GetChildren, ThenDo);
         }
 
         public static int BreadthFirstSearch<T>(T root, Func<T, IEnumerable<T>> GetChildren, Action<T> ThenDo)
@@ -91,23 +89,21 @@ namespace Algorithms
 
             HashSet<T> allNodes = new HashSet<T>(directedGraph.ToArray());
 
-            Stack<T> stack = new Stack<T>();
+            Queue<T> queue = new Queue<T>();
 
             while (allNodes.Count > 0)
             {
                 DepthFirstSearch(allNodes.First(),
                                 x => directedGraph.GetConnected(x).Where(x => allNodes.Contains(x)),
-                                x => allNodes.Remove(x),
-                                x => stack.Push(x)
+                                x => { allNodes.Remove(x); queue.Enqueue(x); }
                                 );
             }
-            Debug.Assert(stack.Count == directedGraph.Count(), $"Count was {stack.Count} when it should be {directedGraph.Count()}");
 
             List<HashSet<T>> stronglyConnectedComponents = new List<HashSet<T>>();
 
-            while (stack.Count > 0)
+            while (queue.Count > 0)
             {
-                T current = stack.Pop();
+                T current = queue.Dequeue();
                 if (allNodes.Contains(current))
                 {
                     continue;
@@ -115,7 +111,7 @@ namespace Algorithms
 
                 HashSet<T> components = new HashSet<T>();
                 DepthFirstSearch(current,
-                                x => transposedGraph.GetConnected(x).Where(x => stack.Contains(x)),
+                                x => transposedGraph.GetConnected(x).Where(x => !allNodes.Contains(x)),
                                 x => { allNodes.Add(x); components.Add(x); }
                             );
                 stronglyConnectedComponents.Add(components);

@@ -71,8 +71,7 @@ namespace DataStructures
             {
                 SearchAlgorithms.DepthFirstSearch(notVisited.First().Value,
                                                     x => x.OutgoingNodes,
-                                                    x => {
-                                                        notVisited.Remove(x.Data);
+                                                    x => { notVisited.Remove(x.Data);
                                                         x.OutgoingNodes.ToList().ForEach(child => graph.Connect(child.Data, x.Data));
                                                     });
             }

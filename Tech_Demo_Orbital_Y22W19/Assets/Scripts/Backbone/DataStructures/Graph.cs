@@ -15,7 +15,7 @@ namespace DataStructures
 
             public T Data => data;
 
-            public int Count => OutgoingNodes.Count;
+            public int Count => IncomingNodes.Count + OutgoingNodes.Count;
 
             public bool IsReadOnly => false;
 
@@ -32,7 +32,7 @@ namespace DataStructures
 
             public void Add(GraphNode item)
             {
-                AddOutgoing(item);
+                outgoingNodes.Add(item);
             }
 
             public void Clear()
@@ -53,13 +53,13 @@ namespace DataStructures
 
             public void CopyTo(GraphNode[] array, int arrayIndex)
             {
-                GraphNode[] childrenArray = outgoingNodes.ToArray();
+                GraphNode[] childrenArray = incomingNodes.ToArray();
                 childrenArray.CopyTo(array, arrayIndex);
             }
 
             public bool Remove(GraphNode item)
             {
-                return RemoveOutgoing(item);
+                return incomingNodes.Remove(item);
             }
 
             public IEnumerator<GraphNode> GetEnumerator()
@@ -132,7 +132,7 @@ namespace DataStructures
             }
         }
 
-        public virtual void Add(T item)
+        public void Add(T item)
         {
             storedItems.Add(item, new GraphNode(item));
         }
@@ -183,7 +183,7 @@ namespace DataStructures
         }
 
         public abstract bool Connect(T a, T b);
-
+  
 
         public bool IsConnected(T a, T b)
         {
@@ -198,7 +198,7 @@ namespace DataStructures
         }
 
         public abstract bool Disconnect(T a, T b);
-
+  
         public IEnumerable<T> GetConnected(T item)
         {
             if (!this.Contains(item))

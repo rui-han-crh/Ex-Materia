@@ -4,6 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+
+
+
 namespace DataStructures
 {
     public class UndirectedGraph<T> : Graph<T>, IUndirectedGraph<T>
@@ -58,10 +61,10 @@ namespace DataStructures
         {
 
             //if there is no edge btwn a/b --> return itself
-            //if c is not new return itself 
+            //if c is in the mapping, and it's not a or b  --> return itself 
             //if either a or b don't exist --> return itself
 
-            if ( !IsConnected(a, b) || this.Contains(c) || !this.Contains(a) || !this.Contains(b))
+            if ( !IsConnected(a, b) || this.Contains(c) && !a.Equals(b) && !a.Equals(c) || !this.Contains(a) || !this.Contains(b))
             {
                 return this; 
             }
