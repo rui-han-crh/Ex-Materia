@@ -31,11 +31,12 @@ public abstract class MapActionRequest
 
     public RequestType Type => requestType;
 
-    public MapActionRequest(Unit actingUnit, int actionPointCost, int timeSpent)
+    public MapActionRequest(Unit actingUnit, int actionPointCost, int timeSpent, RequestType requestType)
     {
         this.actingUnit = actingUnit;
         this.timeSpent = timeSpent;
         this.actionPointCost = actionPointCost;
+        this.requestType = requestType;
     }
 
     public abstract int GetUtility(GameMap map);

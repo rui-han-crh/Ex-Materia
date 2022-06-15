@@ -47,7 +47,7 @@ public class AttackRequest : MapActionRequest
         int actionPointCost, 
         int timeSpent, 
         Outcome outcome)
-        : base(actingUnit, actionPointCost, timeSpent)
+        : base(actingUnit, actionPointCost, timeSpent, RequestType.Attack)
     {
         this.targetUnit = defendingUnit;
         this.potentialDamageDealt = potentialDamageDealt;
@@ -64,7 +64,7 @@ public class AttackRequest : MapActionRequest
         int actionPointCost,
         int timeSpent,
         Outcome outcome)
-        : base(actingUnit, actionPointCost, timeSpent)
+        : base(actingUnit, actionPointCost, timeSpent, RequestType.Attack)
     {
         this.targetUnit = defendingUnit;
         this.potentialDamageDealt = potentialDamageDealt;
@@ -73,7 +73,7 @@ public class AttackRequest : MapActionRequest
         this.chanceToHit = chanceToHit;
     }
 
-    private AttackRequest(Unit attacker, Unit defender, IEnumerable<Vector3Int> tilesHit, Outcome reason) : base(attacker, 0, 0)
+    private AttackRequest(Unit attacker, Unit defender, IEnumerable<Vector3Int> tilesHit, Outcome reason) : base(attacker, 0, 0, RequestType.Attack)
     {
         this.targetUnit = defender;
         this.potentialDamageDealt = 0;

@@ -15,7 +15,7 @@ namespace CombatSystem.Consultants
 
         public static IEnumerable<Vector3Int> FindShortestPath(Vector3Int source, Vector3Int destination, GameMapData gameMapData)
         {
-            return FindShortestPath(source, destination, gameMapData, EMPTY);
+            return FindShortestPath(source, destination, gameMapData, new Vector3Int[] { source, destination });
         }
 
         public static IEnumerable<Vector3Int> FindShortestPath(Vector3Int source, Vector3Int destination, GameMapData gameMapData,
@@ -101,8 +101,6 @@ namespace CombatSystem.Consultants
             IUndirectedGraph<Vector3Int> graph = gameMapData.ToUndirectedGraph(
                 new HashSet<Vector3Int>() { gameMapData[currentActingUnit] });
 
-            Debug.Log(graph.Count());
-
             ITree<Vector3Int?> shortestPathTree = PathSearch.AStar(
                 gameMapData[currentActingUnit],
                 null,
@@ -113,7 +111,6 @@ namespace CombatSystem.Consultants
                 currentActingUnit.CurrentActionPoints
                 );
 
-            Debug.Log(shortestPathTree.Count());
             return new HashSet<Vector3Int>(shortestPathTree.Where(v => v != null).Select(v => v.Value));
         }
 

@@ -23,6 +23,8 @@ namespace Managers.Subscribers
 
             Tilemap indicatorMap = TileManager.Instance.IndicatorMap;
 
+            TileDrawer.SetColorToTiles(indicatorMap, TileManager.Instance.Indicator.color);
+
             InformationUIManager.Instance.SetAllTextToDefault();
 
             GameMap currentMap = combatSceneManager.CurrentMap;

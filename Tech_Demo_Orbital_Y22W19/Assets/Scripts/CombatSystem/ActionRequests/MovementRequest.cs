@@ -22,7 +22,7 @@ public class MovementRequest : MapActionRequest
     public bool Successful => outcome == Outcome.Successful;
 
     public MovementRequest(Unit actingUnit, Vector3Int destination, int actionPointCost, int timeSpent, Outcome outcome) 
-        : base(actingUnit, actionPointCost, timeSpent)
+        : base(actingUnit, actionPointCost, timeSpent, RequestType.Movement)
     {
         this.destination = destination;
         this.outcome = outcome;

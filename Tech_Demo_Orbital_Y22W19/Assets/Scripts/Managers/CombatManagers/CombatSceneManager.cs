@@ -12,6 +12,7 @@ using UnityEngine.Tilemaps;
 using CoroutineGenerators;
 using Managers.Subscribers;
 using CombatSystem.Censuses;
+using UnityEngine.Extensions;
 
 namespace Managers
 {
@@ -66,7 +67,7 @@ namespace Managers
         [SerializeField]
         private Tilemap ground;
 
-        private RoutineManager routineManager = new RoutineManager();
+        private RoutineManager routineManager;
 
         private GameMap currentMap;
 
@@ -107,6 +108,7 @@ namespace Managers
         {
             Unit.ResetClass();
             keyboardControls = new KeyboardControls();
+            routineManager = gameObject.AddComponent<RoutineManager>();
         }
 
         private void Start()
@@ -236,14 +238,17 @@ namespace Managers
                         return;
                     }
 
+                    lastActionCost = MovementConsultant.GetPathCost(indicatedTiles, currentMap.Data);
+                    print(lastActionCost);
 
                     request = new MovementRequest(
                         CurrentActingUnit, 
-                        indicatedTiles.Last(), 
+                        indicatedTiles.Last(),
                         lastActionCost, 
                         lastActionCost, 
                         MovementRequest.Outcome.Pending);
 
+                    Debug.Log("Movement");
                     break;
 
                 case CommandType.Attack:
@@ -295,24 +300,48 @@ namespace Managers
 
                     IEnumerable<Vector3Int> path = movementRequest.CalculateShortestPath(CurrentMap);
 
+                    Vector3Int lastPosition = path.First();
+
+                    Animator animator = UnitManager.Instance.GetGameObjectOfUnit(request.ActingUnit).GetComponentInChildren<Animator>();
+
                     foreach (Vector3Int position in path)
                     {
+                        if (position == lastPosition)
+                        {
+                            continue;
+                        }
+
+                        Vector3Int direction = (position - lastPosition).Rotate(45);
+                        Debug.Log(direction.magnitude);
+
+                        routineManager.Enqueue(
+                            CombatCoroutineGenerator.PerformAnimation(animator, "isMoving", true, direction.x, direction.y)
+                            );
+
                         routineManager.Enqueue(
                             CombatCoroutineGenerator.MoveUnitToPosition(
                                 unitManager.GetGameObjectOfUnit(CurrentActingUnit), ground.CellToWorld(position)
                                 )
                             );
+                        lastPosition = position;
 
                         GameMapData gameMapData = currentMap.Data.ChangeUnitPosition(CurrentActingUnit, position);
 
                         IEnumerable<AttackRequest> incomingAttacks = CombatConsultant.GetIncomingAttacks(gameMapData, CurrentActingUnit);
+
                         if (incomingAttacks.Count() == 0)
                         {
                             continue;
                         }
 
                         routineManager.Enqueue(CombatCoroutineGenerator.EnactAttackRequest(currentMap, incomingAttacks.First()));
+                        
                     }
+                    currentMap = currentMap.DoAction(movementRequest);
+
+                    routineManager.Enqueue(
+                        CombatCoroutineGenerator.PerformAnimation(animator, "isMoving", false)
+                        );
 
                     break;
 

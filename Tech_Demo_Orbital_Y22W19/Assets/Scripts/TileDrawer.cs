@@ -20,4 +20,16 @@ public static class TileDrawer
             map.SetColor(position, color);
         }
     }
+
+    public static void SetColorToTiles(Tilemap map, Color color)
+    {
+        foreach (Vector3Int position in map.cellBounds.allPositionsWithin)
+        {
+            if (map.HasTile(position))
+            {
+                map.SetTileFlags(position, TileFlags.None);
+                map.SetColor(position, color);
+            }
+        }
+    }
 }

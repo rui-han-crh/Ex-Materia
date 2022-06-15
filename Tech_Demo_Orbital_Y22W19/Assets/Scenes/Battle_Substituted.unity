@@ -47431,8 +47431,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileCostPairs:
   - tile: {fileID: 11400000, guid: 4878b07e0ee6740489b6d133b5a732b3, type: 2}
-    cost: 10
+    cost: 24
   - tile: {fileID: 11400000, guid: d0e5cb4c3c9d4634d9f718796997798a, type: 2}
+    cost: 24
+  - tile: {fileID: 11400000, guid: 06c10c7673b644544818353ba0fe8929, type: 2}
     cost: 10
 --- !u!114 &1485908920
 MonoBehaviour:
@@ -103801,7 +103803,7 @@ PrefabInstance:
     - target: {fileID: 3044899330846325380, guid: a5a886cc7478c2d4697900baa7c29339, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1103755088}
+      objectReference: {fileID: 1103755091}
     - target: {fileID: 3044899330846325380, guid: a5a886cc7478c2d4697900baa7c29339, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 

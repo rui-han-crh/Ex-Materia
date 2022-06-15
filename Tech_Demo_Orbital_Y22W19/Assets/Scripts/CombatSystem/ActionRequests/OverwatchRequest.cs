@@ -9,7 +9,7 @@ public class OverwatchRequest : MapActionRequest
 
     private readonly GameMapData gameMapData;
 
-    public OverwatchRequest(Unit actingUnit) : base(actingUnit, 0, TIME_SPENT)
+    public OverwatchRequest(Unit actingUnit) : base(actingUnit, 0, TIME_SPENT, RequestType.Overwatch)
     {
 
     }

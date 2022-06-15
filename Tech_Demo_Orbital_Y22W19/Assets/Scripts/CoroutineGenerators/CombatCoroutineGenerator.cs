@@ -19,6 +19,7 @@ namespace CoroutineGenerators
 
             float journeyLength = Vector3.Distance(source, worldSpacePosition);
 
+
             while (Vector3.Distance(unitGameObject.transform.position, worldSpacePosition) > Mathf.Epsilon)
             {
                 float distanceCovered = (Time.time - startTime) * 2f;
@@ -57,7 +58,7 @@ namespace CoroutineGenerators
             yield return null;
         }
 
-        private static IEnumerator PlayAttackAction(GameObject attacker, Vector3 worldTargetPosition)
+        public static IEnumerator PlayAttackAction(GameObject attacker, Vector3 worldTargetPosition)
         {
             Vector3 direction = (worldTargetPosition - attacker.transform.position).Rotate(FORTY_FIVE_DEGREES);
 
@@ -72,17 +73,19 @@ namespace CoroutineGenerators
             yield return null;
         }
 
-        private static void PerformAnimation(Animator animator, string booleanFlag, bool state, float xDirection, float yDirection)
+        public static IEnumerator PerformAnimation(Animator animator, string booleanFlag, bool state, float? xDirection = null, float? yDirection = null)
         {
+            yield return null;
+
             if (animator == null)
             {
                 throw new ArgumentException("No animator was passed to perform the animation on");
             }
 
-            if (xDirection != 0f || yDirection != 0f)
+            if (xDirection != null && yDirection != null)
             {
-                animator.SetFloat("xDirection", xDirection);
-                animator.SetFloat("yDirection", yDirection);
+                animator.SetFloat("xDirection", xDirection.Value);
+                animator.SetFloat("yDirection", yDirection.Value);
             }
 
             animator.SetBool(booleanFlag, state);

@@ -10,7 +10,7 @@ public class WaitRequest : MapActionRequest
     public int ActionPointsReplenished => actionPointsReplenished;
 
     public WaitRequest(Unit actingUnit, int timeSpent, int actionPointsReplenished) 
-        : base(actingUnit, 0, timeSpent)
+        : base(actingUnit, 0, timeSpent, RequestType.Wait)
     {
         this.actionPointsReplenished = actionPointsReplenished;
     }
