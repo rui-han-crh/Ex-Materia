@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-namespace CombatSystem.Facades
+
+namespace Facades
 {
     public class TileRegisterFacade : MonoBehaviour
     {
@@ -27,6 +28,12 @@ namespace CombatSystem.Facades
                 tileCosts.Add(tileCostPair.Tile, tileCostPair.Cost);
             }
         }
+
+        public bool Contains(Tile tile)
+        {
+            return tileCosts.ContainsKey(tile);
+        }
+
         public int this[Tile tile]
         {
             get => tileCosts[tile];

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using TileData = CombatSystem.Entities.TileData;
-namespace CombatSystem.Facades
+
+namespace Facades
 {
     [RequireComponent(typeof(TileRegisterFacade))]
     public class TileMapFacade : MonoBehaviour
@@ -47,8 +48,16 @@ namespace CombatSystem.Facades
                         Vector3Int coordinates = new Vector3Int(i, j, 0);
                         if (groundMap.HasTile(coordinates) && !tileData.ContainsKey(coordinates))
                         {
+                            int cost = 0;
+                            Tile tile = groundMap.GetTile<Tile>(coordinates);
+
+                            if (tileRegisterFacade.Contains(tile))
+                            {
+                                cost = tileRegisterFacade[tile];
+                            }
+
                             tileData.Add(coordinates,
-                                new TileData(tileRegisterFacade[groundMap.GetTile<Tile>(coordinates)], TileData.TileType.Ground));
+                                new TileData(cost, TileData.TileType.Ground));
                         }
                     }
                 }
