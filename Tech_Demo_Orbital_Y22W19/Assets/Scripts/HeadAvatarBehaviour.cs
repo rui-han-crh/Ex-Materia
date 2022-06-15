@@ -1,3 +1,5 @@
+using CombatSystem.Entities;
+using Managers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +14,22 @@ public class HeadAvatarBehaviour : MonoBehaviour
     [SerializeField]
     private GameObject boundGameObject;
 
+    private int identity = -1;
+
     public GameObject BoundGameObject => boundGameObject;
+
+    public int BoundIdentity 
+    {
+        get
+        {
+            if (identity == -1)
+            {
+                Debug.LogError("The identity for this object has not yet been set");
+            }
+            return identity;
+        }
+    }
+
 
     public void SetBoundGameObject(GameObject unitGO)
     {
@@ -20,8 +37,25 @@ public class HeadAvatarBehaviour : MonoBehaviour
         avatar.sprite = boundGameObject.GetComponent<UnitBehaviour>().CharacterAvatar;   
     }
 
+    public void SetBoundIdentity(int identity)
+    {
+        if (this.identity != -1)
+        {
+            Debug.LogError($"The identity for this object has already been bound to {identity}");
+            return;
+        }
+
+        this.identity = identity;
+        avatar.sprite = UnitManager.Instance[identity].CharacterAvatar;
+    }
+
     public void UpdateHealthBar(UnitOld unit)
     {
         healthBar.UpdateBarFillImage(unit.Health, unit.MaxHealth);
+    }
+
+    public void UpdateHealthBar(Unit unit)
+    {
+        healthBar.UpdateBarFillImage(unit.CurrentHealth, unit.MaxHealth);
     }
 }

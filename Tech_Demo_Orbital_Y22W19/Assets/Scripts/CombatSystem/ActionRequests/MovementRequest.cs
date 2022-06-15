@@ -9,7 +9,8 @@ public class MovementRequest : MapActionRequest
     public enum Outcome
     {
         NoValidPath,
-        Successful
+        Successful,
+        Pending
     }
 
     private Outcome outcome;
@@ -25,6 +26,11 @@ public class MovementRequest : MapActionRequest
     {
         this.destination = destination;
         this.outcome = outcome;
+    }
+
+    public IEnumerable<Vector3Int> CalculateShortestPath(GameMap map)
+    {
+        return MovementConsultant.FindShortestPath(map[ActingUnit], Destination, map.Data);
     }
 
     public override int GetUtility(GameMap map)

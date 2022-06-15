@@ -70,7 +70,7 @@ public class InformationUIManager : MonoBehaviour
     public void WaitButtonActivated()
     {
         TurnAllUIOff();
-        commandButtonsBehaviour.SetButtonActive(GameManager.Command.Wait, true);
+        commandButtonsBehaviour.SetButtonActive(GameManagerOld.Command.Wait, true);
         commandButtonsBehaviour.SetPromptActive(CommandButtonsBehaviour.Prompt.Time, true);
         commandButtonsBehaviour.SetPromptActive(CommandButtonsBehaviour.Prompt.ActionPoints, true);
     }
@@ -78,7 +78,7 @@ public class InformationUIManager : MonoBehaviour
     public void MoveButtonActivated()
     {
         TurnAllUIOff();
-        commandButtonsBehaviour.SetButtonActive(GameManager.Command.Movement, true);
+        commandButtonsBehaviour.SetButtonActive(GameManagerOld.Command.Movement, true);
         commandButtonsBehaviour.SetPromptActive(CommandButtonsBehaviour.Prompt.Time, true);
         commandButtonsBehaviour.SetPromptActive(CommandButtonsBehaviour.Prompt.ActionPoints, true);
     }
@@ -86,7 +86,7 @@ public class InformationUIManager : MonoBehaviour
     public void CombatButtonActivated()
     {
         TurnAllUIOff();
-        commandButtonsBehaviour.SetButtonActive(GameManager.Command.Attack, true);
+        commandButtonsBehaviour.SetButtonActive(GameManagerOld.Command.Attack, true);
         commandButtonsBehaviour.SetPromptActive(CommandButtonsBehaviour.Prompt.Time, true);
         commandButtonsBehaviour.SetPromptActive(CommandButtonsBehaviour.Prompt.ActionPoints, true);
     }
@@ -95,9 +95,9 @@ public class InformationUIManager : MonoBehaviour
     {
         TurnAllUIOff();
 
-        TimeNeededText.text = (OverwatchRequest.TIME_CONSUMED).ToString();
+        TimeNeededText.text = (OverwatchRequestOld.TIME_CONSUMED).ToString();
 
-        commandButtonsBehaviour.SetButtonActive(GameManager.Command.Overwatch, true);
+        commandButtonsBehaviour.SetButtonActive(GameManagerOld.Command.Overwatch, true);
         commandButtonsBehaviour.SetPromptActive(CommandButtonsBehaviour.Prompt.Time, true);
         commandButtonsBehaviour.SetPromptActive(CommandButtonsBehaviour.Prompt.ActionPoints, true);
     }
@@ -121,7 +121,7 @@ public class InformationUIManager : MonoBehaviour
 
     public void SetTimeAndAPRequiredText(int apNeeded)
     {
-        commandButtonsBehaviour.TimeText.text = Mathf.CeilToInt((float)apNeeded / GameManager.Instance.CurrentUnit.Speed).ToString();
+        commandButtonsBehaviour.TimeText.text = Mathf.CeilToInt((float)apNeeded / GameManagerOld.Instance.CurrentUnit.Speed).ToString();
         commandButtonsBehaviour.ActionPointText.text = apNeeded.ToString();
     }
 }

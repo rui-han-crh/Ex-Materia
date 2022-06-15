@@ -101,6 +101,24 @@ namespace CombatSystem.Consultants
             return Vector3.Distance(attackerPosition, defenderPosition) <= attacker.Range;
         }
 
+        public static IEnumerable<AttackRequest> GetIncomingAttacks(GameMapData gameMapData, Unit defender)
+        {
+            List<AttackRequest> validIncomingAttacks = new List<AttackRequest>();
+
+            IEnumerable<Unit> rivals = gameMapData.UnitsInPlay.Where(other => !other.Faction.Equals(defender.Faction));
+            foreach (Unit rival in rivals)
+            {
+                AttackRequest request = SimulateAttack(rival, defender, gameMapData);
+                if (request.Successful)
+                {
+                    validIncomingAttacks.Add(request);
+                }
+            }
+
+            return validIncomingAttacks;
+        }
+
+
         public static IEnumerable<MapActionRequest> GetAllAttacks(GameMapData gameMapData, Unit attacker)
         {
             List<AttackRequest> attacks = new List<AttackRequest>();

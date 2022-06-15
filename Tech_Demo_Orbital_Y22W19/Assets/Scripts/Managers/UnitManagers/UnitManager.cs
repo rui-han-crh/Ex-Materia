@@ -11,12 +11,30 @@ namespace Managers
 {
     public class UnitManager : MonoBehaviour
     {
+        private static UnitManager instance;
+        public static UnitManager Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = FindObjectOfType<UnitManager>();
+                }
+                return instance;
+            }
+        }
+
         [SerializeField]
         private UnitFacade[] unitFacades;
         private Unit[] units;
 
         [SerializeField]
         private Tilemap ground;
+
+        public UnitFacade this[int identity]
+        {
+            get => unitFacades[identity-1];
+        }
 
         private void Awake()
         {
@@ -38,6 +56,28 @@ namespace Managers
             }
 
             return new UnitCensus(positionToUnitMapping);
+        }
+
+        public GameObject GetGameObjectOfUnit(Unit unit)
+        {
+            return unitFacades[unit.Identity - 1].gameObject;
+        }
+
+        public void RemoveUnit(Unit unit, float delay = 0)
+        {
+            if (delay == 0)
+            {
+                Destroy(unitFacades[unit.Identity - 1].gameObject);
+            } else
+            {
+                StartCoroutine(DestroyUnitGameObject(unit, delay));
+            }
+        }
+
+        private IEnumerator DestroyUnitGameObject(Unit unit, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            Destroy(unitFacades[unit.Identity - 1].gameObject);
         }
     }
 }

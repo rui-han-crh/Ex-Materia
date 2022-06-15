@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CombatSystem.Entities;
+using System.Linq;
 
 public class AttackRequest : MapActionRequest
 {
@@ -10,7 +11,8 @@ public class AttackRequest : MapActionRequest
         Successful,
         NoLineOfSight,
         NotEnoughActionPoints,
-        OutOfRange
+        OutOfRange,
+        Pending
     }
 
     private Outcome outcome;
@@ -26,6 +28,9 @@ public class AttackRequest : MapActionRequest
     public bool Successful => outcome == Outcome.Successful;
 
     public Unit TargetUnit => targetUnit;
+
+    public Vector3Int SourcePosition => tilesHit.First();
+
 
     public int PotentialDamageDealt => potentialDamageDealt;
 
@@ -85,6 +90,11 @@ public class AttackRequest : MapActionRequest
     public static AttackRequest CreateFailedRequest(Unit attacker, Unit defender, Outcome reason)
     {
         return new AttackRequest(attacker, defender, new Vector3Int[0], reason);
+    }
+
+    public static AttackRequest CreatePendingRequest(Unit attacker, Unit defender, IEnumerable<Vector3Int> tilesHit, int actionPointCost, int timeSpent)
+    {
+        return new AttackRequest(attacker, defender, 0, 0, tilesHit, actionPointCost, timeSpent, Outcome.Pending);
     }
 
     public override int GetUtility(GameMap map)

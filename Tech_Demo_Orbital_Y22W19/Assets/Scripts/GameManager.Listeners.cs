@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine.UI;
 using System.Linq;
 
-public partial class GameManager : MonoBehaviour
+public partial class GameManagerOld : MonoBehaviour
 {
     private static readonly int OPPONENT_UI_INDEX = 1;
 
@@ -51,7 +51,7 @@ public partial class GameManager : MonoBehaviour
         Vector3Int gridPosition = groundTilemap.WorldToCell(mousePosition);
 
         TileDrawer.SetColorToTiles(tileHighlights, pathPositionsLastDrawn, ColorPalette.YELLOW_TRANSLUCENT);
-        AttackRequest request = currentMap.IsAttackableAt(gridPosition);
+        AttackRequestOld request = currentMap.IsAttackableAt(gridPosition);
         AttackStatus status = request.Status;
 
         InformationUIManager.Instance.SetAllTextToDefault();

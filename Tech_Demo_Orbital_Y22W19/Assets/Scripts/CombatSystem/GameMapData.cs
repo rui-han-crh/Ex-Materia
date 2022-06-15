@@ -71,6 +71,22 @@ public class GameMapData
         return !unitCensus.Contains(position) && tileCensus.GetTileType(position).Equals(TileData.TileType.Ground);
     }
 
+    public GameMapData ChangeUnitPosition(Unit unit, Vector3Int position)
+    {
+        if (!unitCensus.Contains(unit))
+        {
+            throw new ArgumentException($"Cannot move {unit.Name} as it does not exist in data");
+        }
+
+        if (!tileCensus.Contains(position))
+        {
+            throw new ArgumentException($"Cannot move {unit.Name} to {position} as {position} does not have any tiles");
+        }
+
+        UnitCensus newUnitCensus = unitCensus.MoveUnit(unit, position);
+        return new GameMapData(newUnitCensus, tileCensus);
+    }
+
     public GameMapData MoveUnit(MovementRequest movementRequest)
     {
         Vector3Int destination = movementRequest.Destination;

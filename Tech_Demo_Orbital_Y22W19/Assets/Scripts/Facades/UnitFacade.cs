@@ -20,6 +20,11 @@ namespace Facades
         [SerializeField]
         private Unit.UnitFaction faction;
 
+        [SerializeField]
+        private Sprite avatar;
+
+        public Sprite CharacterAvatar => avatar;
+
         public Unit CreateUnit()
         {
             UnitProperties properties = new UnitProperties(

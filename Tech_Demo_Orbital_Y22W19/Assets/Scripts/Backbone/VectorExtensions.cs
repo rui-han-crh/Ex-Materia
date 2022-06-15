@@ -16,5 +16,16 @@ namespace UnityEngine.Extensions
                 Mathf.RoundToInt(sin * source.x + cos * source.y),
                 0);
         }
+
+        public static Vector3 Rotate(this Vector3 source, float radians)
+        {
+            float sin = Mathf.Sin(radians);
+            float cos = Mathf.Cos(radians);
+
+            return new Vector3(
+                cos * source.x - sin * source.y,
+                sin * source.x + cos * source.y,
+                0);
+        }
     }
 }

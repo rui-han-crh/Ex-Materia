@@ -56,23 +56,23 @@ public class CommandButtonsBehaviour : MonoBehaviour
         timeText = timeUIGameObject.GetComponentInChildren<TMP_Text>();
     }
 
-    public void SetButtonActive(GameManager.Command command, bool isActive)
+    public void SetButtonActive(GameManagerOld.Command command, bool isActive)
     {
         switch (command)
         {
-            case GameManager.Command.Attack:
+            case GameManagerOld.Command.Attack:
                 attackButtonGameObject.SetActive(isActive);
                 break;
 
-            case GameManager.Command.Movement:
+            case GameManagerOld.Command.Movement:
                 moveButtonGameObject.SetActive(isActive);
                 break;
 
-            case GameManager.Command.Wait:
+            case GameManagerOld.Command.Wait:
                 waitButtonGameObject.SetActive(isActive);
                 break;
 
-            case GameManager.Command.Overwatch:
+            case GameManagerOld.Command.Overwatch:
                 overwatchButtonGameObject.SetActive(isActive);
                 break;
         }

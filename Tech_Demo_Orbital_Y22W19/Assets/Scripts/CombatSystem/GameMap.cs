@@ -6,6 +6,7 @@ using CombatSystem.Entities;
 using System.Linq;
 using CombatSystem.Consultants;
 using Algorithms.ShortestPathSearch;
+using CombatSystem.Censuses;
 
 public class GameMap
 {
@@ -16,6 +17,11 @@ public class GameMap
     public static GameMap MakeNewMap(GameMapData gameMapData)
     {
         return new GameMap(gameMapData, null);
+    }
+
+    public static GameMap MakeNewMap(UnitCensus unitCensus, TileCensus tileCensus)
+    {
+        return new GameMap(new GameMapData(unitCensus, tileCensus), null);
     }
 
     private GameMap(GameMap oldMap)
@@ -35,6 +41,11 @@ public class GameMap
     public Vector3Int this[Unit unit]
     {
         get => gameMapData[unit];
+    }
+
+    public Unit this[Vector3Int position]
+    {
+        get => gameMapData[position];
     }
 
     public Unit CurrentActingUnit => currentActingUnit;
@@ -66,6 +77,11 @@ public class GameMap
     public IEnumerable<Unit> GetUnitsOfFaction(Unit.UnitFaction faction)
     {
         return gameMapData.UnitsInPlay.Where(unit => unit.Faction.Equals(faction));
+    }
+
+    public IEnumerable<Unit> GetUnits(Predicate<Unit> predicate)
+    {
+        return gameMapData.UnitsInPlay.Where(unit => predicate(unit));
     }
 
     public MapActionRequest GetKthBestAction(int k)

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Collections;
 using ExtensionMethods;
 
-public partial class GameManager
+public partial class GameManagerOld
 {
     private static float ANIMATION_SPEED = 0.667f;
     private static float FORTY_FIVE_DEGREES = Mathf.PI / 4;
@@ -85,7 +85,7 @@ public partial class GameManager
 
         if (setAction)
         {
-            MovementRequest movementRequest = new MovementRequest(currentMap, CurrentUnitPosition, checkpoints.ToArray(), actionPointsUsed);
+            MovementRequestOld movementRequest = new MovementRequestOld(currentMap, CurrentUnitPosition, checkpoints.ToArray(), actionPointsUsed);
             currentMap = currentMap.DoAction(movementRequest);
             gameState = GameState.TurnEnded;
         }
@@ -98,7 +98,7 @@ public partial class GameManager
     /// <param name="attackRequest"></param>
     /// <returns>A coroutine consisting of movement, then attack, then movement back to
     ///         starting position</returns>
-    private IEnumerator MoveToPositionAndAttack(AttackRequest attackRequest)
+    private IEnumerator MoveToPositionAndAttack(AttackRequestOld attackRequest)
     {
         if (!currentMap.AllUnitPositions.Contains(attackRequest.TargetPosition))
         {
@@ -132,7 +132,7 @@ public partial class GameManager
 
     private IEnumerator DoAttackAction(Vector3Int targetPosition, Vector3Int[] tilesHit, int cost, bool endsTurn = true)
     {
-        AttackRequest attackRequest = new AttackRequest(currentMap, CurrentUnitPosition, targetPosition, AttackStatus.Success, tilesHit, cost);
+        AttackRequestOld attackRequest = new AttackRequestOld(currentMap, CurrentUnitPosition, targetPosition, AttackStatus.Success, tilesHit, cost);
 
         IEnumerator rout = ApplyAttackAction(attackRequest, endsTurn);
         while (rout.MoveNext())
@@ -143,7 +143,7 @@ public partial class GameManager
         yield return null;
     }
 
-    private IEnumerator ApplyAttackAction(AttackRequest attackRequest, bool endsTurn = true)
+    private IEnumerator ApplyAttackAction(AttackRequestOld attackRequest, bool endsTurn = true)
     {
         Vector3 direction = (attackRequest.TargetPosition - attackRequest.ShootFromPosition).RotateVector(FORTY_FIVE_DEGREES);
 
@@ -163,7 +163,7 @@ public partial class GameManager
         yield return null;
     }
 
-    private IEnumerator CurrentUnitRecoverAP(WaitRequest request, bool endsTurn = true)
+    private IEnumerator CurrentUnitRecoverAP(WaitRequestOld request, bool endsTurn = true)
     {
         yield return new WaitForSeconds(0.25f);
         currentMap = currentMap.DoAction(request);
@@ -176,7 +176,7 @@ public partial class GameManager
         yield return null;
     }
 
-    private IEnumerator CurrentUnitOverwatch(OverwatchRequest request, bool endsTurn = true)
+    private IEnumerator CurrentUnitOverwatch(OverwatchRequestOld request, bool endsTurn = true)
     {
         yield return new WaitForSeconds(0.25f);
         currentMap = currentMap.DoAction(request);

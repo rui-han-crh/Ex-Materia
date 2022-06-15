@@ -8,11 +8,11 @@ public class UnitCombat
     public static readonly int ATTACK_COST = 75;
     public static readonly int MINIMUM_DAMAGE_DEALT = 1;
 
-    private GameMapData mapData;
+    private GameMapDataOld mapData;
     private UnitOld currentOffensiveUnit;
 
     // CONSTRUCTORS
-    public UnitCombat(UnitOld currentOffensiveUnit, GameMapData mapData)
+    public UnitCombat(UnitOld currentOffensiveUnit, GameMapDataOld mapData)
     {
         this.currentOffensiveUnit = currentOffensiveUnit;
         this.mapData = mapData;
@@ -30,12 +30,12 @@ public class UnitCombat
     /// <param name="defensivePosition"></param>
     /// <param name="range"></param>
     /// <returns>An AttackRequest with zero cost</returns>
-    public static AttackRequest QueryTargetAttackable(GameMap gameMapRequesting, 
+    public static AttackRequestOld QueryTargetAttackable(GameMapOld gameMapRequesting, 
                                                         Vector3Int offensivePosition, 
                                                         Vector3Int defensivePosition, 
                                                         int range)
     {
-        GameMapData mapData = gameMapRequesting.MapData;
+        GameMapDataOld mapData = gameMapRequesting.MapData;
 
         Vector3Int sourcePosition = offensivePosition;
         Vector3Int[] tilesHit = new Vector3Int[] { offensivePosition, defensivePosition };
@@ -44,7 +44,7 @@ public class UnitCombat
 
         if (!tilesInRange.Contains(defensivePosition))
         {
-            return new AttackRequest(gameMapRequesting,
+            return new AttackRequestOld(gameMapRequesting,
                                         sourcePosition,
                                         defensivePosition,
                                         AttackStatus.OutOfRange,
@@ -53,13 +53,13 @@ public class UnitCombat
         }
 
         LineRaytracer raytracer = new LineRaytracer();
-        bool hasDirectSight = raytracer.Trace(offensivePosition, defensivePosition, GameMap.UNIT_GRID_OFFSET, mapData);
+        bool hasDirectSight = raytracer.Trace(offensivePosition, defensivePosition, GameMapOld.UNIT_GRID_OFFSET, mapData);
 
         if (hasDirectSight)
         {
             sourcePosition = offensivePosition;
             tilesHit = raytracer.TilesHit;
-            return new AttackRequest(gameMapRequesting,
+            return new AttackRequestOld(gameMapRequesting,
                                         sourcePosition,
                                         defensivePosition,
                                         AttackStatus.Success,
@@ -76,7 +76,7 @@ public class UnitCombat
             // The unit is not against a wall
             sourcePosition = offensivePosition;
             tilesHit = raytracer.TilesHit;
-            return new AttackRequest(gameMapRequesting,
+            return new AttackRequestOld(gameMapRequesting,
                                         sourcePosition,
                                         defensivePosition,
                                         AttackStatus.NoLineOfSight,
@@ -97,13 +97,13 @@ public class UnitCombat
                 continue;
             }
 
-            canPeekAndShoot = raytracer.Trace(peekCoordinates, defensivePosition, GameMap.UNIT_GRID_OFFSET, mapData);
+            canPeekAndShoot = raytracer.Trace(peekCoordinates, defensivePosition, GameMapOld.UNIT_GRID_OFFSET, mapData);
 
             if (canPeekAndShoot)
             {
                 sourcePosition = peekCoordinates;
                 tilesHit = raytracer.TilesHit;
-                return new AttackRequest(gameMapRequesting,
+                return new AttackRequestOld(gameMapRequesting,
                                         sourcePosition,
                                         defensivePosition,
                                         AttackStatus.Success,
@@ -113,7 +113,7 @@ public class UnitCombat
         }
 
         // Peeking and firing is also not possible
-        return new AttackRequest(gameMapRequesting,
+        return new AttackRequestOld(gameMapRequesting,
                                     sourcePosition,
                                     defensivePosition,
                                     AttackStatus.PeekUnsuccessful,
@@ -325,7 +325,7 @@ public class UnitCombat
     /// </summary>
     /// <param name="gameMap"></param>
     /// <returns>A hash set of attackable positions</returns>
-    public HashSet<Vector3Int> GetAllPositionsAttackable(GameMap gameMap)
+    public HashSet<Vector3Int> GetAllPositionsAttackable(GameMapOld gameMap)
     {
         return new HashSet<Vector3Int> (mapData.PositionUnitMapping.Keys
                                     .Where(x => QueryTargetAttackable(gameMap, mapData.GetUnitByPosition(x)).Successful));
@@ -337,9 +337,9 @@ public class UnitCombat
     /// </summary>
     /// <param name="gameMap"></param>
     /// <returns>A hash set of possible AttackRequests</returns>
-    public HashSet<AttackRequest> GetAllPossibleAttacks(GameMap gameMap)
+    public HashSet<AttackRequestOld> GetAllPossibleAttacks(GameMapOld gameMap)
     {
-        return new HashSet<AttackRequest>(mapData.PositionUnitMapping.Keys
+        return new HashSet<AttackRequestOld>(mapData.PositionUnitMapping.Keys
                                             .Select(x => QueryTargetAttackable(gameMap, mapData.GetUnitByPosition(x)))
                                             .Where(x => x.Status == AttackStatus.Success));
     }
@@ -353,7 +353,7 @@ public class UnitCombat
     /// <param name="gameMapRequesting"></param>
     /// <param name="target"></param>
     /// <returns></returns>
-    public AttackRequest QueryTargetAttackable(GameMap gameMapRequesting, UnitOld target)
+    public AttackRequestOld QueryTargetAttackable(GameMapOld gameMapRequesting, UnitOld target)
     {
         Vector3Int offensiveUnitPosition = mapData.GetPositionByUnit(currentOffensiveUnit);
         Vector3Int targetUnitPosition = mapData.GetPositionByUnit(target);
@@ -363,7 +363,7 @@ public class UnitCombat
 
         if (target.Faction == currentOffensiveUnit.Faction)
         {
-            return new AttackRequest(gameMapRequesting, 
+            return new AttackRequestOld(gameMapRequesting, 
                                         sourcePosition,
                                         targetUnitPosition, 
                                         AttackStatus.IllegalTarget,
@@ -373,7 +373,7 @@ public class UnitCombat
 
         if (currentOffensiveUnit.ActionPointsLeft < ATTACK_COST)
         {
-            return new AttackRequest(gameMapRequesting,
+            return new AttackRequestOld(gameMapRequesting,
                                         sourcePosition,
                                         targetUnitPosition,
                                         AttackStatus.NotEnoughAP,
@@ -385,7 +385,7 @@ public class UnitCombat
 
         if (!tilesInRange.Contains(targetUnitPosition))
         {
-            return new AttackRequest(gameMapRequesting,
+            return new AttackRequestOld(gameMapRequesting,
                                         sourcePosition,
                                         targetUnitPosition,
                                         AttackStatus.OutOfRange,
@@ -394,13 +394,13 @@ public class UnitCombat
         }
 
         LineRaytracer raytracer = new LineRaytracer();
-        bool hasDirectSight = raytracer.Trace(offensiveUnitPosition, targetUnitPosition, GameMap.UNIT_GRID_OFFSET, mapData);
+        bool hasDirectSight = raytracer.Trace(offensiveUnitPosition, targetUnitPosition, GameMapOld.UNIT_GRID_OFFSET, mapData);
 
         if (hasDirectSight)
         {
             sourcePosition = offensiveUnitPosition;
             tilesHit = raytracer.TilesHit;
-            return new AttackRequest(gameMapRequesting,
+            return new AttackRequestOld(gameMapRequesting,
                                         sourcePosition,
                                         targetUnitPosition,
                                         AttackStatus.Success,
@@ -417,7 +417,7 @@ public class UnitCombat
             // The unit is not against a wall
             sourcePosition = offensiveUnitPosition;
             tilesHit = raytracer.TilesHit;
-            return new AttackRequest(gameMapRequesting,
+            return new AttackRequestOld(gameMapRequesting,
                                         sourcePosition,
                                         targetUnitPosition,
                                         AttackStatus.NoLineOfSight,
@@ -438,14 +438,14 @@ public class UnitCombat
                 continue;
             }
 
-            canPeekAndShoot = raytracer.Trace(peekCoordinates, targetUnitPosition, GameMap.UNIT_GRID_OFFSET, mapData);
+            canPeekAndShoot = raytracer.Trace(peekCoordinates, targetUnitPosition, GameMapOld.UNIT_GRID_OFFSET, mapData);
 
             if (canPeekAndShoot)
             {
                 sourcePosition = peekCoordinates;
                 tilesHit = raytracer.TilesHit;
                 Debug.Log("Only peek");
-                return new AttackRequest(gameMapRequesting,
+                return new AttackRequestOld(gameMapRequesting,
                                         sourcePosition,
                                         targetUnitPosition,
                                         AttackStatus.Success,
@@ -454,9 +454,9 @@ public class UnitCombat
             }
         }
 
-        raytracer.Trace(offensiveUnitPosition, targetUnitPosition, GameMap.UNIT_GRID_OFFSET, mapData);
+        raytracer.Trace(offensiveUnitPosition, targetUnitPosition, GameMapOld.UNIT_GRID_OFFSET, mapData);
         // Peeking and firing is also not possible
-        return new AttackRequest(gameMapRequesting,
+        return new AttackRequestOld(gameMapRequesting,
                                     sourcePosition,
                                     targetUnitPosition,
                                     AttackStatus.PeekUnsuccessful,
