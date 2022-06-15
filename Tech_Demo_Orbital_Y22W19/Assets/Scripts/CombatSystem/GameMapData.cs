@@ -104,7 +104,7 @@ public class GameMapData
 
         movingUnit = movingUnit
             .ChangeActionPoints(movingUnit.CurrentActionPoints - movementRequest.ActionPointCost)
-            .ChangeTime(movingUnit.Time - movementRequest.TimeSpent);
+            .ChangeTime(movingUnit.Time + movementRequest.TimeSpent);
 
         return new GameMapData(unitCensus.MoveUnit(movingUnit, destination), tileCensus);
     }

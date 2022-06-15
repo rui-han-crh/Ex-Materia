@@ -92,6 +92,30 @@ namespace CombatSystem.Consultants
             return AttackRequest.CreateFailedRequest(attacker, defender, raytracedLine, AttackRequest.Outcome.NoLineOfSight);
         }
 
+        public static IEnumerable<Vector3Int> GetAllRangePositions(GameMapData gameMapData, Unit unit)
+        {
+            int maxX = gameMapData[unit].x + unit.Range;
+            int minX = gameMapData[unit].x - unit.Range;
+
+            int maxY = gameMapData[unit].y + unit.Range;
+            int minY = gameMapData[unit].y - unit.Range;
+
+            List<Vector3Int> positions = new List<Vector3Int>();
+
+            for (int x = minX ; x <= maxX; x++)
+            {
+                for (int y = minY ; y <= maxY; y++)
+                {
+                    Vector3Int position = new Vector3Int(x, y, 0);
+                    if (Vector3.Distance(position, gameMapData[unit]) <= unit.Range)
+                    {
+                        positions.Add(position);
+                    }
+                }
+            }
+            return positions;
+        }
+
 
         public static bool IsInRangeOf(Unit attacker, Unit defender, GameMapData gameMapData)
         {

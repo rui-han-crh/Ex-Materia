@@ -141,6 +141,11 @@ namespace Managers
             executeLastActionAllowed = state;
         }
 
+        public void SetTimeToWait(int time)
+        {
+            timeToWait = time;
+        }
+
         public void SetIndicatedTiles(IEnumerable<Vector3Int> indicationPositions)
         {
             this.indicatedTiles.Clear();
@@ -152,8 +157,12 @@ namespace Managers
 
         public void BeginCombat()
         {
+            TileManager.Instance.IndicatorMap.ClearAllTiles();
             SubscribeToCombatListener();
-
+            TileDrawer.Draw(TileManager.Instance.IndicatorMap,
+                CombatConsultant.GetAllRangePositions(currentMap.Data, CurrentActingUnit),
+                TileManager.Instance.Indicator
+                );
         }
 
         public void BeginMovement()
@@ -188,7 +197,7 @@ namespace Managers
             keyboardControls.Mouse.LeftClick.performed += leftClickHandler;
         }
 
-        private void UnsubscribeAllControls()
+        public void UnsubscribeAllControls()
         {
             keyboardControls.Mouse.LeftClick.performed -= leftClickHandler;
             keyboardControls.Mouse.RightClick.performed -= rightClickHandler;
@@ -197,6 +206,8 @@ namespace Managers
 
         public void StateReset()
         {
+            TileManager.Instance.IndicatorMap.ClearAllTiles();
+            GlobalResourceManager.Instance.LineRenderer.positionCount = 0;
         }
 
         public void DisableDeadUnits()
@@ -334,6 +345,10 @@ namespace Managers
                             continue;
                         }
 
+                        routineManager.Enqueue(
+                            CombatCoroutineGenerator.PerformAnimation(animator, "isMoving", false)
+                        );
+
                         routineManager.Enqueue(CombatCoroutineGenerator.EnactAttackRequest(currentMap, incomingAttacks.First()));
                         
                     }
@@ -364,6 +379,19 @@ namespace Managers
                     break;
 
                 default:
+                    break;
+            }
+            gameState = SceneState.TurnEnded;
+        }
+
+        private void Update()
+        {
+            switch (gameState)
+            {
+                case SceneState.TurnEnded:
+                    DisableDeadUnits();
+                    UnitQueueManager.Instance.UpdateUnitQueue(currentMap.GetUnits(unit => true));
+                    gameState = SceneState.Selection;
                     break;
             }
         }

@@ -4,6 +4,8 @@ using System;
 using UnityEngine;
 using System.Linq;
 using CombatSystem.Entities;
+using UnityEngine.UI;
+using Managers;
 
 public class UnitQueueManager : MonoBehaviour
 {
@@ -166,5 +168,36 @@ public class UnitQueueManager : MonoBehaviour
     {
         waitSlider.anchorMin = new Vector2(minX, waitSlider.anchorMin.y);
         waitSlider.anchorMax = new Vector2(maxX, waitSlider.anchorMax.y);
+    }
+
+    public void AdjustSliderToUnitTime(Slider slider)
+    {
+        GameMap currentMap = CombatSceneManager.Instance.CurrentMap;
+        IEnumerable<Unit> orderedUnitsByTime = currentMap.GetUnits(unit => true).OrderBy(unit => unit.Time);
+
+        Unit currentUnit = CombatSceneManager.Instance.CurrentActingUnit;
+
+        int numberOfUnits = orderedUnitsByTime.Count();
+
+        float positionInQueue = numberOfUnits * slider.value;
+
+        int numberOfUnitsPassed = Mathf.Min((int)(positionInQueue), numberOfUnits - 1);
+        float excess = positionInQueue - numberOfUnitsPassed;
+
+        int timeAfter = numberOfUnitsPassed == numberOfUnits - 1 ?
+                            Mathf.Max(orderedUnitsByTime.Last().Time + 1, (currentUnit.MaxActionPoints - currentUnit.CurrentActionPoints) + currentUnit.Time) :
+                            orderedUnitsByTime.ElementAt(numberOfUnitsPassed + 1).Time;
+
+        int timeBefore = orderedUnitsByTime.ElementAt(numberOfUnitsPassed).Time;
+
+        int offsetTime = timeBefore - currentUnit.Time;
+
+        int differenceTime = Mathf.CeilToInt((timeAfter - timeBefore) * excess);
+
+        int timeToWait = offsetTime + differenceTime;
+
+        CombatSceneManager.Instance.SetTimeToWait(timeToWait);
+
+        InformationUIManager.Instance.SetTimeAndAPRequiredText(timeToWait, 0);
     }
 }

@@ -32,7 +32,7 @@ namespace Algorithms.ShortestPathSearch
             {
                 T current = priorityQueue.Dequeue();
 
-                if ((destination != null && current.Equals(destination)) || gScore[current] > maxCost)
+                if (destination != null && current.Equals(destination))
                 {
                     return shortestPathTree;
                 }
@@ -41,6 +41,10 @@ namespace Algorithms.ShortestPathSearch
                 {
                     int tentativeGScore = gScore[current] + EdgeWeightFromTo(current, neighbour);
 
+                    if (tentativeGScore > maxCost)
+                    {
+                        continue;
+                    }
 
                     if (!gScore.ContainsKey(neighbour))
                     {
