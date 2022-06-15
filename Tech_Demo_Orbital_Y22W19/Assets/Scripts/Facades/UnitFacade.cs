@@ -16,5 +16,20 @@ namespace Facades
             risk,
             maxActionPoints,
             currentActionPoints;
+
+        public Unit CreateUnit()
+        {
+            UnitProperties properties = new UnitProperties(
+                maxHealth,
+                currentHealth,
+                defence,
+                attack,
+                range,
+                maxActionPoints,
+                currentActionPoints,
+                risk);
+
+            return Unit.CreateNewUnit(gameObject.name, properties, 0, faction);
+        }
     }
 }
