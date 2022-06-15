@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using CombatSystem.Entities;
 
 public class CharacterStatsUIBehaviour : MonoBehaviour
 {
@@ -69,5 +70,14 @@ public class CharacterStatsUIBehaviour : MonoBehaviour
         SetDefenceValue(unit.Defence);
         SetAttackValue(unit.Attack);
         SetSpeedValue(unit.Speed);
+    }
+
+    public void SetUnitStats(Unit unit)
+    {
+        SetHealthBar(unit.CurrentHealth, unit.MaxHealth);
+        SetActionPointsBar(unit.CurrentActionPoints, unit.MaxActionPoints);
+        SetDefenceValue(unit.Defence);
+        SetAttackValue(unit.Attack);
+        SetSpeedValue(-1);
     }
 }

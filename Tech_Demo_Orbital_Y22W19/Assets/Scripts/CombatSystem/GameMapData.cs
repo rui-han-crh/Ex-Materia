@@ -113,6 +113,7 @@ public class GameMapData
     {
         if (!attackRequest.Successful)
         {
+            Debug.Log("Failed");
             return this;
         }
 

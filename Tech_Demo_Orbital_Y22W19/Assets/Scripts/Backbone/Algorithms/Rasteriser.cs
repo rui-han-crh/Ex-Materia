@@ -25,14 +25,20 @@ namespace Algorithms.Rasterisers
             {
                 Line gridLine = new Line(new Vector2(x, 0), Vector2.up);
                 LineIntersection intersection = sightLine.IntersectionWithLine(gridLine);
-                priorityQueue.Enqueue(intersection, intersection.IntersectionAlpha);
+                if (intersection.HasDistinctIntersection)
+                {
+                    priorityQueue.Enqueue(intersection, intersection.IntersectionAlpha);
+                }
             }
 
             for (int y = minY; y <= maxY; y += gridSize)
             {
                 Line gridLine = new Line(new Vector2(0, y), Vector2.right);
                 LineIntersection intersection = sightLine.IntersectionWithLine(gridLine);
-                priorityQueue.Enqueue(intersection, intersection.IntersectionAlpha);
+                if (intersection.HasDistinctIntersection)
+                {
+                    priorityQueue.Enqueue(intersection, intersection.IntersectionAlpha);
+                }
             }
 
             List<Vector3Int> tilesHit = new List<Vector3Int>();
@@ -45,7 +51,7 @@ namespace Algorithms.Rasterisers
             while (priorityQueue.Count > 0)
             {
                 LineIntersection extractedIntersection = priorityQueue.Dequeue();
-                if (Approximately(extractedIntersection.IntersectionAlpha, lastPriority, 0.05f))
+                if (Approximately(extractedIntersection.IntersectionAlpha, lastPriority, 0.1f))
                 {
                     tilesHit.RemoveAt(tilesHit.Count - 1);
                 }
@@ -61,6 +67,11 @@ namespace Algorithms.Rasterisers
                     currentCoordinates += (int)Mathf.Sign(destination.x - source.x) * Vector3Int.right;
                 }
                 tilesHit.Add(currentCoordinates);
+
+                if (currentCoordinates == destination)
+                {
+                    break;
+                }
             }
 
             return tilesHit;

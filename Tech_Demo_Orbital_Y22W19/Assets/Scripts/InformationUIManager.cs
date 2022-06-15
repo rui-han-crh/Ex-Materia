@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using CombatSystem.Entities;
+using Facades;
+using Managers;
 
 public class InformationUIManager : MonoBehaviour
 {
@@ -30,6 +33,9 @@ public class InformationUIManager : MonoBehaviour
     [SerializeField]
     private CharacterStatsUIBehaviour opponentUIBehaviour;
 
+    [SerializeField]
+    private CharacterStatsUIBehaviour actingUnitUIBehaviour;
+
     public TMP_Text TimeNeededText => commandButtonsBehaviour.TimeText;
     public TMP_Text ActionPointText => commandButtonsBehaviour.ActionPointText;
 
@@ -55,6 +61,20 @@ public class InformationUIManager : MonoBehaviour
         opponentUIBehaviour.SetName(unit.Name);
         opponentUIBehaviour.SetAvatar(unit.CharacterHeadAvatar);
         opponentUIBehaviour.SetUnitStats(unit);
+    }
+
+    public void SetOpponentDetails(Unit unit)
+    {
+        opponentUIBehaviour.SetName(unit.Name);
+        opponentUIBehaviour.SetAvatar(UnitManager.Instance[unit.Identity].CharacterAvatar);
+        opponentUIBehaviour.SetUnitStats(unit);
+    }
+
+    public void SetCharacterDetails(Unit unit)
+    {
+        actingUnitUIBehaviour.SetName(unit.Name);
+        actingUnitUIBehaviour.SetAvatar(UnitManager.Instance[unit.Identity].CharacterAvatar);
+        actingUnitUIBehaviour.SetUnitStats(unit);
     }
 
     public void SetResultantDamageDealt(int resultantDamage)

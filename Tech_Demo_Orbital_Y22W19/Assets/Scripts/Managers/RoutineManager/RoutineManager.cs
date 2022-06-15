@@ -29,7 +29,6 @@ namespace Managers
             if (IsDormant() && !IsEmpty())
             {
                 lastRoutine = new Task(routineQueue.Dequeue());
-                Debug.Log(lastRoutine.ToString());
             }
         }
     }

@@ -72,7 +72,6 @@ namespace CombatSystem.Consultants
                 {
                     continue;
                 }
-
                 IEnumerable<Vector3Int> peekingLine = Rasteriser.AdaptedBresenham(peekToPosition, defenderPosition, gridSize: 1);
 
                 if (HasLineOfSight(peekingLine))

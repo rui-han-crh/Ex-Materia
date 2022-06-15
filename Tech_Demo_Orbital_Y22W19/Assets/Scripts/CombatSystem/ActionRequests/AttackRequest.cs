@@ -17,6 +17,8 @@ public class AttackRequest : MapActionRequest
 
     private Outcome outcome;
 
+    public Outcome Status => outcome;
+
     private Unit targetUnit;
 
     private int potentialDamageDealt;
@@ -94,7 +96,7 @@ public class AttackRequest : MapActionRequest
 
     public static AttackRequest CreatePendingRequest(Unit attacker, Unit defender, IEnumerable<Vector3Int> tilesHit, int actionPointCost, int timeSpent)
     {
-        return new AttackRequest(attacker, defender, 0, 0, tilesHit, actionPointCost, timeSpent, Outcome.Pending);
+        return new AttackRequest(attacker, defender, 0, 0, tilesHit, actionPointCost, timeSpent, Outcome.Successful);
     }
 
     public override int GetUtility(GameMap map)

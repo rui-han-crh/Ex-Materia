@@ -13,6 +13,8 @@ using CoroutineGenerators;
 using Managers.Subscribers;
 using CombatSystem.Censuses;
 using UnityEngine.Extensions;
+using ColorLookUp;
+using UnityEngine.EventSystems;
 
 namespace Managers
 {
@@ -78,17 +80,21 @@ namespace Managers
         private Camera mainCamera;
 
         // ActionHandlers:
-        private Action<InputAction.CallbackContext> leftClickHandler;
-        private Action<InputAction.CallbackContext> rightClickHandler;
+        private Action<InputAction.CallbackContext> leftClickHandler = _ => { };
+        private Action<InputAction.CallbackContext> rightClickHandler = _ => { };
 
         private CancellationTokenSource tokenSource;
 
         public Vector3Int CurrentActingUnitPosition => currentMap[currentMap.CurrentActingUnit];
 
+        private bool isPointerOverUI;
+
+        public bool IsPointerOverUI => isPointerOverUI;
+
         public Unit CurrentActingUnit => currentMap.CurrentActingUnit;
 
         private List<Vector3Int> indicatedTiles = new List<Vector3Int>();
-        private int lastActionCost;
+        private int savedActionCost;
         private bool executeLastActionAllowed;
         private bool autoPlayQueued;
         private int timeToWait;
@@ -146,6 +152,11 @@ namespace Managers
             timeToWait = time;
         }
 
+        public void SetSavedActionCost(int actionPoints)
+        {
+            savedActionCost = actionPoints;
+        }
+
         public void SetIndicatedTiles(IEnumerable<Vector3Int> indicationPositions)
         {
             this.indicatedTiles.Clear();
@@ -161,7 +172,8 @@ namespace Managers
             SubscribeToCombatListener();
             TileDrawer.Draw(TileManager.Instance.IndicatorMap,
                 CombatConsultant.GetAllRangePositions(currentMap.Data, CurrentActingUnit),
-                TileManager.Instance.Indicator
+                TileManager.Instance.Indicator,
+                ColorPalette.YELLOW_TRANSLUCENT
                 );
         }
 
@@ -191,7 +203,7 @@ namespace Managers
             keyboardControls.Mouse.LeftClick.performed -= leftClickHandler;
             keyboardControls.Mouse.RightClick.performed -= rightClickHandler;
 
-            //leftClickHandler = _ => CombatSelectionListener();
+            leftClickHandler = _ => AuxillarySubscribers.SubscribeCombatSelection(keyboardControls.Mouse.MousePosition);
             gameState = SceneState.CombatMode;
 
             keyboardControls.Mouse.LeftClick.performed += leftClickHandler;
@@ -206,6 +218,7 @@ namespace Managers
 
         public void StateReset()
         {
+            InformationUIManager.Instance.SetCharacterDetails(CurrentActingUnit);
             TileManager.Instance.IndicatorMap.ClearAllTiles();
             GlobalResourceManager.Instance.LineRenderer.positionCount = 0;
         }
@@ -249,14 +262,13 @@ namespace Managers
                         return;
                     }
 
-                    lastActionCost = MovementConsultant.GetPathCost(indicatedTiles, currentMap.Data);
-                    print(lastActionCost);
+                    savedActionCost = MovementConsultant.GetPathCost(indicatedTiles, currentMap.Data);
 
                     request = new MovementRequest(
                         CurrentActingUnit, 
                         indicatedTiles.Last(),
-                        lastActionCost, 
-                        lastActionCost, 
+                        savedActionCost,
+                        savedActionCost, 
                         MovementRequest.Outcome.Pending);
 
                     Debug.Log("Movement");
@@ -268,14 +280,14 @@ namespace Managers
                         return;
                     }
 
-                    //canvasLinearAnimation.UIToDeactivePosition(OPPONENT_UI_INDEX);
+                    CanvasManager.Instance.DeactivateUI(CanvasManager.UIType.OpponentSheet);
 
                     request = AttackRequest.CreatePendingRequest(
                         CurrentActingUnit,
                         CurrentMap[indicatedTiles.Last()],
                         indicatedTiles.ToArray(),
-                        lastActionCost,
-                        lastActionCost);
+                        savedActionCost,
+                        savedActionCost);
                     break;
 
                 case CommandType.Wait:
@@ -303,7 +315,6 @@ namespace Managers
         /// <param name="request"></param>
         public void ParseRequest(MapActionRequest request)
         {
-            int cost;
             switch (request.Type)
             {
                 case MapActionRequest.RequestType.Movement:
@@ -362,7 +373,6 @@ namespace Managers
 
                 case MapActionRequest.RequestType.Attack:
                     AttackRequest attackRequest = (AttackRequest)request;
-                    cost = attackRequest.ActionPointCost;
 
                     currentMap = currentMap.DoAction(attackRequest);
                     routineManager.Enqueue(CombatCoroutineGenerator.EnactAttackRequest(CurrentMap, attackRequest));
@@ -379,6 +389,7 @@ namespace Managers
                     break;
 
                 default:
+                    Debug.LogError($"There was no action carried out for {request.Type}");
                     break;
             }
             gameState = SceneState.TurnEnded;
@@ -386,9 +397,12 @@ namespace Managers
 
         private void Update()
         {
+            isPointerOverUI = EventSystem.current.IsPointerOverGameObject();
+
             switch (gameState)
             {
                 case SceneState.TurnEnded:
+                    StateReset();
                     DisableDeadUnits();
                     UnitQueueManager.Instance.UpdateUnitQueue(currentMap.GetUnits(unit => true));
                     gameState = SceneState.Selection;
