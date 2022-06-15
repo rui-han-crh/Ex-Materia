@@ -14,8 +14,13 @@ namespace CombatSystem.Consultants
         public static readonly int MINIMUM_DAMAGE_DEALT = 2;
         public static readonly Vector3 OFFSET = Vector2.one / 2;
 
-        public static AttackRequest SimulateAttack(Unit attacker, Unit defender, GameMapData gameMapData)
+        public static AttackRequest SimulateAttack(Unit attacker, Unit defender, GameMapData gameMapData, bool considerActionPoints = false)
         {
+            if (considerActionPoints && attacker.CurrentActionPoints < ATTACK_AP_COST)
+            {
+                return AttackRequest.CreateFailedRequest(attacker, defender, AttackRequest.Outcome.NotEnoughActionPoints);
+            }
+
             bool HasLineOfSight(IEnumerable<Vector3Int> lineRepresentation)
             {
                 bool hasDirectLineOfSight = true;
@@ -146,13 +151,8 @@ namespace CombatSystem.Consultants
         {
             List<AttackRequest> attacks = new List<AttackRequest>();
 
-            foreach (Unit opponent in gameMapData.UnitsInPlay)
+            foreach (Unit opponent in gameMapData.UnitsInPlay.Where(unit => unit.Faction != attacker.Faction))
             {
-                if (opponent.Equals(attacker))
-                {
-                    continue;
-                }
-
                 AttackRequest generatedRequest = SimulateAttack(attacker, opponent, gameMapData);
 
                 if (generatedRequest.Successful)

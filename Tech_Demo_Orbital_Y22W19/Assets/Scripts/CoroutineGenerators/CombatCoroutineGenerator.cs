@@ -1,3 +1,4 @@
+using CombatSystem.Entities;
 using Managers;
 using System;
 using System.Collections;
@@ -73,7 +74,8 @@ namespace CoroutineGenerators
             yield return null;
         }
 
-        public static IEnumerator PerformAnimation(Animator animator, string booleanFlag, bool state, float? xDirection = null, float? yDirection = null)
+        public static IEnumerator PerformAnimation(
+            Animator animator, string booleanFlag, bool state, float? xDirection = null, float? yDirection = null)
         {
             yield return null;
 
@@ -89,6 +91,16 @@ namespace CoroutineGenerators
             }
 
             animator.SetBool(booleanFlag, state);
+        }
+
+        public static IEnumerator DisableDeadUnits(GameMap currentMap)
+        {
+            yield return null;
+            IEnumerable<Unit> deadUnits = currentMap.GetUnits(x => x.CurrentHealth <= 0);
+            foreach (Unit unit in deadUnits)
+            {
+                UnitManager.Instance.RemoveUnit(unit, delay: 1);
+            }
         }
     }
 }

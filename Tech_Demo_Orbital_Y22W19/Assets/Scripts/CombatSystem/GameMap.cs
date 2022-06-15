@@ -7,6 +7,7 @@ using System.Linq;
 using CombatSystem.Consultants;
 using Algorithms.ShortestPathSearch;
 using CombatSystem.Censuses;
+using DataStructures;
 
 public class GameMap
 {
@@ -96,7 +97,11 @@ public class GameMap
             .Concat(new MapActionRequest[] { new WaitRequest(currentActingUnit, 75, 75) })
             .Concat(new MapActionRequest[] { new OverwatchRequest(currentActingUnit) }));
 
-        actions.ToList().Sort((x, y) =>
+        Debug.Log($"Actions consolidated, {actions.Count()} actions");
+
+        List<MapActionRequest> actionsList = actions.ToList();
+
+        actionsList.Sort((x, y) =>
         {
             Debug.Assert(x != null, $"{x} is null");
             float xUtility = x.GetUtility(this);
@@ -108,7 +113,7 @@ public class GameMap
             {
                 if (xUtility != yUtility)
                 {
-                    return (int)Mathf.Sign(xUtility - yUtility);
+                    return (int)(xUtility - yUtility);
                 }
 
                 return y.ActionPointCost - x.ActionPointCost;
@@ -135,7 +140,7 @@ public class GameMap
             }
         });
 
-        return actions.Last();
+        return actionsList.Last();
     }
 
     public int EvaluatePositionSafetyOf(Unit unit)
@@ -163,14 +168,19 @@ public class GameMap
     public int FindCostToNearestRival(Unit unit)
     {
         IEnumerable<Unit> rivalUnits = gameMapData.UnitsInPlay.Where(other => !other.Faction.Equals(unit.Faction));
+
+        return (int)rivalUnits.Select(rival => Vector3Int.Distance(this[unit], this[rival])).Min();
+
         int cost = int.MaxValue;
+        IUndirectedGraph<Vector3Int> graph = gameMapData.ToUndirectedGraph(
+            rivalUnits.Select(x => this[x]).Concat(new Vector3Int[] { this[unit] }));
         
         foreach (Unit rival in rivalUnits) {
             IEnumerable<Vector3Int> shortestPath = MovementConsultant.FindShortestPath(
                 gameMapData[unit], 
                 gameMapData[rival], 
                 gameMapData, 
-                new Vector3Int[] { gameMapData[unit], gameMapData[rival] });
+                graph);
 
             cost = Mathf.Min(cost, MovementConsultant.GetPathCost(shortestPath, gameMapData));
         }

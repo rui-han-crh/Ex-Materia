@@ -46,6 +46,38 @@ namespace CombatSystem.Consultants
 
         }
 
+        public static IEnumerable<Vector3Int> FindShortestPath(Vector3Int source, Vector3Int destination, GameMapData gameMapData,
+            IUndirectedGraph<Vector3Int> graph)
+        {
+
+            ITree<Vector3Int?> shortestPathTree = PathSearch.AStar(
+                source,
+                destination,
+                graph,
+                (current, neighbour) => (int)(Vector3.Distance(current, neighbour) * 10)
+                    + gameMapData.GetTileCost(Vector3Int.FloorToInt(neighbour)),
+                x => (int)(Vector3.Distance(x, destination) * 10)
+                );
+
+            Stack<Vector3Int> stack = new Stack<Vector3Int>();
+
+            if (!shortestPathTree.Contains(destination))
+            {
+                return new Vector3Int[0];
+            }
+
+            Vector3Int? current = destination;
+
+            do
+            {
+                stack.Push(current.Value);
+                current = shortestPathTree.GetParent(current);
+            } while (current.HasValue);
+
+            return stack;
+
+        }
+
         public static IEnumerable<MovementRequest> GetAllMovements(GameMapData gameMapData, Unit currentActingUnit)
         {
             IUndirectedGraph<Vector3Int> graph = gameMapData.ToUndirectedGraph(

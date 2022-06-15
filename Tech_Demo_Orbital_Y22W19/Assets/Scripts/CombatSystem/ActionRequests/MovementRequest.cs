@@ -37,14 +37,14 @@ public class MovementRequest : MapActionRequest
     {
         // Must be NON-POSITIVE, represents the potential damage received at destination
 
+        //^Changed, first checks the potential damage recieved at destination, then sees if attacks will benefit
+
         GameMap nextMap = map.DoAction(this);
 
         // Evaluates THIS ACTING UNIT safety according to the NEXT MAP.
         // **This is not the same as EvaluatePositionSafetyOf in GameMap!**
 
-        nextMap.EvaluatePositionSafetyOf(ActingUnit);
-
-        IEnumerable<Unit> allRivalPositions = nextMap.GetUnitsOfFaction(~ActingUnit.Faction);
+        IEnumerable<Unit> allRivalPositions = nextMap.GetUnits(unit => unit.Faction != ActingUnit.Faction);
 
         int utility = nextMap.EvaluatePositionSafetyOf(ActingUnit);
         utility = -utility > ActingUnit.Risk ? utility : 0;
@@ -54,8 +54,7 @@ public class MovementRequest : MapActionRequest
             AttackRequest hypotheticalRequest = CombatConsultant.SimulateAttack(map.CurrentActingUnit, rival, map.Data);
             if (hypotheticalRequest.Successful)
             {
-                // must be negative here
-                utility += Mathf.Min(CombatConsultant.MINIMUM_DAMAGE_DEALT, 
+                utility += Mathf.Max(CombatConsultant.MINIMUM_DAMAGE_DEALT, 
                     (int)(hypotheticalRequest.ChanceToHit * hypotheticalRequest.PotentialDamageDealt));
             }
         }

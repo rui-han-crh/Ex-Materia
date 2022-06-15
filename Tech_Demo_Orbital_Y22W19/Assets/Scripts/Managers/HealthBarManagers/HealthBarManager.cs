@@ -44,5 +44,14 @@ namespace Managers
         {
             return healthBars[unit.Identity];
         }
+
+        public void UpdateHealthBars(IEnumerable<Unit> units)
+        {
+            foreach (Unit unit in units)
+            {
+                BarFillBehaviour healthBar = GetHealthBar(unit);
+                healthBar.UpdateBarFillImage(unit.CurrentHealth, unit.MaxHealth);
+            }
+        }
     }
 }

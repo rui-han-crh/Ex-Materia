@@ -75,6 +75,7 @@ public class CharacterStatsUIBehaviour : MonoBehaviour
     public void SetUnitStats(Unit unit)
     {
         SetHealthBar(unit.CurrentHealth, unit.MaxHealth);
+        Debug.Log($"{unit.Name} has {unit.CurrentActionPoints} actions points");
         SetActionPointsBar(unit.CurrentActionPoints, unit.MaxActionPoints);
         SetDefenceValue(unit.Defence);
         SetAttackValue(unit.Attack);

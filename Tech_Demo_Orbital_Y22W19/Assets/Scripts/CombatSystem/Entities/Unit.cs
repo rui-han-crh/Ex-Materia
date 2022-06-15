@@ -160,7 +160,7 @@ namespace CombatSystem.Entities
         public Unit ChangeActionPoints(int newActionPoints)
         {
             UnitProperties newUnitProperties = currentProperties;
-            newUnitProperties.CurrentActionPoints = Mathf.Clamp(newActionPoints, 0, CurrentActionPoints);
+            newUnitProperties.CurrentActionPoints = Mathf.Clamp(newActionPoints, 0, MaxActionPoints);
 
             return new Unit(newUnitProperties, this);
         }

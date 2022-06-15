@@ -133,6 +133,7 @@ public class GameMapData
     public GameMapData WaitUnit(WaitRequest waitRequest)
     {
         Unit actingUnit = waitRequest.ActingUnit;
+        Debug.Log($"{actingUnit.Name} is wait for {waitRequest.TimeSpent} to replenish {waitRequest.ActionPointsReplenished}");
 
         actingUnit = actingUnit.ChangeTime(actingUnit.Time + waitRequest.TimeSpent)
             .ChangeActionPoints(actingUnit.CurrentActionPoints + waitRequest.ActionPointsReplenished);

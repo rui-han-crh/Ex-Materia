@@ -1102,9 +1102,9 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 100
   range: 7
-  attack: 1
+  attack: 24
   defence: 1
-  risk: 5
+  risk: 0
   maxActionPoints: 150
   currentActionPoints: 150
   faction: 1

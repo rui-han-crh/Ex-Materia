@@ -101,6 +101,6 @@ public class AttackRequest : MapActionRequest
 
     public override int GetUtility(GameMap map)
     {
-        return (int)((chanceToHit * ActingUnit.Attack) - targetUnit.Defence);
+        return Mathf.Max((int)((chanceToHit * ActingUnit.Attack) - targetUnit.Defence), 0);
     }
 }

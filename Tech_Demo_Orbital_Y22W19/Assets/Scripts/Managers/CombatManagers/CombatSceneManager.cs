@@ -11,10 +11,10 @@ using CombatSystem.Consultants;
 using UnityEngine.Tilemaps;
 using CoroutineGenerators;
 using Managers.Subscribers;
-using CombatSystem.Censuses;
 using UnityEngine.Extensions;
 using ColorLookUp;
 using UnityEngine.EventSystems;
+using AsyncTask = System.Threading.Tasks.Task;
 
 namespace Managers
 {
@@ -49,7 +49,8 @@ namespace Managers
             MovementMode,
             OpponentTurn,
             TurnEnded,
-            GameOver
+            GameOver,
+            OpponentThinking
         }
 
         private SceneState gameState;
@@ -223,15 +224,6 @@ namespace Managers
             GlobalResourceManager.Instance.LineRenderer.positionCount = 0;
         }
 
-        public void DisableDeadUnits()
-        {
-            IEnumerable<Unit> deadUnits = currentMap.GetUnits(x => x.CurrentHealth <= 0);
-            foreach (Unit unit in deadUnits)
-            {
-                unitManager.RemoveUnit(unit, delay: 1);
-            }
-        }
-
         [EnumAction(typeof(CommandType))]
         // Unity will not expose enums in the inspector for event so we have to resort to some weird hacks
         // Read: https://forum.unity.com/threads/ability-to-add-enum-argument-to-button-functions.270817/
@@ -282,15 +274,12 @@ namespace Managers
 
                     CanvasManager.Instance.DeactivateUI(CanvasManager.UIType.OpponentSheet);
 
-                    request = AttackRequest.CreatePendingRequest(
-                        CurrentActingUnit,
-                        CurrentMap[indicatedTiles.Last()],
-                        indicatedTiles.ToArray(),
-                        savedActionCost,
-                        savedActionCost);
+                    request = CombatConsultant.SimulateAttack(
+                        CurrentActingUnit, CurrentMap[indicatedTiles.Last()], currentMap.Data, considerActionPoints: true);
                     break;
 
                 case CommandType.Wait:
+                    Debug.Log(timeToWait);
                     request = new WaitRequest(CurrentActingUnit, timeToWait, timeToWait);
                     break;
 
@@ -349,7 +338,8 @@ namespace Managers
 
                         GameMapData gameMapData = currentMap.Data.ChangeUnitPosition(CurrentActingUnit, position);
 
-                        IEnumerable<AttackRequest> incomingAttacks = CombatConsultant.GetIncomingAttacks(gameMapData, CurrentActingUnit);
+                        IEnumerable<AttackRequest> incomingAttacks = CombatConsultant.GetIncomingAttacks(gameMapData, CurrentActingUnit)
+                            .Where(x => x.ActingUnit.HasStatusEffect(CombatSystem.Entities.UnitStatusEffects.Overwatch));
 
                         if (incomingAttacks.Count() == 0)
                         {
@@ -392,6 +382,8 @@ namespace Managers
                     Debug.LogError($"There was no action carried out for {request.Type}");
                     break;
             }
+
+            HealthBarManager.Instance.UpdateHealthBars(currentMap.GetUnits(unit => true));
             gameState = SceneState.TurnEnded;
         }
 
@@ -403,11 +395,54 @@ namespace Managers
             {
                 case SceneState.TurnEnded:
                     StateReset();
-                    DisableDeadUnits();
+                    routineManager.Enqueue(CombatCoroutineGenerator.DisableDeadUnits(CurrentMap));
                     UnitQueueManager.Instance.UpdateUnitQueue(currentMap.GetUnits(unit => true));
-                    gameState = SceneState.Selection;
+
+                    if (currentMap.CurrentActingUnit == null)
+                    {
+                        gameState = SceneState.GameOver;
+                        break;
+                    }
+
+
+                    if (currentMap.CurrentActingUnit.Faction == Unit.UnitFaction.Enemy)
+                    {
+                        gameState = SceneState.OpponentTurn;
+                    }
+                    else
+                    {
+                        CanvasManager.Instance.ActivateUI(CanvasManager.UIType.CharacterSheet);
+                        gameState = SceneState.Selection;
+                    }
                     break;
+
+                case SceneState.OpponentTurn:
+                    CanvasManager.Instance.DeactivateUI(CanvasManager.UIType.CharacterSheet);
+                    Autoplay();
+                    gameState = SceneState.OpponentThinking;
+                    break;
+
+
             }
+        }
+
+        public async void Autoplay()
+        {
+            Debug.Log("Please wait");
+
+            await AsyncTask.Delay(1000);
+            MapActionRequest bestRequest = await AsyncTask.Run(() =>
+            {
+                MapActionRequest bestRequest = CurrentMap.GetKthBestAction(0);
+                return bestRequest;
+            },
+            tokenSource.Token
+            );
+
+            Debug.Log($"{bestRequest} Utility: {bestRequest.GetUtility(CurrentMap)}");
+
+
+            ParseRequest(bestRequest);
         }
     }
 }

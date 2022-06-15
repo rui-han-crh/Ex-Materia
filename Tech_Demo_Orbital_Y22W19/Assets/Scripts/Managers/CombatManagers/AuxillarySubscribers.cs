@@ -86,10 +86,13 @@ namespace Managers.Subscribers
                 return;
             }
 
+            Vector3Int currentUnitPosition = combatSceneManager.CurrentActingUnitPosition;
+
             AttackRequest request = CombatConsultant.SimulateAttack(
                 combatSceneManager.CurrentActingUnit,
                 combatSceneManager.CurrentMap[gridPosition],
-                combatSceneManager.CurrentMap.Data
+                combatSceneManager.CurrentMap.Data,
+                considerActionPoints: true
                 );
 
             AttackRequest.Outcome status = request.Status;
@@ -123,7 +126,7 @@ namespace Managers.Subscribers
                     //int lastActionCost = request.ActionPointCost;
 
                     TileDrawer.SetColorToTiles(indicatorMap, request.TilesHit, ColorPalette.LIGHT_RED_TRANSLUCENT);
-                    LineDrawer.DrawLineOnTileMap(indicatorMap, new Vector3Int[] { request.TilesHit.First(), request.TilesHit.Last() });
+                    LineDrawer.DrawLineOnTileMap(indicatorMap, new Vector3Int[] { currentUnitPosition, gridPosition });
                     LineDrawer.ColorLine(Color.red);
 
                     CanvasManager.Instance.DeactivateUI(CanvasManager.UIType.OpponentSheet);
