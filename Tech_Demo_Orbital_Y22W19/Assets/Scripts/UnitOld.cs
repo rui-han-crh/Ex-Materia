@@ -6,7 +6,7 @@ using System.Collections.Generic;
 /// <summary>
 /// Fully immutable struct representing unit data
 /// </summary>
-public struct Unit : IComparable<Unit>
+public struct UnitOld : IComparable<UnitOld>
 {
     private readonly string name;
 
@@ -17,7 +17,7 @@ public struct Unit : IComparable<Unit>
     private readonly UnitData originalUnitData;
     private readonly UnitData currentUnitData;
 
-    public Unit(string name, Sprite avatar, UnitData originalData, UnitData currentData)
+    public UnitOld(string name, Sprite avatar, UnitData originalData, UnitData currentData)
     {
         this.name = name;
         this.characterHeadAvatar = avatar;
@@ -26,11 +26,11 @@ public struct Unit : IComparable<Unit>
         unitStatusEffects = default;
     }
 
-    public Unit(string name, Sprite avatar, UnitData originalData) : this(name, avatar, originalData, originalData)
+    public UnitOld(string name, Sprite avatar, UnitData originalData) : this(name, avatar, originalData, originalData)
     {
     }
 
-    private Unit(Unit oldUnit, int newHealth, int newTime, int newActionPoints)
+    private UnitOld(UnitOld oldUnit, int newHealth, int newTime, int newActionPoints)
     {
         this.name = oldUnit.name;
         this.characterHeadAvatar = oldUnit.CharacterHeadAvatar;
@@ -44,7 +44,7 @@ public struct Unit : IComparable<Unit>
         this.unitStatusEffects = oldUnit.unitStatusEffects;
     }
 
-    private Unit (Unit oldUnit)
+    private UnitOld (UnitOld oldUnit)
     {
         this.name = oldUnit.name;
         this.characterHeadAvatar = oldUnit.CharacterHeadAvatar;
@@ -54,7 +54,7 @@ public struct Unit : IComparable<Unit>
         this.unitStatusEffects = oldUnit.unitStatusEffects;
     }
 
-    private Unit(Unit oldUnit, UnitStatusEffects unitStatusEffects)
+    private UnitOld(UnitOld oldUnit, UnitStatusEffects unitStatusEffects)
     {
         this.name = oldUnit.name;
         this.characterHeadAvatar = oldUnit.CharacterHeadAvatar;
@@ -93,58 +93,58 @@ public struct Unit : IComparable<Unit>
 
     public int Health => currentUnitData.Health;
 
-    public Unit DecreaseHealth(int decreaseAmount)
+    public UnitOld DecreaseHealth(int decreaseAmount)
     {
-        return new Unit(this,
+        return new UnitOld(this,
                         Mathf.Clamp(Health - decreaseAmount, 0, MaxHealth),
                         Time,
                         ActionPointsLeft);
     }
 
-    public Unit IncreaseHealth(int increaseAmount)
+    public UnitOld IncreaseHealth(int increaseAmount)
     {
         return DecreaseHealth(-increaseAmount);
     }
 
-    public Unit UseActionPoints(int amountUsed)
+    public UnitOld UseActionPoints(int amountUsed)
     {
-        return new Unit(this, Health, Time + amountUsed * Speed, ActionPointsLeft - amountUsed);
+        return new UnitOld(this, Health, Time + amountUsed * Speed, ActionPointsLeft - amountUsed);
     }
 
-    public Unit ResetActionPoints()
+    public UnitOld ResetActionPoints()
     {
-        return new Unit(this, Health, Time, MaxActionPoints);
+        return new UnitOld(this, Health, Time, MaxActionPoints);
     }
 
-    public Unit ResetUnitToOriginal()
+    public UnitOld ResetUnitToOriginal()
     {
-        return new Unit(Name, CharacterHeadAvatar, originalUnitData);
+        return new UnitOld(Name, CharacterHeadAvatar, originalUnitData);
     }
 
-    public Unit ReplenishActionPoints(int amountToReplenish)
+    public UnitOld ReplenishActionPoints(int amountToReplenish)
     {
         Debug.Log("Replenishing AP: " + amountToReplenish.ToString());
-        return new Unit(this, Health, Time, ActionPointsLeft + amountToReplenish);
+        return new UnitOld(this, Health, Time, ActionPointsLeft + amountToReplenish);
     }
 
-    public Unit AddTime(int amount)
+    public UnitOld AddTime(int amount)
     {
-        return new Unit(this, Health, Time + amount, ActionPointsLeft);
+        return new UnitOld(this, Health, Time + amount, ActionPointsLeft);
     }
 
-    public Unit ApplyStatus(UnitStatusEffects.Status status)
+    public UnitOld ApplyStatus(UnitStatusEffects.Status status)
     {
         UnitStatusEffects newStatus = unitStatusEffects.ApplyStatus(status);
-        return new Unit(this, newStatus);
+        return new UnitOld(this, newStatus);
     }
 
-    public Unit RemoveStatus(UnitStatusEffects.Status status)
+    public UnitOld RemoveStatus(UnitStatusEffects.Status status)
     {
         UnitStatusEffects newStatus = unitStatusEffects.RemoveStatus(status);
-        return new Unit(this, newStatus);
+        return new UnitOld(this, newStatus);
     }
 
-    public int CompareTo(Unit other)
+    public int CompareTo(UnitOld other)
     {
         return this.Time - other.Time;
     }
@@ -156,11 +156,11 @@ public struct Unit : IComparable<Unit>
     /// <returns></returns>
     public override bool Equals(object obj)
     {
-        if (!(obj is Unit))
+        if (!(obj is UnitOld))
         {
             return false;
         }
-        return name.Equals(((Unit)obj).name);
+        return name.Equals(((UnitOld)obj).name);
     }
 
     public override int GetHashCode()
@@ -173,8 +173,8 @@ public struct Unit : IComparable<Unit>
         return $"{name} : HP = {Health}, AP = {ActionPointsLeft}, TIME = {Time}";
     }
 
-    public Unit Clone()
+    public UnitOld Clone()
     {
-        return new Unit(this);
+        return new UnitOld(this);
     }
 }

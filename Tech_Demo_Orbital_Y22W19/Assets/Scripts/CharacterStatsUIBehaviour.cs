@@ -62,7 +62,7 @@ public class CharacterStatsUIBehaviour : MonoBehaviour
         speedValueText.text = speedValue.ToString();
     }
 
-    public void SetUnitStats(Unit unit)
+    public void SetUnitStats(UnitOld unit)
     {
         SetHealthBar(unit.Health, unit.MaxHealth);
         SetActionPointsBar(unit.ActionPointsLeft, unit.MaxActionPoints);

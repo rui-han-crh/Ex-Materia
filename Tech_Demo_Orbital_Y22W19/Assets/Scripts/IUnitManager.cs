@@ -4,19 +4,19 @@ using System.Collections;
 
 public interface IUnitManager
 {
-    public Unit GetSelectedUnit();
+    public UnitOld GetSelectedUnit();
 
-    public Dictionary<Vector3Int, Unit> GetPositionsOfUnits();
+    public Dictionary<Vector3Int, UnitOld> GetPositionsOfUnits();
 
     public bool IsOverUI();
 
     public bool IsRoutineEmpty();
 
-    public Vector3Int GetPositionByUnit(Unit unit);
+    public Vector3Int GetPositionByUnit(UnitOld unit);
 
-    public Unit GetUnitByPosition(Vector3Int position);
+    public UnitOld GetUnitByPosition(Vector3Int position);
 
-    public void UpdateUnitPosition(Unit unit, Vector3Int position);
+    public void UpdateUnitPosition(UnitOld unit, Vector3Int position);
 
     public void Enqueue(IEnumerator routine);
 }

@@ -50,7 +50,7 @@ public class InformationUIManager : MonoBehaviour
         TurnAllUIOff();
     }
 
-    public void SetOpponentDetails(Unit unit)
+    public void SetOpponentDetails(UnitOld unit)
     {
         opponentUIBehaviour.SetName(unit.Name);
         opponentUIBehaviour.SetAvatar(unit.CharacterHeadAvatar);

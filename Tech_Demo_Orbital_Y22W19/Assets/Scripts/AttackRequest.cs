@@ -7,7 +7,7 @@ public class AttackRequest : MapActionRequest
 {
     private readonly Vector3Int shootFromPosition;
 
-    private readonly Unit defendingUnit;
+    private readonly UnitOld defendingUnit;
     private readonly Vector3Int shootToPosition;
 
     private readonly float chanceToHit;
@@ -28,7 +28,7 @@ public class AttackRequest : MapActionRequest
 
     public Vector3Int TargetPosition => shootToPosition;
 
-    public Unit TargetUnit => hasDefender ? defendingUnit : throw new NotSupportedException("There is no defending unit");
+    public UnitOld TargetUnit => hasDefender ? defendingUnit : throw new NotSupportedException("There is no defending unit");
 
     public AttackRequest(GameMap previousMap,
                         Vector3Int shootFromPosition,
@@ -51,7 +51,7 @@ public class AttackRequest : MapActionRequest
         else
         {
             hasDefender = false;
-            this.defendingUnit = new Unit();
+            this.defendingUnit = new UnitOld();
         }
 
         this.tilesHit = tilesHit;
@@ -61,7 +61,7 @@ public class AttackRequest : MapActionRequest
     }
 
     public AttackRequest(GameMap previousMap,
-                        Unit attacker,
+                        UnitOld attacker,
                         Vector3Int shootFromPosition, 
                         Vector3Int shootToPosition,
                         AttackStatus status,
@@ -73,7 +73,7 @@ public class AttackRequest : MapActionRequest
             actionPoints)
     {
         this.shootFromPosition = shootFromPosition;
-        this.defendingUnit = previousMap.ExistsUnitAt(shootToPosition) ? previousMap.GetUnitByPosition(shootToPosition) : new Unit();
+        this.defendingUnit = previousMap.ExistsUnitAt(shootToPosition) ? previousMap.GetUnitByPosition(shootToPosition) : new UnitOld();
         this.tilesHit = tilesHit;
         this.shootToPosition = shootToPosition;
         this.status = status;
@@ -111,7 +111,7 @@ public class AttackRequest : MapActionRequest
     public override float GetUtility()
     {
         // Should I do this?
-        if (defendingUnit.Equals(default(Unit)))
+        if (defendingUnit.Equals(default(UnitOld)))
         {
             Debug.LogWarning("Illegal query on an invalid attack selection");
             return float.NegativeInfinity;

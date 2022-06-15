@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class CharacterHeadAvatarBehaviour : MonoBehaviour
 {
-    private Unit unit;
-    public Unit Unit
+    private UnitOld unit;
+    public UnitOld Unit
     {
         get { return unit; }
         set { unit = value; }

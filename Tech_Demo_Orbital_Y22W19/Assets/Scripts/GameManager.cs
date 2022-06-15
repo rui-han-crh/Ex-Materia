@@ -88,7 +88,7 @@ public partial class GameManager : MonoBehaviour
     public bool IsOverUI => isOverUI;
 
     public Vector3Int CurrentUnitPosition => currentMap.CurrentUnitPosition;
-    public Unit CurrentUnit => currentMap.CurrentUnit;
+    public UnitOld CurrentUnit => currentMap.CurrentUnit;
 
     public GameMap CurrentMap => currentMap;
 
@@ -125,7 +125,7 @@ public partial class GameManager : MonoBehaviour
 
         mainCamera = Camera.main;
 
-        Dictionary<Vector3Int, Unit> unitPositionMap = new Dictionary<Vector3Int, Unit>();
+        Dictionary<Vector3Int, UnitOld> unitPositionMap = new Dictionary<Vector3Int, UnitOld>();
         for (int i = 0; i < unitGameObjects.Length; i++)
         {
             GameObject unitObject = unitGameObjects[i];
@@ -135,7 +135,7 @@ public partial class GameManager : MonoBehaviour
                 continue;
             }
 
-            Unit unit = unitObject.GetComponentInChildren<UnitBehaviour>().InitialiseUnit(1 + i * 2);
+            UnitOld unit = unitObject.GetComponentInChildren<UnitBehaviour>().InitialiseUnit(1 + i * 2);
             Debug.Assert(unit.Name != null);
             Vector3Int unitCellPosition = groundTilemap.WorldToCell(unitObject.transform.position);
             unitPositionMap.Add(unitCellPosition, unit);
@@ -331,7 +331,7 @@ public partial class GameManager : MonoBehaviour
     {
         foreach (Vector3Int position in currentMap.AllUnitPositions)
         {
-            Unit unit = currentMap.GetUnitByPosition(position);
+            UnitOld unit = currentMap.GetUnitByPosition(position);
             nameUnitGameObjectMapping[unit.Name].transform.position = groundTilemap.CellToWorld(position);
         }
     }
@@ -358,7 +358,7 @@ public partial class GameManager : MonoBehaviour
             }
         }
 
-        foreach (Unit unit in currentMap.AllUnits)
+        foreach (UnitOld unit in currentMap.AllUnits)
         {
             GameObject unitGameObject = nameUnitGameObjectMapping[unit.Name];
             unitToHealthbarMapping[unitGameObject].GetComponent<BarFillBehaviour>().UpdateBarFillImage(unit.Health, unit.MaxHealth);
@@ -514,7 +514,7 @@ public partial class GameManager : MonoBehaviour
         {
             case MapActionType.Movement:
                 MovementRequest movementRequest = (MovementRequest)request;
-                Unit movingUnit = request.ActingUnit;
+                UnitOld movingUnit = request.ActingUnit;
 
                 cost = movementRequest.ActionPointCost;
 

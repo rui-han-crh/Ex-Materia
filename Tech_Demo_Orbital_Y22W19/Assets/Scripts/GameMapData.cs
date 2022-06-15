@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GameMapData
 {
-    private readonly BidirectionalDictionary<Vector3Int, Unit> positionUnitMapping;
+    private readonly BidirectionalDictionary<Vector3Int, UnitOld> positionUnitMapping;
 
     private readonly HashSet<Vector3Int> fullCoverPositions;
     private readonly HashSet<Vector3Int> halfCoverPositions;
@@ -11,18 +11,18 @@ public class GameMapData
 
     private readonly Dictionary<Vector3Int, int> tileCosts;
 
-    public BidirectionalDictionary<Vector3Int, Unit>.Indexer<Unit, Vector3Int> UnitPositionMapping => positionUnitMapping.Reverse;
-    public BidirectionalDictionary<Vector3Int, Unit>.Indexer<Vector3Int, Unit> PositionUnitMapping => positionUnitMapping.Forward;
+    public BidirectionalDictionary<Vector3Int, UnitOld>.Indexer<UnitOld, Vector3Int> UnitPositionMapping => positionUnitMapping.Reverse;
+    public BidirectionalDictionary<Vector3Int, UnitOld>.Indexer<Vector3Int, UnitOld> PositionUnitMapping => positionUnitMapping.Forward;
 
-    public GameMapData(Dictionary<Vector3Int, Unit> positionUnitMap, 
+    public GameMapData(Dictionary<Vector3Int, UnitOld> positionUnitMap, 
                 IEnumerable<Vector3Int> fullCoverPositions,
                 IEnumerable<Vector3Int> halfCoverPositions,
                 IEnumerable<Vector3Int> groundPositions,
                 Dictionary<Vector3Int, int> groundTileCosts)
     {
-        positionUnitMapping = new BidirectionalDictionary<Vector3Int, Unit>();
+        positionUnitMapping = new BidirectionalDictionary<Vector3Int, UnitOld>();
 
-        foreach (KeyValuePair<Vector3Int, Unit> pair in positionUnitMap)
+        foreach (KeyValuePair<Vector3Int, UnitOld> pair in positionUnitMap)
         {
             positionUnitMapping.Add(pair.Key, pair.Value);
         }
@@ -33,11 +33,11 @@ public class GameMapData
         this.tileCosts = new Dictionary<Vector3Int, int>(groundTileCosts);
     }
 
-    public GameMapData(Dictionary<Vector3Int, Unit> positionUnitMap, GameMapData oldData)
+    public GameMapData(Dictionary<Vector3Int, UnitOld> positionUnitMap, GameMapData oldData)
     {
-        positionUnitMapping = new BidirectionalDictionary<Vector3Int, Unit>();
+        positionUnitMapping = new BidirectionalDictionary<Vector3Int, UnitOld>();
 
-        foreach (KeyValuePair<Vector3Int, Unit> pair in positionUnitMap)
+        foreach (KeyValuePair<Vector3Int, UnitOld> pair in positionUnitMap)
         {
             positionUnitMapping.Add(pair.Key, pair.Value);
         }
@@ -71,12 +71,12 @@ public class GameMapData
         return tileCosts[position];
     }
 
-    public Vector3Int GetPositionByUnit(Unit unit)
+    public Vector3Int GetPositionByUnit(UnitOld unit)
     {
         return UnitPositionMapping[unit];
     }
 
-    public Unit GetUnitByPosition(Vector3Int position)
+    public UnitOld GetUnitByPosition(Vector3Int position)
     {
         return PositionUnitMapping[position];
     }

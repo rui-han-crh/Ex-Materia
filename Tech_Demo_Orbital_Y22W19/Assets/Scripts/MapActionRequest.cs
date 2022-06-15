@@ -8,7 +8,7 @@ public abstract class MapActionRequest
 {
     private readonly MapActionType mapActionType;
 
-    private readonly Unit actingUnit;
+    private readonly UnitOld actingUnit;
     private readonly Vector3Int sourcePosition;
 
     private readonly GameMap previousMap;
@@ -23,7 +23,7 @@ public abstract class MapActionRequest
 
     public MapActionType ActionType => mapActionType;
 
-    public Unit ActingUnit => actingUnit;
+    public UnitOld ActingUnit => actingUnit;
 
     public MapActionRequest(GameMap previousMap, MapActionType actionType, Vector3Int sourcePosition, int actionPoints)
     {
@@ -34,7 +34,7 @@ public abstract class MapActionRequest
         this.actionPointCost = actionPoints;
     }
 
-    public MapActionRequest(GameMap previousMap, Unit actingUnit, MapActionType actionType, int actionPoints)
+    public MapActionRequest(GameMap previousMap, UnitOld actingUnit, MapActionType actionType, int actionPoints)
     {
         this.previousMap = previousMap;
         this.actingUnit = actingUnit;

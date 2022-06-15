@@ -42,7 +42,7 @@ public class UnitQueueManager : MonoBehaviour
     public bool IsPlayingAnimation => isPlayingAnimation;
 
 
-    public void InitialiseQueue(GameObject[] units, Dictionary<string, Unit> nameUnitMapping)
+    public void InitialiseQueue(GameObject[] units, Dictionary<string, UnitOld> nameUnitMapping)
     {
         foreach (GameObject unit in units)
         {
@@ -55,7 +55,7 @@ public class UnitQueueManager : MonoBehaviour
 
     }
 
-    public void UpdateUnitQueue(Dictionary<string, Unit> nameUnitMapping)
+    public void UpdateUnitQueue(Dictionary<string, UnitOld> nameUnitMapping)
     {
         int numberOfUnitsRemoved = RemoveDeadUnitsAvatar(nameUnitMapping);
 
@@ -63,7 +63,7 @@ public class UnitQueueManager : MonoBehaviour
 
         List<LinearAnimation.LinearAnimationTarget> targets = new List<LinearAnimation.LinearAnimationTarget>();
 
-        Unit[] orderedUnit = nameUnitMapping.Values.OrderBy(x => x.Time).ToArray();
+        UnitOld[] orderedUnit = nameUnitMapping.Values.OrderBy(x => x.Time).ToArray();
 
         Dictionary<string, int> unitOrder = new Dictionary<string, int>();
 
@@ -95,7 +95,7 @@ public class UnitQueueManager : MonoBehaviour
                 continue;
             }
 
-            Unit unit = nameUnitMapping[characterHeadAvatar.BoundGameObject.name];
+            UnitOld unit = nameUnitMapping[characterHeadAvatar.BoundGameObject.name];
             characterHeadAvatar.UpdateHealthBar(unit);
 
             int index = unitOrder[characterHeadAvatar.BoundGameObject.name];
@@ -132,7 +132,7 @@ public class UnitQueueManager : MonoBehaviour
     /// </summary>
     /// <param name="nameUnitMapping"></param>
     /// <returns>The number of units avatars that have been removed.</returns>
-    private int RemoveDeadUnitsAvatar(Dictionary<string, Unit> nameUnitMapping)
+    private int RemoveDeadUnitsAvatar(Dictionary<string, UnitOld> nameUnitMapping)
     {
         int numberOfUnitsRemoved = 0;
         foreach (Transform character in avatarHolder)

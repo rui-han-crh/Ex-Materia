@@ -16,7 +16,7 @@ public struct GameMap
     private readonly UnitMovement unitMovement;
     private readonly GameMapData mapData;
 
-    private readonly Unit currentTurnUnit;
+    private readonly UnitOld currentTurnUnit;
 
     private readonly MapActionRequest lastAction;
 
@@ -24,16 +24,16 @@ public struct GameMap
 
     public MapActionRequest LastAction => lastAction;
 
-    public Unit CurrentUnit => currentTurnUnit;
+    public UnitOld CurrentUnit => currentTurnUnit;
     public Vector3Int CurrentUnitPosition => mapData.UnitPositionMapping[currentTurnUnit];
 
     public HashSet<Vector3Int> AllUnitPositions => new HashSet<Vector3Int>(mapData.PositionUnitMapping.Keys);
-    public HashSet<Unit> AllUnits => new HashSet<Unit>(mapData.UnitPositionMapping.Keys);
+    public HashSet<UnitOld> AllUnits => new HashSet<UnitOld>(mapData.UnitPositionMapping.Keys);
 
     // CONSTRUCTORS
 
     // Creates a new map from scratch
-    public GameMap(Dictionary<Vector3Int, Unit> positionUnitMap,
+    public GameMap(Dictionary<Vector3Int, UnitOld> positionUnitMap,
                 IEnumerable<Vector3Int> fullCoverPositions,
                 IEnumerable<Vector3Int> halfCoverPositions,
                 IEnumerable<Vector3Int> groundPositions,
@@ -49,7 +49,7 @@ public struct GameMap
 
     // Clones a new map from the oldmap with new updates units
     private GameMap(GameMap oldMap,
-                Dictionary<Vector3Int, Unit> positionUnitMap,
+                Dictionary<Vector3Int, UnitOld> positionUnitMap,
                 MapActionRequest lastAction)
     {
         this.currentTurnUnit = GetUnitWithLeastExhaustion(positionUnitMap.Values);
@@ -62,15 +62,15 @@ public struct GameMap
     }
 
     // STATIC METHODS
-    private static Unit GetUnitWithLeastExhaustion(IEnumerable<Unit> units)
+    private static UnitOld GetUnitWithLeastExhaustion(IEnumerable<UnitOld> units)
     {
         if (units.Count() == 0)
         {
             throw new System.Exception("There are no units");
         }
 
-        Unit leastExhaustedUnit = units.First();
-        foreach (Unit unit in units)
+        UnitOld leastExhaustedUnit = units.First();
+        foreach (UnitOld unit in units)
         {
             if (unit.Health > 0 && (unit.Time < leastExhaustedUnit.Time))
             {
@@ -136,12 +136,12 @@ public struct GameMap
             return this;
         }
 
-        Unit unit = GetUnitByPosition(position);
+        UnitOld unit = GetUnitByPosition(position);
 
-        Dictionary<Vector3Int, Unit> newPositionUnitMap = new Dictionary<Vector3Int, Unit>();
-        foreach (Unit copiedUnit in mapData.UnitPositionMapping.Keys)
+        Dictionary<Vector3Int, UnitOld> newPositionUnitMap = new Dictionary<Vector3Int, UnitOld>();
+        foreach (UnitOld copiedUnit in mapData.UnitPositionMapping.Keys)
         {
-            Unit clonedUnit = copiedUnit.Clone();
+            UnitOld clonedUnit = copiedUnit.Clone();
             newPositionUnitMap[mapData.UnitPositionMapping[copiedUnit]] = clonedUnit;
         }
 
@@ -165,7 +165,7 @@ public struct GameMap
     /// </summary>
     /// <param name="unit"></param>
     /// <returns>The position of this unit</returns>
-    public Vector3Int GetPositionByUnit(Unit unit)
+    public Vector3Int GetPositionByUnit(UnitOld unit)
     {
         return mapData.GetPositionByUnit(unit);
     }
@@ -176,7 +176,7 @@ public struct GameMap
     /// </summary>
     /// <param name="position"></param>
     /// <returns>The unit at this position</returns>
-    public Unit GetUnitByPosition(Vector3Int position)
+    public UnitOld GetUnitByPosition(Vector3Int position)
     {
         return mapData.GetUnitByPosition(position);
     }
@@ -263,7 +263,7 @@ public struct GameMap
     /// <param name="defensivePosition"></param>
     /// <param name="range"></param>
     /// <returns>An AttackRequest with zero cost</returns>
-    public AttackRequest QueryAttackability(Unit attacker, Vector3Int defensivePosition, int range)
+    public AttackRequest QueryAttackability(UnitOld attacker, Vector3Int defensivePosition, int range)
     {
         AttackRequest request = UnitCombat.QueryTargetAttackable(this, mapData.GetPositionByUnit(attacker), defensivePosition, range);
         return new AttackRequest(request.PreviousMap,
@@ -285,10 +285,10 @@ public struct GameMap
     /// <returns>An enumerable collection of attack requests that have zero cost.</returns>
     public IEnumerable<AttackRequest> OverwatchersCanAttackAny(IEnumerable<Vector3Int> path)
     {
-        IEnumerable<Unit> overwatchingUnits = AllUnits.Where(x => x.UnitStatusEffects.OnOverwatch);
+        IEnumerable<UnitOld> overwatchingUnits = AllUnits.Where(x => x.UnitStatusEffects.OnOverwatch);
         List<AttackRequest> result = new List<AttackRequest>();
 
-        foreach (Unit unit in overwatchingUnits)
+        foreach (UnitOld unit in overwatchingUnits)
         {
             foreach (Vector3Int position in path)
             {
@@ -308,10 +308,10 @@ public struct GameMap
     [Obsolete("Evaluate is no longer supported in GameMaps, do not use.")]
     public int Evaluate()
     {
-        IEnumerable<Unit> friendlyUnits = mapData.UnitPositionMapping
+        IEnumerable<UnitOld> friendlyUnits = mapData.UnitPositionMapping
                                             .Keys
                                             .Where(x => x.Faction == Faction.Friendly);
-        IEnumerable<Unit> enemyUnits = mapData.UnitPositionMapping
+        IEnumerable<UnitOld> enemyUnits = mapData.UnitPositionMapping
                                             .Keys
                                             .Where(x => x.Faction == Faction.Enemy);
         if (IsGameOver())
@@ -335,10 +335,10 @@ public struct GameMap
             return this;
         }
 
-        Dictionary<Vector3Int, Unit> newPositionUnitMap = new Dictionary<Vector3Int, Unit>();
-        foreach (Unit unit in mapData.UnitPositionMapping.Keys)
+        Dictionary<Vector3Int, UnitOld> newPositionUnitMap = new Dictionary<Vector3Int, UnitOld>();
+        foreach (UnitOld unit in mapData.UnitPositionMapping.Keys)
         {
-            Unit clonedUnit = unit.Clone();
+            UnitOld clonedUnit = unit.Clone();
             newPositionUnitMap[mapData.UnitPositionMapping[unit]] = clonedUnit;
         }
 
@@ -347,7 +347,7 @@ public struct GameMap
             case MapActionType.Attack:
                 AttackRequest attackRequest = (AttackRequest)action;
 
-                Unit unitAttacked = newPositionUnitMap[attackRequest.TargetPosition];
+                UnitOld unitAttacked = newPositionUnitMap[attackRequest.TargetPosition];
 
                 if (UnityEngine.Random.Range(0, 1.0f) <= attackRequest.ChanceToHit)
                 {
@@ -364,7 +364,7 @@ public struct GameMap
                     }
                 }
 
-                Unit newMapAttackingUnit = newPositionUnitMap[attackRequest.ActingUnitPosition];
+                UnitOld newMapAttackingUnit = newPositionUnitMap[attackRequest.ActingUnitPosition];
 
                 newMapAttackingUnit = newMapAttackingUnit.UseActionPoints(attackRequest.ActionPointCost);
 
@@ -374,7 +374,7 @@ public struct GameMap
 
             case MapActionType.Movement:
                 MovementRequest movementRequest = (MovementRequest)action;
-                Unit newMapMovingUnit = newPositionUnitMap[movementRequest.ActingUnitPosition];
+                UnitOld newMapMovingUnit = newPositionUnitMap[movementRequest.ActingUnitPosition];
 
                 newMapMovingUnit = newMapMovingUnit.UseActionPoints(movementRequest.ActionPointCost);
 
@@ -385,7 +385,7 @@ public struct GameMap
             case MapActionType.Wait:
                 WaitRequest waitRequest = (WaitRequest)action;
 
-                Unit recoveringUnit = newPositionUnitMap[waitRequest.ActingUnitPosition];
+                UnitOld recoveringUnit = newPositionUnitMap[waitRequest.ActingUnitPosition];
 
                 int apReplenished = recoveringUnit.Speed * waitRequest.WaitTime;
 
@@ -397,7 +397,7 @@ public struct GameMap
 
             case MapActionType.Overwatch:
                 OverwatchRequest overwatchRequest = (OverwatchRequest)action;
-                Unit overwatchingUnit = newPositionUnitMap[overwatchRequest.ActingUnitPosition];
+                UnitOld overwatchingUnit = newPositionUnitMap[overwatchRequest.ActingUnitPosition];
 
                 overwatchingUnit = overwatchingUnit.AddTime(OverwatchRequest.TIME_CONSUMED).ApplyStatus(UnitStatusEffects.Status.Overwatch);
 
@@ -550,7 +550,7 @@ public struct GameMap
 
         foreach (Vector3Int rivalPosition in allRivalPositions)
         {
-            Unit rivalUnit = GetUnitByPosition(rivalPosition);
+            UnitOld rivalUnit = GetUnitByPosition(rivalPosition);
 
             AttackRequest hypotheticalRequest = QueryAttackability(rivalPosition, CurrentUnitPosition, rivalUnit.Range);
             if (hypotheticalRequest.Successful)

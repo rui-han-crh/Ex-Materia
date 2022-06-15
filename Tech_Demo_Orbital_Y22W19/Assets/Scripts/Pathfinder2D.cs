@@ -59,12 +59,12 @@ public class Pathfinder2D
     private int pathCost;
     private readonly int initialPathCost;
 
-    protected Unit unit;
+    protected UnitOld unit;
     public int PathCost => pathCost;
 
 
     // CONSTRUCTORS
-    public Pathfinder2D(Unit unit, Vector3Int sourcePosition, Vector3Int destinationPosition, GameMapData mapData, int initialPathCost = 0)
+    public Pathfinder2D(UnitOld unit, Vector3Int sourcePosition, Vector3Int destinationPosition, GameMapData mapData, int initialPathCost = 0)
     {
         this.unit = unit;
         this.mapData = mapData;
@@ -86,7 +86,7 @@ public class Pathfinder2D
         childParentMap.Add(source, null);
     }
 
-    private Pathfinder2D(Unit unit, GameMapData mapData)
+    private Pathfinder2D(UnitOld unit, GameMapData mapData)
     {
         this.unit = unit;
         this.source = new Node(mapData.GetPositionByUnit(unit));
@@ -108,7 +108,7 @@ public class Pathfinder2D
 
 
     // PUBLIC STATIC METHODS
-    public static Dictionary<Vector3Int, int> GetAllReachablePositions(Unit unit, GameMapData mapData)
+    public static Dictionary<Vector3Int, int> GetAllReachablePositions(UnitOld unit, GameMapData mapData)
     {
         Pathfinder2D pathfinder = new Pathfinder2D(unit, mapData);
         pathfinder.FindDirectedPath();
@@ -119,7 +119,7 @@ public class Pathfinder2D
                                         .ToDictionary(pair => pair.Key.Coordinates, pair => pathfinder.gScore[pair.Key]));
     }
 
-    public static ShortestPathTree GetShortestPathTree(Unit unit, GameMapData mapData)
+    public static ShortestPathTree GetShortestPathTree(UnitOld unit, GameMapData mapData)
     {
         Pathfinder2D pathfinder = new Pathfinder2D(unit, mapData);
         pathfinder.FindDirectedPath();

@@ -17,6 +17,9 @@ namespace Facades
             maxActionPoints,
             currentActionPoints;
 
+        [SerializeField]
+        private Unit.UnitFaction faction;
+
         public Unit CreateUnit()
         {
             UnitProperties properties = new UnitProperties(

@@ -9,10 +9,10 @@ public class UnitCombat
     public static readonly int MINIMUM_DAMAGE_DEALT = 1;
 
     private GameMapData mapData;
-    private Unit currentOffensiveUnit;
+    private UnitOld currentOffensiveUnit;
 
     // CONSTRUCTORS
-    public UnitCombat(Unit currentOffensiveUnit, GameMapData mapData)
+    public UnitCombat(UnitOld currentOffensiveUnit, GameMapData mapData)
     {
         this.currentOffensiveUnit = currentOffensiveUnit;
         this.mapData = mapData;
@@ -353,7 +353,7 @@ public class UnitCombat
     /// <param name="gameMapRequesting"></param>
     /// <param name="target"></param>
     /// <returns></returns>
-    public AttackRequest QueryTargetAttackable(GameMap gameMapRequesting, Unit target)
+    public AttackRequest QueryTargetAttackable(GameMap gameMapRequesting, UnitOld target)
     {
         Vector3Int offensiveUnitPosition = mapData.GetPositionByUnit(currentOffensiveUnit);
         Vector3Int targetUnitPosition = mapData.GetPositionByUnit(target);

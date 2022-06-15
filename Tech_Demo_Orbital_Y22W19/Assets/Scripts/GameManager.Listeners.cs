@@ -103,7 +103,7 @@ public partial class GameManager : MonoBehaviour
 
     public void WaitListener(Slider slider)
     {
-        IEnumerable<Unit> orderedUnitsByTime = currentMap.AllUnits
+        IEnumerable<UnitOld> orderedUnitsByTime = currentMap.AllUnits
                                                         .OrderBy(unit => unit.Time)
                                                         .SkipWhile(x => x.Time == currentMap.CurrentUnit.Time);
 

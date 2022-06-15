@@ -34,7 +34,7 @@ public class MovementRequest : MapActionRequest
 
         foreach (Vector3Int rivalPosition in allRivalPosition)
         {
-            Unit rivalUnit = nextMap.GetUnitByPosition(rivalPosition);
+            UnitOld rivalUnit = nextMap.GetUnitByPosition(rivalPosition);
             AttackRequest hypotheticalRequest = nextMap.QueryAttackability(rivalPosition, DestinationPosition, rivalUnit.Range);
             if (hypotheticalRequest.Successful)
             {
@@ -67,7 +67,7 @@ public class MovementRequest : MapActionRequest
 
         foreach (Vector3Int rivalPosition in allRivalPosition)
         {
-            Unit rivalUnit = nextMap.GetUnitByPosition(rivalPosition);
+            UnitOld rivalUnit = nextMap.GetUnitByPosition(rivalPosition);
             AttackRequest hypotheticalRequest = nextMap.QueryAttackability(DestinationPosition, rivalPosition, ActingUnit.Range);
             if (hypotheticalRequest.Successful)
             {

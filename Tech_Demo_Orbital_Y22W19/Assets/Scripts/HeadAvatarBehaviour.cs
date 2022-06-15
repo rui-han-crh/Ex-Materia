@@ -20,7 +20,7 @@ public class HeadAvatarBehaviour : MonoBehaviour
         avatar.sprite = boundGameObject.GetComponent<UnitBehaviour>().CharacterAvatar;   
     }
 
-    public void UpdateHealthBar(Unit unit)
+    public void UpdateHealthBar(UnitOld unit)
     {
         healthBar.UpdateBarFillImage(unit.Health, unit.MaxHealth);
     }

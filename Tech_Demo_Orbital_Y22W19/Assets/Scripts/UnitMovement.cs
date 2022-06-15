@@ -5,14 +5,14 @@ using System.Linq;
 
 public class UnitMovement
 {
-    private Unit currentTurnUnit;
+    private UnitOld currentTurnUnit;
     private GameMapData mapData;
     private Dictionary<Vector3Int, int> reachableTiles;
 
     public Dictionary<Vector3Int, int> ReachableTiles => reachableTiles ??= GetReachableTiles();
 
     // CONSTRUCTORS
-    public UnitMovement(Unit currentTurnUnit, GameMapData mapData)
+    public UnitMovement(UnitOld currentTurnUnit, GameMapData mapData)
     {
         this.currentTurnUnit = currentTurnUnit;
         this.mapData = mapData;
