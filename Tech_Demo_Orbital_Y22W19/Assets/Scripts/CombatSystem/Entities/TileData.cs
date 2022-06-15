@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Entities
+namespace CombatSystem.Entities
 {
     public struct TileData
     {

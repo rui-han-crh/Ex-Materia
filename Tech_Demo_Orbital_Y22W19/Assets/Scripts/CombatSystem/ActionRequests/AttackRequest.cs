@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Entities;
+using CombatSystem.Entities;
 
 public class AttackRequest : MapActionRequest
 {

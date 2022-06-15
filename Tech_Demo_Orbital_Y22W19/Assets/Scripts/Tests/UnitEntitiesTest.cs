@@ -3,8 +3,15 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
-using Entities;
 using System.Reflection;
+using System;
+using Tests;
+using DataStructures;
+using System.Linq;
+using CombatSystem.Entities;
+using CombatSystem.Consultants;
+using CombatSystem.Censuses;
+using Random = UnityEngine.Random;
 
 public class UnitEntitiesTest
 {

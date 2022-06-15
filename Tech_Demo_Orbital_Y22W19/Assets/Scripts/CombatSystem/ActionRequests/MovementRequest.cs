@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Entities;
-using Consultants;
+using CombatSystem.Entities;
+using CombatSystem.Consultants;
 
 public class MovementRequest : MapActionRequest
 {

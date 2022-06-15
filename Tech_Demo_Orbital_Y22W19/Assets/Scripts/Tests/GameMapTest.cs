@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
-using Entities;
 using System.Reflection;
 using System;
-using Censuses;
 using Tests;
 using DataStructures;
-using Consultants;
 using System.Linq;
+using CombatSystem.Entities;
+using CombatSystem.Consultants;
+using CombatSystem.Censuses;
 
 namespace Tests.PlayMap
 {

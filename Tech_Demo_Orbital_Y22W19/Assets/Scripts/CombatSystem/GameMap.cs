@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Entities;
+using CombatSystem.Entities;
 using System.Linq;
-using Consultants;
+using CombatSystem.Consultants;
 using Algorithms.ShortestPathSearch;
 
 public class GameMap

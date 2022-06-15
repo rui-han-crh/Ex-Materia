@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Censuses;
-using Entities;
+using CombatSystem.Censuses;
+using CombatSystem.Entities;
 using System;
 using DataStructures;
 using Algorithms;

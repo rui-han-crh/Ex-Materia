@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Algorithms.ShortestPathSearch;
 using DataStructures;
-using Entities;
+using CombatSystem.Entities;
 using Algorithms;
 using System.Linq;
 
-namespace Consultants
+namespace CombatSystem.Consultants
 {
     public class MovementConsultant
     {

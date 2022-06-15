@@ -1,10 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using Entities;
-using Censuses;
-using Consultants;
 using NUnit.Framework;
+using UnityEngine;
+using UnityEngine.TestTools;
+using System.Reflection;
+using System;
+using Tests;
+using DataStructures;
+using System.Linq;
+using CombatSystem.Entities;
+using CombatSystem.Consultants;
+using CombatSystem.Censuses;
 
 namespace Tests
 {

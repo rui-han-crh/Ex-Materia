@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Entities;
+using CombatSystem.Entities;
 using System.Linq;
 using UnityEngine.Extensions;
 using Algorithms.Rasterisers;
 
-namespace Consultants
+namespace CombatSystem.Consultants
 {
     public static class CombatConsultant
     {

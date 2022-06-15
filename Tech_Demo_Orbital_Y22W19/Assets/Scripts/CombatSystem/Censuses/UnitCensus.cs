@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using BidirectionalMap;
-using Entities;
+using CombatSystem.Entities;
 using BidirectionalMap.ExtensionMethods;
 using System.Linq;
 using System;
 using System.Linq.Extensions;
 
-namespace Censuses
+namespace CombatSystem.Censuses
 {
     public class UnitCensus
     {

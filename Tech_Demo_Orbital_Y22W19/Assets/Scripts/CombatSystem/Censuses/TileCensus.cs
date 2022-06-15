@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Entities;
+using CombatSystem.Entities;
 using System;
 
-namespace Censuses
+namespace CombatSystem.Censuses
 {
     public class TileCensus
     {

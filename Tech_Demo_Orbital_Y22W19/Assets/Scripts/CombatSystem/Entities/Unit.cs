@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-namespace Entities
+namespace CombatSystem.Entities
 {
     public class Unit
     {
