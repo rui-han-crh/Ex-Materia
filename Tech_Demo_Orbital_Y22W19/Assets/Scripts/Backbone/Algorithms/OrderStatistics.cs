@@ -15,77 +15,58 @@ namespace Algorithms
 
         public static T QuickSelect<T>(IEnumerable<T> array, IComparer<T> comp, int k)
         {
-            k = (array.Count() - k) + 1;
-            //Out of bounds check 
             if (k > array.Count())
             {
-                k = array.Count();
+                throw new Exception("k is too big!");
             }
-
-            if (k < 1)
-            {
-                k = 1;
-            }
+            k -= 1;
+            int start = 0;
+            int end = array.Count();
 
             T[] Array = array.ToArray();
 
-            int maxid = -1;
-            int start = 0;
-            int end = array.Count() - 1;
-            k -= 1;
-
-            while (k != maxid)
+            while (end - start > 1)
             {
-                if (end == start)
+                int p = QuickSelectPartition(Array, start, end, comp);
+                if (p == k)
                 {
-                    maxid = end;
-                    break;
+                    return Array[p];
                 }
-                maxid = start - 1;
-                T pivot = Array[end];
-                for (int i = start; i < end; ++i)
+                else if (k < p)
                 {
-                    if (comp.Compare(Array[i], pivot) >= 0 && ++maxid != i)
-                    {
-                        Swap(Array, maxid, i);
-                    }
-                }
-
-                Array[end] = Array[++maxid];
-                Array[maxid] = pivot;
-                if (k < maxid)
-                {
-                    end = maxid - 1;
+                    end = p;
                 }
                 else
                 {
-                    start = maxid + 1;
+                    start = p + 1;
                 }
             }
-            return Array[maxid];
+            return Array[start];
         }
 
+        private static int QuickSelectPartition<T>(T[] Array, int start, int end, IComparer<T> cmp)
+        {
+            
+            System.Random random = new System.Random();
+            int pivotIndex = random.Next(start, end); //exclusive of end [start, end -1]
+            T pivot = Array[pivotIndex];
+            int low = 1;
+            int high = Array.Length;
 
-        //private static int QuickSelectPartition<T>(T[] array, int startIndex, int endIndex, IComparer<T> comp)
-        //{
-        //    T pivot = array[endIndex];
-        //    int i = (startIndex - 1);
-        //    for (int j  = startIndex; j < endIndex; j++)
-        //    {
-        //        if(comp.Compare(array[j], pivot) <= 0 ) //array[i]<= pivot
-        //        {
-        //            i += 1;
-        //            move elements less behind pivotlocation
-        //            Swap(array, i,j);
- 
-        //        }
+            //Swap pivotIndex and start
+            Swap(Array, pivotIndex, start);
 
-        //    }
-        //    i += 1;
-        //    swap pivot to new pivotlocation;
-        //    Swap(array, i, endIndex);
-        //    return i;
-        //}
+            while (low < high)
+            {
+                while (low < high && cmp.Compare(Array[low], pivot) <= 0) low++;
+                while (low < high && (high >= Array.Length || cmp.Compare(Array[high], pivot) > 0)) high--;
+                if (low < high) Swap(Array, low, high);
+            }
+            low -= 1;
+            Swap(Array, start, low);
+            return low;
+
+        }
 
         private static void Swap<T> (T[] array, int firstIndex, int secondIndex)
         {
