@@ -2449,17 +2449,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1311215942}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9d2a8c74b0280b42a1e8f7b0bf59204, type: 3}
+  m_Script: {fileID: 11500000, guid: a08437e0c621f614b828d671c157541a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 0
-  currentHealth: 0
-  range: 0
-  attack: 0
-  defence: 0
-  risk: 0
-  maxActionPoints: 0
-  currentActionPoints: 0
+  maxHealth: 100
+  currentHealth: 100
+  range: 7
+  attack: 20
+  defence: 20
+  risk: 5
+  maxActionPoints: 150
+  currentActionPoints: 150
   faction: 0
 --- !u!1 &1476831906
 GameObject:
@@ -47353,8 +47353,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1485908917}
   - component: {fileID: 1485908916}
-  - component: {fileID: 1485908919}
-  - component: {fileID: 1485908918}
   m_Layer: 0
   m_Name: TileManager
   m_TagString: Untagged
@@ -47396,36 +47394,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1485908918
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1485908915}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dca55c5adaaaca94e9f31f08dfd2df58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tileCostPairs:
-  - tile: {fileID: 0}
-    cost: 0
---- !u!114 &1485908919
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1485908915}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a5f01c7f1d2fe44c82703cd03f1e9e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  groundTilemaps: []
-  halfCoverTilemaps: []
-  fullCoverTilemaps: []
 --- !u!224 &1500998713 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3044899332637399956, guid: a5a886cc7478c2d4697900baa7c29339, type: 3}
