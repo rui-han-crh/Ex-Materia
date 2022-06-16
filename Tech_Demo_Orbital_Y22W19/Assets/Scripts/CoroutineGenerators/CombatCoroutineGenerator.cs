@@ -37,15 +37,24 @@ namespace CoroutineGenerators
             Vector3 originalWorldPosition = CombatSceneManager.Instance.CellToWorld(originalPosition);
 
             GameObject attackerGameObject = UnitManager.Instance.GetGameObjectOfUnit(request.ActingUnit);
+            Animator attackerAnimator = attackerGameObject.GetComponentInChildren<Animator>();
             Vector3 sourceWorldPosition = CombatSceneManager.Instance.CellToWorld(request.SourcePosition);
 
-            Vector3 targetWorldPosition = CombatSceneManager.Instance.CellToWorld(map[request.TargetUnit]);
+            Vector3Int targetPosition = map[request.TargetUnit];
+
+
+            Vector3Int movingDirection = (request.SourcePosition - originalPosition).Rotate(FORTY_FIVE_DEGREES);
+            Vector3Int returningDirection = (originalPosition - request.SourcePosition).Rotate(FORTY_FIVE_DEGREES);
 
             IEnumerator[] subroutines = new IEnumerator[]
             {
+                PerformAnimation(attackerAnimator, "isMoving", true, movingDirection.x, movingDirection.y),
                 MoveUnitToPosition(attackerGameObject, sourceWorldPosition),
-                PlayAttackAction(attackerGameObject, targetWorldPosition),
-                MoveUnitToPosition(attackerGameObject, originalWorldPosition)
+                PerformAnimation(attackerAnimator, "isMoving", false),
+                PlayAttackAction(attackerAnimator, request.SourcePosition, targetPosition),
+                PerformAnimation(attackerAnimator, "isMoving", true, returningDirection.x, returningDirection.y),
+                MoveUnitToPosition(attackerGameObject, originalWorldPosition),
+                PerformAnimation(attackerAnimator, "isMoving", false, movingDirection.x, movingDirection.y)
             };
 
             foreach (IEnumerator subroutine in subroutines)
@@ -59,23 +68,29 @@ namespace CoroutineGenerators
             yield return null;
         }
 
-        public static IEnumerator PlayAttackAction(GameObject attacker, Vector3 worldTargetPosition)
+        public static IEnumerator PlayAttackAction(Animator attackerAnimator, Vector3Int gridSourcePosition, Vector3Int gridTargetPosition)
         {
-            Vector3 direction = (worldTargetPosition - attacker.transform.position).Rotate(FORTY_FIVE_DEGREES);
+            yield return new WaitForEndOfFrame();
 
-            PerformAnimation(attacker.GetComponent<Animator>(), "isShooting", true, direction.x, direction.y);
+            Vector3Int direction = (gridTargetPosition - gridSourcePosition).Rotate(FORTY_FIVE_DEGREES);
+
+            IEnumerator routine = PerformAnimation(attackerAnimator, "isShooting", true, direction.x, direction.y);
+
+            while (routine.MoveNext()) yield return routine.Current;
 
             AudioManager.Instance.PlayTrack("RifleFire");
 
             yield return new WaitForSeconds(ANIMATION_SPEED);
 
-            PerformAnimation(attacker.GetComponent<Animator>(), "isShooting", false, direction.x, direction.y);
+            routine = PerformAnimation(attackerAnimator, "isShooting", false);
+
+            while (routine.MoveNext()) yield return routine.Current;
 
             yield return null;
         }
 
         public static IEnumerator PerformAnimation(
-            Animator animator, string booleanFlag, bool state, float? xDirection = null, float? yDirection = null)
+            Animator animator, string booleanFlag, bool state, float xDirection = 0, float yDirection = 0)
         {
             yield return null;
 
@@ -84,10 +99,10 @@ namespace CoroutineGenerators
                 throw new ArgumentException("No animator was passed to perform the animation on");
             }
 
-            if (xDirection != null && yDirection != null)
+            if (!(xDirection == 0 && yDirection == 0))
             {
-                animator.SetFloat("xDirection", xDirection.Value);
-                animator.SetFloat("yDirection", yDirection.Value);
+                animator.SetFloat("xDirection", xDirection);
+                animator.SetFloat("yDirection", yDirection);
             }
 
             animator.SetBool(booleanFlag, state);

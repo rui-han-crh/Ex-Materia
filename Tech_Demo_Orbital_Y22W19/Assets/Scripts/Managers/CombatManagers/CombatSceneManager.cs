@@ -15,6 +15,7 @@ using UnityEngine.Extensions;
 using ColorLookUp;
 using UnityEngine.EventSystems;
 using AsyncTask = System.Threading.Tasks.Task;
+using System.Collections;
 
 namespace Managers
 {
@@ -383,7 +384,7 @@ namespace Managers
                     break;
             }
 
-            HealthBarManager.Instance.UpdateHealthBars(currentMap.GetUnits(unit => true));
+            routineManager.Enqueue(LateInvoke(HealthBarManager.Instance.UpdateHealthBars, currentMap.GetUnits(unit => true)));
             gameState = SceneState.TurnEnded;
         }
 
@@ -424,6 +425,12 @@ namespace Managers
 
 
             }
+        }
+
+        private IEnumerator LateInvoke<T>(Action<T> func, T args)
+        {
+            yield return null;
+            func.Invoke(args);
         }
 
         public async void Autoplay()
