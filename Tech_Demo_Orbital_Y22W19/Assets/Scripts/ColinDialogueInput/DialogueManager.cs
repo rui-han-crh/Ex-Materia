@@ -67,6 +67,7 @@ public class DialogueManager : MonoBehaviour
         keyboardControls.Enable();
         singleLeftClick = _ => lineView.OnContinueClicked(); //arrowFunction continuing LC!
         keyboardControls.Mouse.LeftClick.performed += singleLeftClick;
+        keyboardControls.Mouse.Interact.performed += singleLeftClick;
     }
 
     private void UnsubscribeLeftClickContinue()
@@ -79,7 +80,7 @@ public class DialogueManager : MonoBehaviour
     {
         //initialize startingNode DB, if not already initialized 
         //increment dialogueNumber and play dialogue
-        YarnManager.Instance.StartConvoAuto("StartEvelynAndOlivia"); //just to test if i can do this?
+        //YarnManager.Instance.StartConvoAuto("StartEvelynAndOlivia"); //just to test if i can do this?
         //doesn't go to the next one?
         
     }

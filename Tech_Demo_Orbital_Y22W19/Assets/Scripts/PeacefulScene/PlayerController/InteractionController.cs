@@ -69,7 +69,11 @@ public class InteractionController : MonoBehaviour
 
     private void Interact()
     {
-        GetAllInteractables(permittedRadius).First().Interact(thisInteractable);
+        IEnumerable<Interactable> allInteractables = GetAllInteractables(permittedRadius);
+        if (allInteractables.Count() > 0)
+        {
+            GetAllInteractables(permittedRadius).First().Interact(thisInteractable);
+        }
     }
 
     private IEnumerable<Interactable> GetAllInteractables(float radius)
@@ -78,6 +82,11 @@ public class InteractionController : MonoBehaviour
 
         foreach (Interactable interactable in InteractableCollection.Instance.Collection)
         {
+            if (interactable.Equals(thisInteractable))
+            {
+                continue;
+            }
+
             if (Vector2.Distance(transform.position, interactable.transform.position) < radius)
             {
                 interactables.Add(interactable);

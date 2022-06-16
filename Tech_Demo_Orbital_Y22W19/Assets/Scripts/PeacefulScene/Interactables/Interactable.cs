@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Transitions;
 
 public class Interactable : MonoBehaviour
 {
@@ -23,6 +24,9 @@ public class Interactable : MonoBehaviour
     public void Interact(Interactable other)
     {
         Debug.Log($"{this} interacting with {other}");
+        CanvasTransitions.Fade(InteractableCollection.Instance.DialogueSystemCanvasGroup, 0, 1);
+
+        YarnManager.Instance.StartConvoAuto("StartEvelynAndOlivia");
     }
 
     public void SetIconVisibility(bool state)

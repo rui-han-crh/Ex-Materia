@@ -23,9 +23,16 @@ public class InteractableCollection : MonoBehaviour
     public HashSet<Interactable> Collection => interactables;
 
 
+    public CanvasGroup DialogueSystemCanvasGroup;
+
     public GameObject InteractIcon;
 
     public static readonly Vector3 HEAD_OFFSET = new Vector3(0, 0.5f, 0);
 
     public Canvas Canvas;
+
+    private void Awake()
+    {
+        DialogueSystemCanvasGroup.alpha = 0;
+    }
 }
