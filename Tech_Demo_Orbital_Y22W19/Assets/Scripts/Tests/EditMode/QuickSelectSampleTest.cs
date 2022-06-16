@@ -36,20 +36,19 @@ namespace OrderStatisticsTest
             Assert.AreEqual(4, thirdSmallest);
         }
 
-        //The algo fails on this feelsbadman
-        //[Test]
-        //public void SampleSame10kIntegers()
-        //{
-        //    List<int> vs = new List<int>();
-        //    for (int i = 0; i < 100000; i++)
-        //    {
-        //        vs.Add(5);
-        //    }
+        [Test]
+        public void SampleSame10kIntegers()
+        {
+            List<int> vs = new List<int>();
+            for (int i = 0; i < 10000; i++)
+            {
+                vs.Add(5);
+            }
 
-        //    int fifthSmallest = OrderStatistics.QuickSelect(vs, new SampleIntComparer(), 5);
-        //    Assert.AreEqual(5, fifthSmallest);
+            int fifthSmallest = OrderStatistics.QuickSelect(vs, new SampleIntComparer(), 5);
+            Assert.AreEqual(5, fifthSmallest);
 
-        //}
+        }
 
         [Test]
         public void SampleStrings()

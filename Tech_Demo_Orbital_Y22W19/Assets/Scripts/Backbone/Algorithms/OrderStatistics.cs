@@ -27,18 +27,21 @@ namespace Algorithms
 
             while (end - start > 1)
             {
-                int p = QuickSelectPartition(Array, start, end, comp);
-                if (p == k)
+                int p_end = QuickSelectPartition(Array, start, end, comp);
+                int p_start = PackDuplicates(Array, start, p_end);
+
+
+                if (p_start <= k && k <= p_end)
                 {
-                    return Array[p];
+                    return Array[p_end];
                 }
-                else if (k < p)
+                else if (k < p_start)
                 {
-                    end = p;
+                    end = Math.Min(p_start, end - 1);
                 }
                 else
                 {
-                    start = p + 1;
+                    start = Math.Max(start + 1, p_end + 1);
                 }
             }
             return Array[start];
@@ -50,8 +53,8 @@ namespace Algorithms
             System.Random random = new System.Random();
             int pivotIndex = random.Next(start, end); //exclusive of end [start, end -1]
             T pivot = Array[pivotIndex];
-            int low = 1;
-            int high = Array.Length;
+            int low = start + 1;
+            int high = end;
 
             //Swap pivotIndex and start
             Swap(Array, pivotIndex, start);
@@ -59,13 +62,29 @@ namespace Algorithms
             while (low < high)
             {
                 while (low < high && cmp.Compare(Array[low], pivot) <= 0) low++;
-                while (low < high && (high >= Array.Length || cmp.Compare(Array[high], pivot) > 0)) high--;
+                while (low < high && (high >= end || cmp.Compare(Array[high], pivot) > 0)) high--;
                 if (low < high) Swap(Array, low, high);
             }
             low -= 1;
             Swap(Array, start, low);
             return low;
 
+        }
+
+        //packduplicates packs all duplicates from [start pivot_index]
+        private static int PackDuplicates<T> (T[] Array, int start, int pivot_index)
+        {
+            int index = start; 
+            while (index < pivot_index)
+            {
+                if (Array[index].Equals(Array[pivot_index]))
+                {
+                    while (Array[pivot_index].Equals(Array[index]) && index < pivot_index) pivot_index--;
+                    Swap(Array, pivot_index, index);
+                }
+                index++;
+            }
+            return pivot_index;
         }
 
         private static void Swap<T> (T[] array, int firstIndex, int secondIndex)
