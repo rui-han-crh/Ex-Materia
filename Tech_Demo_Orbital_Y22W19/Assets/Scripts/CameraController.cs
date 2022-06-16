@@ -16,7 +16,7 @@ public class CameraController : MonoBehaviour
     private float scrollCountsLeft;
 
     [SerializeField]
-    private float scrollSensitivity = 20;
+    private float scrollSensitivity = 1;
     private const float ZOOM_DRAG_RATIO = 15;
     private const float SCROLL_CONSTANT = 120;
     public const float MIN_ZOOM = 1;
