@@ -1,0 +1,11 @@
+﻿title: CommenceBlockadeEntry_Entry
+tags:
+---
+Olivia: Lucien and the others are ahead of us.
+Olivia: Emmanuel's gone to scout out the front, we should catch up soon.
+Commence Battle?
+-> Yes
+    <<transitionScene>>
+-> No
+    <<unsetNextScene>>
+===

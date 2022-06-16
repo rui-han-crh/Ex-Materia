@@ -73,5 +73,6 @@ namespace System.Linq.Extensions
                 return max;
             }
         }
+
     }
 }

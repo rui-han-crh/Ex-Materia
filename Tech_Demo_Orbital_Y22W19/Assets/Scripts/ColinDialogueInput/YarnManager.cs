@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Yarn.Unity;
 using UnityEngine.UI;
+using System;
 
 /*
  * Singleton Dialogue manager class with access to a database / single YarnInteractable that should be tied to a game object somewhere 
@@ -10,9 +11,7 @@ using UnityEngine.UI;
 
 public class YarnManager : MonoBehaviour
 {
-    public delegate void Ending();
-
-    public event Ending OnEnded;
+    public event Action OnEnded;
 
 
     private static YarnManager instance;
@@ -87,7 +86,7 @@ public class YarnManager : MonoBehaviour
             //any event related stuff, in this case enabling a button 
             isActive = true;
             YI.Rewake();
-            YI.SetInterctable(startingNode);
+            YI.SetInteractable(startingNode);
         }
     }
 

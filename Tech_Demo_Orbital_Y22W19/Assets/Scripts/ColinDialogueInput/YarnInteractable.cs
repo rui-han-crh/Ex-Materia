@@ -41,7 +41,7 @@ public class YarnInteractable : MonoBehaviour
 
     }
 
-    public void SetInterctable(string startingNode)
+    public void SetInteractable(string startingNode)
     {
         expression.gameObject.SetActive(true);
         expression.interactable = true;

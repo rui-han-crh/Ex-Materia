@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Transitions;
+using System;
+using System.Linq;
 
 public class Interactable : MonoBehaviour
 {
@@ -10,22 +12,35 @@ public class Interactable : MonoBehaviour
 
     public bool IsInteracting => isInteracting;
 
-    public delegate void OnEndInteract();
+    private int numberOfInteractionsInProgress;
 
-    public event OnEndInteract EndedInteract = delegate { }; 
+    public event Action EndedInteract = delegate { };
+
+    [SerializeField]
+    [RequireInterface(typeof(IInteraction))]
+    private MonoBehaviour[] interactions;
 
     private void Awake()
     {
         icon = Instantiate(InteractableCollection.Instance.InteractIcon, InteractableCollection.Instance.Canvas.transform);
-        Reposition();
+
+        RepositionIcon();
+
         SetIconVisibility(false);
         InteractableCollection.Instance.Collection.Add(this);
+
+        Debug.Log($"Created {this.name} at {transform.position}");
     }
 
-    public void Reposition()
+    public void RepositionIcon()
     {
         Vector3 screenPoint = Camera.main.WorldToScreenPoint(transform.position + InteractableCollection.HEAD_OFFSET);
         icon.GetComponent<RectTransform>().position = screenPoint;
+    }
+
+    public void FlushEventHandlers()
+    {
+        EndedInteract = delegate { };
     }
 
     public void SetInteracting(bool state)
@@ -36,19 +51,48 @@ public class Interactable : MonoBehaviour
         if (!state && previous)
         {
             EndedInteract();
+            FlushEventHandlers();
         }
     }
 
     public void Interact(Interactable other)
     {
-        Debug.Log($"{this} interacting with {other}");
-        CanvasTransitions.Fade(InteractableCollection.Instance.DialogueSystemCanvasGroup, 0, 1);
+        if (interactions.Length == 0)
+        {
+            Debug.LogError($"There were no interactions given to {this}. Either add at least 1 interaction, " +
+                $"or remove this Monobehaviour from {name}");
 
-        isInteracting = true;
+            return;
+        }
+
+        void OnFinishInteractions()
+        {
+            SetInteracting(false);
+            other.SetInteracting(false);
+
+            EndedInteract();
+            FlushEventHandlers();
+        }
+
+        SetInteracting(true);
         other.SetInteracting(true);
 
-        YarnManager.Instance.OnEnded += () => { SetInteracting(false); other.SetInteracting(false); };
-        YarnManager.Instance.StartConvoAuto("StartEvelynAndOlivia");
+        IEnumerator enumerator = interactions.GetEnumerator();
+
+        void InvokeInteraction()
+        {
+            if (!enumerator.MoveNext())
+            {
+                OnFinishInteractions();
+            } 
+            else
+            {
+                IInteraction interaction = (IInteraction)enumerator.Current;
+                interaction.OnEnded += InvokeInteraction;
+                interaction.Interact();
+            }
+        }
+        InvokeInteraction();
     }
 
     public void SetIconVisibility(bool state)

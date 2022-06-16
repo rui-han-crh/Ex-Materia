@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,7 +65,7 @@ public class InteractionController : MonoBehaviour
         
         foreach (Interactable interactable in allInteractables)
         {
-            interactable.Reposition();
+            interactable.RepositionIcon();
         }
 
     }
@@ -79,9 +80,10 @@ public class InteractionController : MonoBehaviour
 
         GetAllInteractables(permittedRadius).First().Interact(thisInteractable);
 
-        movementController.OnDisable();
         thisInteractable.EndedInteract += () => movementController.OnEnable();
+        movementController.OnDisable();
     }
+
 
     private IEnumerable<Interactable> GetAllInteractables(float radius)
     {

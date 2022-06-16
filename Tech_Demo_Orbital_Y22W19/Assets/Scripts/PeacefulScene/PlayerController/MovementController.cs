@@ -20,11 +20,13 @@ public class MovementController : MonoBehaviour
 
     public void OnEnable()
     {
+        Debug.Log("Enabled movement controller");
         keyboardControls?.Enable();
     }
 
     public void OnDisable()
     {
+        Debug.Log("Disabled movement controller");
         keyboardControls?.Disable();
     }
 
