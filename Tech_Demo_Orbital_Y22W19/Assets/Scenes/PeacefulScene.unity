@@ -681,7 +681,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3183266951831634833, guid: 7f29e5f7ffdea4a6793cefb278b61f0c, type: 3}
   m_PrefabInstance: {fileID: 206114425}
   m_PrefabAsset: {fileID: 0}
---- !u!225 &206114433
+--- !u!225 &206114438
 CanvasGroup:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1156,7 +1156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d028fddefe1968945b8c3ebf1977cbe7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DialogueSystem: {fileID: 1010746553}
+  DialogueSystemCanvasGroup: {fileID: 206114438}
   InteractIcon: {fileID: 3160081646044813269, guid: e09eb0c8459b11b479ad14741932acda, type: 3}
   Canvas: {fileID: 355828946}
 --- !u!4 &510326507
@@ -1504,11 +1504,6 @@ Transform:
   m_Father: {fileID: 1921906670}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1010746553 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2753718018764665327, guid: 7f29e5f7ffdea4a6793cefb278b61f0c, type: 3}
-  m_PrefabInstance: {fileID: 206114425}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1140095253
 GameObject:
   m_ObjectHideFlags: 0

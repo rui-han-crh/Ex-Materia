@@ -18,12 +18,12 @@ public class MovementController : MonoBehaviour
     private Rigidbody2D rb;
     
 
-    private void OnEnable()
+    public void OnEnable()
     {
         keyboardControls?.Enable();
     }
 
-    private void OnDisable()
+    public void OnDisable()
     {
         keyboardControls?.Disable();
     }

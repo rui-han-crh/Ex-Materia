@@ -15,6 +15,7 @@ using UnityEngine.InputSystem;
 
 public class YarnInteractable : MonoBehaviour
 {
+
     // internal properties exposed to editor
     private string beginNode = "";
     // internal properties not exposed to editor
@@ -127,6 +128,5 @@ public class YarnInteractable : MonoBehaviour
 
         //step3) end convo! (this also includes un-subbing to LC!)
         YarnManager.Instance.EndConvoSequence();
-
     }
 }

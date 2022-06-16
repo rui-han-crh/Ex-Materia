@@ -10,6 +10,11 @@ using UnityEngine.UI;
 
 public class YarnManager : MonoBehaviour
 {
+    public delegate void Ending();
+
+    public event Ending OnEnded;
+
+
     private static YarnManager instance;
     public static YarnManager Instance
     {
@@ -102,6 +107,7 @@ public class YarnManager : MonoBehaviour
     {
         isActive = false;
         DialogueManager.Instance.DisableContinue();
+        OnEnded();
     }
 
 }

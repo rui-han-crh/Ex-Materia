@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(Interactable))]
+[RequireComponent(typeof(Interactable), typeof(MovementController))]
 public class InteractionController : MonoBehaviour
 {
     private KeyboardControls keyboardControls;
     private Interactable thisInteractable;
+    private MovementController movementController;
 
     [SerializeField]
     private float permittedRadius = 1;
@@ -29,6 +30,7 @@ public class InteractionController : MonoBehaviour
         keyboardControls = new KeyboardControls();
         keyboardControls.Mouse.Interact.performed += _ => Interact();
         thisInteractable = GetComponent<Interactable>();
+        movementController = GetComponent<MovementController>();
     }
 
     private void Update()
@@ -70,10 +72,15 @@ public class InteractionController : MonoBehaviour
     private void Interact()
     {
         IEnumerable<Interactable> allInteractables = GetAllInteractables(permittedRadius);
-        if (allInteractables.Count() > 0)
+        if (allInteractables.Count() == 0)
         {
-            GetAllInteractables(permittedRadius).First().Interact(thisInteractable);
+            return;
         }
+
+        GetAllInteractables(permittedRadius).First().Interact(thisInteractable);
+
+        movementController.OnDisable();
+        thisInteractable.EndedInteract += () => movementController.OnEnable();
     }
 
     private IEnumerable<Interactable> GetAllInteractables(float radius)
@@ -87,7 +94,7 @@ public class InteractionController : MonoBehaviour
                 continue;
             }
 
-            if (Vector2.Distance(transform.position, interactable.transform.position) < radius)
+            if (Vector2.Distance(transform.position, interactable.transform.position) < radius && !interactable.IsInteracting)
             {
                 interactables.Add(interactable);
             }
