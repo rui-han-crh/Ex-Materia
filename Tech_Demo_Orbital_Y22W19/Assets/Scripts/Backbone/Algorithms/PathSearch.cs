@@ -26,20 +26,28 @@ namespace Algorithms.ShortestPathSearch
             gScore[source] = 0;
             fScore[source] = Heuristic(source);
 
+            HashSet<T> alreadyPolled = new HashSet<T>();
+
             priorityQueue.Enqueue(source, fScore[source]);
 
             while (priorityQueue.Count > 0)
             {
                 T current = priorityQueue.Dequeue();
+                alreadyPolled.Add(current);
 
                 if (destination != null && current.Equals(destination))
                 {
                     return shortestPathTree;
                 }
 
-                foreach (T neighbour in graph.GetConnected(current))
+                foreach (T neighbour in new HashSet<T>(graph.GetConnected(current)))
                 {
                     int tentativeGScore = gScore[current] + EdgeWeightFromTo(current, neighbour);
+                    Debug.Assert(EdgeWeightFromTo(current, neighbour) > 0, 
+                        $"The given edge weight from {current}, {neighbour} was negative {EdgeWeightFromTo(current, neighbour)}," +
+                        $"{neighbour} was probably not ground");
+                    
+
 
                     if (tentativeGScore > maxCost)
                     {
@@ -63,6 +71,8 @@ namespace Algorithms.ShortestPathSearch
                         gScore[neighbour] = tentativeGScore;
                         fScore[neighbour] = tentativeGScore + Heuristic(neighbour);
 
+                        Debug.Assert(priorityQueue.Contains(neighbour),
+                            $"priority queue does not contain {neighbour}, alreadyPolled? = {alreadyPolled.Contains(neighbour)}");
                         priorityQueue.UpdatePriority(neighbour, fScore[neighbour]);
                     }
                 }

@@ -35,6 +35,11 @@ public class MovementRequest : MapActionRequest
 
     public override int GetUtility(GameMap map)
     {
+        if (calculatedUtilities.ContainsKey(map))
+        {
+            return calculatedUtilities[map];
+        }
+
         // Must be NON-POSITIVE, represents the potential damage received at destination
 
         //^Changed, first checks the potential damage recieved at destination, then sees if attacks will benefit
@@ -59,6 +64,7 @@ public class MovementRequest : MapActionRequest
             }
         }
 
-        return utility - map.FindCostToNearestRival(ActingUnit);
+        calculatedUtilities[map] = utility - map.FindCostToNearestRival(ActingUnit);
+        return calculatedUtilities[map];
     }
 }

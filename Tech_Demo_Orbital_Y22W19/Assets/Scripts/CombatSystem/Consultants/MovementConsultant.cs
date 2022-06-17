@@ -28,7 +28,7 @@ namespace CombatSystem.Consultants
                 destination,
                 graph,
                 (current, neighbour) => (int)(Vector3.Distance(current, neighbour) * 10)
-                    + gameMapData.GetTileCost(Vector3Int.FloorToInt(neighbour)),
+                    + gameMapData.GetTileCost(neighbour),
                 x => (int)(Vector3.Distance(x, destination) * 10)
                 );
 
@@ -55,7 +55,7 @@ namespace CombatSystem.Consultants
                 destination,
                 graph,
                 (current, neighbour) => (int)(Vector3.Distance(current, neighbour) * 10)
-                    + gameMapData.GetTileCost(Vector3Int.FloorToInt(neighbour)),
+                    + gameMapData.GetTileCost(neighbour),
                 x => (int)(Vector3.Distance(x, destination) * 10)
                 );
 
@@ -83,12 +83,15 @@ namespace CombatSystem.Consultants
             IUndirectedGraph<Vector3Int> graph = gameMapData.ToUndirectedGraph(
                 new HashSet<Vector3Int>() { gameMapData[currentActingUnit] });
 
+            Debug.Log($"Position of acting unit {gameMapData[currentActingUnit]}");
+            Debug.Log($"Contains (-8, -20) ? {graph.Contains(new Vector3Int(-8, -20, 0))}");
+
             ITree<Vector3Int?> shortestPathTree = PathSearch.AStar(
                 gameMapData[currentActingUnit],
                 null,
                 graph,
                 (current, neighbour) => (int)(Vector3.Distance(current, neighbour) * 10)
-                    + gameMapData.GetTileCost(Vector3Int.FloorToInt(neighbour)),
+                    + gameMapData.GetTileCost(neighbour),
                 x => 0,
                 currentActingUnit.CurrentActionPoints
                 );
@@ -138,7 +141,7 @@ namespace CombatSystem.Consultants
                 null,
                 graph,
                 (current, neighbour) => (int)(Vector3.Distance(current, neighbour) * 10)
-                    + gameMapData.GetTileCost(Vector3Int.FloorToInt(neighbour)),
+                    + gameMapData.GetTileCost(neighbour),
                 x => 0,
                 currentActingUnit.CurrentActionPoints
                 );

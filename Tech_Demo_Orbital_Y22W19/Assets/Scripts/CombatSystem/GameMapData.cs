@@ -18,6 +18,7 @@ public class GameMapData
 
     public IEnumerable<Unit> UnitsInPlay => unitCensus.Census;
 
+
     public GameMapData(UnitCensus unitCensus, TileCensus tileCensus)
     {
         this.unitCensus = unitCensus;
@@ -104,7 +105,8 @@ public class GameMapData
 
         movingUnit = movingUnit
             .ChangeActionPoints(movingUnit.CurrentActionPoints - movementRequest.ActionPointCost)
-            .ChangeTime(movingUnit.Time + movementRequest.TimeSpent);
+            .ChangeTime(movingUnit.Time + movementRequest.TimeSpent)
+            .RemoveStatusEffect(UnitStatusEffects.Overwatch);
 
         return new GameMapData(unitCensus.MoveUnit(movingUnit, destination), tileCensus);
     }
@@ -123,7 +125,8 @@ public class GameMapData
         Unit resultantDefendingUnit = defendingUnit.ChangeHealth(defendingUnit.CurrentHealth - attackRequest.PotentialDamageDealt);
 
         Unit resultantAttackingUnit = attackingUnit.ChangeActionPoints(attackingUnit.CurrentActionPoints - attackRequest.ActionPointCost)
-            .ChangeTime(attackingUnit.Time + attackRequest.TimeSpent);
+            .ChangeTime(attackingUnit.Time + attackRequest.TimeSpent)
+            .RemoveStatusEffect(UnitStatusEffects.Overwatch);
         
         return new GameMapData(unitCensus.SwapUnit(defendingUnit, resultantDefendingUnit)
                                         .SwapUnit(attackingUnit, resultantAttackingUnit), 
@@ -164,7 +167,7 @@ public class GameMapData
         inclusion ??= new Vector3Int[0];
 
         IUndirectedGraph<Vector3Int> graph = new UndirectedGraph<Vector3Int>();
-        Vector3Int root = tileCensus.Census.First();
+        Vector3Int root = tileCensus.Census.Where(x => IsVacant(x)).First();
         graph.Add(root);
 
         SearchAlgorithms.BreadthFirstSearch(root,

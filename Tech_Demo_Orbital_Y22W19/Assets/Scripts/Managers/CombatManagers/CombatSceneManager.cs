@@ -415,6 +415,7 @@ namespace Managers
                         CanvasManager.Instance.ActivateUI(CanvasManager.UIType.CharacterSheet);
                         gameState = SceneState.Selection;
                     }
+                    
                     break;
 
                 case SceneState.OpponentTurn:

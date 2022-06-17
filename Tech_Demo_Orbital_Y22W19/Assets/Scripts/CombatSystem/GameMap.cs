@@ -5,7 +5,6 @@ using UnityEngine;
 using CombatSystem.Entities;
 using System.Linq;
 using CombatSystem.Consultants;
-using Algorithms.ShortestPathSearch;
 using CombatSystem.Censuses;
 using DataStructures;
 
@@ -169,7 +168,12 @@ public class GameMap
     {
         IEnumerable<Unit> rivalUnits = gameMapData.UnitsInPlay.Where(other => !other.Faction.Equals(unit.Faction));
 
-        return (int)rivalUnits.Select(rival => Vector3Int.Distance(this[unit], this[rival])).Min();
+        if (rivalUnits.Any(rival => Vector3Int.Distance(this[unit], this[rival]) < 10))
+        {
+            return 0;
+        }
+
+        //return (int)rivalUnits.Select(rival => Vector3Int.Distance(this[unit], this[rival])).Min();
 
         int cost = int.MaxValue;
         IUndirectedGraph<Vector3Int> graph = gameMapData.ToUndirectedGraph(

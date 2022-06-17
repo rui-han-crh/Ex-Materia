@@ -657,6 +657,7 @@ GameObject:
   - component: {fileID: 510326506}
   - component: {fileID: 510326509}
   - component: {fileID: 510326508}
+  - component: {fileID: 510326511}
   m_Layer: 0
   m_Name: WorldData
   m_TagString: Untagged
@@ -691,6 +692,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3183266952036699624}
+  - {fileID: 1565852168}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -735,6 +737,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d6a1154f5a6542479fce2df8ac39e3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &510326511
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 510326505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c71e5bd9bec926649986a517cda3802c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioPlayerGroup: {fileID: 1565852169}
+  audioCollection:
+  - name: HowlingWind
+    audioClip: {fileID: 8300000, guid: 8e2144f4be4d48941a3b253ade494b4f, type: 3}
+    startTime: -1
+    endTime: -1
+    volume: 1
+    playbackSpeed: 1
+    hasFade: 1
 --- !u!1 &516933631
 GameObject:
   m_ObjectHideFlags: 0
@@ -47272,6 +47295,49 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding: {x: 0, y: 0, z: 0, w: 0}
   m_Softness: {x: 0, y: 0}
+--- !u!1 &1565852167
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1565852168}
+  - component: {fileID: 1565852169}
+  m_Layer: 0
+  m_Name: AudioPlayers
+  m_TagString: AudioSourceGroup
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1565852168
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1565852167}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 510326507}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1565852169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1565852167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eef195db4655a0d41941ea593a734daf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1570371213
 GameObject:
   m_ObjectHideFlags: 0
@@ -102862,7 +102928,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dragSensitivity: 0.05
-  scrollSensitivity: 1
+  scrollSensitivity: 0.02
 --- !u!1 &2145945462
 GameObject:
   m_ObjectHideFlags: 0

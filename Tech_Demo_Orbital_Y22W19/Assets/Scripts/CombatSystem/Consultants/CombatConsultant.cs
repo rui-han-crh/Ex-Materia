@@ -153,7 +153,7 @@ namespace CombatSystem.Consultants
 
             foreach (Unit opponent in gameMapData.UnitsInPlay.Where(unit => unit.Faction != attacker.Faction))
             {
-                AttackRequest generatedRequest = SimulateAttack(attacker, opponent, gameMapData);
+                AttackRequest generatedRequest = SimulateAttack(attacker, opponent, gameMapData, considerActionPoints: true);
 
                 if (generatedRequest.Successful)
                 {

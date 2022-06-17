@@ -50,10 +50,12 @@ namespace Facades
             {
                 AddAllTilesToDictionary(fullCoverMap, int.MaxValue, TileData.TileType.FullCover);
             }
+
             foreach (Tilemap halfCoverMap in halfCoverTilemaps)
             {
                 AddAllTilesToDictionary(halfCoverMap, int.MaxValue, TileData.TileType.HalfCover);
             }
+
             foreach (Tilemap groundMap in groundTilemaps)
             {
                 foreach (Vector3Int pos in groundMap.cellBounds.allPositionsWithin)

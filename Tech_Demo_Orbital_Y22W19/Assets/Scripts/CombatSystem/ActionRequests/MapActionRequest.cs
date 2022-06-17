@@ -21,7 +21,7 @@ public abstract class MapActionRequest
 
     private readonly RequestType requestType;
 
-
+    protected Dictionary<GameMap, int> calculatedUtilities = new Dictionary<GameMap, int>();
 
     public Unit ActingUnit => actingUnit;
 
