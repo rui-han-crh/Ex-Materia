@@ -14,11 +14,11 @@ public class GameData
      * So this is just here for the time being for completeness 
      */
     public float totalTimeOnRun;
+    public string currentScene;
     
 
     public GameData()
     {
-       this.totalTimeOnRun = 0;
     }
     
 }

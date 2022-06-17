@@ -119,7 +119,7 @@ public class DataPersistenceManager : MonoBehaviour
         // Pass data to other scripts to update it 
         foreach (IDataPersistence dpObj in dataPersistenceObjects)
         {
-            dpObj.LoadData(gameData);
+            dpObj.SaveData(gameData);
 
         }
         //Save data to file using data handler 
@@ -143,6 +143,16 @@ public class DataPersistenceManager : MonoBehaviour
 
 
 
+    }
+
+    public string GetCurrentScene() 
+    {
+        return this.gameData.currentScene;
+    }
+
+    public bool HasGameData()
+    {
+        return this.gameData != null;
     }
 
 
