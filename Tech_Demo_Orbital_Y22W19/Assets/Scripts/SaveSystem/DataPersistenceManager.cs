@@ -5,6 +5,11 @@ using System.Linq;
 
 public class DataPersistenceManager : MonoBehaviour
 {
+    [Header("File storage Config")]
+
+    //you choose the filename!
+    [SerializeField]
+    private string fileName;
     /**
      * Singleton class that stores the "state" (which is mostly unusused
      * for the game! (Basically GameData)
@@ -14,6 +19,8 @@ public class DataPersistenceManager : MonoBehaviour
     private List<IDataPersistence> dataPersistenceObjects = new List<IDataPersistence>();
 
     private static DataPersistenceManager instance;
+
+    private FileDataHandler fileDataHandler;
     public static DataPersistenceManager Instance
     {
         get
@@ -28,6 +35,8 @@ public class DataPersistenceManager : MonoBehaviour
 
     private void Start()
     {
+        //can change App.persistentDataPath, but im scared of bugs
+        this.fileDataHandler = new FileDataHandler(Application.persistentDataPath, fileName);
         this.dataPersistenceObjects = FindAllDataPersistanceObjects();
         LoadGame();
     }
@@ -47,7 +56,8 @@ public class DataPersistenceManager : MonoBehaviour
     //1) Load saved data from a file using the data handler 
     public void LoadGame()
     {
-        // If not present, initialize to a new game!
+        this.gameData = fileDataHandler.Load(); 
+        // If gameData is not present, initialize to a new game!
         if (this.gameData == null)
         {
             NewGame();
@@ -66,7 +76,7 @@ public class DataPersistenceManager : MonoBehaviour
 
 
     
-    //2) Save  data to file using data handler 
+
     public void SaveGame()
     {
         //1) Pass data to other scripts to update it 
@@ -75,6 +85,8 @@ public class DataPersistenceManager : MonoBehaviour
             dpObj.LoadData(gameData);
 
         }
+        //Save data to file using data handler 
+        fileDataHandler.Save(gameData);
 
     }
 
