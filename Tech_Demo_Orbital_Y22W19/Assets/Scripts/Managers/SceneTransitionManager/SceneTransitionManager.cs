@@ -22,33 +22,47 @@ public class SceneTransitionManager : MonoBehaviour
 
     private DialogueRunner dialogueRunner;
 
+    private AsyncOperation pendingSceneLoad;
+
     private void Awake()
     {
         dialogueRunner = FindObjectOfType<DialogueRunner>();
         dialogueRunner.AddCommandHandler("transitionScene", TransitionToScene);
-        dialogueRunner.AddCommandHandler("unsetNextScene", UnsetSceneIndex);
+        dialogueRunner.AddCommandHandler("unsetNextScene", UnsetNextScene);
     }
 
     public int? SceneBuildIndex
     {
         get;
-        set;
+        private set;
+    }
+
+    public void PrepareScene(int sceneIndex)
+    {
+        SceneBuildIndex = sceneIndex;
     }
 
 
-    public void UnsetSceneIndex()
+    public void UnsetNextScene()
     {
-        SceneBuildIndex = null;
-    }
-
-    public void TransitionToScene()
-    {
-        Debug.Log("Called");
         if (SceneBuildIndex == null)
         {
             return;
         }
 
-        SceneManager.LoadSceneAsync(SceneBuildIndex.Value);
+        SceneBuildIndex = null;
+    }
+
+    public void TransitionToScene()
+    {
+        Debug.Log("Scene transition requested");
+        if (SceneBuildIndex == null)
+        {
+            Debug.LogError("No next scene loaded");
+            return;
+        }
+
+        pendingSceneLoad = SceneManager.LoadSceneAsync(SceneBuildIndex.Value);
+        
     }
 }

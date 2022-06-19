@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SceneTransitionInteraction : MonoBehaviour, IInteraction
+public class LoadSceneTransition : MonoBehaviour, IInteraction
 {
     public event Action OnEnded = delegate { };
 
@@ -17,7 +17,7 @@ public class SceneTransitionInteraction : MonoBehaviour, IInteraction
 
     public void Interact()
     {
-        SceneTransitionManager.Instance.SceneBuildIndex = sceneIndex;
+        SceneTransitionManager.Instance.PrepareScene(sceneIndex);
         OnEnded();
         FlushEventHandlers();
     }

@@ -54,6 +54,11 @@ namespace CombatSystem.Censuses
             }
         }
 
+        public UnitCensus FilterUnits(Predicate<Unit> pred)
+        {
+           return new UnitCensus(census.Where(kvp => pred(kvp.Value)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value));
+        }
+
         public UnitCensus Add(Vector3Int position, Unit unit)
         {
             if (census.Forward.ContainsKey(position) || census.Reverse.ContainsKey(unit))
@@ -155,7 +160,6 @@ namespace CombatSystem.Censuses
 
         public UnitCensus UpdateUnit(Unit unit)
         {
-
             Vector3Int position = this[unit];
             UnitCensus newCensus = Remove(unit);
             newCensus.AddMutator(position, unit);

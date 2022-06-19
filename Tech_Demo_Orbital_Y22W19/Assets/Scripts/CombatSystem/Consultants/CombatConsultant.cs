@@ -5,18 +5,23 @@ using CombatSystem.Entities;
 using System.Linq;
 using UnityEngine.Extensions;
 using Algorithms.Rasterisers;
+using CombatSystem.Censuses;
 
 namespace CombatSystem.Consultants
 {
     public static class CombatConsultant
     {
-        public static readonly int ATTACK_AP_COST = 75;
+        public static readonly int ATTACK_COST = 0;
+        public static readonly int ATTACK_TIME_SPENT = 250;
+
+        public static readonly float ONE_HUNDRED_PERCENT = 1;
+        public static readonly float FIFTY_PERCENT = 0.5f;
         public static readonly int MINIMUM_DAMAGE_DEALT = 2;
         public static readonly Vector3 OFFSET = Vector2.one / 2;
 
         public static AttackRequest SimulateAttack(Unit attacker, Unit defender, GameMapData gameMapData, bool considerActionPoints = false)
         {
-            if (considerActionPoints && attacker.CurrentActionPoints < ATTACK_AP_COST)
+            if (considerActionPoints && attacker.CurrentActionPoints < ATTACK_COST)
             {
                 return AttackRequest.CreateFailedRequest(attacker, defender, AttackRequest.Outcome.NotEnoughActionPoints);
             }
@@ -36,7 +41,7 @@ namespace CombatSystem.Consultants
                 return hasDirectLineOfSight;
             }
 
-            int potentialDamage = Mathf.Max(0, attacker.Attack - defender.Defence);
+            int potentialDamage = Mathf.Max(MINIMUM_DAMAGE_DEALT, attacker.Attack - defender.Defence);
 
             if (!IsInRangeOf(attacker, defender, gameMapData))
             {
@@ -54,10 +59,10 @@ namespace CombatSystem.Consultants
                     attacker,
                     defender,
                     potentialDamage,
-                    1,
+                    GetChanceToHit(raytracedLine, gameMapData),
                     raytracedLine,
-                    ATTACK_AP_COST,
-                    ATTACK_AP_COST,
+                    ATTACK_COST,
+                    ATTACK_TIME_SPENT,
                     AttackRequest.Outcome.Successful);
             }
 
@@ -85,15 +90,42 @@ namespace CombatSystem.Consultants
                         attacker,
                         defender,
                         potentialDamage,
-                        1,
+                        GetChanceToHit(raytracedLine, gameMapData),
                         peekingLine,
-                        ATTACK_AP_COST,
-                        ATTACK_AP_COST,
+                        ATTACK_COST,
+                        ATTACK_TIME_SPENT,
                         AttackRequest.Outcome.Successful);
                 }
             }
 
             return AttackRequest.CreateFailedRequest(attacker, defender, raytracedLine, AttackRequest.Outcome.NoLineOfSight);
+        }
+
+        public static float GetChanceToHit(IEnumerable<Vector3Int> pathSourceToTarget, GameMapData gameMapData)
+        {
+            if (pathSourceToTarget.Count() == 2)
+            {
+                return 1;
+            }
+
+            IEnumerator tilesBetween = pathSourceToTarget.GetEnumerator();
+            Unit attacker = gameMapData[pathSourceToTarget.First()];
+
+            tilesBetween.MoveNext();
+            int count = 0;
+            int totalCover = 0;
+            while (tilesBetween.MoveNext())
+            {
+                Vector3Int currentTile = (Vector3Int)tilesBetween.Current;
+                count++;
+                if (gameMapData.HasHalfCover(currentTile))
+                {
+                    totalCover += count;
+                }
+            }
+            return (1 - (totalCover / pathSourceToTarget.Count()))
+                * (ONE_HUNDRED_PERCENT 
+                    - (FIFTY_PERCENT * Vector3.Distance(pathSourceToTarget.First(), pathSourceToTarget.Last()) / attacker.Range));
         }
 
         public static IEnumerable<Vector3Int> GetAllRangePositions(GameMapData gameMapData, Unit unit)

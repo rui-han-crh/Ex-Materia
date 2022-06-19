@@ -58,8 +58,10 @@ namespace Managers
 
         public SceneState GameState => gameState;
 
-        public static readonly Vector3 UNIT_WORLD_OFFSET = new Vector3(0, 0.25f, 0);
-        public static readonly Vector3 HEALTH_BAR_WORLD_OFFSET = new Vector3(0, 1f, 0);
+        public static readonly Vector3 UNIT_WORLD_GROUND_OFFSET = new Vector3(0, 0.25f, 0);
+        public static readonly Vector3 UNIT_WORLD_BODY_OFFSET = new Vector3(0, 0.5f, 0);
+        public static readonly Vector3 HEALTH_BAR_WORLD_OFFSET = new Vector3(0, 0.75f, 0);
+
         public static readonly float UNIT_INTERPOLATION_SPEED = 2f;
 
         [SerializeField]
@@ -83,7 +85,11 @@ namespace Managers
 
         // ActionHandlers:
         private Action<InputAction.CallbackContext> leftClickHandler = _ => { };
+        private Action<InputAction.CallbackContext> doubleLeftClickHandler = _ => { };
+
         private Action<InputAction.CallbackContext> rightClickHandler = _ => { };
+
+        private Action<InputAction.CallbackContext> middleHoldHandler = _ => { };
 
         private CancellationTokenSource tokenSource;
 
@@ -109,7 +115,7 @@ namespace Managers
         private void OnDisable()
         {
             keyboardControls?.Disable();
-            tokenSource.Cancel();
+            tokenSource?.Cancel();
         }
 
         private void Awake()
@@ -191,36 +197,56 @@ namespace Managers
 
         private void SubscribeToMovementListener()
         {
+            UnsubscribeAllControls();
+
             keyboardControls.Mouse.LeftClick.performed -= leftClickHandler;
             keyboardControls.Mouse.RightClick.performed -= rightClickHandler;
 
             leftClickHandler = _ => AuxillarySubscribers.SubscribeMovementSelection(keyboardControls.Mouse.MousePosition);
+            doubleLeftClickHandler = _ => SelectCommand(CommandType.Movement);
+
+            StateReset();
             gameState = SceneState.MovementMode;
 
             keyboardControls.Mouse.LeftClick.performed += leftClickHandler;
+            keyboardControls.Mouse.DoubleLeftClick.performed += doubleLeftClickHandler;
         }
 
         private void SubscribeToCombatListener()
         {
+            UnsubscribeAllControls();
+
             keyboardControls.Mouse.LeftClick.performed -= leftClickHandler;
             keyboardControls.Mouse.RightClick.performed -= rightClickHandler;
 
             leftClickHandler = _ => AuxillarySubscribers.SubscribeCombatSelection(keyboardControls.Mouse.MousePosition);
+            middleHoldHandler = _ => AuxillarySubscribers.AttackReviewSubscriber(false);
+
+            StateReset();
             gameState = SceneState.CombatMode;
 
             keyboardControls.Mouse.LeftClick.performed += leftClickHandler;
+            keyboardControls.Mouse.MiddleButtonHold.performed += middleHoldHandler;
         }
 
         public void UnsubscribeAllControls()
         {
             keyboardControls.Mouse.LeftClick.performed -= leftClickHandler;
+            keyboardControls.Mouse.DoubleLeftClick.performed -= doubleLeftClickHandler;
+
             keyboardControls.Mouse.RightClick.performed -= rightClickHandler;
+
+            keyboardControls.Mouse.MiddleButtonHold.performed -= middleHoldHandler;
             StateReset();
         }
 
         public void StateReset()
         {
-            InformationUIManager.Instance.SetCharacterDetails(CurrentActingUnit);
+            SetLastActionAllowed(false);
+            SetIndicatedTiles(new Vector3Int[0]);
+
+            //InformationUIManager.Instance.SetCharacterDetails(CurrentActingUnit);
+            CombatUIManager.Instance.UpdateCurrentActingUnitInformation();
             TileManager.Instance.IndicatorMap.ClearAllTiles();
             GlobalResourceManager.Instance.LineRenderer.positionCount = 0;
         }
@@ -264,7 +290,6 @@ namespace Managers
                         savedActionCost, 
                         MovementRequest.Outcome.Pending);
 
-                    Debug.Log("Movement");
                     break;
 
                 case CommandType.Attack:
@@ -295,6 +320,7 @@ namespace Managers
             //canvasLinearAnimation.ToggleUIWhen(ScriptedAnimations.Instance.AllTasksFinished, characterSheetIndex);
 
             ParseRequest(request);
+            StateReset();
         }
 
 
@@ -310,56 +336,7 @@ namespace Managers
                 case MapActionRequest.RequestType.Movement:
                     MovementRequest movementRequest = (MovementRequest)request;
 
-                    IEnumerable<Vector3Int> path = movementRequest.CalculateShortestPath(CurrentMap);
-
-                    Vector3Int lastPosition = path.First();
-
-                    Animator animator = UnitManager.Instance.GetGameObjectOfUnit(request.ActingUnit).GetComponentInChildren<Animator>();
-
-                    foreach (Vector3Int position in path)
-                    {
-                        if (position == lastPosition)
-                        {
-                            continue;
-                        }
-
-                        Vector3Int direction = (position - lastPosition).Rotate(45);
-                        Debug.Log(direction.magnitude);
-
-                        routineManager.Enqueue(
-                            CombatCoroutineGenerator.PerformAnimation(animator, "isMoving", true, direction.x, direction.y)
-                            );
-
-                        routineManager.Enqueue(
-                            CombatCoroutineGenerator.MoveUnitToPosition(
-                                unitManager.GetGameObjectOfUnit(CurrentActingUnit), ground.CellToWorld(position)
-                                )
-                            );
-                        lastPosition = position;
-
-                        GameMapData gameMapData = currentMap.Data.ChangeUnitPosition(CurrentActingUnit, position);
-
-                        IEnumerable<AttackRequest> incomingAttacks = CombatConsultant.GetIncomingAttacks(gameMapData, CurrentActingUnit)
-                            .Where(x => x.ActingUnit.HasStatusEffect(CombatSystem.Entities.UnitStatusEffects.Overwatch));
-
-                        if (incomingAttacks.Count() == 0)
-                        {
-                            continue;
-                        }
-
-                        routineManager.Enqueue(
-                            CombatCoroutineGenerator.PerformAnimation(animator, "isMoving", false)
-                        );
-
-                        routineManager.Enqueue(CombatCoroutineGenerator.EnactAttackRequest(currentMap, incomingAttacks.First()));
-                        
-                    }
-                    currentMap = currentMap.DoAction(movementRequest);
-
-                    routineManager.Enqueue(
-                        CombatCoroutineGenerator.PerformAnimation(animator, "isMoving", false)
-                        );
-
+                    EnqueueMovementSequence(movementRequest);
                     break;
 
                 case MapActionRequest.RequestType.Attack:
@@ -385,7 +362,78 @@ namespace Managers
             }
 
             routineManager.Enqueue(LateInvoke(HealthBarManager.Instance.UpdateHealthBars, currentMap.GetUnits(unit => true)));
-            gameState = SceneState.TurnEnded;
+            routineManager.Enqueue(LateInvoke(() => gameState = SceneState.TurnEnded));
+
+            CombatUIManager.Instance.OnDisable();
+
+            Debug.Log($"{currentMap.CurrentActingUnit.Name}, {currentMap.CurrentActingUnit.Time}");
+        }
+
+        private void EnqueueMovementSequence(MovementRequest movementRequest)
+        {
+            IEnumerable<Vector3Int> path = movementRequest.CalculateShortestPath(CurrentMap);
+
+            Vector3Int lastPosition = path.First();
+
+            Vector3 lastDirection = Vector3.zero;
+
+            GameObject actingUnitGameObject = unitManager.GetGameObjectOfUnit(movementRequest.ActingUnit);
+
+            Animator animator = actingUnitGameObject.GetComponentInChildren<Animator>();
+
+            foreach (Vector3Int position in path)
+            {
+                if (position == lastPosition)
+                {
+                    continue;
+                }
+
+                Vector3 direction = Vector3.Normalize((position - lastPosition).Rotate(45));
+
+                GameMapData gameMapData = currentMap.Data.ChangeUnitPosition(CurrentActingUnit, position);
+
+                IEnumerable<AttackRequest> incomingAttacks = CombatConsultant.GetIncomingAttacks(gameMapData, CurrentActingUnit)
+                    .Where(x => x.ActingUnit.HasStatusEffect(CombatSystem.Entities.UnitStatusEffects.Overwatch));
+
+
+                if (direction != lastDirection || incomingAttacks.Count() > 0)
+                {
+                    routineManager.Enqueue(
+                        CombatCoroutineGenerator.MoveUnitToPosition(actingUnitGameObject, ground.CellToWorld(lastPosition)));
+
+                    routineManager.Enqueue(
+                        CombatCoroutineGenerator.PerformAnimation(animator, "isMoving", true, direction.x, direction.y));
+
+                    lastDirection = Vector3.Normalize(direction);
+                }
+
+                lastPosition = position;
+
+                if (incomingAttacks.Count() > 0)
+                {
+                    routineManager.Enqueue(
+                        CombatCoroutineGenerator.MoveUnitToPosition(actingUnitGameObject, ground.CellToWorld(position)));
+
+                    routineManager.Enqueue(CombatCoroutineGenerator.PerformAnimation(animator, "isMoving", false));
+
+                    routineManager.Enqueue(CombatCoroutineGenerator.EnactAttackRequest(currentMap, incomingAttacks.First()));
+
+                    currentMap = currentMap.DoAction(incomingAttacks.First());
+
+                    routineManager.Enqueue(
+                        LateInvoke(HealthBarManager.Instance.UpdateHealthBars, currentMap.GetUnits(unit => true)));
+
+                    routineManager.Enqueue(CombatCoroutineGenerator.PerformAnimation(animator, "isMoving", true));
+                }
+
+            }
+
+            routineManager.Enqueue(
+                CombatCoroutineGenerator.MoveUnitToPosition(actingUnitGameObject, ground.CellToWorld(lastPosition)));
+
+            currentMap = currentMap.DoAction(movementRequest);
+
+            routineManager.Enqueue(CombatCoroutineGenerator.PerformAnimation(animator, "isMoving", false));
         }
 
         private void Update()
@@ -397,7 +445,13 @@ namespace Managers
                 case SceneState.TurnEnded:
                     StateReset();
                     routineManager.Enqueue(CombatCoroutineGenerator.DisableDeadUnits(CurrentMap));
+
                     UnitQueueManager.Instance.UpdateUnitQueue(currentMap.GetUnits(unit => true));
+
+                    CameraController.Instance.FocusOn(
+                        CellToWorld(CurrentActingUnitPosition) + UNIT_WORLD_BODY_OFFSET,
+                        CombatUIManager.FAST_FOCUS_DURATION);
+
 
                     if (currentMap.CurrentActingUnit == null)
                     {
@@ -413,6 +467,7 @@ namespace Managers
                     else
                     {
                         CanvasManager.Instance.ActivateUI(CanvasManager.UIType.CharacterSheet);
+                        CombatUIManager.Instance.OnEnable();
                         gameState = SceneState.Selection;
                     }
                     
@@ -432,6 +487,12 @@ namespace Managers
         {
             yield return null;
             func.Invoke(args);
+        }
+
+        private IEnumerator LateInvoke(Action func)
+        {
+            yield return null;
+            func.Invoke();
         }
 
         public async void Autoplay()

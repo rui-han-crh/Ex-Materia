@@ -13,6 +13,12 @@ namespace CombatSystem.Entities
             Enemy
         }
 
+        public enum RiskCalculationMethod
+        {
+            StaticInteger,
+            DivisorOfHealth
+        }
+
         private static int identityCount = 1;
 
         private readonly int identity;
@@ -27,6 +33,8 @@ namespace CombatSystem.Entities
 
         private readonly UnitStatusEffects statusEffects;
 
+        private readonly Func<Unit, int> riskCalculatingFunction;
+
         private readonly int time;
 
         public int Identity => identity;
@@ -38,7 +46,8 @@ namespace CombatSystem.Entities
         public int Defence => currentProperties.Defence;
 
         public int Range => currentProperties.Range;
-        public int Risk => currentProperties.Risk;
+
+        public int Risk => riskCalculatingFunction(this);
 
         public int CurrentHealth => currentProperties.CurrentHealth;
 
@@ -65,6 +74,7 @@ namespace CombatSystem.Entities
             statusEffects = UnitStatusEffects.None;
             time = 0;
             this.faction = UnitFaction.Friendly;
+            this.riskCalculatingFunction = _ => Defence;
         }
 
         private Unit(string name, UnitProperties properties, UnitFaction faction)
@@ -76,17 +86,33 @@ namespace CombatSystem.Entities
             this.currentProperties = properties;
             this.statusEffects = UnitStatusEffects.None;
             this.time = 0;
+            this.riskCalculatingFunction = _ => Defence;
         }
 
-        private Unit(string name, UnitProperties properties, int time, UnitFaction faction)
+        private Unit(string name, UnitProperties properties, int time, UnitFaction faction) : this(name, properties, faction)
         {
-            this.name = name;
-            this.identity = identityCount++;
-            this.baseProperties = properties;
-            this.currentProperties = properties;
-            this.statusEffects = UnitStatusEffects.None;
             this.time = time;
-            this.faction = faction;
+            this.riskCalculatingFunction = _ => Defence;
+        }
+
+        private Unit(string name, 
+            UnitProperties properties, 
+            int time, 
+            UnitFaction faction, 
+            int riskParameter, 
+            RiskCalculationMethod method) 
+            : this(name, properties, time, faction)
+        {
+            switch (method)
+            {
+                case RiskCalculationMethod.StaticInteger:
+                    this.riskCalculatingFunction = _ => riskParameter;
+                    break;
+
+                case RiskCalculationMethod.DivisorOfHealth:
+                    this.riskCalculatingFunction = x => x.CurrentHealth / riskParameter;
+                    break;
+            }
         }
 
         private Unit(Unit oldUnit)
@@ -98,6 +124,7 @@ namespace CombatSystem.Entities
             this.statusEffects = oldUnit.statusEffects;
             this.time = oldUnit.time;
             this.faction = oldUnit.faction;
+            this.riskCalculatingFunction = oldUnit.riskCalculatingFunction;
         }
 
         private Unit(UnitProperties properties, Unit oldUnit) : this(oldUnit)
@@ -120,9 +147,19 @@ namespace CombatSystem.Entities
             return new Unit("DUMMY_NO_NAME", properties, faction);
         }
 
+        public static Unit CreateNewUnit(UnitProperties properties, int time, UnitFaction faction)
+        {
+            return new Unit("DUMMY_NO_NAME", properties, time, faction);
+        }
+
         public static Unit CreateNewUnit(string name, UnitProperties properties, int time = 0, UnitFaction faction = UnitFaction.Friendly)
         {
             return new Unit(name, properties, time, faction);
+        }
+
+        public static Unit CreateNewUnit(string name, UnitProperties properties, int time, UnitFaction faction, int risk, RiskCalculationMethod method)
+        {
+            return new Unit(name, properties, time, faction, risk, method);
         }
 
         public Unit ChangeAttack(int newAttack)

@@ -204,4 +204,24 @@ public class UnitCensusTest
         Assert.AreNotEqual(10, census[Vector3Int.zero].CurrentActionPoints);
         Assert.AreNotEqual(56, census[Vector3Int.one].CurrentHealth);
     }
+
+    [Test]
+    public void UpdateUnitTestWithTime()
+    {
+        Unit.ResetClass();
+
+        Unit unitA = Unit.CreateNewUnit(propertiesA);
+
+        Unit unitB = Unit.CreateNewUnit(propertiesB);
+
+        UnitCensus census = new UnitCensus();
+
+        census = census.Add(Vector3Int.one, unitA).Add(Vector3Int.zero, unitB);
+
+        Unit unitAUpdated = unitA.ChangeTime(1056);
+
+        UnitCensus newCensusA = census.UpdateUnit(unitAUpdated);
+
+        Assert.AreEqual(1056, newCensusA[Vector3Int.one].Time);
+    }
 }

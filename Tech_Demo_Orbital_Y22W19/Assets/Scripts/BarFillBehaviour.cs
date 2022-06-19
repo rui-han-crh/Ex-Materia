@@ -2,6 +2,7 @@
 using System;
 using UnityEngine.UI;
 using TMPro;
+using Managers;
 
 public class BarFillBehaviour : MonoBehaviour
 {
@@ -29,7 +30,7 @@ public class BarFillBehaviour : MonoBehaviour
     {
         if (parentFollowing != null)
         {
-            Vector3 screenPoint = mainCamera.WorldToScreenPoint(parentFollowing.transform.position + GameManagerOld.HEALTH_BAR_WORLD_OFFSET);
+            Vector3 screenPoint = mainCamera.WorldToScreenPoint(parentFollowing.transform.position + CombatSceneManager.HEALTH_BAR_WORLD_OFFSET);
             GetComponent<RectTransform>().position = screenPoint;
         }
     }

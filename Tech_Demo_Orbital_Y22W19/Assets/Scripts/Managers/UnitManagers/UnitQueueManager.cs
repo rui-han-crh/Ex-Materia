@@ -130,7 +130,7 @@ public class UnitQueueManager : MonoBehaviour
     /// From the queue describe the unit turns, removes the unit avatars that are no longer involved in
     /// the game map. The avatars will be removed on the next frame, when Update() is called.
     /// </summary>
-    /// <param name="nameUnitMapping"></param>
+    /// <param name="units"></param>
     /// <returns>The number of units avatars that have been removed.</returns>
     private int RemoveDeadUnitsAvatar(IDictionary<int, Unit> units)
     {

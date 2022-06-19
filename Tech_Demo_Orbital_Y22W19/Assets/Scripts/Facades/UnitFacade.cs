@@ -18,6 +18,9 @@ namespace Facades
             currentActionPoints;
 
         [SerializeField]
+        private Unit.RiskCalculationMethod riskCalculationMethod;
+
+        [SerializeField]
         private Unit.UnitFaction faction;
 
         [SerializeField]
@@ -34,10 +37,9 @@ namespace Facades
                 attack,
                 range,
                 maxActionPoints,
-                currentActionPoints,
-                risk);
+                currentActionPoints);
 
-            return Unit.CreateNewUnit(gameObject.name, properties, 0, faction);
+            return Unit.CreateNewUnit(gameObject.name, properties, 0, faction, risk, riskCalculationMethod);
         }
     }
 }

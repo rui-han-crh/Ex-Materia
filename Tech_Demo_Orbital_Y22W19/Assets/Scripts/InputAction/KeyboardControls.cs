@@ -98,6 +98,24 @@ public partial class @KeyboardControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ShowCombatSelections"",
+                    ""type"": ""Button"",
+                    ""id"": ""ac63f9fb-9b79-440d-9042-425a51cede0a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=0.05)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DoubleLeftClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""cd98cd0c-5795-419e-84e8-46bc3621ce75"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""MultiTap(tapDelay=0.1)"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -232,6 +250,28 @@ public partial class @KeyboardControls : IInputActionCollection2, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c530871b-6fb0-4de2-af80-54896acb5f8a"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShowCombatSelections"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fb1a40d3-1abc-4569-a72f-9b950e78883a"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DoubleLeftClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -248,6 +288,8 @@ public partial class @KeyboardControls : IInputActionCollection2, IDisposable
         m_Mouse_RightClick = m_Mouse.FindAction("RightClick", throwIfNotFound: true);
         m_Mouse_Move = m_Mouse.FindAction("Move", throwIfNotFound: true);
         m_Mouse_Interact = m_Mouse.FindAction("Interact", throwIfNotFound: true);
+        m_Mouse_ShowCombatSelections = m_Mouse.FindAction("ShowCombatSelections", throwIfNotFound: true);
+        m_Mouse_DoubleLeftClick = m_Mouse.FindAction("DoubleLeftClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -315,6 +357,8 @@ public partial class @KeyboardControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Mouse_RightClick;
     private readonly InputAction m_Mouse_Move;
     private readonly InputAction m_Mouse_Interact;
+    private readonly InputAction m_Mouse_ShowCombatSelections;
+    private readonly InputAction m_Mouse_DoubleLeftClick;
     public struct MouseActions
     {
         private @KeyboardControls m_Wrapper;
@@ -327,6 +371,8 @@ public partial class @KeyboardControls : IInputActionCollection2, IDisposable
         public InputAction @RightClick => m_Wrapper.m_Mouse_RightClick;
         public InputAction @Move => m_Wrapper.m_Mouse_Move;
         public InputAction @Interact => m_Wrapper.m_Mouse_Interact;
+        public InputAction @ShowCombatSelections => m_Wrapper.m_Mouse_ShowCombatSelections;
+        public InputAction @DoubleLeftClick => m_Wrapper.m_Mouse_DoubleLeftClick;
         public InputActionMap Get() { return m_Wrapper.m_Mouse; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -360,6 +406,12 @@ public partial class @KeyboardControls : IInputActionCollection2, IDisposable
                 @Interact.started -= m_Wrapper.m_MouseActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_MouseActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_MouseActionsCallbackInterface.OnInteract;
+                @ShowCombatSelections.started -= m_Wrapper.m_MouseActionsCallbackInterface.OnShowCombatSelections;
+                @ShowCombatSelections.performed -= m_Wrapper.m_MouseActionsCallbackInterface.OnShowCombatSelections;
+                @ShowCombatSelections.canceled -= m_Wrapper.m_MouseActionsCallbackInterface.OnShowCombatSelections;
+                @DoubleLeftClick.started -= m_Wrapper.m_MouseActionsCallbackInterface.OnDoubleLeftClick;
+                @DoubleLeftClick.performed -= m_Wrapper.m_MouseActionsCallbackInterface.OnDoubleLeftClick;
+                @DoubleLeftClick.canceled -= m_Wrapper.m_MouseActionsCallbackInterface.OnDoubleLeftClick;
             }
             m_Wrapper.m_MouseActionsCallbackInterface = instance;
             if (instance != null)
@@ -388,6 +440,12 @@ public partial class @KeyboardControls : IInputActionCollection2, IDisposable
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
+                @ShowCombatSelections.started += instance.OnShowCombatSelections;
+                @ShowCombatSelections.performed += instance.OnShowCombatSelections;
+                @ShowCombatSelections.canceled += instance.OnShowCombatSelections;
+                @DoubleLeftClick.started += instance.OnDoubleLeftClick;
+                @DoubleLeftClick.performed += instance.OnDoubleLeftClick;
+                @DoubleLeftClick.canceled += instance.OnDoubleLeftClick;
             }
         }
     }
@@ -402,5 +460,7 @@ public partial class @KeyboardControls : IInputActionCollection2, IDisposable
         void OnRightClick(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnShowCombatSelections(InputAction.CallbackContext context);
+        void OnDoubleLeftClick(InputAction.CallbackContext context);
     }
 }

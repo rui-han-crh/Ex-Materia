@@ -52,11 +52,10 @@ public class MovementRequest : MapActionRequest
         IEnumerable<Unit> allRivalPositions = nextMap.GetUnits(unit => unit.Faction != ActingUnit.Faction);
 
         int utility = nextMap.EvaluatePositionSafetyOf(ActingUnit);
-        utility = -utility > ActingUnit.Risk ? utility : 0;
 
         foreach (Unit rival in allRivalPositions)
         {
-            AttackRequest hypotheticalRequest = CombatConsultant.SimulateAttack(map.CurrentActingUnit, rival, map.Data);
+            AttackRequest hypotheticalRequest = CombatConsultant.SimulateAttack(map.CurrentActingUnit, rival, nextMap.Data);
             if (hypotheticalRequest.Successful)
             {
                 utility += Mathf.Max(CombatConsultant.MINIMUM_DAMAGE_DEALT, 
@@ -64,7 +63,9 @@ public class MovementRequest : MapActionRequest
             }
         }
 
-        calculatedUtilities[map] = utility - map.FindCostToNearestRival(ActingUnit);
+        utility = -utility > ActingUnit.Risk ? utility : 0;
+
+        calculatedUtilities[map] = utility - nextMap.FindCostToNearestRival(ActingUnit);
         return calculatedUtilities[map];
     }
 }

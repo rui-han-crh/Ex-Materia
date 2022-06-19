@@ -54,24 +54,31 @@ public class GameMap
 
     public GameMap DoAction(MapActionRequest request)
     {
+        GameMapData newData;
         switch (request.Type)
         {
             case MapActionRequest.RequestType.Attack:
-                return new GameMap(gameMapData.AttackUnit((AttackRequest)request), request);
+                newData = gameMapData.AttackUnit((AttackRequest)request);
+                break;
 
             case MapActionRequest.RequestType.Movement:
-                return new GameMap(gameMapData.MoveUnit((MovementRequest)request), request);
+                newData = gameMapData.MoveUnit((MovementRequest)request);
+                break;
 
             case MapActionRequest.RequestType.Wait:
-                return new GameMap(gameMapData.WaitUnit((WaitRequest)request), request);
+                newData = gameMapData.WaitUnit((WaitRequest)request);
+                break;
 
             case MapActionRequest.RequestType.Overwatch:
-                return new GameMap(gameMapData.OverwatchUnit((OverwatchRequest)request), request);
+                newData = gameMapData.OverwatchUnit((OverwatchRequest)request);
+                break;
 
             default:
                 throw new InvalidOperationException(
                     $"The operation for type {request.Type} is not supported by DoAction in GameMap");
         }
+
+        return new GameMap(newData.ClearDeadUnits(), request);
     }
 
     public IEnumerable<Unit> GetUnitsOfFaction(Unit.UnitFaction faction)
@@ -112,7 +119,7 @@ public class GameMap
             {
                 if (xUtility != yUtility)
                 {
-                    return (int)(xUtility - yUtility);
+                    return (int)Mathf.Sign(xUtility - yUtility);
                 }
 
                 return y.ActionPointCost - x.ActionPointCost;
@@ -130,7 +137,7 @@ public class GameMap
                         return -1;
                     }
                 }
-                else if (x.ActingUnit.CurrentActionPoints < CombatConsultant.ATTACK_AP_COST)
+                else if (x.ActingUnit.CurrentActionPoints < CombatConsultant.ATTACK_COST)
                 {
                     return x.Type == MapActionRequest.RequestType.Wait ? 1 : -1;
                 }
@@ -139,6 +146,7 @@ public class GameMap
             }
         });
 
+        Debug.Log(string.Join(", ", actionsList.Select(x => $"{x}: {x.GetUtility(this)}")));
         return actionsList.Last();
     }
 
@@ -168,7 +176,7 @@ public class GameMap
     {
         IEnumerable<Unit> rivalUnits = gameMapData.UnitsInPlay.Where(other => !other.Faction.Equals(unit.Faction));
 
-        if (rivalUnits.Any(rival => Vector3Int.Distance(this[unit], this[rival]) < 10))
+        if (rivalUnits.Any(rival => Vector3Int.Distance(this[unit], this[rival]) < unit.Range))
         {
             return 0;
         }

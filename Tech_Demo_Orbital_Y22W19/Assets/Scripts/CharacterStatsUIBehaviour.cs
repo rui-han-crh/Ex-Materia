@@ -40,7 +40,7 @@ public class CharacterStatsUIBehaviour : MonoBehaviour
 
     public void SetActionPointsBar(int currentActionPoints, int totalActionPoints)
     {
-        actionPointsBar.UpdateBarFillImage(currentActionPoints, totalActionPoints);
+        actionPointsBar?.UpdateBarFillImage(currentActionPoints, totalActionPoints);
     }
 
     public void SetName(string name)
@@ -75,7 +75,6 @@ public class CharacterStatsUIBehaviour : MonoBehaviour
     public void SetUnitStats(Unit unit)
     {
         SetHealthBar(unit.CurrentHealth, unit.MaxHealth);
-        Debug.Log($"{unit.Name} has {unit.CurrentActionPoints} actions points");
         SetActionPointsBar(unit.CurrentActionPoints, unit.MaxActionPoints);
         SetDefenceValue(unit.Defence);
         SetAttackValue(unit.Attack);

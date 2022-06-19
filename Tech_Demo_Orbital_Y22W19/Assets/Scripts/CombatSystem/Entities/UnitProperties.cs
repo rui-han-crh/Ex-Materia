@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,10 +28,6 @@ namespace CombatSystem.Entities
         public int Attack;
 
         private int range;
-
-        private int risk;
-
-        public int Risk => risk;
 
         public int Range 
         { 
@@ -70,27 +67,6 @@ namespace CombatSystem.Entities
             this.Range = range;
             this.maxActionPoints = maxActionPoints;
             this.currentActionPoints = currentActionPoints;
-            this.risk = defence;
-        }
-
-        public UnitProperties(
-            int maxHealth,
-            int currentHealth,
-            int defence,
-            int attack,
-            int range,
-            int maxActionPoints,
-            int currentActionPoints,
-            int risk) : this()
-        {
-            this.MaxHealth = maxHealth;
-            this.CurrentHealth = currentHealth;
-            this.Defence = defence;
-            this.Attack = attack;
-            this.Range = range;
-            this.maxActionPoints = maxActionPoints;
-            this.currentActionPoints = currentActionPoints;
-            this.risk = risk;
         }
     }
 }

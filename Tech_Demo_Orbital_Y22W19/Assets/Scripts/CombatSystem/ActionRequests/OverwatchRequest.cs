@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using CombatSystem.Entities;
 
+
 public class OverwatchRequest : MapActionRequest
 {
-    public static readonly int TIME_SPENT = 100;
-
-    private readonly GameMapData gameMapData;
+    public static readonly int TIME_SPENT = 1000;
 
     public OverwatchRequest(Unit actingUnit) : base(actingUnit, 0, TIME_SPENT, RequestType.Overwatch)
     {
@@ -21,7 +20,10 @@ public class OverwatchRequest : MapActionRequest
             return calculatedUtilities[map];
         }
 
-        calculatedUtilities[map] = map.EvaluatePositionSafetyOf(ActingUnit) - map.FindCostToNearestRival(ActingUnit);
+        int utility = map.EvaluatePositionSafetyOf(ActingUnit);
+        utility = -utility > ActingUnit.Risk ? utility : 0;
+
+        calculatedUtilities[map] = utility - map.FindCostToNearestRival(ActingUnit);
         return calculatedUtilities[map];
     }
 }

@@ -93,6 +93,16 @@ public class GameMapData
         return new GameMapData(newUnitCensus, tileCensus);
     }
 
+    public GameMapData ClearDeadUnits()
+    {
+        return new GameMapData(unitCensus.FilterUnits(x => x.CurrentHealth > 0), tileCensus);
+    }
+
+    public Unit GetSimilarUnit(Unit unit)
+    {
+        return this[this[unit]];
+    }
+
     public GameMapData MoveUnit(MovementRequest movementRequest)
     {
         Vector3Int destination = movementRequest.Destination;
@@ -101,12 +111,13 @@ public class GameMapData
             throw new ArgumentException($"The position {destination} was not vacant to move to.");
         }
 
-        Unit movingUnit = movementRequest.ActingUnit;
+        Unit movingUnit = GetSimilarUnit(movementRequest.ActingUnit);
 
         movingUnit = movingUnit
-            .ChangeActionPoints(movingUnit.CurrentActionPoints - movementRequest.ActionPointCost)
             .ChangeTime(movingUnit.Time + movementRequest.TimeSpent)
             .RemoveStatusEffect(UnitStatusEffects.Overwatch);
+
+        //.ChangeActionPoints(movingUnit.CurrentActionPoints - movementRequest.ActionPointCost)
 
         return new GameMapData(unitCensus.MoveUnit(movingUnit, destination), tileCensus);
     }
@@ -119,15 +130,24 @@ public class GameMapData
             return this;
         }
 
-        Unit defendingUnit = attackRequest.TargetUnit;
-        Unit attackingUnit = attackRequest.ActingUnit;
+        Unit defendingUnit = GetSimilarUnit(attackRequest.TargetUnit);
+        Unit attackingUnit = GetSimilarUnit(attackRequest.ActingUnit);
 
-        Unit resultantDefendingUnit = defendingUnit.ChangeHealth(defendingUnit.CurrentHealth - attackRequest.PotentialDamageDealt);
+        Unit resultantDefendingUnit = defendingUnit;
 
-        Unit resultantAttackingUnit = attackingUnit.ChangeActionPoints(attackingUnit.CurrentActionPoints - attackRequest.ActionPointCost)
+        if (UnityEngine.Random.Range(0.0f, 1.0f) <= attackRequest.ChanceToHit)
+        {
+            Debug.Log($"Attack succeeded {attackingUnit.Name} vs. {defendingUnit.Name} for {attackRequest.PotentialDamageDealt}");
+
+            resultantDefendingUnit = defendingUnit.ChangeHealth(defendingUnit.CurrentHealth - attackRequest.PotentialDamageDealt);
+        }
+
+        Unit resultantAttackingUnit = attackingUnit
             .ChangeTime(attackingUnit.Time + attackRequest.TimeSpent)
             .RemoveStatusEffect(UnitStatusEffects.Overwatch);
-        
+
+        //.ChangeActionPoints(attackingUnit.CurrentActionPoints - attackRequest.ActionPointCost)
+
         return new GameMapData(unitCensus.SwapUnit(defendingUnit, resultantDefendingUnit)
                                         .SwapUnit(attackingUnit, resultantAttackingUnit), 
                                         tileCensus);
@@ -135,20 +155,19 @@ public class GameMapData
 
     public GameMapData WaitUnit(WaitRequest waitRequest)
     {
-        Unit actingUnit = waitRequest.ActingUnit;
+        Unit actingUnit = GetSimilarUnit(waitRequest.ActingUnit);
         Debug.Log($"{actingUnit.Name} is wait for {waitRequest.TimeSpent} to replenish {waitRequest.ActionPointsReplenished}");
 
-        actingUnit = actingUnit.ChangeTime(actingUnit.Time + waitRequest.TimeSpent)
-            .ChangeActionPoints(actingUnit.CurrentActionPoints + waitRequest.ActionPointsReplenished);
+        actingUnit = actingUnit.ChangeTime(actingUnit.Time + waitRequest.TimeSpent);
+        //  .ChangeActionPoints(actingUnit.CurrentActionPoints + waitRequest.ActionPointsReplenished);
 
         return new GameMapData(unitCensus.UpdateUnit(actingUnit), tileCensus);
     }
 
     public GameMapData OverwatchUnit(OverwatchRequest overwatchRequest)
     {
-        Unit actingUnit = overwatchRequest.ActingUnit.ApplyStatusEffect(UnitStatusEffects.Overwatch);
+        Unit actingUnit = GetSimilarUnit(overwatchRequest.ActingUnit).ApplyStatusEffect(UnitStatusEffects.Overwatch);
         actingUnit = actingUnit.ChangeTime(actingUnit.Time + overwatchRequest.TimeSpent);
-
         return new GameMapData(unitCensus.UpdateUnit(actingUnit), tileCensus);
     }
 
