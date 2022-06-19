@@ -16,10 +16,11 @@ public class MainMenu : MonoBehaviour
 
     public void Start()
     {
-        if (!DataPersistenceManager.Instance.HasGameData()) 
+        if (!DataPersistenceManager.Instance.HasGameData())
         {
             continueButton.interactable = false;
         }
+
     }
 
     public void OnNewGameClicked()
@@ -34,8 +35,9 @@ public class MainMenu : MonoBehaviour
 
     public void OnContinueGameClicked()
     {
-        DataPersistenceManager.Instance.SaveGame();
-        SceneManager.LoadSceneAsync(DataPersistenceManager.Instance.GetCurrentScene());
+        DataPersistenceManager.Instance.LoadGame(); //Save has a build in check to see if there;s
+        //existing game data!
+        SceneManager.LoadScene(DataPersistenceManager.Instance.GetCurrentScene());
         
     }
 }

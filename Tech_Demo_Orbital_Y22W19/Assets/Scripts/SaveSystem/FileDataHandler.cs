@@ -33,12 +33,17 @@ public class FileDataHandler
                     }
                 }
                 loadedData = JsonUtility.FromJson<GameData>(dataToLoad);
+                Debug.Log("loaded data successfully loaded from file");
             }
             catch (Exception ex)
             {
                 Debug.LogError("Error occured when trying to load data to file: " + fullpath + "\n" + ex);
 
             }
+        }
+        if (loadedData == null)
+        {
+            Debug.Log("Error when loading data / No Data yet!");
         }
         return loadedData;
 
@@ -59,6 +64,8 @@ public class FileDataHandler
             {
                 sw.WriteLine(dataToStore);
             }
+
+            Debug.Log("Successfully written");
 
         }
         catch (Exception e)

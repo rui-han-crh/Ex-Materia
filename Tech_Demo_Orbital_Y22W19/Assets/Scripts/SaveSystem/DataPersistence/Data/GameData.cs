@@ -15,10 +15,14 @@ public class GameData
      */
     public float totalTimeOnRun;
     public string currentScene;
+    public TestA sampleTest;
     
 
     public GameData()
     {
+        totalTimeOnRun = 0;
+        currentScene = "";
+        sampleTest = new TestA(4, 20);
     }
     
 }
