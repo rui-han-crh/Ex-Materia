@@ -16,6 +16,15 @@ public class GameData
     public float totalTimeOnRun;
     public string currentScene;
     public TestA sampleTest;
+
+
+    /*
+     * so far, arrays are okay 
+     * any subclass need to be tagged as serializable 
+     * any subclasses using primatives are okay 
+     * Dictionaries are NOT (will need a custom implementation for this)
+     */
+
     
 
     public GameData()
