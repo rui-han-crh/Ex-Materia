@@ -1,0 +1,36 @@
+﻿title: OliviaIntro
+tags:
+---
+<<load Speaker Olivia Happy>>
+Olivia: Hi There!
+Olivia: My name's Olivia!
+
+<<load Speaker Olivia Neutral>>
+Olivia: Guess my previous job!
+-> Software Engineer
+		<<jump WrongOption>>
+-> Radio Specialist
+		<<jump RadioSpecialist>>
+-> Firefighter 
+		<<jump WrongOption>>
+===
+
+
+title: WrongOption
+tags:
+---
+<<load Speaker Olivia Surprised>>
+Olivia: Nope! I'm actually a <B> Radio Specialist, from the Academy! </B>
+<<jump RadioSpecialist>>
+===
+
+title: RadioSpecialist
+tags:
+---
+<<load Speaker Olivia Happy>>
+Olivia: Now, I'm the comms engineer!
+Olivia: But bewarned...
+
+Olivia: I can tangle with the best of them!
+Olivia: I'm also a trained in firearms 
+===
