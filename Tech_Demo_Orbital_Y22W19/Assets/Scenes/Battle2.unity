@@ -1968,6 +1968,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c71e5bd9bec926649986a517cda3802c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioPlayerGroup: {fileID: 0}
   audioCollection:
   - name: RifleFire
     audioClip: {fileID: 8300000, guid: 2ef7d8558125a3448947f3bf7b769a67, type: 3}
@@ -2092,6 +2093,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dragSensitivity: 0.05
   scrollSensitivity: 0.5
+  focusSpeed: 10
+  rotationSpeed: 2
 --- !u!120 &1103755090
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -2325,7 +2328,7 @@ TilemapRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 4
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 3.5, y: 5.5, z: 0}
+  m_ChunkCullingBounds: {x: 4.3, y: 5.1, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 3
