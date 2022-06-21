@@ -77,7 +77,10 @@ public class YarnManager : MonoBehaviour
     /*
      * Needs a button press on the character to start
      */
-
+    public void AddDialogueManager(DialogueRunner dr)
+    {
+        YI.LoadRunner(dr);
+    }
     
     public void StartConvoButton(string startingNode)
     {

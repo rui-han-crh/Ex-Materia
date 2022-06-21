@@ -1,4 +1,4 @@
-﻿title: OliviaIntro
+﻿title:OliviaIntro
 tags:
 ---
 <<load Speaker Olivia Happy>>
@@ -16,7 +16,7 @@ Olivia: Guess my previous job!
 ===
 
 
-title: WrongOption
+title:WrongOption
 tags:
 ---
 <<load Speaker Olivia Surprised>>
