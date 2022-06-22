@@ -26,7 +26,8 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
 
     //stages are basically dialgoueNodes
 
-    private string[] stageNames = new string[] { "Start", "IntroTutorial", "MoveTutorial", "ShootTutorial", "DuckTutorial" };
+    private string[] stageNames = new string[] {"MoveTutorial", "ShootTutorial", "DuckTutorial" };
+    private string[] stageIntermediate = new string[] { "MoveIntermediate", "ShootIntermediate", "DuckTutorial" };
 
 
     public Vector3[] checkPoints = new Vector3[] { new Vector3(-3, -4, -10) };
@@ -45,7 +46,42 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
 
     private bool isInConfirmed = false;
 
+    IEnumerator ResetNextScene()
+    {
+        yield return new WaitForSeconds(5);
+    }
 
+    IEnumerator ResetLonger()
+    {   //alternatively, this can be a button that pops up, when he's ready to go!
+        yield return new WaitForSeconds(10);
+    }
+
+    //public void Start()
+    //{
+    //YarnManager.Instance.AddDialogueManager(dr);
+    //BeginConvo("StartEvelynAndOlivia");
+    //1) Disable all buttons 
+    //DisableAllCombatButtons();
+    //StartPhase(0);
+    //BeginConvo(...);
+
+
+
+
+    //actionUI.SetActive(false);
+    //startButton.enabled = true;
+    //DialogueCanvas.SetActive(true);
+    //YarnManager.Instance.StartConvoAuto("WrongOption");
+    //DialogueCanvas.SetActive(false);
+    //StartStage(currentStage);
+    //}
+
+    public void Start()
+    {
+        Debug.Log("Playing Node message: Start");
+        StartCoroutine("ResetLonger");
+        StartPhase(currentStage);
+    }
     private void Update()
     {
          if(Input.GetMouseButtonDown(0))
@@ -58,11 +94,16 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
                 Vector3 doubleClickPos = MainCamera.ScreenToWorldPoint(Input.mousePosition);
                 Vector3 currentCheckpoint = checkPoints[currentStage];
                 float distClick = Vector3.Distance(currentCheckpoint, doubleClickPos);
-                if (distClick < 1.0f)
+                if (distClick < 11.0f)
                 {
                     Debug.Log("Correct pos");
                     Debug.Log(doubleClickPos);
+
+                    //We can go onto the next phase 
+                    StartCoroutine("ResetNextScene");
                     currentStage += 1;
+                    StartPhase(currentStage);
+
                 } 
                 else
                 {
@@ -90,42 +131,18 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
 
     public void StartPhase(int stageIndex)
     {
+        Debug.Log("Current phase is: " + stageIndex);
         DisableAllCombatButtons();
-        //play dialogue 
+        DeselectAction(); //setActive == False!
+        //play dialogue
+        Debug.Log("Starting Convo @ : " + stageNames[stageIndex]); //stageNames are just instructions
         //end dialogue 
         //1) Enable the correct button 
-        buttonActions[stageIndex].gameObject.SetActive(true);
-    }
-    public void Start()
-    {
-        //YarnManager.Instance.AddDialogueManager(dr);
-        //BeginConvo("StartEvelynAndOlivia");
-        //1) Disable all buttons 
         DisableAllCombatButtons();
-        StartPhase(0);
-        //BeginConvo(...);
-
-
-
-
-        //actionUI.SetActive(false);
-        //startButton.enabled = true;
-        //DialogueCanvas.SetActive(true);
-        //YarnManager.Instance.StartConvoAuto("WrongOption");
-        //DialogueCanvas.SetActive(false);
-        //StartStage(currentStage);
+        buttonActions[stageIndex].gameObject.SetActive(true);
     }
 
     //Essentially starts the stage 
-
-    private void StartStage(int stageNumber)
-    {
-        //if(stageNumber == 0)
-        //{
-        //    DialogueCanvas.SetActive(true);
-        //    YarnManager.Instance.StartConvoAuto("OliviaIntro");
-        //}
-    }
 
     public void BeginConvo(string thisNode)
     {
@@ -164,6 +181,7 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
     {
         isInConfirmed = true;
         Debug.Log("Awaiting Confirm");
+        Debug.Log("Now playing intermediary: " + stageIntermediate[currentStage]);
         //playDialogue(sceneNumber); --> now double click on the new 
         //endDialogue(scneneNumber);
         //inputActions.

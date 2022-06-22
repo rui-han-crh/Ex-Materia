@@ -8,8 +8,7 @@ public class SpeakingInteraction : MonoBehaviour, IInteraction
 {
     public event Action OnEnded = delegate { };
 
-    [SerializeField]
-    public Camera MainCamera;
+
 
     [SerializeField]
     private string yarnScriptName;
