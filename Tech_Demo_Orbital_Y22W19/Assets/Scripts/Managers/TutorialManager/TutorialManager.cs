@@ -11,6 +11,7 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
 
 
     private const float DOUBLE_CLICK_TIME = .2f;
+    private  Vector3 WORLD_OFFSET = 10 * Vector3.back;
     private float lastClickTime;
 
     public event Action OnEnded = delegate { };
@@ -73,11 +74,11 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
             {
                 //do left click 
                 Vector3 doubleClickPos = MainCamera.ScreenToWorldPoint(Input.mousePosition);
-                Vector3 currentCheckpoint = checkPoints[currentStage];
+                Vector3 currentCheckpoint = checkPoints[currentStage] + WORLD_OFFSET;
                 Debug.Log("position I clicked = : " + doubleClickPos);
                 Debug.Log("Checkpoint = " + currentCheckpoint);
-                float distClick = Vector3.Distance(currentCheckpoint, doubleClickPos) - 10f;
-                if (distClick < 0.5)
+                float distClick = Vector3.Distance(currentCheckpoint, doubleClickPos);
+                if (distClick < 0.5) 
                 {
                     Debug.Log("Correct pos");
                     Debug.Log(doubleClickPos);
