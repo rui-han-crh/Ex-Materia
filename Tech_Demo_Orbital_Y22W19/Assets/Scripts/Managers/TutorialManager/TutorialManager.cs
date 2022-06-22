@@ -22,13 +22,14 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
 
     //this int is basically what thing it's on now
 
-    private int currentStage;
+    private int currentStage = 0;
 
     //stages are basically dialgoueNodes
 
     private string[] stageNames = new string[] { "Start", "IntroTutorial", "MoveTutorial", "ShootTutorial", "DuckTutorial" };
 
 
+    public Vector3[] checkPoints = new Vector3[] { new Vector3(-3, -4, 0) };
 
     [SerializeField]
     public DialogueRunner dr;
@@ -55,11 +56,23 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
             {
                 //do left click 
                 Vector3 doubleClickPos = MainCamera.ScreenToWorldPoint(Input.mousePosition);
-                Debug.Log(doubleClickPos);
+                Vector3 currentCheckpoint = checkPoints[currentStage];
+                if (Vector3.Distance(currentCheckpoint, doubleClickPos) < 0.5f)
+                {
+                    Debug.Log(doubleClickPos);
+                    currentStage += 1;
+                } 
+                else
+                {
+                    Debug.Log("Wrong pos");
+                    Debug.Log(doubleClickPos);
+                }
+                
             }
             else
             {
-                //do something normal left click?
+
+                isInConfirmed = false;
             }
 
             lastClickTime = Time.time;

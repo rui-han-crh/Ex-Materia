@@ -2951,6 +2951,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MainCamera: {fileID: 519420031}
   startNode: OliviaIntro
+  checkPoints:
+  - {x: -3, y: -4, z: 0}
   dr: {fileID: 1000776167}
   DialogueCanvas: {fileID: 1864920667}
   buttonActions:
@@ -8900,6 +8902,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MainCamera: {fileID: 0}
   startNode: OliviaIntro
+  checkPoints:
+  - {x: -3, y: -4, z: 0}
   dr: {fileID: 0}
   DialogueCanvas: {fileID: 0}
   buttonActions:
@@ -27840,8 +27844,8 @@ Tilemap:
   - first: {x: -12, y: -6, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 1
-      m_TileSpriteIndex: 1
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
       m_TileMatrixIndex: 0
       m_TileColorIndex: 3
       m_TileObjectToInstantiateIndex: 65535
@@ -53719,18 +53723,18 @@ Tilemap:
       m_AllTileFlags: 1073741825
   m_AnimatedTiles: {}
   m_TileAssetArray:
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 374
+  - m_RefCount: 1
+    m_Data: {fileID: 11400000, guid: 6ed4298183d1255469615e740347c808, type: 2}
+  - m_RefCount: 373
     m_Data: {fileID: 11400000, guid: d0e5cb4c3c9d4634d9f718796997798a, type: 2}
   - m_RefCount: 3980
     m_Data: {fileID: 11400000, guid: 4878b07e0ee6740489b6d133b5a732b3, type: 2}
   - m_RefCount: 118
     m_Data: {fileID: 11400000, guid: 06c10c7673b644544818353ba0fe8929, type: 2}
   m_TileSpriteArray:
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
-  - m_RefCount: 374
+  - m_RefCount: 1
+    m_Data: {fileID: -8858639326846726275, guid: 04a73138bf10cb14ea31e6638d756dc8, type: 3}
+  - m_RefCount: 373
     m_Data: {fileID: 21300000, guid: 8ac25f5039ab51c4b878732e5079cecb, type: 3}
   - m_RefCount: 3980
     m_Data: {fileID: 4720342145026768794, guid: 04a73138bf10cb14ea31e6638d756dc8, type: 3}
