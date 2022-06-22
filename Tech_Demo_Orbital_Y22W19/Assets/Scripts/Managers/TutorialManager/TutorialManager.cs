@@ -29,7 +29,7 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
     private string[] stageNames = new string[] { "Start", "IntroTutorial", "MoveTutorial", "ShootTutorial", "DuckTutorial" };
 
 
-    public Vector3[] checkPoints = new Vector3[] { new Vector3(-3, -4, 0) };
+    public Vector3[] checkPoints = new Vector3[] { new Vector3(-3, -4, -10) };
 
     [SerializeField]
     public DialogueRunner dr;
@@ -57,22 +57,20 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
                 //do left click 
                 Vector3 doubleClickPos = MainCamera.ScreenToWorldPoint(Input.mousePosition);
                 Vector3 currentCheckpoint = checkPoints[currentStage];
-                if (Vector3.Distance(currentCheckpoint, doubleClickPos) < 0.5f)
+                float distClick = Vector3.Distance(currentCheckpoint, doubleClickPos);
+                if (distClick < 1.0f)
                 {
+                    Debug.Log("Correct pos");
                     Debug.Log(doubleClickPos);
                     currentStage += 1;
                 } 
                 else
                 {
                     Debug.Log("Wrong pos");
-                    Debug.Log(doubleClickPos);
+                    Debug.Log("The distance is: " + distClick);
+                    Debug.Log(doubleClickPos); ;
                 }
                 
-            }
-            else
-            {
-
-                isInConfirmed = false;
             }
 
             lastClickTime = Time.time;
