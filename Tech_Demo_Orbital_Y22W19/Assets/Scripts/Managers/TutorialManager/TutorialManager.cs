@@ -30,7 +30,7 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
     private string[] stageIntermediate = new string[] { "MoveIntermediate", "ShootIntermediate", "DuckTutorial" };
 
 
-    public Vector3[] checkPoints = new Vector3[] { new Vector3(-3, -4, -10) };
+    public Vector3[] checkPoints = new Vector3[] { new Vector3(-3.0f, -4.0f, -10.0f), new Vector3() };
 
     [SerializeField]
     public DialogueRunner dr;
@@ -56,25 +56,6 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
         yield return new WaitForSeconds(10);
     }
 
-    //public void Start()
-    //{
-    //YarnManager.Instance.AddDialogueManager(dr);
-    //BeginConvo("StartEvelynAndOlivia");
-    //1) Disable all buttons 
-    //DisableAllCombatButtons();
-    //StartPhase(0);
-    //BeginConvo(...);
-
-
-
-
-    //actionUI.SetActive(false);
-    //startButton.enabled = true;
-    //DialogueCanvas.SetActive(true);
-    //YarnManager.Instance.StartConvoAuto("WrongOption");
-    //DialogueCanvas.SetActive(false);
-    //StartStage(currentStage);
-    //}
 
     public void Start()
     {
@@ -93,8 +74,10 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
                 //do left click 
                 Vector3 doubleClickPos = MainCamera.ScreenToWorldPoint(Input.mousePosition);
                 Vector3 currentCheckpoint = checkPoints[currentStage];
-                float distClick = Vector3.Distance(currentCheckpoint, doubleClickPos);
-                if (distClick < 11.0f)
+                Debug.Log("position I clicked = : " + doubleClickPos);
+                Debug.Log("Checkpoint = " + currentCheckpoint);
+                float distClick = Vector3.Distance(currentCheckpoint, doubleClickPos) - 10f;
+                if (distClick < 0.5)
                 {
                     Debug.Log("Correct pos");
                     Debug.Log(doubleClickPos);
