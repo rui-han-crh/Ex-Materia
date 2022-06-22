@@ -5,12 +5,18 @@ using Transitions;
 using UnityEngine;
 using Yarn.Unity;
 using UnityEngine.UI;
-
+using UnityEngine.InputSystem;
 public class TutorialManager : MonoBehaviour //should be able to interact with yarn also
 {
 
+
+    private const float DOUBLE_CLICK_TIME = .2f;
+    private float lastClickTime;
+
     public event Action OnEnded = delegate { };
 
+    [SerializeField]
+    public Camera MainCamera;
     [SerializeField]
     public string startNode;
 
@@ -23,13 +29,6 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
     private string[] stageNames = new string[] { "Start", "IntroTutorial", "MoveTutorial", "ShootTutorial", "DuckTutorial" };
 
 
-    ////icon positions to serialize
-    //[SerializeField]
-    //public Button MovementIcon;
-    //[SerializeField]
-    //public Button CombatIcon;
-    //[SerializeField]
-    //public Button OverwatchIcon;
 
     [SerializeField]
     public DialogueRunner dr;
@@ -46,16 +45,58 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
     private bool isInConfirmed = false;
 
 
+    private void Update()
+    {
+         if(Input.GetMouseButtonDown(0))
+        {
+            float timeSinceLastClick = Time.time - lastClickTime;
+
+            if (timeSinceLastClick <= DOUBLE_CLICK_TIME && isInConfirmed)
+            {
+                //do left click 
+                Vector3 doubleClickPos = MainCamera.ScreenToWorldPoint(Input.mousePosition);
+                Debug.Log(doubleClickPos);
+            }
+            else
+            {
+                //do something normal left click?
+            }
+
+            lastClickTime = Time.time;
+
+        }
+    }
+
+    public void DisableAllCombatButtons()
+    {
+        foreach (Button button in buttonActions)
+        {
+            button.gameObject.SetActive(false); //shouldn't be able to click a single button 
+        }
+    }
+
+  
+
+    public void StartPhase(int stageIndex)
+    {
+        DisableAllCombatButtons();
+        //play dialogue 
+        //end dialogue 
+        //1) Enable the correct button 
+        buttonActions[stageIndex].gameObject.SetActive(true);
+    }
     public void Start()
     {
         //YarnManager.Instance.AddDialogueManager(dr);
         //BeginConvo("StartEvelynAndOlivia");
         //1) Disable all buttons 
-        foreach (Button button in buttonActions)
-        {
-            button.gameObject.SetActive(false); //shouldn't be able to click a single button 
-        }
-        buttonActions[0].gameObject.SetActive(true);
+        DisableAllCombatButtons();
+        StartPhase(0);
+        //BeginConvo(...);
+
+
+
+
         //actionUI.SetActive(false);
         //startButton.enabled = true;
         //DialogueCanvas.SetActive(true);
@@ -101,11 +142,26 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
         //It is a confirmed message to attack / interact with something!
     }
 
+
+    public void activateCanvas()
+    {
+
+    }
+
     //Potential bug: I don't know how to cancel 
     public void AwaitingConfirm()
     {
         isInConfirmed = true;
-        //Debug.Log("the truth will set you free");
+        Debug.Log("Awaiting Confirm");
+        //playDialogue(sceneNumber); --> now double click on the new 
+        //endDialogue(scneneNumber);
+        //inputActions.
+    }
+
+    //I actually don't know how to get to the cancel OverlayButton, but it's subbed there
+    public void DeselectAction()
+    {
+        isInConfirmed = false;
     }
 
 
