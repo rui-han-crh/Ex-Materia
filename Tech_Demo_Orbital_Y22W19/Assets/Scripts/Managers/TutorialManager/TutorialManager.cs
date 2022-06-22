@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using Transitions;
 using UnityEngine;
 using Yarn.Unity;
+using UnityEngine.UI;
 
 public class TutorialManager : MonoBehaviour //should be able to interact with yarn also
 {
 
-    //public event Action OnEnded = delegate { };
+    public event Action OnEnded = delegate { };
 
     [SerializeField]
     public string startNode;
@@ -37,27 +38,30 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
     public GameObject DialogueCanvas;
 
     [SerializeField]
-    public GameObject[] buttonActions;
+    public Button[] buttonActions;
 
     [SerializeField]
     public GameObject actionUI;
 
+    private bool isInConfirmed = false;
+
 
     public void Start()
     {
-        YarnManager.Instance.AddDialogueManager(dr);
-        BeginConvo("OliviaIntro");
+        //YarnManager.Instance.AddDialogueManager(dr);
+        //BeginConvo("StartEvelynAndOlivia");
         //1) Disable all buttons 
-        foreach (GameObject button in buttonActions)
+        foreach (Button button in buttonActions)
         {
-            button.SetActive(false); //shouldn't be able to click a single button 
+            button.gameObject.SetActive(false); //shouldn't be able to click a single button 
         }
+        buttonActions[0].gameObject.SetActive(true);
         //actionUI.SetActive(false);
         //startButton.enabled = true;
         //DialogueCanvas.SetActive(true);
         //YarnManager.Instance.StartConvoAuto("WrongOption");
         //DialogueCanvas.SetActive(false);
-        StartStage(currentStage);
+        //StartStage(currentStage);
     }
 
     //Essentially starts the stage 
@@ -71,14 +75,38 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
         //}
     }
 
-    public void BeginConvo(string startNode)
+    public void BeginConvo(string thisNode)
     {
         DialogueCanvas.gameObject.SetActive(true);
-        YarnManager.Instance.StartConvoAuto(startNode);
+        YarnManager.Instance.StartConvoAuto(thisNode);
+        YarnManager.Instance.OnEnded += InvokeDelegate;
+    }
+
+    private void InvokeDelegate()
+    {
+        DialogueCanvas.gameObject.SetActive(false);
+        OnEnded();
+        FlushEventHandlers();
+    }
+
+    public void FlushEventHandlers()
+    {
+        OnEnded = delegate { };
     }
 
 
-    public voi
+    public void detectRaycast()
+    {
+        //if it has been confirmed, when you double click anywhere,
+        //It is a confirmed message to attack / interact with something!
+    }
+
+    //Potential bug: I don't know how to cancel 
+    public void AwaitingConfirm()
+    {
+        isInConfirmed = true;
+        //Debug.Log("the truth will set you free");
+    }
 
 
 
