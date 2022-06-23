@@ -26,6 +26,7 @@ public class YarnManager : MonoBehaviour
             return instance;
         }
     }
+
     public YarnInteractable YI;
 
     [SerializeField]
@@ -100,8 +101,8 @@ public class YarnManager : MonoBehaviour
         if (nextNode != null) //TODO: probably need to check for legit startNode for the scene somewhere, probably in the DB?
         {
             isActive = true;
-            YI.Rewake();
-            YI.StartImmediate(nextNode);
+            this.YI.Rewake();
+            this.YI.StartImmediate(nextNode);
         }
     }
 

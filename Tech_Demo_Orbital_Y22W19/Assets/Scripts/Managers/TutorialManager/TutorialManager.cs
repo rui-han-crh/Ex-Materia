@@ -25,13 +25,14 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
 
     private int currentStage = 0;
 
+
+
     //stages are basically dialgoueNodes
+    private string[] stageNames = new string[] {"MoveTutorial", "ShootTutorial", "HideTutorial" };
+    private string[] stageIntermediate = new string[] { "MoveIntermediate", "ShootIntermediate", "HideIntermediate" };
 
-    private string[] stageNames = new string[] {"MoveTutorial", "ShootTutorial", "DuckTutorial" };
-    private string[] stageIntermediate = new string[] { "MoveIntermediate", "ShootIntermediate", "DuckTutorial" };
 
-
-    public Vector3[] checkPoints = new Vector3[] { new Vector3(-3.0f, -4.0f, -10.0f), new Vector3() };
+    public Vector3[] checkPoints = new Vector3[] { new Vector3(0.5f, -5.25f, -10.0f)};
 
     [SerializeField]
     public DialogueRunner dr;
@@ -49,24 +50,32 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
 
     IEnumerator ResetNextScene()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(10);
     }
 
     IEnumerator ResetLonger()
     {   //alternatively, this can be a button that pops up, when he's ready to go!
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(20);
     }
 
+    public void Awake()
+    {
+        DialogueCanvas.SetActive(false); //hide the dialogue
+        //AudioManager.Instance.PlayTrack("Tutorial_Prevailing");
 
+    }
     public void Start()
     {
         Debug.Log("Playing Node message: Start");
+        //BeginConvo("StartEvelynOlivia");
         StartCoroutine("ResetLonger");
         StartPhase(currentStage);
     }
     private void Update()
+    //no choice need to check for double click to confirm movement on update
+    //Especially for the thing 
     {
-         if(Input.GetMouseButtonDown(0))
+         if(Input.GetMouseButtonDown(0) && currentStage == 0)
         {
             float timeSinceLastClick = Time.time - lastClickTime;
 
@@ -101,6 +110,15 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
             lastClickTime = Time.time;
 
         }
+
+        if ((Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl) && currentStage == 2)) {
+            Debug.Log("Now playing the remainder of the dialogue");
+            //BeginConvo(stageIndex);
+            EnableAllCombatButtons();
+            currentStage += 1; //doesn't trigger anything else
+
+            
+        }
     }
 
     public void DisableAllCombatButtons()
@@ -111,7 +129,15 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
         }
     }
 
-  
+    public void EnableAllCombatButtons()
+    {
+        foreach (Button button in buttonActions)
+        {
+            button.gameObject.SetActive(true); //shouldn't be able to click a single button 
+        }
+    }
+
+
 
     public void StartPhase(int stageIndex)
     {
@@ -123,14 +149,17 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
         //end dialogue 
         //1) Enable the correct button 
         DisableAllCombatButtons();
-        buttonActions[stageIndex].gameObject.SetActive(true);
+        for (int i = 0; i <= stageIndex; i++)
+        {
+            buttonActions[stageIndex].gameObject.SetActive(true);
+        }
     }
 
     //Essentially starts the stage 
 
     public void BeginConvo(string thisNode)
     {
-        DialogueCanvas.gameObject.SetActive(true);
+        DialogueCanvas.SetActive(true);
         YarnManager.Instance.StartConvoAuto(thisNode);
         YarnManager.Instance.OnEnded += InvokeDelegate;
     }
@@ -147,28 +176,36 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
         OnEnded = delegate { };
     }
 
-
-    public void detectRaycast()
+    
+    public void ConfirmAttack()
     {
-        //if it has been confirmed, when you double click anywhere,
-        //It is a confirmed message to attack / interact with something!
+        if (currentStage == 1) //confirm that it's on attacking stage 
+        {
+            ResetLonger(); //wait for the attack animation to happen 
+            //while other characters are moving in the background
+            currentStage += 1; //--> Now, update will catch whenever they press control
+        }
     }
-
-
-    public void activateCanvas()
-    {
-
-    }
-
     //Potential bug: I don't know how to cancel 
-    public void AwaitingConfirm()
+    public void AwaitingConfirmMovement()
     {
-        isInConfirmed = true;
-        Debug.Log("Awaiting Confirm");
-        Debug.Log("Now playing intermediary: " + stageIntermediate[currentStage]);
-        //playDialogue(sceneNumber); --> now double click on the new 
-        //endDialogue(scneneNumber);
-        //inputActions.
+        if (currentStage == 0)
+        {
+            isInConfirmed = true;
+            Debug.Log("Awaiting Confirm: " + stageIntermediate[currentStage]);
+            Debug.Log("Now playing intermediary: " + stageIntermediate[currentStage]);
+            //playDialogue(sceneNumber); --> now double click on the new 
+            //endDialogue(scneneNumber);
+        }
+    }
+
+    public void AwaitingConfirmAttack() 
+    {
+        if (currentStage == 1)
+        {
+            Debug.Log("Awaiting Confirm: " + stageIntermediate[currentStage]);
+            Debug.Log("Now playing intermediary: " + stageIntermediate[currentStage]);
+        }
     }
 
     //I actually don't know how to get to the cancel OverlayButton, but it's subbed there
