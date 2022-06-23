@@ -67,19 +67,13 @@ namespace Managers
 
         public void RemoveUnit(Unit unit, float delay = 0)
         {
-            if (delay == 0)
-            {
-                Destroy(unitFacades[unit.Identity - 1].gameObject);
-            } else
-            {
-                StartCoroutine(DestroyUnitGameObject(unit, delay));
-            }
+            StartCoroutine(DestroyUnitGameObject(unit, delay));
         }
 
         private IEnumerator DestroyUnitGameObject(Unit unit, float delay)
         {
             yield return new WaitForSeconds(delay);
-            Destroy(unitFacades[unit.Identity - 1].gameObject);
+            unitFacades[unit.Identity - 1].gameObject.SetActive(false);
         }
     }
 }

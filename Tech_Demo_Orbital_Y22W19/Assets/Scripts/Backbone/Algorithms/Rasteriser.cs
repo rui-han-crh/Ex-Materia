@@ -51,7 +51,7 @@ namespace Algorithms.Rasterisers
             while (priorityQueue.Count > 0)
             {
                 LineIntersection extractedIntersection = priorityQueue.Dequeue();
-                if (Approximately(extractedIntersection.IntersectionAlpha, lastPriority, 0.03f))
+                if (Approximately(extractedIntersection.IntersectionAlpha, lastPriority, 0.0001f))
                 {
                     tilesHit.RemoveAt(tilesHit.Count - 1);
                 }

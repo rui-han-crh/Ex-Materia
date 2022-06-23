@@ -40,7 +40,9 @@ namespace Managers
             Movement,
             Attack,
             Wait,
-            Overwatch
+            Overwatch,
+            BasicSkill,
+            UltimateSkill
         }
 
         public enum SceneState
@@ -50,8 +52,9 @@ namespace Managers
             MovementMode,
             OpponentTurn,
             TurnEnded,
-            GameOver,
-            OpponentThinking
+            Lost,
+            OpponentThinking,
+            Won
         }
 
         private SceneState gameState;
@@ -251,6 +254,7 @@ namespace Managers
             GlobalResourceManager.Instance.LineRenderer.positionCount = 0;
         }
 
+
         [EnumAction(typeof(CommandType))]
         // Unity will not expose enums in the inspector for event so we have to resort to some weird hacks
         // Read: https://forum.unity.com/threads/ability-to-add-enum-argument-to-button-functions.270817/
@@ -258,6 +262,7 @@ namespace Managers
         {
             SelectCommand((CommandType)commandEnumIndex);
         }
+
 
         /// <summary>
         /// Performs a command as a request given to the current game map.
@@ -313,6 +318,14 @@ namespace Managers
                     request = new OverwatchRequest(CurrentActingUnit);
                     break;
 
+                case CommandType.BasicSkill:
+                    request = new UseSkillRequest(CurrentActingUnit, CurrentActingUnit.BasicSkillName, MapActionRequest.RequestType.Skill);
+                    break;
+
+                case CommandType.UltimateSkill:
+                    request = new UseSkillRequest(CurrentActingUnit, CurrentActingUnit.UltimateSkillName, MapActionRequest.RequestType.Skill);
+                    break;
+
                 default:
                     throw new ArgumentOutOfRangeException(nameof(command), $"SelectCommand does not take the parameter {nameof(command)}");
             }
@@ -343,7 +356,9 @@ namespace Managers
                     AttackRequest attackRequest = (AttackRequest)request;
 
                     currentMap = currentMap.DoAction(attackRequest);
-                    routineManager.Enqueue(CombatCoroutineGenerator.EnactAttackRequest(CurrentMap, attackRequest));
+                    bool defenderIsAlive = currentMap[currentMap[attackRequest.TargetUnit]].CurrentHealth > 0;
+                    routineManager.Enqueue(CombatCoroutineGenerator.EnactAttackRequest(currentMap, attackRequest, defenderIsAlive));
+
                     break;
 
                 case MapActionRequest.RequestType.Wait:
@@ -356,18 +371,28 @@ namespace Managers
                     currentMap = currentMap.DoAction(overwatchRequest);
                     break;
 
+                case MapActionRequest.RequestType.Skill:
+                    UseSkillRequest useSkillRequest = (UseSkillRequest)request;
+                    currentMap = currentMap.DoAction(useSkillRequest);
+                    break;
+
                 default:
                     Debug.LogError($"There was no action carried out for {request.Type}");
                     break;
             }
 
             routineManager.Enqueue(LateInvoke(HealthBarManager.Instance.UpdateHealthBars, currentMap.GetUnits(unit => true)));
+
+            routineManager.Enqueue(CombatCoroutineGenerator.DisableDeadUnits(CurrentMap));
+            routineManager.Enqueue(LateInvoke(() => currentMap = currentMap.ClearOffDeadUnits()));
+
             routineManager.Enqueue(LateInvoke(() => gameState = SceneState.TurnEnded));
 
             CombatUIManager.Instance.OnDisable();
 
             Debug.Log($"{currentMap.CurrentActingUnit.Name}, {currentMap.CurrentActingUnit.Time}");
         }
+
 
         private void EnqueueMovementSequence(MovementRequest movementRequest)
         {
@@ -393,7 +418,7 @@ namespace Managers
                 GameMapData gameMapData = currentMap.Data.ChangeUnitPosition(CurrentActingUnit, position);
 
                 IEnumerable<AttackRequest> incomingAttacks = CombatConsultant.GetIncomingAttacks(gameMapData, CurrentActingUnit)
-                    .Where(x => x.ActingUnit.HasStatusEffect(CombatSystem.Entities.UnitStatusEffects.Overwatch));
+                    .Where(x => x.ActingUnit.HasStatusEffect("Overwatch"));
 
 
                 if (direction != lastDirection || incomingAttacks.Count() > 0)
@@ -416,12 +441,20 @@ namespace Managers
 
                     routineManager.Enqueue(CombatCoroutineGenerator.PerformAnimation(animator, "isMoving", false));
 
-                    routineManager.Enqueue(CombatCoroutineGenerator.EnactAttackRequest(currentMap, incomingAttacks.First()));
-
                     currentMap = currentMap.DoAction(incomingAttacks.First());
+                    bool defenderIsAlive = currentMap.GetSimilarUnit(movementRequest.ActingUnit).CurrentHealth > 0;
+                    Debug.Log($"After the overwatch attack, defender {CurrentActingUnit} is alive -> {defenderIsAlive} ");
+
+                    routineManager.Enqueue(
+                        CombatCoroutineGenerator.EnactAttackRequest(currentMap, incomingAttacks.First(), defenderIsAlive));
 
                     routineManager.Enqueue(
                         LateInvoke(HealthBarManager.Instance.UpdateHealthBars, currentMap.GetUnits(unit => true)));
+
+                    if (CurrentActingUnit.CurrentHealth <= 0)
+                    {
+                        return;
+                    }
 
                     routineManager.Enqueue(CombatCoroutineGenerator.PerformAnimation(animator, "isMoving", true));
                 }
@@ -444,7 +477,6 @@ namespace Managers
             {
                 case SceneState.TurnEnded:
                     StateReset();
-                    routineManager.Enqueue(CombatCoroutineGenerator.DisableDeadUnits(CurrentMap));
 
                     UnitQueueManager.Instance.UpdateUnitQueue(currentMap.GetUnits(unit => true));
 
@@ -453,9 +485,14 @@ namespace Managers
                         CombatUIManager.FAST_FOCUS_DURATION);
 
 
-                    if (currentMap.CurrentActingUnit == null)
+                    if (currentMap.IsLost())
                     {
-                        gameState = SceneState.GameOver;
+                        gameState = SceneState.Lost;
+                        break;
+                    } 
+                    else if (currentMap.IsWon())
+                    {
+                        gameState = SceneState.Won;
                         break;
                     }
 
@@ -466,7 +503,7 @@ namespace Managers
                     }
                     else
                     {
-                        CanvasManager.Instance.ActivateUI(CanvasManager.UIType.CharacterSheet);
+                        //CanvasManager.Instance.ActivateUI(CanvasManager.UIType.CharacterSheet);
                         CombatUIManager.Instance.OnEnable();
                         gameState = SceneState.Selection;
                     }
@@ -474,11 +511,18 @@ namespace Managers
                     break;
 
                 case SceneState.OpponentTurn:
-                    CanvasManager.Instance.DeactivateUI(CanvasManager.UIType.CharacterSheet);
+                    //CanvasManager.Instance.DeactivateUI(CanvasManager.UIType.CharacterSheet);
                     Autoplay();
                     gameState = SceneState.OpponentThinking;
                     break;
 
+                case SceneState.Lost:
+                    CombatUIManager.Instance.ShowLoseScreen();
+                    break;
+
+                case SceneState.Won:
+                    CombatUIManager.Instance.ShowWinScreen();
+                    break;
 
             }
         }

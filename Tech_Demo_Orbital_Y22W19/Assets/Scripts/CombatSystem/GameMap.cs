@@ -34,7 +34,8 @@ public class GameMap
     private GameMap(GameMapData data, MapActionRequest lastAction)
     {
         this.lastAction = lastAction;
-        this.gameMapData = data;
+
+        this.gameMapData = data.CleanUnitStatusEffects(data.GetUnitWithMinimumTime());
         this.currentActingUnit = gameMapData.GetUnitWithMinimumTime();
     }
 
@@ -73,12 +74,16 @@ public class GameMap
                 newData = gameMapData.OverwatchUnit((OverwatchRequest)request);
                 break;
 
+            case MapActionRequest.RequestType.Skill:
+                newData = gameMapData.UseSkill((UseSkillRequest)request);
+                break;
+
             default:
                 throw new InvalidOperationException(
                     $"The operation for type {request.Type} is not supported by DoAction in GameMap");
         }
 
-        return new GameMap(newData.ClearDeadUnits(), request);
+        return new GameMap(newData, request);
     }
 
     public IEnumerable<Unit> GetUnitsOfFaction(Unit.UnitFaction faction)
@@ -91,17 +96,54 @@ public class GameMap
         return gameMapData.UnitsInPlay.Where(unit => predicate(unit));
     }
 
+    public Unit GetSimilarUnit(Unit unit)
+    {
+        return gameMapData.GetSimilarUnit(unit);
+    }
+
     public bool HasTile(Vector3Int position)
     {
         return gameMapData.HasTile(position);
     }
 
+    public bool ContainsUnit(Unit unit)
+    {
+        return gameMapData.ContainsUnit(unit);
+    }
+
+    public GameMap ClearOffDeadUnits()
+    {
+        return new GameMap(gameMapData.ClearDeadUnits(), lastAction);
+    }
+
+    public bool IsWon()
+    {
+        return gameMapData.IsWon();
+    }
+
+    public bool IsLost()
+    {
+        return gameMapData.IsLost();
+    }
+
     public MapActionRequest GetKthBestAction(int k)
     {
-        IEnumerable<MapActionRequest> actions = CombatConsultant.GetAllAttacks(gameMapData, currentActingUnit)
-            .Concat(MovementConsultant.GetAllMovements(gameMapData, currentActingUnit)
-            .Concat(new MapActionRequest[] { new WaitRequest(currentActingUnit, 75, 75) })
-            .Concat(new MapActionRequest[] { new OverwatchRequest(currentActingUnit) }));
+        IEnumerable<MovementRequest> movementRequests = MovementConsultant.GetAllMovements(gameMapData, currentActingUnit);
+
+        Debug.Log(movementRequests.Count());
+
+        int maximumMovementRating = movementRequests.Max(x => x.GetUtility(this));
+        int stationarySafetyRating = MovementConsultant.GetRemainStationaryRating(this, currentActingUnit);
+
+        List<MapActionRequest> actions = new List<MapActionRequest>(CombatConsultant.GetAllAttacks(gameMapData, currentActingUnit));
+        actions.AddRange(new MapActionRequest[] { new WaitRequest(currentActingUnit, 75, 75) });
+        actions.AddRange(new MapActionRequest[] { new OverwatchRequest(currentActingUnit) });
+
+        if (maximumMovementRating > stationarySafetyRating)
+        {
+            Debug.Log($"Moving is a valid decision in this stage, movement rating: {maximumMovementRating} | stationary rating : {stationarySafetyRating}");
+            actions.AddRange(movementRequests);
+        }
 
         Debug.Log($"Actions consolidated, {actions.Count()} actions");
 

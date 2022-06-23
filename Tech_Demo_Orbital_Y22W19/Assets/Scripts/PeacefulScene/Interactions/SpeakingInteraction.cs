@@ -14,6 +14,7 @@ public class SpeakingInteraction : MonoBehaviour, IInteraction
     public void Interact()
     {
         CanvasTransitions.Fade(InteractableCollection.Instance.DialogueSystemCanvasGroup, 0, 1, time: 0.3f);
+        InteractableCollection.Instance.DialogueSystemCanvasGroup.interactable = true;
         YarnManager.Instance.StartConvoAuto(yarnScriptName);
         YarnManager.Instance.OnEnded += InvokeDelegate;
     }
@@ -21,6 +22,7 @@ public class SpeakingInteraction : MonoBehaviour, IInteraction
     private void InvokeDelegate()
     {
         CanvasTransitions.Fade(InteractableCollection.Instance.DialogueSystemCanvasGroup, 1, 0, time: 0.3f);
+        InteractableCollection.Instance.DialogueSystemCanvasGroup.interactable = false;
         OnEnded();
         FlushEventHandlers();
     }
@@ -28,17 +30,5 @@ public class SpeakingInteraction : MonoBehaviour, IInteraction
     public void FlushEventHandlers()
     {
         OnEnded = delegate { };
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

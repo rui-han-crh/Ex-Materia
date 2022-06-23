@@ -3,6 +3,7 @@ using Managers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Extensions;
 
@@ -31,13 +32,16 @@ namespace CoroutineGenerators
             unitGameObject.transform.position = worldSpacePosition;
         }
 
-        public static IEnumerator EnactAttackRequest(GameMap map, AttackRequest request)
+        public static IEnumerator EnactAttackRequest(GameMap map, AttackRequest request, bool defenderIsAlive)
         {
             Vector3Int originalPosition = map[request.ActingUnit];
             Vector3 originalWorldPosition = CombatSceneManager.Instance.CellToWorld(originalPosition);
 
-            GameObject attackerGameObject = UnitManager.Instance.GetGameObjectOfUnit(request.ActingUnit);
+            UnitManager unitManager = UnitManager.Instance;
+
+            GameObject attackerGameObject = unitManager.GetGameObjectOfUnit(request.ActingUnit);
             Animator attackerAnimator = attackerGameObject.GetComponentInChildren<Animator>();
+            Animator defenderAnimation = unitManager.GetGameObjectOfUnit(request.TargetUnit).GetComponentInChildren<Animator>();
             Vector3 sourceWorldPosition = CombatSceneManager.Instance.CellToWorld(request.SourcePosition);
 
             Vector3Int targetPosition = map[request.TargetUnit];
@@ -46,16 +50,25 @@ namespace CoroutineGenerators
             Vector3Int movingDirection = (request.SourcePosition - originalPosition).Rotate(FORTY_FIVE_DEGREES);
             Vector3Int returningDirection = (originalPosition - request.SourcePosition).Rotate(FORTY_FIVE_DEGREES);
 
-            IEnumerator[] subroutines = new IEnumerator[]
+            List<IEnumerator> subroutines = new List<IEnumerator>
             {
                 PerformAnimation(attackerAnimator, "isMoving", true, movingDirection.x, movingDirection.y),
                 MoveUnitToPosition(attackerGameObject, sourceWorldPosition),
                 PerformAnimation(attackerAnimator, "isMoving", false),
-                PlayAttackAction(attackerAnimator, request.SourcePosition, targetPosition),
-                PerformAnimation(attackerAnimator, "isMoving", true, returningDirection.x, returningDirection.y),
-                MoveUnitToPosition(attackerGameObject, originalWorldPosition),
-                PerformAnimation(attackerAnimator, "isMoving", false, movingDirection.x, movingDirection.y)
+                PlayAttackAction(attackerAnimator, request.SourcePosition, targetPosition)
             };
+
+            if (!defenderIsAlive)
+            {
+                subroutines.Add(PerformAnimation(defenderAnimation, "isHurt", true));
+            }
+
+            subroutines.AddRange(new IEnumerator[]
+            {
+            PerformAnimation(attackerAnimator, "isMoving", true, returningDirection.x, returningDirection.y),
+            MoveUnitToPosition(attackerGameObject, originalWorldPosition),
+            PerformAnimation(attackerAnimator, "isMoving", false, movingDirection.x, movingDirection.y)
+            });
 
             foreach (IEnumerator subroutine in subroutines)
             {
@@ -114,7 +127,9 @@ namespace CoroutineGenerators
             IEnumerable<Unit> deadUnits = currentMap.GetUnits(x => x.CurrentHealth <= 0);
             foreach (Unit unit in deadUnits)
             {
+                Debug.Log($"{unit.Name} is dead");
                 UnitManager.Instance.RemoveUnit(unit, delay: 1);
+                HealthBarManager.Instance.DisableHealthBar(unit, delay: 1);
             }
         }
     }

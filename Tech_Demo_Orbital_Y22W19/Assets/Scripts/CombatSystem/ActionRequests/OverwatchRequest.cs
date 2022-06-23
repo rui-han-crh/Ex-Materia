@@ -6,7 +6,7 @@ using CombatSystem.Entities;
 
 public class OverwatchRequest : MapActionRequest
 {
-    public static readonly int TIME_SPENT = 1000;
+    public static readonly int TIME_SPENT = 500;
 
     public OverwatchRequest(Unit actingUnit) : base(actingUnit, 0, TIME_SPENT, RequestType.Overwatch)
     {

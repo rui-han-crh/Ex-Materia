@@ -83,9 +83,6 @@ namespace CombatSystem.Consultants
             IUndirectedGraph<Vector3Int> graph = gameMapData.ToUndirectedGraph(
                 new HashSet<Vector3Int>() { gameMapData[currentActingUnit] });
 
-            Debug.Log($"Position of acting unit {gameMapData[currentActingUnit]}");
-            Debug.Log($"Contains (-8, -20) ? {graph.Contains(new Vector3Int(-8, -20, 0))}");
-
             ITree<Vector3Int?> shortestPathTree = PathSearch.AStar(
                 gameMapData[currentActingUnit],
                 null,
@@ -129,6 +126,32 @@ namespace CombatSystem.Consultants
                 );
 
             return movementRequests;
+        }
+
+        public static int GetRemainStationaryRating(GameMap gameMap, Unit currentActingUnit)
+        {
+            // Must be NON-POSITIVE, represents the potential damage received at destination
+
+            // Evaluates THIS ACTING UNIT safety according to the NEXT MAP.
+            // **This is not the same as EvaluatePositionSafetyOf in GameMap!**
+
+            IEnumerable<Unit> allRivalPositions = gameMap.GetUnits(unit => unit.Faction != currentActingUnit.Faction);
+
+            int utility = gameMap.EvaluatePositionSafetyOf(currentActingUnit);
+
+            foreach (Unit rival in allRivalPositions)
+            {
+                AttackRequest hypotheticalRequest = CombatConsultant.SimulateAttack(currentActingUnit, rival, gameMap.Data);
+                if (hypotheticalRequest.Successful)
+                {
+                    utility += Mathf.Max(CombatConsultant.MINIMUM_DAMAGE_DEALT,
+                        (int)(hypotheticalRequest.ChanceToHit * hypotheticalRequest.PotentialDamageDealt));
+                }
+            }
+
+            utility = -utility > currentActingUnit.Risk ? utility : 0;
+
+            return utility - gameMap.FindCostToNearestRival(currentActingUnit);
         }
 
         public static HashSet<Vector3Int> GetAllMovementPositions(GameMapData gameMapData, Unit currentActingUnit)

@@ -29,15 +29,27 @@ namespace CombatSystem.Entities
 
         private int range;
 
-        public int Range 
-        { 
-            get => range; 
-            set => range = Mathf.Max(0, value); 
+        public int Range
+        {
+            get => range;
+            set => range = Mathf.Max(0, value);
         }
 
         private int maxActionPoints;
 
         private int currentActionPoints;
+
+        private int maxSkillPoints;
+
+        private int currentSkillPoints;
+
+        public int MaxSkillPoints => maxSkillPoints;
+
+        public int CurrentSkillPoints
+        {
+            get => currentSkillPoints;
+            set => currentSkillPoints = Mathf.Clamp(value, 0, maxSkillPoints);
+        }
 
         public int MaxActionPoints
         {
@@ -52,12 +64,12 @@ namespace CombatSystem.Entities
         }
 
         public UnitProperties(
-            int maxHealth, 
-            int currentHealth, 
-            int defence, 
-            int attack, 
-            int range, 
-            int maxActionPoints, 
+            int maxHealth,
+            int currentHealth,
+            int defence,
+            int attack,
+            int range,
+            int maxActionPoints,
             int currentActionPoints) : this()
         {
             this.MaxHealth = maxHealth;
@@ -67,6 +79,27 @@ namespace CombatSystem.Entities
             this.Range = range;
             this.maxActionPoints = maxActionPoints;
             this.currentActionPoints = currentActionPoints;
+        }
+
+        public UnitProperties(
+            int maxHealth,
+            int currentHealth,
+            int defence,
+            int attack,
+            int range,
+            int maxActionPoints,
+            int maxSkillPoints,
+            int currentSkillPoints) : this()
+        {
+            this.MaxHealth = maxHealth;
+            this.CurrentHealth = currentHealth;
+            this.Defence = defence;
+            this.Attack = attack;
+            this.Range = range;
+            this.maxActionPoints = maxActionPoints;
+            this.currentActionPoints = maxActionPoints;
+            this.maxSkillPoints = maxSkillPoints;
+            this.currentSkillPoints = currentSkillPoints;
         }
     }
 }

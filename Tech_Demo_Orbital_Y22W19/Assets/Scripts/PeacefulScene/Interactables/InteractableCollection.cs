@@ -34,5 +34,6 @@ public class InteractableCollection : MonoBehaviour
     private void Awake()
     {
         DialogueSystemCanvasGroup.alpha = 0;
+        DialogueSystemCanvasGroup.interactable = false;
     }
 }

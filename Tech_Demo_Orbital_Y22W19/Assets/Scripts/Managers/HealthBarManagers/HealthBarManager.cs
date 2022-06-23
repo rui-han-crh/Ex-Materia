@@ -38,11 +38,23 @@ namespace Managers
                 barFillBehaviour.SetParent(UnitManager.Instance.GetGameObjectOfUnit(unit).transform);
                 healthBars.Add(barFillBehaviour);
             }
+            UpdateHealthBars(units);
         }
 
         public BarFillBehaviour GetHealthBar(Unit unit)
         {
             return healthBars[unit.Identity];
+        }
+
+        public void DisableHealthBar(Unit unit, float delay)
+        {
+            StartCoroutine(DisableHealthBarEnumerator(unit, delay));
+        }
+
+        private IEnumerator DisableHealthBarEnumerator(Unit unit, float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            GetHealthBar(unit).gameObject.SetActive(false);
         }
 
         public void UpdateHealthBars(IEnumerable<Unit> units)
