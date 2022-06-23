@@ -1,0 +1,96 @@
+title: StartTutorial
+tags: 
+---
+<<load Speaker Lucien Neutral>>
+Lucien: Welcome to the training grounds
+Lucien: In this tutorial, you will learn the basics of our combat
+Lucien: In general, the combat System is turn-based 
+Lucien: A turn consists of many different possible actions.
+Lucien: With each Action costing a set amount of action points, or <B> AP </B>
+Lucien: Pressing control brings up the action menu!
+Lucien: Try it now!
+===
+
+
+
+title: MoveTutorial
+tags: 
+---
+<<load Speaker Lucien Neutral>>
+Lucien: Now, press control to bring up the menu as like before
+Lucien: Notice that only the first option is available to you!
+Lucien: The icon with the boot is known as the move icon
+Lucien: You can select it by pressing it, and then letting go of the control button 
+Lucien: Try it now!
+===
+
+
+
+
+title: MoveIntermediate
+tags: 
+---
+<<load Speaker Lucien Neutral>>
+Lucien: Excellent! Now there's a series of highlighted steps 
+Lucien: Select the <B> BROWN </B> Color tile to move to it by double clicking!
+Lucien: Or really, anywhere within the area of highlighted area
+===
+title: ShootTutorial
+tags: 
+---
+<<load Speaker Olivia Neutral>>
+Olivia: Now, we'll move onto shooting 
+Olivia: Open up the menu as usual, and select the sword icon.
+Olivia: Try it now!
+Olivia: One more thing...
+Olivia: The enemies might not be open to being shot...
+Olivia: This is known as the cover mechanic..
+Olivia: If the <B> Direct line of Sight between you and the enemy happens to contain a full wall </B>
+Olivia: He can't be shot!
+Olivia: Now then...
+Olivia: Reposition yourself and take a shot!
+===
+
+
+title: ShootIntermediate
+tags: 
+---
+<<load Speaker Olivia Angry>>
+Olivia: Now, see that enemy over there?
+Olivia: If he's within your range, there's an option to attack.
+Olivia: Click on him to attack!
+===
+
+title: CoverTutorial
+tags:
+---
+<<load Speaker Lucien Neutral>>
+Lucien: There are also other covers in the game 
+Lucien: Covers are a <B> Hide </B> mechanic 
+Lucien: Firstly, let's talk about half-covers.
+Lucien: If the straight line of sight between you and the enemy passes through a Half-Cover
+Lucien: It reduces the chance of you being hit by an enemy
+Lucien: So try to position yourself advantageously in between these areas!
+
+
+<<load Speaker Lucien Happy>>
+
+Lucien: Got everything so far?
+-> Yes! 
+    Lucien: Alrighties 
+-> Not really...
+    Lucien: It'll become clearer with the upcoming playthrough
+
+<<load Speaker Lucien Neutral>>
+
+Lucien: Similarly, Full covers work the same way but with an added twist 
+Lucien: You are not able to shoot them, and neither can they shoot you! 
+Lucien: How cool is that?
+Lucien: Okay then..
+Lucien: Let's try all these out for real!
+Lucien: Controls are all yours..
+Lucien: Kill all the enemies to finish the map!
+===
+
+
+

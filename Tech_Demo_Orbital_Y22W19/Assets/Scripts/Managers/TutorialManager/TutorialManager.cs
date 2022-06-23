@@ -25,8 +25,6 @@ public class TutorialManager : MonoBehaviour
 
     private int currentStage = 0;
 
-
-
     //stages are basically dialgoueNodes
     private string[] stageNames = new string[] {"MoveTutorial", "ShootTutorial", "HideTutorial" };
     private string[] stageIntermediate = new string[] { "MoveIntermediate", "ShootIntermediate", "HideIntermediate" };
@@ -45,6 +43,9 @@ public class TutorialManager : MonoBehaviour
 
     [SerializeField]
     public GameObject actionUI;
+
+    //[SerializeField]
+    //public SpeakingInteractableVariable nodeHolder;
 
     private bool isInConfirmed = false;
 
@@ -66,8 +67,8 @@ public class TutorialManager : MonoBehaviour
     }
     public void Start()
     {
-        Debug.Log("Playing Node message: Start");
-        //BeginConvo("StartEvelynOlivia");
+        Debug.Log("Playing Node message: StartTutorial");
+        BeginConvo("StartTutorial");
         StartCoroutine("ResetLonger");
         StartPhase(currentStage);
     }
@@ -147,7 +148,7 @@ public class TutorialManager : MonoBehaviour
         //play dialogue
         Debug.Log("Starting Convo @ : " + stageNames[stageIndex]); //stageNames are just instructions
         //end dialogue 
-        //1) Enable the correct button 
+        //1) Enable the correct buttons, they should incrementally be allowed!
         DisableAllCombatButtons();
         for (int i = 0; i <= stageIndex; i++)
         {
