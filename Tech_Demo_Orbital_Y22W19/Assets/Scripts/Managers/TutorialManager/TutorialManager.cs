@@ -6,12 +6,12 @@ using UnityEngine;
 using Yarn.Unity;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-public class TutorialManager : MonoBehaviour //should be able to interact with yarn also
+public class TutorialManager : MonoBehaviour 
 {
 
 
     private const float DOUBLE_CLICK_TIME = .2f;
-    private  Vector3 WORLD_OFFSET = 10 * Vector3.back;
+    //private  Vector3 WORLD_OFFSET = 10 * Vector3.back;
     private float lastClickTime;
 
     public event Action OnEnded = delegate { };
@@ -32,7 +32,7 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
     private string[] stageIntermediate = new string[] { "MoveIntermediate", "ShootIntermediate", "HideIntermediate" };
 
 
-    public Vector3[] checkPoints = new Vector3[] { new Vector3(0.5f, -5.25f, -10.0f)};
+    private readonly Vector3[] checkPoints = new Vector3[] { new Vector3(0.5f, -5.25f, -10.0f)};
 
     [SerializeField]
     public DialogueRunner dr;
@@ -83,11 +83,11 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
             {
                 //do left click 
                 Vector3 doubleClickPos = MainCamera.ScreenToWorldPoint(Input.mousePosition);
-                Vector3 currentCheckpoint = checkPoints[currentStage] + WORLD_OFFSET;
+                Vector3 currentCheckpoint = checkPoints[currentStage];
                 Debug.Log("position I clicked = : " + doubleClickPos);
                 Debug.Log("Checkpoint = " + currentCheckpoint);
                 float distClick = Vector3.Distance(currentCheckpoint, doubleClickPos);
-                if (distClick < 0.5) 
+                if (distClick < 1.0f) 
                 {
                     Debug.Log("Correct pos");
                     Debug.Log(doubleClickPos);
@@ -151,7 +151,7 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
         DisableAllCombatButtons();
         for (int i = 0; i <= stageIndex; i++)
         {
-            buttonActions[stageIndex].gameObject.SetActive(true);
+            buttonActions[i].gameObject.SetActive(true);
         }
     }
 
