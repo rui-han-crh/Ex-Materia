@@ -7,12 +7,12 @@ namespace DecisionTree
     public class Node
     {
         private readonly int score;
-        private readonly MapActionRequest action;
+        private readonly MapActionRequestOld action;
 
         public int Score => score;
-        public MapActionRequest Action => action;
+        public MapActionRequestOld Action => action;
 
-        public Node(int score, MapActionRequest action)
+        public Node(int score, MapActionRequestOld action)
         {
             this.score = score;
             this.action = action;

@@ -35,12 +35,12 @@ public class LineRaytracer
         public float Priority => IntersectionAlpha;
     }
 
-    public bool Trace(Vector3 source, Vector3 destination, Vector3 offset, GameMapData mapData)
+    public bool Trace(Vector3 source, Vector3 destination, Vector3 offset, GameMapDataOld mapData)
     {
         return Trace(source + offset, destination + offset, mapData);
     }
 
-    public bool Trace(Vector3 source, Vector3 destination, GameMapData mapData)
+    public bool Trace(Vector3 source, Vector3 destination, GameMapDataOld mapData)
     {
         int maxX = Mathf.FloorToInt(Mathf.Max(source.x, destination.x));
         int minX = Mathf.CeilToInt(Mathf.Min(source.x, destination.x));

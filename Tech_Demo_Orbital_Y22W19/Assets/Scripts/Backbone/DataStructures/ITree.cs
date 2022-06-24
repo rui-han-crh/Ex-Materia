@@ -6,6 +6,10 @@ namespace DataStructures
 {
     public interface ITree<T> : IGraphable<T>
     {
-        public T GetParent(T data);
+        T GetParent(T data);
+
+        T Root { get; }
+
+        void Reparent(T existingChild, T newParent);
     }
 }

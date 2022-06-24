@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    private static readonly int TWENTY_MINUTES = 1200;
+    private static readonly int FIVE_MINUTES = 300;
 
     private static AudioManager instance;
 
@@ -54,15 +54,19 @@ public class AudioManager : MonoBehaviour
     }
 
     [SerializeField]
+    private AudioPlayerGroup audioPlayerGroup;
+
+    [SerializeField]
     private Audio[] audioCollection;
 
     private readonly Dictionary<string, Audio> audioDictionary = new Dictionary<string, Audio>();
 
-    private AudioPlayerGroup audioPlayerGroup;
-
     private void Awake()
     {
-        audioPlayerGroup = GameObject.FindGameObjectWithTag("AudioSourceGroup").GetComponent<AudioPlayerGroup>();
+        if (audioPlayerGroup == null)
+        {
+            audioPlayerGroup = GameObject.FindGameObjectWithTag("AudioSourceGroup").GetComponent<AudioPlayerGroup>();
+        }
 
         foreach (Audio audio in audioCollection)
         {
@@ -73,7 +77,7 @@ public class AudioManager : MonoBehaviour
     private void Start()
     {
         PlayTrack("HowlingWind", looping: true);
-        PlayTrack("HowlingWind", delay: TWENTY_MINUTES, looping: true);
+        PlayTrack("HowlingWind", delay: FIVE_MINUTES, looping: true);
     }
 
     public void PlayTrack(string name)

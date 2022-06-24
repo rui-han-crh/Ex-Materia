@@ -80,6 +80,42 @@ public partial class @KeyboardControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""a06c2272-b217-4abd-8f71-c8c5e5310017"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""4e34826e-9305-4792-b337-29e164f3ea16"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ShowCombatSelections"",
+                    ""type"": ""Button"",
+                    ""id"": ""ac63f9fb-9b79-440d-9042-425a51cede0a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=0.05)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DoubleLeftClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""cd98cd0c-5795-419e-84e8-46bc3621ce75"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""MultiTap(tapDelay=0.1)"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -148,6 +184,94 @@ public partial class @KeyboardControls : IInputActionCollection2, IDisposable
                     ""action"": ""RightClick"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""2D Vector"",
+                    ""id"": ""e762ab61-4b00-4bbb-971d-c13b642681bb"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""77723745-e8bf-4cbd-bbc1-3830a8758e11"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""705ed8b2-90b3-4d1a-92d3-33abcc0d4783"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""d0ca9417-1499-4bbf-8009-d89ef1dbf615"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""c1175085-5658-420a-ae25-9a593676f0ee"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1b6b92ed-1b8d-4a2e-8f42-2fd4776b5d28"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c530871b-6fb0-4de2-af80-54896acb5f8a"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ShowCombatSelections"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fb1a40d3-1abc-4569-a72f-9b950e78883a"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DoubleLeftClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -162,6 +286,10 @@ public partial class @KeyboardControls : IInputActionCollection2, IDisposable
         m_Mouse_Scroll = m_Mouse.FindAction("Scroll", throwIfNotFound: true);
         m_Mouse_MousePositionDelta = m_Mouse.FindAction("MousePositionDelta", throwIfNotFound: true);
         m_Mouse_RightClick = m_Mouse.FindAction("RightClick", throwIfNotFound: true);
+        m_Mouse_Move = m_Mouse.FindAction("Move", throwIfNotFound: true);
+        m_Mouse_Interact = m_Mouse.FindAction("Interact", throwIfNotFound: true);
+        m_Mouse_ShowCombatSelections = m_Mouse.FindAction("ShowCombatSelections", throwIfNotFound: true);
+        m_Mouse_DoubleLeftClick = m_Mouse.FindAction("DoubleLeftClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -227,6 +355,10 @@ public partial class @KeyboardControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Mouse_Scroll;
     private readonly InputAction m_Mouse_MousePositionDelta;
     private readonly InputAction m_Mouse_RightClick;
+    private readonly InputAction m_Mouse_Move;
+    private readonly InputAction m_Mouse_Interact;
+    private readonly InputAction m_Mouse_ShowCombatSelections;
+    private readonly InputAction m_Mouse_DoubleLeftClick;
     public struct MouseActions
     {
         private @KeyboardControls m_Wrapper;
@@ -237,6 +369,10 @@ public partial class @KeyboardControls : IInputActionCollection2, IDisposable
         public InputAction @Scroll => m_Wrapper.m_Mouse_Scroll;
         public InputAction @MousePositionDelta => m_Wrapper.m_Mouse_MousePositionDelta;
         public InputAction @RightClick => m_Wrapper.m_Mouse_RightClick;
+        public InputAction @Move => m_Wrapper.m_Mouse_Move;
+        public InputAction @Interact => m_Wrapper.m_Mouse_Interact;
+        public InputAction @ShowCombatSelections => m_Wrapper.m_Mouse_ShowCombatSelections;
+        public InputAction @DoubleLeftClick => m_Wrapper.m_Mouse_DoubleLeftClick;
         public InputActionMap Get() { return m_Wrapper.m_Mouse; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -264,6 +400,18 @@ public partial class @KeyboardControls : IInputActionCollection2, IDisposable
                 @RightClick.started -= m_Wrapper.m_MouseActionsCallbackInterface.OnRightClick;
                 @RightClick.performed -= m_Wrapper.m_MouseActionsCallbackInterface.OnRightClick;
                 @RightClick.canceled -= m_Wrapper.m_MouseActionsCallbackInterface.OnRightClick;
+                @Move.started -= m_Wrapper.m_MouseActionsCallbackInterface.OnMove;
+                @Move.performed -= m_Wrapper.m_MouseActionsCallbackInterface.OnMove;
+                @Move.canceled -= m_Wrapper.m_MouseActionsCallbackInterface.OnMove;
+                @Interact.started -= m_Wrapper.m_MouseActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_MouseActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_MouseActionsCallbackInterface.OnInteract;
+                @ShowCombatSelections.started -= m_Wrapper.m_MouseActionsCallbackInterface.OnShowCombatSelections;
+                @ShowCombatSelections.performed -= m_Wrapper.m_MouseActionsCallbackInterface.OnShowCombatSelections;
+                @ShowCombatSelections.canceled -= m_Wrapper.m_MouseActionsCallbackInterface.OnShowCombatSelections;
+                @DoubleLeftClick.started -= m_Wrapper.m_MouseActionsCallbackInterface.OnDoubleLeftClick;
+                @DoubleLeftClick.performed -= m_Wrapper.m_MouseActionsCallbackInterface.OnDoubleLeftClick;
+                @DoubleLeftClick.canceled -= m_Wrapper.m_MouseActionsCallbackInterface.OnDoubleLeftClick;
             }
             m_Wrapper.m_MouseActionsCallbackInterface = instance;
             if (instance != null)
@@ -286,6 +434,18 @@ public partial class @KeyboardControls : IInputActionCollection2, IDisposable
                 @RightClick.started += instance.OnRightClick;
                 @RightClick.performed += instance.OnRightClick;
                 @RightClick.canceled += instance.OnRightClick;
+                @Move.started += instance.OnMove;
+                @Move.performed += instance.OnMove;
+                @Move.canceled += instance.OnMove;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
+                @ShowCombatSelections.started += instance.OnShowCombatSelections;
+                @ShowCombatSelections.performed += instance.OnShowCombatSelections;
+                @ShowCombatSelections.canceled += instance.OnShowCombatSelections;
+                @DoubleLeftClick.started += instance.OnDoubleLeftClick;
+                @DoubleLeftClick.performed += instance.OnDoubleLeftClick;
+                @DoubleLeftClick.canceled += instance.OnDoubleLeftClick;
             }
         }
     }
@@ -298,5 +458,9 @@ public partial class @KeyboardControls : IInputActionCollection2, IDisposable
         void OnScroll(InputAction.CallbackContext context);
         void OnMousePositionDelta(InputAction.CallbackContext context);
         void OnRightClick(InputAction.CallbackContext context);
+        void OnMove(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
+        void OnShowCombatSelections(InputAction.CallbackContext context);
+        void OnDoubleLeftClick(InputAction.CallbackContext context);
     }
 }

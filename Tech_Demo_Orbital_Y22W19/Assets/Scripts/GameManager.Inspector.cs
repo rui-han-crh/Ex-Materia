@@ -12,7 +12,7 @@ using ColorLookUp;
 using System.Threading;
 using Banzan.Lib.Utility;
 
-public partial class GameManager : MonoBehaviour
+public partial class GameManagerOld : MonoBehaviour
 {
     [SerializeField]
     private GameObject[] unitGameObjects;

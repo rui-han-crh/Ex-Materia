@@ -7,23 +7,23 @@ namespace DecisionTree
 {
     public class Minimax
     {
-        public static Node PerformSearch(GameMap map, int depth, int alpha, int beta)
+        public static Node PerformSearch(GameMapOld map, int depth, int alpha, int beta)
         {
             if (depth == 0 || map.IsGameOver())
             {
-                MapActionRequest lastAction = map.LastAction;
+                MapActionRequestOld lastAction = map.LastAction;
                 return new Node(map.Evaluate(), lastAction);
             }
 
             bool isMaximisingPlayer = map.CurrentUnit.Faction == Faction.Friendly;
 
-            MapActionRequest actionChange = map.LastAction;
+            MapActionRequestOld actionChange = map.LastAction;
             int extremeValue = isMaximisingPlayer ? int.MinValue : int.MaxValue;
             Node bestNode = new Node(extremeValue, actionChange);
 
-            foreach (MapActionRequest childAction in map.GetOrderedMapActions())
+            foreach (MapActionRequestOld childAction in map.GetOrderedMapActions())
             {
-                GameMap resultantMap = childAction.GetNextMap();
+                GameMapOld resultantMap = childAction.GetNextMap();
 
                 Node childNode = PerformSearch(resultantMap, depth - 1, alpha, beta);
 

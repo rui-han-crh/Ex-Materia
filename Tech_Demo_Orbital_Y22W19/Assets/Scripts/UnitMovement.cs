@@ -5,14 +5,14 @@ using System.Linq;
 
 public class UnitMovement
 {
-    private Unit currentTurnUnit;
-    private GameMapData mapData;
+    private UnitOld currentTurnUnit;
+    private GameMapDataOld mapData;
     private Dictionary<Vector3Int, int> reachableTiles;
 
     public Dictionary<Vector3Int, int> ReachableTiles => reachableTiles ??= GetReachableTiles();
 
     // CONSTRUCTORS
-    public UnitMovement(Unit currentTurnUnit, GameMapData mapData)
+    public UnitMovement(UnitOld currentTurnUnit, GameMapDataOld mapData)
     {
         this.currentTurnUnit = currentTurnUnit;
         this.mapData = mapData;
@@ -38,11 +38,11 @@ public class UnitMovement
         return Pathfinder2D.GetShortestPathTree(currentTurnUnit, mapData);
     }
 
-    public IEnumerable<MovementRequest> GetAllMovementsPossible(GameMap gameMapRequesting)
+    public IEnumerable<MovementRequestOld> GetAllMovementsPossible(GameMapOld gameMapRequesting)
     {
         Vector3Int currentUnitPosition = gameMapRequesting.GetPositionByUnit(currentTurnUnit);
         Pathfinder2D.ShortestPathTree shortestPathTree = GetShortestPaths();
-        return shortestPathTree.Children.Select(child => new MovementRequest(gameMapRequesting,
+        return shortestPathTree.Children.Select(child => new MovementRequestOld(gameMapRequesting,
                                                                             mapData.GetPositionByUnit(currentTurnUnit),
                                                                             shortestPathTree.GetShortestPathToPosition(child),
                                                                             shortestPathTree.GetCostToPosition(child)));

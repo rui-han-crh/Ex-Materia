@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using CombatSystem.Entities;
+using Facades;
+using Managers;
 
 public class InformationUIManager : MonoBehaviour
 {
@@ -30,6 +33,9 @@ public class InformationUIManager : MonoBehaviour
     [SerializeField]
     private CharacterStatsUIBehaviour opponentUIBehaviour;
 
+    [SerializeField]
+    private CharacterStatsUIBehaviour actingUnitUIBehaviour;
+
     public TMP_Text TimeNeededText => commandButtonsBehaviour.TimeText;
     public TMP_Text ActionPointText => commandButtonsBehaviour.ActionPointText;
 
@@ -50,11 +56,25 @@ public class InformationUIManager : MonoBehaviour
         TurnAllUIOff();
     }
 
-    public void SetOpponentDetails(Unit unit)
+    public void SetOpponentDetails(UnitOld unit)
     {
         opponentUIBehaviour.SetName(unit.Name);
         opponentUIBehaviour.SetAvatar(unit.CharacterHeadAvatar);
         opponentUIBehaviour.SetUnitStats(unit);
+    }
+
+    public void SetOpponentDetails(Unit unit)
+    {
+        opponentUIBehaviour.SetName(unit.Name);
+        opponentUIBehaviour.SetAvatar(UnitManager.Instance[unit.Identity].CharacterAvatar);
+        opponentUIBehaviour.SetUnitStats(unit);
+    }
+
+    public void SetCharacterDetails(Unit unit)
+    {
+        actingUnitUIBehaviour.SetName(unit.Name);
+        actingUnitUIBehaviour.SetAvatar(UnitManager.Instance[unit.Identity].CharacterAvatar);
+        actingUnitUIBehaviour.SetUnitStats(unit);
     }
 
     public void SetResultantDamageDealt(int resultantDamage)
@@ -70,7 +90,7 @@ public class InformationUIManager : MonoBehaviour
     public void WaitButtonActivated()
     {
         TurnAllUIOff();
-        commandButtonsBehaviour.SetButtonActive(GameManager.Command.Wait, true);
+        commandButtonsBehaviour.SetButtonActive(GameManagerOld.Command.Wait, true);
         commandButtonsBehaviour.SetPromptActive(CommandButtonsBehaviour.Prompt.Time, true);
         commandButtonsBehaviour.SetPromptActive(CommandButtonsBehaviour.Prompt.ActionPoints, true);
     }
@@ -78,7 +98,7 @@ public class InformationUIManager : MonoBehaviour
     public void MoveButtonActivated()
     {
         TurnAllUIOff();
-        commandButtonsBehaviour.SetButtonActive(GameManager.Command.Movement, true);
+        commandButtonsBehaviour.SetButtonActive(GameManagerOld.Command.Movement, true);
         commandButtonsBehaviour.SetPromptActive(CommandButtonsBehaviour.Prompt.Time, true);
         commandButtonsBehaviour.SetPromptActive(CommandButtonsBehaviour.Prompt.ActionPoints, true);
     }
@@ -86,7 +106,7 @@ public class InformationUIManager : MonoBehaviour
     public void CombatButtonActivated()
     {
         TurnAllUIOff();
-        commandButtonsBehaviour.SetButtonActive(GameManager.Command.Attack, true);
+        commandButtonsBehaviour.SetButtonActive(GameManagerOld.Command.Attack, true);
         commandButtonsBehaviour.SetPromptActive(CommandButtonsBehaviour.Prompt.Time, true);
         commandButtonsBehaviour.SetPromptActive(CommandButtonsBehaviour.Prompt.ActionPoints, true);
     }
@@ -95,9 +115,9 @@ public class InformationUIManager : MonoBehaviour
     {
         TurnAllUIOff();
 
-        TimeNeededText.text = (OverwatchRequest.TIME_CONSUMED).ToString();
+        TimeNeededText.text = (OverwatchRequestOld.TIME_CONSUMED).ToString();
 
-        commandButtonsBehaviour.SetButtonActive(GameManager.Command.Overwatch, true);
+        commandButtonsBehaviour.SetButtonActive(GameManagerOld.Command.Overwatch, true);
         commandButtonsBehaviour.SetPromptActive(CommandButtonsBehaviour.Prompt.Time, true);
         commandButtonsBehaviour.SetPromptActive(CommandButtonsBehaviour.Prompt.ActionPoints, true);
     }
@@ -121,7 +141,7 @@ public class InformationUIManager : MonoBehaviour
 
     public void SetTimeAndAPRequiredText(int apNeeded)
     {
-        commandButtonsBehaviour.TimeText.text = Mathf.CeilToInt((float)apNeeded / GameManager.Instance.CurrentUnit.Speed).ToString();
+        commandButtonsBehaviour.TimeText.text = Mathf.CeilToInt((float)apNeeded / GameManagerOld.Instance.CurrentUnit.Speed).ToString();
         commandButtonsBehaviour.ActionPointText.text = apNeeded.ToString();
     }
 }

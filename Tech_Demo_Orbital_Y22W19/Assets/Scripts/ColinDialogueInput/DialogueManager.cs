@@ -43,6 +43,16 @@ public class DialogueManager : MonoBehaviour
 
     private Action<InputAction.CallbackContext> singleLeftClick;
 
+    public void OnEnable()
+    {
+        keyboardControls?.Enable();
+    }
+
+    public void OnDisable()
+    {
+        keyboardControls?.Disable();
+    }
+
     public void EnableContinue()
     {
         SubscribeLeftClickContinue();
@@ -52,6 +62,7 @@ public class DialogueManager : MonoBehaviour
     {
         UnsubscribeLeftClickContinue();
     }
+
     void Awake()
     {
         keyboardControls = new KeyboardControls();
@@ -67,6 +78,7 @@ public class DialogueManager : MonoBehaviour
         keyboardControls.Enable();
         singleLeftClick = _ => lineView.OnContinueClicked(); //arrowFunction continuing LC!
         keyboardControls.Mouse.LeftClick.performed += singleLeftClick;
+        keyboardControls.Mouse.Interact.performed += singleLeftClick;
     }
 
     private void UnsubscribeLeftClickContinue()
@@ -74,12 +86,13 @@ public class DialogueManager : MonoBehaviour
         keyboardControls.Mouse.LeftClick.performed -= singleLeftClick;
         keyboardControls.Disable(); 
     }
+
     // Start is called before the first frame update
     void Start()
     {
         //initialize startingNode DB, if not already initialized 
         //increment dialogueNumber and play dialogue
-        YarnManager.Instance.StartConvoAuto("StartEvelynAndOlivia"); //just to test if i can do this?
+        //YarnManager.Instance.StartConvoAuto("StartEvelynAndOlivia"); //just to test if i can do this?
         //doesn't go to the next one?
         
     }

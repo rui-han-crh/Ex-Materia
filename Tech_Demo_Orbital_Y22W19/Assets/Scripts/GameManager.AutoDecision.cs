@@ -7,7 +7,7 @@ using ExtensionMethods;
 using AsyncTask = System.Threading.Tasks.Task;
 
 // Autodecisions
-public partial class GameManager
+public partial class GameManagerOld
 {
 
     private async void AutoPlay()
@@ -19,9 +19,9 @@ public partial class GameManager
             return;
         }
         
-        MapActionRequest bestRequest = await AsyncTask.Run(() =>
+        MapActionRequestOld bestRequest = await AsyncTask.Run(() =>
         {
-            MapActionRequest bestRequest = currentMap.GetOrderedMapActions().Last();
+            MapActionRequestOld bestRequest = currentMap.GetOrderedMapActions().Last();
             return bestRequest;
         }, 
         tokenSource.Token);

@@ -33,12 +33,13 @@ public class FigureCharacter : ScriptableObject
 
     public void InitializeDict()
     {
-        emotions.Add("Angry", Angry);
-        emotions.Add("Disgusted", Disgusted);
-        emotions.Add("Elated", Elated);
-        emotions.Add("Happy", Happy);
-        emotions.Add("Neutral", Neutral);
-        emotions.Add("Sad", Sad);
-        emotions.Add("Surprised", Surprised);
+
+        emotions["Angry"] = Angry;
+        emotions["Disgusted"] = Disgusted;
+        emotions["Elated"] = Elated;
+        emotions["Happy"] = Happy;
+        emotions["Neutral"] = Neutral;
+        emotions["Sad"] = Sad;
+        emotions["Surprised"] = Surprised;
     }
 }

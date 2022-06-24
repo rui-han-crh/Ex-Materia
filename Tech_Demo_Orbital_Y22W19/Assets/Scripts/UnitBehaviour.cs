@@ -15,15 +15,15 @@ public class UnitBehaviour : MonoBehaviour
     [SerializeField]
     private bool isCompletelyNew;
 
-    public Unit InitialiseUnit(int startingTime)
+    public UnitOld InitialiseUnit(int startingTime)
     {
         if (isCompletelyNew)
         {
-            return new Unit(name, characterHeadAvatar, originalUnitData).AddTime(startingTime);
+            return new UnitOld(name, characterHeadAvatar, originalUnitData).AddTime(startingTime);
         }
         else
         {
-            return new Unit(name, characterHeadAvatar, originalUnitData, currentUnitData).AddTime(startingTime);
+            return new UnitOld(name, characterHeadAvatar, originalUnitData, currentUnitData).AddTime(startingTime);
         }
     }
 

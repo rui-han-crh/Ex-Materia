@@ -1,0 +1,31 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace UnityEngine.Extensions
+{
+    public static class VectorExtensions
+    {
+        public static Vector3Int Rotate(this Vector3Int source, float radians)
+        {
+            float sin = Mathf.Sin(radians);
+            float cos = Mathf.Cos(radians);
+
+            return new Vector3Int(
+                Mathf.RoundToInt(cos * source.x - sin * source.y),
+                Mathf.RoundToInt(sin * source.x + cos * source.y),
+                0);
+        }
+
+        public static Vector3 Rotate(this Vector3 source, float radians)
+        {
+            float sin = Mathf.Sin(radians);
+            float cos = Mathf.Cos(radians);
+
+            return new Vector3(
+                cos * source.x - sin * source.y,
+                sin * source.x + cos * source.y,
+                0);
+        }
+    }
+}
