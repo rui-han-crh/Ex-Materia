@@ -18,8 +18,6 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
 
     [SerializeField]
     public Camera MainCamera;
-    [SerializeField]
-    public string startNode;
 
     //this int is basically what thing it's on now
 
@@ -48,6 +46,8 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
 
     private bool isInConfirmed = false;
 
+
+    public Interactable dialogueHolder;
     IEnumerator ResetNextScene()
     {
         yield return new WaitForSeconds(10);
@@ -67,7 +67,7 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
     public void Start()
     {
         Debug.Log("Playing Node message: Start");
-        //BeginConvo("StartEvelynOlivia");
+        dialogueHolder.InvokeInteraction();
         StartCoroutine("ResetLonger");
         StartPhase(currentStage);
     }

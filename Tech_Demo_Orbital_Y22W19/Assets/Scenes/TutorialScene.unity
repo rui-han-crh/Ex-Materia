@@ -1298,7 +1298,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 64.15
+  m_fontSize: 64.3
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1507,7 +1507,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 68.45
+  m_fontSize: 68.6
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2629,8 +2629,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MainCamera: {fileID: 519420031}
   startNode: OliviaIntro
-  checkPoints:
-  - {x: -3, y: -4, z: 0}
   dr: {fileID: 0}
   DialogueCanvas: {fileID: 1864920667}
   buttonActions:
@@ -2639,6 +2637,7 @@ MonoBehaviour:
   - {fileID: 567838619}
   - {fileID: 1518518237}
   actionUI: {fileID: 1233247985}
+  dialogueHolder: {fileID: 1798498337}
 --- !u!1 &612091071
 GameObject:
   m_ObjectHideFlags: 0
@@ -4295,7 +4294,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 68.45
+  m_fontSize: 68.6
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5759,6 +5758,7 @@ GameObject:
   - component: {fileID: 1103755090}
   - component: {fileID: 1103755093}
   - component: {fileID: 1103755089}
+  - component: {fileID: 1103755097}
   m_Layer: 0
   m_Name: WorldData
   m_TagString: Untagged
@@ -6099,6 +6099,21 @@ MonoBehaviour:
   - {fileID: 1275491539}
   attackReviewUI:
   - {fileID: 85420583}
+--- !u!114 &1103755097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1103755085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d028fddefe1968945b8c3ebf1977cbe7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DialogueSystemCanvasGroup: {fileID: 1477484186}
+  InteractIcon: {fileID: 968025974}
+  Canvas: {fileID: 1864920670}
 --- !u!222 &1117278907
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -109683,6 +109698,65 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1791984722}
   m_CullTransparentMesh: 1
+--- !u!1 &1798498335
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1798498338}
+  - component: {fileID: 1798498337}
+  - component: {fileID: 1798498336}
+  m_Layer: 0
+  m_Name: DialogueHolder
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1798498336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798498335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 762e0cb84d3c1bc4bb19ee41d8e77830, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  yarnScriptName: Start
+--- !u!114 &1798498337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798498335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ec85083d95b1da40a819df5c6c6c788, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactions:
+  - {fileID: 1798498336}
+--- !u!4 &1798498338
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1798498335}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 366.3852, y: 71.655525, z: -94.64073}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1815190199
 GameObject:
   m_ObjectHideFlags: 0
@@ -110169,7 +110243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bec29c0a230741bdac901dba8da47ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  yarnProject: {fileID: 7545569452688597077, guid: 6607dd572aa18a746b6688ec120e8506, type: 3}
+  yarnProject: {fileID: 7545569452688597077, guid: 646b928b224ce7248af9562e3cd48cb3, type: 3}
   _variableStorage: {fileID: 1912308199}
   dialogueViews:
   - {fileID: 1671369848}
@@ -111772,7 +111846,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 68.45
+  m_fontSize: 68.6
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -112180,7 +112254,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 64.15
+  m_fontSize: 64.3
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
