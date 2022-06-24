@@ -44,10 +44,6 @@ public class YarnManager : MonoBehaviour
     void Awake()
     {
         YI = FindObjectOfType<YarnInteractable>();
-        if (YI == null)
-        {
-            //Debug.Log("Unable to find YarnInteractable");
-        }
         foreach (FigureCharacter c in CharacterDB.characterList)
         {
             characterMap.Add(c.CharName, c); //each character can switch expressions
@@ -58,11 +54,6 @@ public class YarnManager : MonoBehaviour
             character.InitializeDict();
         }
 
-    }
-
-    void Start()
-    {
-        YI = FindObjectOfType<YarnInteractable>();
     }
 
 

@@ -23,7 +23,7 @@ public class YarnInteractable : MonoBehaviour
     public bool interactable = false;
     // I need my outline / something else here
     private bool isCurrentConversation = false;
-    public Button expression; //for now this button doesn't work, but it doesn't need to
+    private Button expression; //for now this button doesn't work, but it doesn't need to
     private Dictionary<string, FigureCharacter> characterMap = new Dictionary<string, FigureCharacter>();
 
     /*Rewake is essentially a function that awakes the dialogue runner
