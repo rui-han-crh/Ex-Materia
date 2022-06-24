@@ -6,12 +6,12 @@ using UnityEngine;
 using Yarn.Unity;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
-public class TutorialManager : MonoBehaviour 
+public class TutorialManager : MonoBehaviour //should be able to interact with yarn also
 {
 
 
     private const float DOUBLE_CLICK_TIME = .2f;
-    //private  Vector3 WORLD_OFFSET = 10 * Vector3.back;
+    private  Vector3 WORLD_OFFSET = 10 * Vector3.back;
     private float lastClickTime;
 
     public event Action OnEnded = delegate { };
@@ -30,7 +30,7 @@ public class TutorialManager : MonoBehaviour
     private string[] stageIntermediate = new string[] { "MoveIntermediate", "ShootIntermediate", "HideIntermediate" };
 
 
-    private readonly Vector3[] checkPoints = new Vector3[] { new Vector3(0.5f, -5.25f, -10.0f)};
+    public Vector3[] checkPoints = new Vector3[] { new Vector3(0.5f, -5.25f, -10.0f)};
 
     [SerializeField]
     public DialogueRunner dr;
@@ -84,11 +84,11 @@ public class TutorialManager : MonoBehaviour
             {
                 //do left click 
                 Vector3 doubleClickPos = MainCamera.ScreenToWorldPoint(Input.mousePosition);
-                Vector3 currentCheckpoint = checkPoints[currentStage];
+                Vector3 currentCheckpoint = checkPoints[currentStage] + WORLD_OFFSET;
                 Debug.Log("position I clicked = : " + doubleClickPos);
                 Debug.Log("Checkpoint = " + currentCheckpoint);
                 float distClick = Vector3.Distance(currentCheckpoint, doubleClickPos);
-                if (distClick < 1.0f) 
+                if (distClick < 0.5) 
                 {
                     Debug.Log("Correct pos");
                     Debug.Log(doubleClickPos);
@@ -152,7 +152,7 @@ public class TutorialManager : MonoBehaviour
         DisableAllCombatButtons();
         for (int i = 0; i <= stageIndex; i++)
         {
-            buttonActions[i].gameObject.SetActive(true);
+            buttonActions[stageIndex].gameObject.SetActive(true);
         }
     }
 
