@@ -102990,7 +102990,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dragSensitivity: 0.05
-  scrollSensitivity: 0.02
+  scrollSensitivity: 0.5
   focusSpeed: 10
   rotationSpeed: 2
 --- !u!1 &2145945462

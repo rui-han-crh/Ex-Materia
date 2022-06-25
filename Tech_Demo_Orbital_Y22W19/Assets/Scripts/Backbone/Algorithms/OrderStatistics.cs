@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using DataStructures;
+using MathS = System.Math;
 
 namespace Algorithms
 {
@@ -37,11 +38,11 @@ namespace Algorithms
                 }
                 else if (k < p_start)
                 {
-                    end = Math.Min(p_start, end - 1);
+                    end = MathS.Min(p_start, end - 1);
                 }
                 else
                 {
-                    start = Math.Max(start + 1, p_end + 1);
+                    start = MathS.Max(start + 1, p_end + 1);
                 }
             }
             return Array[start];
