@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 public class TutorialManager : MonoBehaviour //should be able to interact with yarn also
 {
-
+   
 
     private const float DOUBLE_CLICK_TIME = .2f;
     //private  Vector3 WORLD_OFFSET = 10 * Vector3.back;
@@ -69,7 +69,7 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
      */
 
     private void StartConvo(string newScript)
-    {
+    { 
         //Sets script, then playes after a 1.5 second delay!
         DialogueHolder.SetYarnScriptName(newScript);
         Invoke("PlayInteraction", 0.5f);
