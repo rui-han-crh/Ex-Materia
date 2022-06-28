@@ -48,42 +48,40 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
     //Serialize the interactables that can play dialogue!
     public Interactable dialogueHolder;
     public Interactable Myself;
+    public SpeakingInteractionChangeable DialogueHolder;
 
-
-    IEnumerator ResetNextScene()
-    {
-        yield return new WaitForSeconds(10);
-    }
-
-    IEnumerator ResetLonger()
-    {   //alternatively, this can be a button that pops up, when he's ready to go!
-        yield return new WaitForSeconds(20);
-    }
 
     public void Awake()
     {
-        //DialogueCanvas.SetActive(false); //hide the dialogue
-        //AudioManager.Instance.PlayTrack("Tutorial_Prevailing");
-
     }
 
 
     public void Start()
     {
         Debug.Log("Playing Node message: Start");
-        PlayBeginningInteraction();
+        StartConvo("Start");
         StartPhase(currentStage);
     }
+    
 
-    private void PlayBeginningInteraction()
+    /*
+     * EntryPointToInitiateConvo
+     */
+
+    private void StartConvo(string newScript)
     {
-        Invoke("PlayInteraction", 1);
+        //Sets script, then playes after a 1.5 second delay!
+        DialogueHolder.SetYarnScriptName(newScript);
+        Invoke("PlayInteraction", 0.5f);
     }
 
     private void PlayInteraction()
     {
         dialogueHolder.Interact(Myself);
     }
+
+
+
     private void Update()
     //no choice need to check for double click to confirm movement on update
     //Especially for the thing 
@@ -106,7 +104,6 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
                     Debug.Log(doubleClickPos);
 
                     //We can go onto the next phase 
-                    StartCoroutine("ResetNextScene");
                     currentStage += 1;
                     StartPhase(currentStage);
 
@@ -126,7 +123,7 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
 
         if ((Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl) && currentStage == 2)) {
             Debug.Log("Now playing the remainder of the dialogue");
-            //BeginConvo(stageIndex);
+            StartConvo(stageNames[currentStage]);
             EnableAllCombatButtons();
             currentStage += 1; //doesn't trigger anything else
 
@@ -157,7 +154,7 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
         Debug.Log("Current phase is: " + stageIndex);
         DisableAllCombatButtons();
         DeselectAction(); //setActive == False!
-        //play dialogue
+        StartConvo(stageNames[stageIndex]);
         Debug.Log("Starting Convo @ : " + stageNames[stageIndex]); //stageNames are just instructions
         //end dialogue 
         //1) Enable the correct button 
@@ -168,33 +165,11 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
         }
     }
 
-    //Essentially starts the stage 
-
-    public void BeginConvo(string thisNode)
-    {
-        DialogueCanvas.SetActive(true);
-        YarnManager.Instance.StartConvoAuto(thisNode);
-        YarnManager.Instance.OnEnded += InvokeDelegate;
-    }
-
-    private void InvokeDelegate()
-    {
-        DialogueCanvas.gameObject.SetActive(false);
-        OnEnded();
-        FlushEventHandlers();
-    }
-
-    public void FlushEventHandlers()
-    {
-        OnEnded = delegate { };
-    }
-
     
     public void ConfirmAttack()
     {
         if (currentStage == 1) //confirm that it's on attacking stage 
-        {
-            ResetLonger(); //wait for the attack animation to happen 
+        { 
             //while other characters are moving in the background
             currentStage += 1; //--> Now, update will catch whenever they press control
         }
@@ -207,7 +182,7 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
             isInConfirmed = true;
             Debug.Log("Awaiting Confirm: " + stageIntermediate[currentStage]);
             Debug.Log("Now playing intermediary: " + stageIntermediate[currentStage]);
-            //playDialogue(sceneNumber); --> now double click on the new 
+            StartConvo(stageIntermediate[currentStage]);
             //endDialogue(scneneNumber);
         }
     }
@@ -217,7 +192,15 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
         if (currentStage == 1)
         {
             Debug.Log("Awaiting Confirm: " + stageIntermediate[currentStage]);
-            Debug.Log("Now playing intermediary: " + stageIntermediate[currentStage]);
+            StartConvo(stageIntermediate[currentStage]);
+        }
+    }
+
+    public void AwaitingConfirmOverwatch()
+    {
+        if (currentStage == 2)
+        {
+            //doSomething.
         }
     }
 
