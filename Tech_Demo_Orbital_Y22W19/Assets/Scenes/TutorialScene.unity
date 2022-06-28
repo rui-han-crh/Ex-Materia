@@ -1298,7 +1298,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 64.3
+  m_fontSize: 60.3
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1507,7 +1507,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 68.6
+  m_fontSize: 64.3
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2628,8 +2628,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MainCamera: {fileID: 519420031}
-  startNode: OliviaIntro
-  dr: {fileID: 0}
   DialogueCanvas: {fileID: 1864920667}
   buttonActions:
   - {fileID: 1665695015}
@@ -2638,6 +2636,7 @@ MonoBehaviour:
   - {fileID: 1518518237}
   actionUI: {fileID: 1233247985}
   dialogueHolder: {fileID: 1798498337}
+  Myself: {fileID: 1357131185}
 --- !u!1 &612091071
 GameObject:
   m_ObjectHideFlags: 0
@@ -4294,7 +4293,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 68.6
+  m_fontSize: 64.3
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -8064,6 +8063,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1334533095}
   m_CullTransparentMesh: 1
+--- !u!1 &1357131184
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1357131186}
+  - component: {fileID: 1357131185}
+  m_Layer: 0
+  m_Name: Self
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1357131185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1357131184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ec85083d95b1da40a819df5c6c6c788, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactions: []
+--- !u!4 &1357131186
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1357131184}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1000, y: -10, z: -10}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1392715658
 GameObject:
   m_ObjectHideFlags: 0
@@ -110243,12 +110286,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bec29c0a230741bdac901dba8da47ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  yarnProject: {fileID: 7545569452688597077, guid: 646b928b224ce7248af9562e3cd48cb3, type: 3}
+  yarnProject: {fileID: 7545569452688597077, guid: 927f9f9c962950344a5c1f4b5f0b8688, type: 3}
   _variableStorage: {fileID: 1912308199}
   dialogueViews:
   - {fileID: 1671369848}
   - {fileID: 625154788}
-  startNode: IntroEvelynOlivia
+  startNode: TutorialStart
   startAutomatically: 0
   runSelectedOptionAsLine: 0
   lineProvider: {fileID: 0}
@@ -111846,7 +111889,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 68.6
+  m_fontSize: 64.3
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -112254,7 +112297,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 64.3
+  m_fontSize: 60.3
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

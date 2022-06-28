@@ -27,6 +27,7 @@ public class YarnManager : MonoBehaviour
         }
     }
 
+    [SerializeField]
     public YarnInteractable YI;
 
     [SerializeField]
@@ -43,7 +44,11 @@ public class YarnManager : MonoBehaviour
 
     void Awake()
     {
-        YI = FindObjectOfType<YarnInteractable>();
+        if (YI == null)
+        {
+            YI = FindObjectOfType<YarnInteractable>();
+        }
+        
         foreach (FigureCharacter c in CharacterDB.characterList)
         {
             characterMap.Add(c.CharName, c); //each character can switch expressions
@@ -101,8 +106,8 @@ public class YarnManager : MonoBehaviour
         if (nextNode != null) //TODO: probably need to check for legit startNode for the scene somewhere, probably in the DB?
         {
             isActive = true;
-            this.YI.Rewake();
-            this.YI.StartImmediate(nextNode);
+            YI.Rewake();
+            YI.StartImmediate(nextNode);
         }
     }
 

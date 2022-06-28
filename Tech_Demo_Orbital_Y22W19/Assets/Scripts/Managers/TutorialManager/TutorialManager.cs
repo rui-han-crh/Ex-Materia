@@ -32,8 +32,6 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
 
     private readonly Vector3[] checkPoints = new Vector3[] { new Vector3(0.5f, -5.25f, -10.0f)};
 
-    [SerializeField]
-    public DialogueRunner dr;
 
     [SerializeField]
     public GameObject DialogueCanvas;
@@ -47,7 +45,11 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
     private bool isInConfirmed = false;
 
 
+    //Serialize the interactables that can play dialogue!
     public Interactable dialogueHolder;
+    public Interactable Myself;
+
+
     IEnumerator ResetNextScene()
     {
         yield return new WaitForSeconds(10);
@@ -60,16 +62,27 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
 
     public void Awake()
     {
-        DialogueCanvas.SetActive(false); //hide the dialogue
+        //DialogueCanvas.SetActive(false); //hide the dialogue
         //AudioManager.Instance.PlayTrack("Tutorial_Prevailing");
 
     }
+
+
     public void Start()
     {
         Debug.Log("Playing Node message: Start");
-        dialogueHolder.InvokeInteraction();
-        StartCoroutine("ResetLonger");
+        PlayBeginningInteraction();
         StartPhase(currentStage);
+    }
+
+    private void PlayBeginningInteraction()
+    {
+        Invoke("PlayInteraction", 1);
+    }
+
+    private void PlayInteraction()
+    {
+        dialogueHolder.Interact(Myself);
     }
     private void Update()
     //no choice need to check for double click to confirm movement on update
