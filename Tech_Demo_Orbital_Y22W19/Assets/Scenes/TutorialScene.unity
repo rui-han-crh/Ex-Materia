@@ -2637,6 +2637,7 @@ MonoBehaviour:
   actionUI: {fileID: 1233247985}
   dialogueHolder: {fileID: 1798498337}
   Myself: {fileID: 1357131185}
+  DialogueHolder: {fileID: 1798498339}
 --- !u!1 &612091071
 GameObject:
   m_ObjectHideFlags: 0
@@ -109813,6 +109814,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04d2fe7ec2b78ab4e80c5ed9c6b20706, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  yarnScriptName: 
 --- !u!1 &1815190199
 GameObject:
   m_ObjectHideFlags: 0
