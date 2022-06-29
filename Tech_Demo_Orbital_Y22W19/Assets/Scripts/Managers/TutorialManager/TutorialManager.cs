@@ -23,11 +23,17 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
 
     private int currentStage = 0;
 
-
+    //booleans to signify which stage it's at
+    private bool officialStart = false;
+    private bool overwatchInstructionsPlayed;
+    private bool abilitiesInstructionsPlayed;
 
     //stages are basically dialgoueNodes
-    private string[] stageNames = new string[] {"MoveTutorial", "ShootTutorial", "HideTutorial" };
-    private string[] stageIntermediate = new string[] { "MoveIntermediate", "ShootIntermediate", "HideIntermediate" };
+    private string[] stageNames = new string[] {"MoveTutorial", "ShootTutorial", "HideTutorial" , "AbilitiesTutorial" };
+    private string[] stageIntermediate = new string[] { "MoveIntermediate", "ShootIntermediate", "OverwatchIntermediate" };
+
+    //[SerializeField]
+    //private Interactable[] interactables; 
 
 
     private readonly Vector3[] checkPoints = new Vector3[] { new Vector3(0.5f, -5.25f, -10.0f)};
@@ -60,7 +66,7 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
     {
         Debug.Log("Playing Node message: Start");
         StartConvo("Start");
-        StartPhase(currentStage);
+        DisableAllCombatButtons();
     }
     
 
@@ -72,7 +78,7 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
     { 
         //Sets script, then playes after a 1.5 second delay!
         DialogueHolder.SetYarnScriptName(newScript);
-        Invoke("PlayInteraction", 0.5f);
+        Invoke("PlayInteraction", 0.1f);
     }
 
     private void PlayInteraction()
@@ -105,7 +111,7 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
 
                     //We can go onto the next phase 
                     currentStage += 1;
-                    StartPhase(currentStage);
+                    StartPhase();
 
                 } 
                 else
@@ -120,15 +126,39 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
             lastClickTime = Time.time;
 
         }
+        //Pressing control can initate the start / Overwatch. 
+        //These are 2 key breaks where I'm unsure where the player currently is 
+        //Hence, pressing control to bring it up allows me to figure out what he's currently doing 
+        //And what to proceed with next 
+        if ((Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl)))
+        {
+            switch (currentStage)
+            {
+                case 0:
+                    if (!officialStart)
+                    {
+                        officialStart = true;
+                        StartPhase();
+                    }
+                    break;
 
-        if ((Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl) && currentStage == 2)) {
-            Debug.Log("Now playing the remainder of the dialogue");
-            StartConvo(stageNames[currentStage]);
-            EnableAllCombatButtons();
-            currentStage += 1; //doesn't trigger anything else
-
-            
+                case 2:
+                    if (!overwatchInstructionsPlayed)
+                    {
+                        overwatchInstructionsPlayed = true;
+                        StartPhase();
+                        currentStage += 1;
+                    }
+                    break;
+            }
         }
+
+        //if ((Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl) && currentStage == 2)) {
+        //    Debug.Log("Now playing the remainder of the dialogue");
+        //    StartConvo(stageNames[currentStage]);
+        //    EnableAllCombatButtons();
+        //    currentStage += 1; //doesn't trigger anything else  
+        //}
     }
 
     public void DisableAllCombatButtons()
@@ -149,17 +179,17 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
 
 
 
-    public void StartPhase(int stageIndex)
+    public void StartPhase()
     {
-        Debug.Log("Current phase is: " + stageIndex);
+        Debug.Log("Current phase is: " + currentStage);
         DisableAllCombatButtons();
         DeselectAction(); //setActive == False!
-        StartConvo(stageNames[stageIndex]);
-        Debug.Log("Starting Convo @ : " + stageNames[stageIndex]); //stageNames are just instructions
+        StartConvo(stageNames[currentStage]);
+        Debug.Log("Starting Convo @ : " + stageNames[currentStage]); //stageNames are just instructions
         //end dialogue 
         //1) Enable the correct button 
         DisableAllCombatButtons();
-        for (int i = 0; i <= stageIndex; i++)
+        for (int i = 0; i <= currentStage; i++)
         {
             buttonActions[i].gameObject.SetActive(true);
         }
@@ -196,7 +226,7 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
         }
     }
 
-    public void AwaitingConfirmOverwatch()
+    public void ConfirmOverwatch()
     {
         if (currentStage == 2)
         {

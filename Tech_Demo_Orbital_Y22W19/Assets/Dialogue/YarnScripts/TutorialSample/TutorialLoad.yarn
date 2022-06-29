@@ -7,7 +7,7 @@ Lucien: In this tutorial, you will learn the basics of our combat
 Lucien: In general, the combat System is turn-based 
 Lucien: A turn consists of many different possible actions.
 Lucien: With each Action costing a set amount of action points, or <B> AP </B>
-Lucien: Pressing control brings up the action menu!
+Lucien: <B> Pressing control </B> brings up the action menu!
 Lucien: Try it now!
 ===
 
@@ -28,10 +28,11 @@ title: MoveIntermediate
 tags: 
 ---
 <<load Speaker Lucien Neutral>>
-Lucien: Excellent! Now there's a series of highlighted steps 
+Lucien: Excellent! Now there's a series of highlighted steps in your range
 Lucien: Select the <B> BROWN </B> Color tile to move to it by double clicking!
-Lucien: Or really, anywhere within the area of highlighted area
 ===
+
+
 title: ShootTutorial
 tags: 
 ---
@@ -45,15 +46,14 @@ Olivia: This is known as the cover mechanic..
 Olivia: If the <B> Direct line of Sight between you and the enemy happens to contain a full wall </B>
 Olivia: He can't be shot!
 Olivia: Now then...
-Olivia: Reposition yourself and take a shot!
+Olivia: Reposition yourself and take a shot! 
 ===
 title: ShootIntermediate
 tags: 
 ---
 <<load Speaker Olivia Angry>>
 Olivia: Now, see that enemy over there?
-Olivia: If he's within your range, there's an option to attack.
-Olivia: Click on him to attack!
+Olivia: If he's within your range, there's an option double click him to attack!
 ===
 
 title: HideTutorial
@@ -83,15 +83,34 @@ Lucien: Similarly, Full covers work the same way but with an added twist
 Lucien: You are not able to shoot them, and neither can they shoot you! 
 Lucien: So they essentially act like walls!
 Lucien: As an added fun fact, your allies <B> can act as human meat shields for you! </B>
--> Yummy
+Lucien: Which basically means they can block enemy shots, so they act as a de-facto full cover.
 Lucien: Next up is overwatch! 
-Lucien: It's that little side button there. 
+Lucien: It's that little button with the sword going through.. 
 Lucien: If enemies pass through your line of sight while you're in overwatch 
 Lucien: They get hit! Your ATK and DEF are also doubled
 Lucien: Okay then..
-Lucien: Let's try all these out for real!
-Lucien: Controls are all yours..
-Lucien: Kill all the enemies to finish the map!
+Lucien: Let's try it out for real!
+Lucien: <B> Use the Overwatch Ability to Continue! </B>
+Lucien: If the enemies are caught in the crossfire, you'll do some huge damage
+===
+
+title: OverwatchIntermediate
+tags: 
+---
+Lucien: <B> Use the Overwatch Ability to Continue! </B>
+===
+
+title: AbilitiesTutorial
+tags:
+---
+<<load Speaker Evelyn Neutral>>
+Evelyn: Good! 
+Evelyn: You're almost there 
+Evelyn: The last part of the game are the last 2 abilities 
+Evelyn: In this world, each character has their own unique basic ability, and ultimate!
+Evelyn: The main difference is the <B> cost in terms of time </B>
+Evelyn: But for the most part, abilities are <B> generally stat boosters </B>
+Evelyn: Now go forth and use a stat ability!
 ===
 
 
