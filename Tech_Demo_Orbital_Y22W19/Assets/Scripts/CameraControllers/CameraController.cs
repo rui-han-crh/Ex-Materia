@@ -30,7 +30,7 @@ public class CameraController : MonoBehaviour
 
     private const float ZOOM_DRAG_RATIO = 15;
 
-    public readonly float MIN_ZOOM = 3;
+    public readonly float MIN_ZOOM = 2;
     public readonly float MAX_ZOOM = 7;
 
     private bool canDrag = false;
