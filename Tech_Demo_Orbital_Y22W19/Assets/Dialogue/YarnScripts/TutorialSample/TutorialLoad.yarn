@@ -73,7 +73,7 @@ Lucien: So try to position yourself advantageously in between these areas!
 
 Lucien: Got everything so far?
 -> Yes! 
-    Lucien: Alrighties 
+    Lucien: Alright
 -> Not really...
     Lucien: It'll become clearer with the upcoming playthrough
 
@@ -84,9 +84,9 @@ Lucien: You are not able to shoot them, and neither can they shoot you!
 Lucien: So they essentially act like walls!
 Lucien: As an added fun fact, your allies <B> can act as human meat shields for you! </B>
 Lucien: Which basically means they can block enemy shots, so they act as a de-facto full cover.
-Lucien: Next up is overwatch! 
+Lucien: Next up is Overwatch
 Lucien: It's that little button with the sword going through.. 
-Lucien: If enemies pass through your line of sight while you're in overwatch 
+Lucien: If enemies pass through your line of sight while you're in Overwatch 
 Lucien: They get hit! Your ATK and DEF are also doubled
 Lucien: Okay then..
 Lucien: Let's try it out for real!
@@ -98,6 +98,7 @@ title: OverwatchIntermediate
 tags: 
 ---
 Lucien: <B> Use the Overwatch Ability to Continue! </B>
+Lucien: It's the <B> 4th Button </B>, the one with the <B> sword going through the eye! </B>
 ===
 
 title: AbilitiesTutorial
@@ -108,9 +109,29 @@ Evelyn: Good!
 Evelyn: You're almost there 
 Evelyn: The last part of the game are the last 2 abilities 
 Evelyn: In this world, each character has their own unique basic ability, and ultimate!
+Evelyn: The basic ability is the <B> 5th button </B>
+Evelyn: And the ultimate ability is the <B> 6th button </B>
 Evelyn: The main difference is the <B> cost in terms of time </B>
 Evelyn: But for the most part, abilities are <B> generally stat boosters </B>
 Evelyn: Now go forth and use a stat ability!
+===
+
+
+title: AbilitiesIntermediate
+tags:
+---
+<<load Speaker Lucien Neutral>>
+Lucien: Use either ability to continue!
+Lucien: Remember, they're the last 2 icons. 
+===
+
+title: EndTutorialInstructions
+tags:
+---
+<<load Speaker Lucien Neutral>>
+Lucien: That's it!
+Lucien: The best way to practice the mechanics is to use them yourself in battle
+Lucien: Kill all the foes to end the map!
 ===
 
 

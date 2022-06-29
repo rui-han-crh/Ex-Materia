@@ -11,7 +11,8 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
    
 
     private const float DOUBLE_CLICK_TIME = .2f;
-    //private  Vector3 WORLD_OFFSET = 10 * Vector3.back;
+
+    private float nextReminderTime = 0.0f;
     private float lastClickTime;
 
     public event Action OnEnded = delegate { };
@@ -25,12 +26,12 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
 
     //booleans to signify which stage it's at
     private bool officialStart = false;
-    private bool overwatchInstructionsPlayed;
-    private bool abilitiesInstructionsPlayed;
+    private bool overwatchInstructionsPlayed = false;
+    private bool abilitiesInstructionsPlayed = false;
 
     //stages are basically dialgoueNodes
-    private string[] stageNames = new string[] {"MoveTutorial", "ShootTutorial", "HideTutorial" , "AbilitiesTutorial" };
-    private string[] stageIntermediate = new string[] { "MoveIntermediate", "ShootIntermediate", "OverwatchIntermediate" };
+    private string[] stageNames = new string[] {"MoveTutorial", "ShootTutorial", "SkipTutorial", "HideTutorial" , "AbilitiesTutorial", "AbilitiesTutorial", "EndTutorialInstructions" };
+    private string[] stageIntermediate = new string[] { "MoveIntermediate", "ShootIntermediate", "SkipIntermediate", "OverwatchIntermediate", "AbilitiesIntermediate", "AbilitiesIntermediate"};
 
     //[SerializeField]
     //private Interactable[] interactables; 
@@ -76,9 +77,9 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
 
     private void StartConvo(string newScript)
     { 
-        //Sets script, then playes after a 1.5 second delay!
+        //Sets script, then playes after a 1.0 second delay!
         DialogueHolder.SetYarnScriptName(newScript);
-        Invoke("PlayInteraction", 0.1f);
+        Invoke("PlayInteraction", 0.35f);
     }
 
     private void PlayInteraction()
@@ -104,14 +105,14 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
                 Debug.Log("position I clicked = : " + doubleClickPos);
                 Debug.Log("Checkpoint = " + currentCheckpoint);
                 float distClick = Vector3.Distance(currentCheckpoint, doubleClickPos);
-                if (distClick < 0.5) 
+                if (distClick < 0.5) //In proper range!
                 {
                     Debug.Log("Correct pos");
                     Debug.Log(doubleClickPos);
 
                     //We can go onto the next phase 
                     currentStage += 1;
-                    StartPhase();
+                    Invoke("StartPhase", 2.0f);
 
                 } 
                 else
@@ -142,23 +143,36 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
                     }
                     break;
 
-                case 2:
+                case 3:
                     if (!overwatchInstructionsPlayed)
                     {
                         overwatchInstructionsPlayed = true;
                         StartPhase();
-                        currentStage += 1;
+                        nextReminderTime = Time.time + 10.0f;
                     }
+                    else
+                    {
+                        PlayReminder();
+                    }
+                    break;
+
+                case 5:
+                    PlayReminder();
                     break;
             }
         }
+    }
+    
 
-        //if ((Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl) && currentStage == 2)) {
-        //    Debug.Log("Now playing the remainder of the dialogue");
-        //    StartConvo(stageNames[currentStage]);
-        //    EnableAllCombatButtons();
-        //    currentStage += 1; //doesn't trigger anything else  
-        //}
+    //The only way to call this, is thru a control click!
+    private void PlayReminder()
+    {
+        if (Time.time > nextReminderTime)
+        {
+            StartConvo(stageIntermediate[currentStage]);
+            nextReminderTime = Time.time + 3.5f;
+        }
+        
     }
 
     public void DisableAllCombatButtons()
@@ -195,13 +209,13 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
         }
     }
 
-    
+    //NOTE: This currentStage adds2, we skip the skip function! (Straight to OW / Hide explanation)
     public void ConfirmAttack()
     {
         if (currentStage == 1) //confirm that it's on attacking stage 
         { 
             //while other characters are moving in the background
-            currentStage += 1; //--> Now, update will catch whenever they press control
+            currentStage += 2; 
         }
     }
     //Potential bug: I don't know how to cancel 
@@ -213,7 +227,6 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
             Debug.Log("Awaiting Confirm: " + stageIntermediate[currentStage]);
             Debug.Log("Now playing intermediary: " + stageIntermediate[currentStage]);
             StartConvo(stageIntermediate[currentStage]);
-            //endDialogue(scneneNumber);
         }
     }
 
@@ -228,13 +241,28 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
 
     public void ConfirmOverwatch()
     {
-        if (currentStage == 2)
+        if (currentStage == 3)
         {
-            //doSomething.
+            Debug.Log("Confirm used Overwatch, moving onto ability explanation");
+            //Increment by 2, to confirm use of ow.
+            currentStage += 2;
+            Invoke("StartPhase", 2.5f);
+            
         }
     }
 
-    //I actually don't know how to get to the cancel OverlayButton, but it's subbed there
+    public void ConfirmAbility()
+    {
+        if (currentStage == 5)
+        {
+            Debug.Log("Confirm used ability, moving onto ending");
+            //Increment by 1, to confirm use of ability, moving onto end of tutorial
+            currentStage += 1;
+            Invoke("StartPhase", 2.5f);
+        }
+    }
+
+    //I actually don't know how to get to the cancel OverlayButton, but it's here in case I do need it 
     public void DeselectAction()
     {
         isInConfirmed = false;
