@@ -1,0 +1,27 @@
+﻿title: TutorialStart
+tags:
+---
+<<load Speaker Lucien Neutral>>
+Lucien: Hi there!
+Lucien: I'm Lucien, it's a pleasure to meet you!
+Lucien: I'm a historian, son of a former PAM-Researcher...
+Lucien: Enough about me...
+Lucien: I have an interesting proposal 
+Lucien: Behind me is a gate to a tutorial 
+Lucien: Tell me, do you want to learn more about how we fight enemies
+-> Nah I'm good
+	<<jump NeglectTutorial>>
+
+-> Take me in!
+	Lucien: Great
+	Lucien: Follow me 
+===
+
+
+title: NeglectTutorial
+tags:
+---
+<<load Speaker Lucien Sad>>
+Lucien: It's all good
+Lucien: See you next time!
+===

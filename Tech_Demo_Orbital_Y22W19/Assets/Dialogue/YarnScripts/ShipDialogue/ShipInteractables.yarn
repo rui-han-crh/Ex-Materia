@@ -1,0 +1,51 @@
+﻿title: Bookshelf
+tags:
+---
+<<load Speaker Lucien Happy>>
+Lucien: Here's one for you 
+Lucien: In the main hall, I have a collection of books I've read...
+Lucien: Some of them are related to my work, but some aren't 
+Lucien: I'll let you decide what you want to learn more of today!
+
+Lucien: Is there any book that piques your interest? 
+-> Callesmere Origins
+	<<jump CallesmereOrigins>>
+-> The Rise of PAM
+	<<jump PAMRise>>
+-> Nah I've read enough!
+	<<jump BookshelfEnd>>
+
+===
+
+
+title: BookshelfEnd
+tags:
+---
+<<load Speaker Lucien Neutral>>
+Lucien: Aw..
+Lucien: Do come again should you like to hear more about
+===
+
+
+
+title: CallesmereOrigins
+tags:
+---
+<<load Speaker Lucien Happy>>
+Lucien: Excellent choice...
+Lucien: This book details the origins of Callesmere
+Lucien: Which is the land you reside in today 
+Lucien: TBC
+===
+
+
+title: PAMRise
+tags:
+---
+<<load Speaker Lucien Angry>>
+Lucien: Ah
+Lucien: This is quite a controversial topic 
+Lucien: On a side note, my dad was once a former PAM researcher 
+Lucien: This book details the rise of PAM
+Lucien: TBC
+===
