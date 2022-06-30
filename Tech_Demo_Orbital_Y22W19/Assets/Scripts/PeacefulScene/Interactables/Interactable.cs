@@ -18,7 +18,7 @@ public class Interactable : MonoBehaviour
 
     [SerializeField]
     [RequireInterface(typeof(IInteraction))]
-    private MonoBehaviour[] interactions;
+    private UnityEngine.Object[] interactions;
 
     private void Awake()
     {

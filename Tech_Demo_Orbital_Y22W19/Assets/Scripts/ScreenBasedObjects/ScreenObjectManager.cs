@@ -10,6 +10,8 @@ public class ScreenObjectManager : MonoBehaviour
 
     private string currentActiveObject;
 
+    public event System.Action OnEnded = delegate { };
+
     public static ScreenObjectManager Instance
     {
         get
@@ -74,5 +76,7 @@ public class ScreenObjectManager : MonoBehaviour
     public void HideCurrentActiveObject()
     {
         HideObject(currentActiveObject);
+        OnEnded();
+        OnEnded = delegate { };
     }
 }
