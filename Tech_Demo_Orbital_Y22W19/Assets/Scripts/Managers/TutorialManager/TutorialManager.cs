@@ -43,9 +43,6 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
     [SerializeField]
     public Button[] buttonActions;
 
-    [SerializeField]
-    public GameObject actionUI;
-
     private bool isInConfirmed = false;
 
 
@@ -57,6 +54,7 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
 
     public void Awake()
     {
+
     }
 
 
