@@ -26,9 +26,6 @@ TextureImporter:
   - first:
       213: 8612946748968181781
     second: East_7
-  - first:
-      213: 8017290327450008705
-    second: East_8
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -134,7 +131,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 2
+        y: 0
         width: 512
         height: 512
       alignment: 0
@@ -155,7 +152,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 512
-        y: 2
+        y: 0
         width: 512
         height: 512
       alignment: 0
@@ -176,7 +173,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1024
-        y: 2
+        y: 0
         width: 512
         height: 512
       alignment: 0
@@ -197,7 +194,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1536
-        y: 2
+        y: 0
         width: 512
         height: 512
       alignment: 0
@@ -218,7 +215,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2048
-        y: 2
+        y: 0
         width: 512
         height: 512
       alignment: 0
@@ -239,7 +236,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 2560
-        y: 2
+        y: 0
         width: 512
         height: 512
       alignment: 0
@@ -260,7 +257,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 3072
-        y: 2
+        y: 0
         width: 512
         height: 512
       alignment: 0
@@ -281,7 +278,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 3584
-        y: 2
+        y: 0
         width: 512
         height: 512
       alignment: 0
@@ -293,27 +290,6 @@ TextureImporter:
       bones: []
       spriteID: 510aa915f65578770800000000000000
       internalID: 8612946748968181781
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: East_8
-      rect:
-        serializedVersion: 2
-        x: 4096
-        y: 2
-        width: 512
-        height: 512
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 18c35dc4313234f60800000000000000
-      internalID: 8017290327450008705
       vertices: []
       indices: 
       edges: []
