@@ -106,7 +106,6 @@ public class YarnInteractable : MonoBehaviour
      */
 
     [YarnCommand("load")]
-
     public void StartingLoad(string charName, string emotion)
     {
         expression.image.sprite = YarnManager.Instance.characterMap[charName].GetEmotion(emotion);

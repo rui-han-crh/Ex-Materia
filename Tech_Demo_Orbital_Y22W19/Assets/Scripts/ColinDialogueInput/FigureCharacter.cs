@@ -33,7 +33,7 @@ public class FigureCharacter : ScriptableObject
 
     public void InitializeDict()
     {
-
+        emotions = new Dictionary<string, Sprite>();
         emotions["Angry"] = Angry;
         emotions["Disgusted"] = Disgusted;
         emotions["Elated"] = Elated;

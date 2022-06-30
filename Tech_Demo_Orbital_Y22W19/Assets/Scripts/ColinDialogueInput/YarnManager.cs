@@ -45,6 +45,7 @@ public class YarnManager : MonoBehaviour
         YI = FindObjectOfType<YarnInteractable>();
         foreach (FigureCharacter c in CharacterDB.characterList)
         {
+            Debug.Log($"Character added {c.name}");
             characterMap.Add(c.CharName, c); //each character can switch expressions
         }
 
