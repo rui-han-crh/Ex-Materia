@@ -26,8 +26,6 @@ public class YarnManager : MonoBehaviour
             return instance;
         }
     }
-
-    [SerializeField]
     public YarnInteractable YI;
 
     [SerializeField]
@@ -44,11 +42,7 @@ public class YarnManager : MonoBehaviour
 
     void Awake()
     {
-        if (YI == null)
-        {
-            YI = FindObjectOfType<YarnInteractable>();
-        }
-        
+        YI = FindObjectOfType<YarnInteractable>();
         foreach (FigureCharacter c in CharacterDB.characterList)
         {
             characterMap.Add(c.CharName, c); //each character can switch expressions
@@ -83,10 +77,7 @@ public class YarnManager : MonoBehaviour
     /*
      * Needs a button press on the character to start
      */
-    public void AddDialogueManager(DialogueRunner dr)
-    {
-        YI.LoadRunner(dr);
-    }
+
     
     public void StartConvoButton(string startingNode)
     {

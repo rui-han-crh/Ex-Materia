@@ -1,0 +1,18 @@
+﻿title: BattleLost_Entry
+tags:
+---
+You have lost the battle.
+
+Would you like to try again?
+-> Yes
+    <<transitionScene>>
+-> No
+    <<unsetNextScene>>
+===
+title: BattleLost_SceneChange
+tags:
+position: -1,-92
+---
+Returning...
+<<transitionScene>>
+===

@@ -63,6 +63,5 @@ public class SceneTransitionManager : MonoBehaviour
         }
 
         pendingSceneLoad = SceneManager.LoadSceneAsync(SceneBuildIndex.Value);
-        
     }
 }

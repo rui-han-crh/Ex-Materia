@@ -1,11 +1,13 @@
+using CombatSystem.Effects;
 using CombatSystem.Entities;
+using CombatSystem.Facade;
 using Managers;
 using Managers.Subscribers;
 using System.Collections;
 using System.Collections.Generic;
 using Transitions;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 namespace Managers
 {
@@ -41,6 +43,12 @@ namespace Managers
         private GameObject raycastBlocker;
 
         [SerializeField]
+        private Interactable loseInteractable;
+
+        [SerializeField]
+        private Interactable winInteractable;
+
+        [SerializeField]
         private CharacterStatsUIBehaviour[] actingUnitUI;
 
         [SerializeField]
@@ -49,6 +57,17 @@ namespace Managers
         [SerializeField]
         private AttackReviewUIBehaviour[] attackReviewUI;
 
+        [SerializeField]
+        private Button buttonForBasicSkill;
+
+        [SerializeField]
+        private Button buttonForUltimateSkill;
+
+        [SerializeField]
+        private Image basicSkillIcon;
+
+        [SerializeField]
+        private Image ultimateSkillIcon;
 
         public TransitionController CharacterViewTransitionController => characterViewTransitionController;
         public TransitionController AttackReviewTransitionController => attackReviewTransitionController;
@@ -76,6 +95,8 @@ namespace Managers
 
         private void Start()
         {
+
+
             keyboardControls.Mouse.ShowCombatSelections.performed += _ =>
             {
                 CombatSceneManager.Instance.StateReset();
@@ -87,6 +108,34 @@ namespace Managers
                     CharacterViewTransitionController);
                 isPerformed = true;
                 raycastBlocker.SetActive(true);
+
+                Unit currentUnit = CombatSceneManager.Instance.CurrentActingUnit;
+
+                StatusEffect basicEffect = UnitStatusEffectsFacade.Instance.GetEffect(currentUnit.BasicSkillName);
+                basicSkillIcon.sprite = basicEffect.Icon;
+
+                if (currentUnit.CurrentSkillPoints < basicEffect.SkillPointCost)
+                {
+                    buttonForBasicSkill.interactable = false;
+                } 
+                else
+                {
+                    buttonForBasicSkill.interactable = true;
+                }
+
+                StatusEffect ultimateEffect = UnitStatusEffectsFacade.Instance.GetEffect(currentUnit.UltimateSkillName);
+
+                ultimateSkillIcon.sprite = ultimateEffect.Icon;
+
+                if (currentUnit.CurrentSkillPoints < ultimateEffect.SkillPointCost)
+                {
+                    buttonForUltimateSkill.interactable = false;
+                }
+                else
+                {
+                    buttonForUltimateSkill.interactable = true;
+                }
+
             };
 
             keyboardControls.Mouse.ShowCombatSelections.canceled += _ =>
@@ -98,6 +147,16 @@ namespace Managers
                     raycastBlocker.SetActive(false);
                 }
             };
+        }
+
+        public void ShowLoseScreen()
+        {
+            loseInteractable.Interact(GameObject.FindGameObjectWithTag("UniversalInteractable").GetComponent<Interactable>());
+        }
+
+        public void ShowWinScreen()
+        {
+            winInteractable.Interact(GameObject.FindGameObjectWithTag("UniversalInteractable").GetComponent<Interactable>());
         }
 
         public void UpdateCurrentActingUnitInformation()

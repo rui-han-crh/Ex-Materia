@@ -30,11 +30,6 @@ public class YarnInteractable : MonoBehaviour
      * and gathers whatever components are necessary 
      * I have no idea what else to call it 
      */
-
-    public void LoadRunner(DialogueRunner dr)
-    {
-        dialogueRunner = dr;
-    }
     public void Rewake()
     {
         expression = GetComponent<Button>();

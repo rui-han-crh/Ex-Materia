@@ -171,19 +171,14 @@ public class UnitEntitiesTest
 
         Assert.AreEqual(1, unit.Identity);
 
-        Unit nextUnit = unit.ApplyStatusEffect(UnitStatusEffects.Overwatch);
+        Unit nextUnit = unit.ApplyStatusEffect("Overwatch", int.MaxValue);
 
-        Assert.IsTrue(nextUnit.HasStatusEffect(UnitStatusEffects.Overwatch));
+        Assert.IsTrue(nextUnit.HasStatusEffect("Overwatch"));
 
-        Unit nextNextUnit = nextUnit.RemoveStatusEffect(UnitStatusEffects.Overwatch);
+        Unit nextNextUnit = nextUnit.RemoveStatusEffect("Overwatch");
 
-        Assert.IsFalse(nextNextUnit.HasStatusEffect(UnitStatusEffects.Overwatch));
-        Assert.IsTrue(nextNextUnit.HasStatusEffect(UnitStatusEffects.None));
+        Assert.IsFalse(nextNextUnit.HasStatusEffect("Overwatch"));
 
-        Assert.IsTrue(nextUnit.HasStatusEffect(UnitStatusEffects.Overwatch));
-
-        Unit nextNextNextUnit = nextUnit.ApplyStatusEffect(UnitStatusEffects.All);
-
-        Assert.IsTrue(nextNextNextUnit.HasStatusEffect(UnitStatusEffects.Overwatch));
+        Assert.IsTrue(nextUnit.HasStatusEffect("Overwatch"));
     }
 }

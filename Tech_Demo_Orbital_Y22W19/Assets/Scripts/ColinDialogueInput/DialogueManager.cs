@@ -43,6 +43,16 @@ public class DialogueManager : MonoBehaviour
 
     private Action<InputAction.CallbackContext> singleLeftClick;
 
+    public void OnEnable()
+    {
+        keyboardControls?.Enable();
+    }
+
+    public void OnDisable()
+    {
+        keyboardControls?.Disable();
+    }
+
     public void EnableContinue()
     {
         SubscribeLeftClickContinue();
@@ -52,6 +62,7 @@ public class DialogueManager : MonoBehaviour
     {
         UnsubscribeLeftClickContinue();
     }
+
     void Awake()
     {
         keyboardControls = new KeyboardControls();
@@ -75,6 +86,7 @@ public class DialogueManager : MonoBehaviour
         keyboardControls.Mouse.LeftClick.performed -= singleLeftClick;
         keyboardControls.Disable(); 
     }
+
     // Start is called before the first frame update
     void Start()
     {

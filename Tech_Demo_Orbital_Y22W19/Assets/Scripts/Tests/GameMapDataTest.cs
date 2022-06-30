@@ -54,6 +54,8 @@ public class GameMapDataTest
     [Test]
     public void GameMapDataInvalidMoveUnit()
     {
+        Unit.ResetClass();
+
         TileData tileData = new TileData(1, TileData.TileType.Ground);
 
         TileCensus census = new TileCensus();
@@ -144,7 +146,7 @@ public class GameMapDataTest
         GameMapData gameMapData = new GameMapData(unitCensus, tileCensus);
 
 
-        Unit unitAChanged = unitA.ApplyStatusEffect(UnitStatusEffects.Overwatch).ChangeAttack(42);
+        Unit unitAChanged = unitA.ApplyStatusEffect("Overwatch", int.MaxValue).ChangeAttack(42);
 
         MovementRequest request = new MovementRequest(unitAChanged, new Vector3Int(2, 0, 0), 14, 14, MovementRequest.Outcome.Successful);
 
@@ -215,7 +217,7 @@ public class GameMapDataTest
         GameMapData dataAfterWait = gameMapData.OverwatchUnit(overwatchRequest);
 
 
-        Assert.IsTrue(dataAfterWait[new Vector3Int(1, 0, 0)].HasStatusEffect(UnitStatusEffects.Overwatch));
+        Assert.IsTrue(dataAfterWait[new Vector3Int(1, 0, 0)].HasStatusEffect("Overwatch"));
         Assert.AreEqual(OverwatchRequest.TIME_SPENT, dataAfterWait[new Vector3Int(1, 0, 0)].Time);
     }
 

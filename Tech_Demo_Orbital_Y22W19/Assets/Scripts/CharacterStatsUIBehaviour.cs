@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using CombatSystem.Entities;
+using Facades;
+using Managers;
 
 public class CharacterStatsUIBehaviour : MonoBehaviour
 {
@@ -17,9 +19,6 @@ public class CharacterStatsUIBehaviour : MonoBehaviour
     private BarFillBehaviour healthBar;
 
     [SerializeField]
-    private BarFillBehaviour actionPointsBar;
-
-    [SerializeField]
     private TMP_Text defenceValueText;
 
     [SerializeField]
@@ -27,6 +26,15 @@ public class CharacterStatsUIBehaviour : MonoBehaviour
 
     [SerializeField]
     private TMP_Text speedValueText;
+
+    [SerializeField]
+    private BarFillBehaviour skillPointsBar;
+
+    [SerializeField]
+    private SkillHolderBehaviour basicSkillHolder;
+
+    [SerializeField]
+    private SkillHolderBehaviour ultimateSkillHolder;
 
     public void SetAvatar(Sprite sprite)
     {
@@ -38,9 +46,9 @@ public class CharacterStatsUIBehaviour : MonoBehaviour
         healthBar.UpdateBarFillImage(currentHealth, totalHealth);
     }
 
-    public void SetActionPointsBar(int currentActionPoints, int totalActionPoints)
+    public void SetSkillPointsBar(int currentSkillPoints, int totalSkillPoints)
     {
-        actionPointsBar?.UpdateBarFillImage(currentActionPoints, totalActionPoints);
+        skillPointsBar?.UpdateBarFillImage(currentSkillPoints, totalSkillPoints);
     }
 
     public void SetName(string name)
@@ -63,6 +71,11 @@ public class CharacterStatsUIBehaviour : MonoBehaviour
         speedValueText.text = speedValue.ToString();
     }
 
+    public void SetActionPointsBar(int a, int b)
+    { 
+        // dead code
+    }
+
     public void SetUnitStats(UnitOld unit)
     {
         SetHealthBar(unit.Health, unit.MaxHealth);
@@ -74,10 +87,15 @@ public class CharacterStatsUIBehaviour : MonoBehaviour
 
     public void SetUnitStats(Unit unit)
     {
+        SetName(unit.Name);
+        SetAvatar(UnitManager.Instance[unit.Identity].CharacterAvatar);
         SetHealthBar(unit.CurrentHealth, unit.MaxHealth);
-        SetActionPointsBar(unit.CurrentActionPoints, unit.MaxActionPoints);
+        SetSkillPointsBar(unit.CurrentSkillPoints, unit.MaxSkillPoints);
         SetDefenceValue(unit.Defence);
         SetAttackValue(unit.Attack);
-        SetSpeedValue(-1);
+        SetSpeedValue(unit.Range);
+
+        basicSkillHolder?.SetWithStatusEffect(unit.BasicSkillName);
+        ultimateSkillHolder?.SetWithStatusEffect(unit.UltimateSkillName);
     }
 }

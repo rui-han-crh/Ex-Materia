@@ -114,16 +114,21 @@ namespace CombatSystem.Consultants
             tilesBetween.MoveNext();
             int count = 0;
             int totalCover = 0;
+            int tileDistance = 1;
             while (tilesBetween.MoveNext())
             {
                 Vector3Int currentTile = (Vector3Int)tilesBetween.Current;
-                count++;
+                
                 if (gameMapData.HasHalfCover(currentTile))
                 {
                     totalCover += count;
                 }
+                tileDistance += count;
+                count++;
             }
-            return (1 - (totalCover / pathSourceToTarget.Count()))
+            tileDistance -= --count;
+
+            return (1 - ((float)totalCover / tileDistance))
                 * (ONE_HUNDRED_PERCENT 
                     - (FIFTY_PERCENT * Vector3.Distance(pathSourceToTarget.First(), pathSourceToTarget.Last()) / attacker.Range));
         }

@@ -15,7 +15,14 @@ namespace Facades
             defence,
             risk,
             maxActionPoints,
-            currentActionPoints;
+            maxSkillPoints,
+            currentSkillPoints;
+
+        [SerializeField]
+        private string basicSkillName;
+
+        [SerializeField]
+        private string ultimateSkillName;
 
         [SerializeField]
         private Unit.RiskCalculationMethod riskCalculationMethod;
@@ -37,9 +44,18 @@ namespace Facades
                 attack,
                 range,
                 maxActionPoints,
-                currentActionPoints);
+                maxSkillPoints, 
+                currentSkillPoints);
 
-            return Unit.CreateNewUnit(gameObject.name, properties, 0, faction, risk, riskCalculationMethod);
+            return Unit.CreateNewUnit(
+                gameObject.name, 
+                properties, 
+                0, 
+                faction, 
+                risk, 
+                riskCalculationMethod, 
+                basicSkillName, 
+                ultimateSkillName);
         }
     }
 }

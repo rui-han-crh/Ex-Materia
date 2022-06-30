@@ -77,6 +77,12 @@ public class GameMapData
         return tileCensus.Contains(position);
     }
 
+    public GameMapData CleanUnitStatusEffects(Unit unit)
+    {
+        unit = GetSimilarUnit(unit).CleanStatusEffects();
+        return new GameMapData(unitCensus.UpdateUnit(unit), tileCensus);
+    }
+
     public GameMapData ChangeUnitPosition(Unit unit, Vector3Int position)
     {
         if (!unitCensus.Contains(unit))
@@ -98,6 +104,17 @@ public class GameMapData
         return new GameMapData(unitCensus.FilterUnits(x => x.CurrentHealth > 0), tileCensus);
     }
 
+    public bool IsWon()
+    {
+        return unitCensus.FilterUnits(x => x.Faction == Unit.UnitFaction.Enemy).Count == 0;
+    }
+
+    public bool IsLost()
+    {
+        return unitCensus.FilterUnits(x => x.Faction == Unit.UnitFaction.Friendly).Count == 0;
+    }
+
+
     public Unit GetSimilarUnit(Unit unit)
     {
         return this[this[unit]];
@@ -115,7 +132,7 @@ public class GameMapData
 
         movingUnit = movingUnit
             .ChangeTime(movingUnit.Time + movementRequest.TimeSpent)
-            .RemoveStatusEffect(UnitStatusEffects.Overwatch);
+            .RemoveStatusEffect("Overwatch");
 
         //.ChangeActionPoints(movingUnit.CurrentActionPoints - movementRequest.ActionPointCost)
 
@@ -134,17 +151,24 @@ public class GameMapData
         Unit attackingUnit = GetSimilarUnit(attackRequest.ActingUnit);
 
         Unit resultantDefendingUnit = defendingUnit;
+        Unit resultantAttackingUnit = attackingUnit;
+
+        Debug.Log($"Chance to hit: {attackRequest.ChanceToHit}");
 
         if (UnityEngine.Random.Range(0.0f, 1.0f) <= attackRequest.ChanceToHit)
         {
             Debug.Log($"Attack succeeded {attackingUnit.Name} vs. {defendingUnit.Name} for {attackRequest.PotentialDamageDealt}");
 
-            resultantDefendingUnit = defendingUnit.ChangeHealth(defendingUnit.CurrentHealth - attackRequest.PotentialDamageDealt);
+            resultantDefendingUnit = defendingUnit
+                .ChangeHealth(defendingUnit.CurrentHealth - attackRequest.PotentialDamageDealt)
+                .ChangeSkillPoints(defendingUnit.CurrentSkillPoints + 2);
+
+            resultantAttackingUnit = attackingUnit.ChangeSkillPoints(attackingUnit.CurrentSkillPoints + 3);
         }
 
-        Unit resultantAttackingUnit = attackingUnit
+        resultantAttackingUnit = resultantAttackingUnit
             .ChangeTime(attackingUnit.Time + attackRequest.TimeSpent)
-            .RemoveStatusEffect(UnitStatusEffects.Overwatch);
+            .RemoveStatusEffect("Overwatch");
 
         //.ChangeActionPoints(attackingUnit.CurrentActionPoints - attackRequest.ActionPointCost)
 
@@ -156,7 +180,6 @@ public class GameMapData
     public GameMapData WaitUnit(WaitRequest waitRequest)
     {
         Unit actingUnit = GetSimilarUnit(waitRequest.ActingUnit);
-        Debug.Log($"{actingUnit.Name} is wait for {waitRequest.TimeSpent} to replenish {waitRequest.ActionPointsReplenished}");
 
         actingUnit = actingUnit.ChangeTime(actingUnit.Time + waitRequest.TimeSpent);
         //  .ChangeActionPoints(actingUnit.CurrentActionPoints + waitRequest.ActionPointsReplenished);
@@ -166,8 +189,20 @@ public class GameMapData
 
     public GameMapData OverwatchUnit(OverwatchRequest overwatchRequest)
     {
-        Unit actingUnit = GetSimilarUnit(overwatchRequest.ActingUnit).ApplyStatusEffect(UnitStatusEffects.Overwatch);
+        Unit actingUnit = GetSimilarUnit(overwatchRequest.ActingUnit);
+        actingUnit = actingUnit.ApplyStatusEffect("Overwatch", actingUnit.Time);
+
         actingUnit = actingUnit.ChangeTime(actingUnit.Time + overwatchRequest.TimeSpent);
+        return new GameMapData(unitCensus.UpdateUnit(actingUnit), tileCensus);
+    }
+
+    public GameMapData UseSkill(UseSkillRequest useSkillRequest)
+    {
+        Unit actingUnit = GetSimilarUnit(useSkillRequest.ActingUnit);
+        actingUnit = actingUnit.ApplyStatusEffect(useSkillRequest.SkillName, actingUnit.Time);
+
+        actingUnit = actingUnit.ChangeTime(actingUnit.Time + useSkillRequest.TimeSpent);
+        Debug.Log($"Skill {useSkillRequest.SkillName} was used on {actingUnit}");
         return new GameMapData(unitCensus.UpdateUnit(actingUnit), tileCensus);
     }
 
@@ -186,34 +221,40 @@ public class GameMapData
         inclusion ??= new Vector3Int[0];
 
         IUndirectedGraph<Vector3Int> graph = new UndirectedGraph<Vector3Int>();
-        Vector3Int root = tileCensus.Census.Where(x => IsVacant(x)).First();
-        graph.Add(root);
+        HashSet<Vector3Int> unvisited = new HashSet<Vector3Int>(tileCensus.Census.Where(x => IsVacant(x)));
 
-        SearchAlgorithms.BreadthFirstSearch(root,
-            x =>
-                {
-                    List<Vector3Int> children = new List<Vector3Int>();
-                    for (float angle = 0; angle < Mathf.PI * 2; angle += Mathf.PI / 4)
+        while (unvisited.Count > 0)
+        {
+            Vector3Int root = unvisited.First();
+            graph.Add(root);
+            unvisited.Remove(root);
+
+            SearchAlgorithms.BreadthFirstSearch(root,
+                x =>
                     {
-                        Vector3Int child = x + Vector3Int.one.Rotate(angle);
-                        
-                        if (inclusion.Contains(child) || (tileCensus.Contains(child) && IsVacant(child)))
+                        List<Vector3Int> children = new List<Vector3Int>();
+                        for (float angle = 0; angle < Mathf.PI * 2; angle += Mathf.PI / 4)
                         {
-                            children.Add(child);
+                            Vector3Int child = x + Vector3Int.one.Rotate(angle);
 
-                            if (!graph.Contains(child)) 
+                            if (inclusion.Contains(child) || (tileCensus.Contains(child) && IsVacant(child)))
                             {
-                                graph.Add(child);
+                                children.Add(child);
+
+                                if (!graph.Contains(child))
+                                {
+                                    graph.Add(child);
+                                    unvisited.Remove(child);
+                                }
+
+                                graph.Connect(x, child);
                             }
-
-                            graph.Connect(x, child);
                         }
-                    }
-                    return children;
-                },
-            _ => { }
-            );
-
+                        return children;
+                    },
+                _ => { }
+                );
+        }
         return graph;
     }
 

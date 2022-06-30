@@ -10,7 +10,8 @@ public abstract class MapActionRequest
         Movement = 5,
         Attack = 4,
         Overwatch = 3,
-        Wait = 2
+        Wait = 2,
+        Skill = 6
     }
 
     private readonly Unit actingUnit;

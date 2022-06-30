@@ -6,6 +6,7 @@ using UnityEngine;
 using Yarn.Unity;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+
 public class TutorialManager : MonoBehaviour //should be able to interact with yarn also
 {
    
@@ -38,10 +39,6 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
 
 
     private readonly Vector3[] checkPoints = new Vector3[] { new Vector3(0.5f, -5.25f, -10.0f)};
-
-
-    [SerializeField]
-    public GameObject DialogueCanvas;
 
     [SerializeField]
     public Button[] buttonActions;
@@ -105,21 +102,21 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
                 Debug.Log("position I clicked = : " + doubleClickPos);
                 Debug.Log("Checkpoint = " + currentCheckpoint);
                 float distClick = Vector3.Distance(currentCheckpoint, doubleClickPos);
-                if (distClick < 0.5) //In proper range!
+                if (distClick < 1.0) //In proper range!
                 {
                     Debug.Log("Correct pos");
                     Debug.Log(doubleClickPos);
 
                     //We can go onto the next phase 
                     currentStage += 1;
-                    Invoke("StartPhase", 2.0f);
+                    Invoke("StartPhase", 1.5f);
 
                 } 
                 else
                 {
                     Debug.Log("Wrong pos");
                     Debug.Log("The distance is: " + distClick);
-                    Debug.Log(doubleClickPos); ;
+                    Debug.Log(doubleClickPos);
                 }
                 
             }
@@ -148,7 +145,7 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
                     {
                         overwatchInstructionsPlayed = true;
                         StartPhase();
-                        nextReminderTime = Time.time + 10.0f;
+                        nextReminderTime = Time.time + 7.5f; //Time taken to play next set of instructions 
                     }
                     else
                     {
@@ -232,6 +229,7 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
 
     public void AwaitingConfirmAttack() 
     {
+        Debug.Log("Current stage is: " + currentStage);
         if (currentStage == 1)
         {
             Debug.Log("Awaiting Confirm: " + stageIntermediate[currentStage]);

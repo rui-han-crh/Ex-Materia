@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using CombatSystem.Facade;
+using CombatSystem.Effects;
 
 namespace CombatSystem.Entities
 {
@@ -37,15 +39,24 @@ namespace CombatSystem.Entities
 
         private readonly int time;
 
+        private readonly string basicSkillName;
+
+        private readonly string ultimateSkillName;
+
+        public string BasicSkillName => basicSkillName;
+        public string UltimateSkillName => ultimateSkillName;
+
         public int Identity => identity;
 
         public string Name => name;
 
-        public int Attack => currentProperties.Attack;
+        public int Attack => 
+            (int)(currentProperties.Attack * statusEffects.PercentageAttackModifier) + statusEffects.FlatAttackModifier;
 
-        public int Defence => currentProperties.Defence;
+        public int Defence => 
+            (int)(currentProperties.Defence * statusEffects.PercentageDefenceModifier) + statusEffects.FlatDefenceModifier;
 
-        public int Range => currentProperties.Range;
+        public int Range => currentProperties.Range + statusEffects.RangeModifier;
 
         public int Risk => riskCalculatingFunction(this);
 
@@ -57,6 +68,10 @@ namespace CombatSystem.Entities
 
         public int MaxActionPoints => currentProperties.MaxActionPoints;
 
+        public int CurrentSkillPoints => currentProperties.CurrentSkillPoints;
+
+        public int MaxSkillPoints => currentProperties.MaxSkillPoints;
+
         public int Time => time;
 
         public UnitFaction Faction => faction;
@@ -64,6 +79,7 @@ namespace CombatSystem.Entities
         public static void ResetClass()
         {
             identityCount = 1;
+            UnitStatusEffectsFacade.Instance.Awake();
         }
 
         private Unit()
@@ -71,22 +87,21 @@ namespace CombatSystem.Entities
             identity = -1;
             currentProperties = new UnitProperties();
             baseProperties = new UnitProperties();
-            statusEffects = UnitStatusEffects.None;
+            statusEffects = UnitStatusEffects.None();
             time = 0;
             this.faction = UnitFaction.Friendly;
             this.riskCalculatingFunction = _ => Defence;
+            this.basicSkillName = "";
+            this.ultimateSkillName = "";
         }
 
-        private Unit(string name, UnitProperties properties, UnitFaction faction)
+        private Unit(string name, UnitProperties properties, UnitFaction faction) : this()
         {
             this.name = name;
             this.faction = faction;
             this.identity = identityCount++;
             this.baseProperties = properties;
             this.currentProperties = properties;
-            this.statusEffects = UnitStatusEffects.None;
-            this.time = 0;
-            this.riskCalculatingFunction = _ => Defence;
         }
 
         private Unit(string name, UnitProperties properties, int time, UnitFaction faction) : this(name, properties, faction)
@@ -115,6 +130,21 @@ namespace CombatSystem.Entities
             }
         }
 
+        private Unit(string name,
+            UnitProperties properties,
+            int time,
+            UnitFaction faction,
+            int riskParameter,
+            RiskCalculationMethod method,
+            string basicSkillName,
+            string ultimateSkillName)
+            : this(name, properties, time, faction, riskParameter, method)
+        {
+            this.basicSkillName = basicSkillName;
+            this.ultimateSkillName = ultimateSkillName;
+        }
+
+
         private Unit(Unit oldUnit)
         {
             this.name = oldUnit.Name;
@@ -125,6 +155,8 @@ namespace CombatSystem.Entities
             this.time = oldUnit.time;
             this.faction = oldUnit.faction;
             this.riskCalculatingFunction = oldUnit.riskCalculatingFunction;
+            this.basicSkillName = oldUnit.basicSkillName;
+            this.ultimateSkillName = oldUnit.ultimateSkillName;
         }
 
         private Unit(UnitProperties properties, Unit oldUnit) : this(oldUnit)
@@ -135,6 +167,11 @@ namespace CombatSystem.Entities
         private Unit(UnitStatusEffects statusEffects, Unit oldUnit) : this(oldUnit)
         {
             this.statusEffects = statusEffects;
+        }
+
+        private Unit(UnitStatusEffects statusEffects, UnitProperties properties, Unit oldUnit) : this(statusEffects, oldUnit)
+        {
+            this.currentProperties = properties;
         }
 
         private Unit(int time, Unit oldUnit) : this(oldUnit)
@@ -157,9 +194,17 @@ namespace CombatSystem.Entities
             return new Unit(name, properties, time, faction);
         }
 
-        public static Unit CreateNewUnit(string name, UnitProperties properties, int time, UnitFaction faction, int risk, RiskCalculationMethod method)
+        public static Unit CreateNewUnit(
+            string name, 
+            UnitProperties properties, 
+            int time, 
+            UnitFaction faction, 
+            int risk, 
+            RiskCalculationMethod method, 
+            string basicSkillName, 
+            string ultimateSkillName)
         {
-            return new Unit(name, properties, time, faction, risk, method);
+            return new Unit(name, properties, time, faction, risk, method, basicSkillName, ultimateSkillName);
         }
 
         public Unit ChangeAttack(int newAttack)
@@ -202,29 +247,42 @@ namespace CombatSystem.Entities
             return new Unit(newUnitProperties, this);
         }
 
+        public Unit ChangeSkillPoints(int newSkillPoints)
+        {
+            UnitProperties newUnitProperties = currentProperties;
+            newUnitProperties.CurrentSkillPoints = newSkillPoints;
+
+            return new Unit(newUnitProperties, this);
+        }
+
         public Unit ChangeTime(int newTime)
         {
             return new Unit(newTime, this);
         }
 
-        public UnitStatusEffects GetUnitStatusEffects()
+        public bool HasStatusEffect(string effect)
         {
-            return statusEffects;
+            return statusEffects.HasEffect(effect);
         }
 
-        public bool HasStatusEffect(UnitStatusEffects effects)
+        public Unit ApplyStatusEffect(string effectName, int endTime)
         {
-            return statusEffects.HasFlag(effects);
+            UnitProperties newProperties = currentProperties;
+            StatusEffect effect = UnitStatusEffectsFacade.Instance.GetEffect(effectName);
+            newProperties.CurrentHealth += effect.FlatHealthRecovery;
+            newProperties.CurrentSkillPoints -= effect.SkillPointCost;
+
+            return new Unit(statusEffects.AddStatusEffect(effectName, endTime), newProperties, this);
         }
 
-        public Unit ApplyStatusEffect(UnitStatusEffects effect)
+        public Unit RemoveStatusEffect(string effectName)
         {
-            return new Unit(statusEffects | effect, this);
+            return new Unit(statusEffects.RemoveStatusEffect(effectName), this);
         }
 
-        public Unit RemoveStatusEffect(UnitStatusEffects effect)
+        public Unit CleanStatusEffects()
         {
-            return new Unit(statusEffects & ~effect, this);
+            return new Unit(statusEffects.CleanEffectsBasedOnTime(Time), this);
         }
 
         public override int GetHashCode()
