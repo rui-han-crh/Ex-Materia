@@ -55,15 +55,12 @@ title: Fireplace
 tags:
 ---
 //They should all be Emmanuel, some weird import error 
-<<load Speaker Emmanuel Happy>>
+<<load Speaker Lucien Happy>>
 Emmanuel: My very own fireplace!
 Emmanuel: Callesmere is freezing out there 
 Emmanuel: The lowest recorded temperature was around negative 70 degrees 
 
-<<load Speaker Emmanuel Neutral>>
-
-Fireplace: *Crackle Crackle*
-===
+<<load Speaker Lucien Neutral>>
 
 
 title: Kitchen
