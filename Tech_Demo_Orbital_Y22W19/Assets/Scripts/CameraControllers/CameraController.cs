@@ -42,6 +42,8 @@ public class CameraController : MonoBehaviour
     [SerializeField]
     private float rotationSpeed = 2f;
 
+    private Task focusingCoroutine;
+
     private void Awake()
     {
         keyboardControls = new KeyboardControls();
@@ -55,6 +57,12 @@ public class CameraController : MonoBehaviour
 
     private void OnDisable()
     {
+        if (focusingCoroutine != null)
+        {
+            focusingCoroutine.Stop();
+        }
+        focusingCoroutine = null;
+
         keyboardControls?.Disable();
     }
 
@@ -103,6 +111,11 @@ public class CameraController : MonoBehaviour
 
     public void FocusOn(Vector3 positionToFocus, float? totalTime = null)
     {
+        if (focusingCoroutine != null && focusingCoroutine.Running)
+        {
+            return;
+        }
+
         positionToFocus.z = mainCamera.transform.position.z;
 
         IEnumerator Lerp()
@@ -123,7 +136,7 @@ public class CameraController : MonoBehaviour
             mainCamera.transform.position = positionToFocus;
         }
 
-        StartCoroutine(Lerp());
+        focusingCoroutine = new Task(Lerp());
     }
 
     public void Dolly(float degrees)

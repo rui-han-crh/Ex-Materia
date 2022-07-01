@@ -14,6 +14,8 @@ public class Interactable : MonoBehaviour
 
     private int numberOfInteractionsInProgress;
 
+    public bool hasIcon = true;
+
     public event Action EndedInteract = delegate { };
 
     [SerializeField]
@@ -22,7 +24,10 @@ public class Interactable : MonoBehaviour
 
     private void Awake()
     {
-        icon = Instantiate(InteractableCollection.Instance.InteractIcon, InteractableCollection.Instance.Canvas.transform);
+        if (hasIcon)
+        {
+            icon = Instantiate(InteractableCollection.Instance.InteractIcon, InteractableCollection.Instance.Canvas.transform);
+        }
 
         RepositionIcon();
 
@@ -34,6 +39,11 @@ public class Interactable : MonoBehaviour
 
     public void RepositionIcon()
     {
+        if (!hasIcon)
+        {
+            return;
+        }
+
         Vector3 screenPoint = Camera.main.WorldToScreenPoint(transform.position + InteractableCollection.HEAD_OFFSET);
         icon.GetComponent<RectTransform>().position = screenPoint;
     }
@@ -97,6 +107,11 @@ public class Interactable : MonoBehaviour
 
     public void SetIconVisibility(bool state)
     {
+        if (!hasIcon)
+        {
+            return;
+        }
+
         icon.SetActive(state);
     }
 }
