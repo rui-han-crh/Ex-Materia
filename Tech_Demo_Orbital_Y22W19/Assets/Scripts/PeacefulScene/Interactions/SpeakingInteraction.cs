@@ -4,14 +4,12 @@ using System.Collections.Generic;
 using Transitions;
 using UnityEngine;
 
-public class SpeakingInteraction : MonoBehaviour, IInteraction
+public class SpeakingInteraction : Interaction
 {
-    public event Action OnEnded = delegate { };
-
     [SerializeField]
     private string yarnScriptName;
 
-    public void Interact()
+    public override void Interact()
     {
         CanvasTransitions.Fade(InteractableCollection.Instance.DialogueSystemCanvasGroup, 0, 1, time: 0.3f);
         InteractableCollection.Instance.DialogueSystemCanvasGroup.interactable = true;
@@ -23,12 +21,6 @@ public class SpeakingInteraction : MonoBehaviour, IInteraction
     {
         CanvasTransitions.Fade(InteractableCollection.Instance.DialogueSystemCanvasGroup, 1, 0, time: 0.3f);
         InteractableCollection.Instance.DialogueSystemCanvasGroup.interactable = false;
-        OnEnded();
-        FlushEventHandlers();
-    }
-
-    public void FlushEventHandlers()
-    {
-        OnEnded = delegate { };
+        OnEnd();
     }
 }

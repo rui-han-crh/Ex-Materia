@@ -261,6 +261,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasIcon: 1
+  interactOnceOnly: 0
+  canInteract: 1
   interactions: []
 --- !u!70 &256034519
 CapsuleCollider2D:
@@ -278,6 +280,82 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 0.2, y: 0.2}
   m_Direction: 0
+--- !u!1 &312544169
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 312544170}
+  - component: {fileID: 312544173}
+  - component: {fileID: 312544172}
+  - component: {fileID: 312544171}
+  m_Layer: 0
+  m_Name: Door
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &312544170
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 312544169}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.594, y: -1.135, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1029112519}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &312544171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 312544169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5152e2a66f74e6840bc583d2c5bc0131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &312544172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 312544169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24f2555ef049e7d4383c00c50d4541fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneName: ExteriorBar
+--- !u!114 &312544173
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 312544169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ec85083d95b1da40a819df5c6c6c788, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasIcon: 1
+  interactOnceOnly: 0
+  canInteract: 1
+  interactions:
+  - {fileID: 312544172}
+  - {fileID: 312544171}
 --- !u!1 &332572272
 GameObject:
   m_ObjectHideFlags: 0
@@ -1449,6 +1527,8 @@ GameObject:
   - component: {fileID: 549766117}
   - component: {fileID: 549766118}
   - component: {fileID: 549766120}
+  - component: {fileID: 549766121}
+  - component: {fileID: 549766122}
   m_Layer: 0
   m_Name: EnterTrigger
   m_TagString: Untagged
@@ -1510,13 +1590,13 @@ PolygonCollider2D:
   m_Points:
     m_Paths:
     - - {x: 0.44822073, y: -1.3356742}
-      - {x: 1.3739439, y: -0.74614966}
-      - {x: 0.010686994, y: -0.05034876}
-      - {x: -1.0016029, y: -0.59622395}
-      - {x: -0.60616606, y: -0.79063666}
-      - {x: -0.009581685, y: -0.46897733}
-      - {x: 0.64265347, y: -0.8159245}
-      - {x: 0.06879103, y: -1.1430442}
+      - {x: 1.6244935, y: -0.75310934}
+      - {x: -0.058910012, y: 0.13756335}
+      - {x: -1.1547165, y: -0.498788}
+      - {x: -0.7940783, y: -0.7071202}
+      - {x: 0.018257141, y: -0.26018608}
+      - {x: 1.0045584, y: -0.8089647}
+      - {x: 0.22886443, y: -1.2265606}
 --- !u!114 &549766119
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1530,8 +1610,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasIcon: 0
+  interactOnceOnly: 1
+  canInteract: 1
   interactions:
+  - {fileID: 549766121}
   - {fileID: 549766120}
+  - {fileID: 549766121}
 --- !u!114 &549766120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1545,6 +1629,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   yarnScriptName: OliviaGreetEmmanuelBar
+--- !u!114 &549766121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549766115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b11dd9d2468140548bd6f2b6e9c16c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameObjectToSet: {fileID: 312544169}
+  active: 0
+--- !u!114 &549766122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 549766115}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b11dd9d2468140548bd6f2b6e9c16c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameObjectToSet: {fileID: 312544169}
+  active: 1
 --- !u!1 &637308481
 GameObject:
   m_ObjectHideFlags: 0
@@ -2612,6 +2724,7 @@ Transform:
   m_Children:
   - {fileID: 1873705366}
   - {fileID: 549766116}
+  - {fileID: 312544170}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2809,6 +2922,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasIcon: 1
+  interactOnceOnly: 0
+  canInteract: 1
   interactions:
   - {fileID: 1225846600}
   - {fileID: 1225846601}
@@ -59228,6 +59343,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasIcon: 1
+  interactOnceOnly: 0
+  canInteract: 1
   interactions: []
 --- !u!1 &1978323883
 GameObject:

@@ -3,32 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WaitForSecondsInteraction : MonoBehaviour, IInteraction
+public class WaitForSecondsInteraction : Interaction
 {
-    public event Action OnEnded;
-
     [SerializeField]
     private float secondsToWait;
 
-    public void Interact()
+    public override void Interact()
     {
         IEnumerator Waiting()
         {
             yield return new WaitForSeconds(secondsToWait);
-            InvokeDelegate();
+            OnEnd();
         }
         StartCoroutine(Waiting());
     }
-
-    private void InvokeDelegate()
-    {
-        OnEnded();
-        FlushEventHandlers();
-    }
-
-    public void FlushEventHandlers()
-    {
-        OnEnded = delegate { };
-    }
-
 }

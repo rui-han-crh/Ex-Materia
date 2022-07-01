@@ -4,21 +4,14 @@ using System.Collections.Generic;
 using Transitions;
 using UnityEngine;
 
-public class ShowScreenObjectInteraction : MonoBehaviour, IInteraction
+public class ShowScreenObjectInteraction : Interaction
 {
-    public event Action OnEnded = delegate { };
-
     [SerializeField]
     private GameObject screenObjectToShow;
 
-    public void Interact()
+    public override void Interact()
     {
         ScreenObjectManager.Instance.ShowObject(screenObjectToShow.name);
-        ScreenObjectManager.Instance.OnEnded += () => OnEnded();
-    }
-
-    public void FlushEventHandlers()
-    {
-        OnEnded = delegate { };
+        ScreenObjectManager.Instance.OnEnded += () => OnEnd();
     }
 }

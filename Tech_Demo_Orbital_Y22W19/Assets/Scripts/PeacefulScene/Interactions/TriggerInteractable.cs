@@ -18,14 +18,14 @@ public class TriggerInteractable : MonoBehaviour
 
     private void Trigger(Collider2D collision)
     {
-        Interactable collisionInteractable = collision.GetComponent<Interactable>();
-        if (collisionInteractable == null
+        InteractionController interactionController = collision.GetComponent<InteractionController>();
+        if (interactionController == null
             || (triggerOnceOnly && numberOfTimesTriggered > 0))
         {
             return;
         }
 
-        interactableToTrigger.Interact(collisionInteractable);
+        interactionController.InteractUsing(interactableToTrigger);
         numberOfTimesTriggered++;
     }
 }

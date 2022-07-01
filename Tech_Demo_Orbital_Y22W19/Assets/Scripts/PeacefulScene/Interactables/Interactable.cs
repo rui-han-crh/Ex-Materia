@@ -16,11 +16,40 @@ public class Interactable : MonoBehaviour
 
     public bool hasIcon = true;
 
+    public bool interactOnceOnly = false;
+
+    [SerializeField]
+    private bool canInteract = true;
+
     public event Action EndedInteract = delegate { };
 
     [SerializeField]
     [RequireInterface(typeof(IInteraction))]
     private UnityEngine.Object[] interactions;
+
+    private void OnEnable()
+    {
+        if (SaveFile.file.HasData(gameObject, typeof(Interactable), "hasIcon"))
+        {
+            hasIcon = SaveFile.file.Load<bool>(gameObject, typeof(Interactable), "hasIcon");
+            Debug.Log($"Loaded {gameObject.name} hasIcon as {hasIcon}");
+        }
+
+        if (SaveFile.file.HasData(gameObject, typeof(Interactable), "canInteract")) 
+        {
+            canInteract = SaveFile.file.Load<bool>(gameObject, typeof(Interactable), "canInteract");
+            Debug.Log($"Loaded {gameObject.name} canInteract as {canInteract}");
+        }
+    }
+
+    private void OnDisable()
+    {
+        SaveFile.file.Save(gameObject, typeof(Interactable), "hasIcon", hasIcon);
+
+        SaveFile.file.Save(gameObject, typeof(Interactable), "canInteract", canInteract);
+
+        Debug.Log($"Saving {gameObject.name}, hasIcon {hasIcon} and canInteract {canInteract}");
+    }
 
     private void Awake()
     {
@@ -33,8 +62,11 @@ public class Interactable : MonoBehaviour
 
         SetIconVisibility(false);
         InteractableCollection.Instance.Collection.Add(this);
+    }
 
-        Debug.Log($"Created {this.name} at {transform.position}");
+    public void SetInteractability(bool state)
+    {
+        canInteract = state;
     }
 
     public void RepositionIcon()
@@ -65,23 +97,25 @@ public class Interactable : MonoBehaviour
         }
     }
 
-    public void Interact(Interactable other)
+    public bool Interact(Interactable other)
     {
+        if (!canInteract || !other.canInteract)
+        {
+            return false;
+        }
+
         if (interactions.Length == 0)
         {
             Debug.LogError($"There were no interactions given to {this}. Either add at least 1 interaction, " +
                 $"or remove this Monobehaviour from {name}");
 
-            return;
+            return false;
         }
 
         void OnFinishInteractions()
         {
             SetInteracting(false);
             other.SetInteracting(false);
-
-            EndedInteract();
-            FlushEventHandlers();
         }
 
         SetInteracting(true);
@@ -98,16 +132,25 @@ public class Interactable : MonoBehaviour
             else
             {
                 IInteraction interaction = (IInteraction)enumerator.Current;
+                Debug.Log($"Beginning {interaction}");
                 interaction.OnEnded += InvokeInteraction;
                 interaction.Interact();
             }
         }
+
         InvokeInteraction();
+
+        if (interactOnceOnly)
+        {
+            canInteract = false;
+        }
+
+        return true;
     }
 
     public void SetIconVisibility(bool state)
     {
-        if (!hasIcon)
+        if (!hasIcon || !canInteract)
         {
             return;
         }

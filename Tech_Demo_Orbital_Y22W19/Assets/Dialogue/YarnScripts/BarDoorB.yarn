@@ -2,12 +2,20 @@
 tags:
 position: -143,-55
 ---
-<<clear Speaker>>
-Door: A strange warmth fills the surroundings. 
+<<if visited("Bar_Door_Knock") == false>>
+    <<clear Speaker>>
+    Door: A strange warmth fills the surroundings. 
 
-Door: It's from a distinct source of heating, someone's here. 
+    Door: It's from a distinct source of heating, someone's here. 
 
-Door: Through the howling and whistling of the whirling winds, a cacophany of jesting and joshing can be heard.
+    Door: Through the howling and whistling of the whirling winds, a cacophany of jesting and joshing can be heard.
+<<else>>
+    -> Enter Bar
+        <<transitionScene>>
+    -> Leave
+        <<unsetNextScene>>
+<<endif>>
+
 
 <<load Speaker Emmanuel Neutral>>
 Emmanuel: This must be it!

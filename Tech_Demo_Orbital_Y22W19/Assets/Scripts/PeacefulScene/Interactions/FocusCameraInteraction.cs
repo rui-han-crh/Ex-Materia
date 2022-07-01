@@ -2,24 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FocusCameraInteraction : MonoBehaviour, IInteraction
+public class FocusCameraInteraction : Interaction
 {
-    public event System.Action OnEnded = delegate { };
 
     [SerializeField]
     private Vector3 focusPosition;
     [SerializeField]
     private float timeToFocus;
 
-    public void FlushEventHandlers()
-    {
-        OnEnded = delegate { };
-    }
-
-    public void Interact()
+    public override void Interact()
     {
         CameraController.Instance.FocusOn(focusPosition, timeToFocus);
-        OnEnded();
+        OnEnd();
         FlushEventHandlers();
     }
 }

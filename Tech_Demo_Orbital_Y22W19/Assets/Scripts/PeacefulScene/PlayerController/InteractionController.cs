@@ -78,7 +78,21 @@ public class InteractionController : MonoBehaviour
             return;
         }
 
-        GetAllInteractables(permittedRadius).First().Interact(thisInteractable);
+        if (!GetAllInteractables(permittedRadius).Any(x => x.Interact(thisInteractable)))
+        {
+            return;
+        }
+
+        thisInteractable.EndedInteract += () => movementController.OnEnable();
+        movementController.OnDisable();
+    }
+
+    public void InteractUsing(Interactable interactable)
+    {
+        if (!interactable.Interact(thisInteractable))
+        {
+            return;
+        }
 
         thisInteractable.EndedInteract += () => movementController.OnEnable();
         movementController.OnDisable();

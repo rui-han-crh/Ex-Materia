@@ -3,24 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SetGameObjectActiveInteraction : MonoBehaviour, IInteraction
+public class SetGameObjectActiveInteraction : Interaction
 {
-    public event Action OnEnded = delegate { };
-
     [SerializeField]
-    private GameObject gameObject;
+    private GameObject gameObjectToSet;
 
     [SerializeField]
     private bool active;
 
-    public void Interact()
+    public override void Interact()
     {
-        gameObject.SetActive(active);
-        OnEnded();
-    }
-
-    public void FlushEventHandlers()
-    {
-        OnEnded = delegate { };
+        gameObjectToSet.SetActive(active);
+        OnEnd();
     }
 }

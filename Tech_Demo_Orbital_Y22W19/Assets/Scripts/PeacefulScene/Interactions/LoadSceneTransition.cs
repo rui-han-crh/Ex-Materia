@@ -3,22 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LoadSceneTransition : MonoBehaviour, IInteraction
+public class LoadSceneTransition : Interaction
 {
-    public event Action OnEnded = delegate { };
 
     [SerializeField]
     private string sceneName;
 
-    public void FlushEventHandlers()
-    {
-        OnEnded = delegate { };
-    }
-
-    public void Interact()
+    public override void Interact()
     {
         SceneTransitionManager.Instance.PrepareScene(sceneName);
-        OnEnded();
+        OnEnd();
         FlushEventHandlers();
     }
 }
