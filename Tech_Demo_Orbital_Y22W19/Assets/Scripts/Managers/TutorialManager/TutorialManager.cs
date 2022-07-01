@@ -43,6 +43,9 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
     [SerializeField]
     public Button[] buttonActions;
 
+    [SerializeField]
+    public GameObject CanvasBlock;
+
     private bool isInConfirmed = false;
 
 
@@ -52,8 +55,11 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
     public SpeakingInteractionChangeable DialogueHolder;
 
 
+
+
     public void Awake()
     {
+        CanvasBlock.SetActive(false);
 
     }
 
@@ -85,42 +91,35 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
 
 
     private void Update()
-    //no choice need to check for double click to confirm movement on update
-    //Especially for the thing 
     {
-         if(Input.GetMouseButtonDown(0) && currentStage == 0)
+        //New Idea: If isInConfirmed, check where his current position is 
+        if (currentStage == 0 && isInConfirmed)
         {
-            float timeSinceLastClick = Time.time - lastClickTime;
 
-            if (timeSinceLastClick <= DOUBLE_CLICK_TIME && isInConfirmed)
+            Vector3 cursorPos = MainCamera.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 currentCheckpoint = checkPoints[currentStage];
+            float distCLick = Vector3.Distance(cursorPos, currentCheckpoint);
+            if (distCLick < 0.5)
             {
-                //do left click 
-                Vector3 doubleClickPos = MainCamera.ScreenToWorldPoint(Input.mousePosition);
-                Vector3 currentCheckpoint = checkPoints[currentStage];
-                Debug.Log("position I clicked = : " + doubleClickPos);
-                Debug.Log("Checkpoint = " + currentCheckpoint);
-                float distClick = Vector3.Distance(currentCheckpoint, doubleClickPos);
-                if (distClick < 1.0) //In proper range!
+                CanvasBlock.SetActive(false);
+                if (Input.GetMouseButtonDown(0))
                 {
-                    Debug.Log("Correct pos");
-                    Debug.Log(doubleClickPos);
+                    float timeSinceLastClick = Time.time - lastClickTime;
+                    if (timeSinceLastClick < DOUBLE_CLICK_TIME)
+                    {
+                        Debug.Log("Correct pos");
 
-                    //We can go onto the next phase 
-                    currentStage += 1;
-                    Invoke("StartPhase", 1.5f);
-
-                } 
-                else
-                {
-                    Debug.Log("Wrong pos");
-                    Debug.Log("The distance is: " + distClick);
-                    Debug.Log(doubleClickPos);
+                        //We can go onto the next phase 
+                        currentStage += 1;
+                        Invoke("StartPhase", 1.5f);
+                    }
+                    lastClickTime = Time.time;
                 }
-                
             }
-
-            lastClickTime = Time.time;
-
+            else
+            {
+                CanvasBlock.SetActive(true);
+            }
         }
         //Pressing control can initate the start / Overwatch. 
         //These are 2 key breaks where I'm unsure where the player currently is 
