@@ -109,8 +109,23 @@ public class YarnInteractable : MonoBehaviour
 
     public void StartingLoad(string charName, string emotion)
     {
+        Color c = expression.image.color;
+        c.a = 1;
+        expression.image.color = c;
         expression.image.sprite = YarnManager.Instance.characterMap[charName].GetEmotion(emotion);
     }
+
+
+    [YarnCommand("clear")]
+    public void ClearSpriteToTransparency()
+    {
+        Color c = expression.image.color;
+        c.a = 0;
+        expression.image.color = c;
+        expression.image.sprite = null;
+    }
+
+
 
     /*
      * An endScene triggers an end of conversation;

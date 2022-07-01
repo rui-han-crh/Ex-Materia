@@ -8,7 +8,7 @@ public class LoadSceneTransition : MonoBehaviour, IInteraction
     public event Action OnEnded = delegate { };
 
     [SerializeField]
-    private int sceneIndex;
+    private string sceneName;
 
     public void FlushEventHandlers()
     {
@@ -17,7 +17,7 @@ public class LoadSceneTransition : MonoBehaviour, IInteraction
 
     public void Interact()
     {
-        SceneTransitionManager.Instance.PrepareScene(sceneIndex);
+        SceneTransitionManager.Instance.PrepareScene(sceneName);
         OnEnded();
         FlushEventHandlers();
     }

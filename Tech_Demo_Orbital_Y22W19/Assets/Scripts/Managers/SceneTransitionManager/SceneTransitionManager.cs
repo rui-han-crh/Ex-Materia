@@ -31,37 +31,37 @@ public class SceneTransitionManager : MonoBehaviour
         dialogueRunner.AddCommandHandler("unsetNextScene", UnsetNextScene);
     }
 
-    public int? SceneBuildIndex
+    public string SceneName
     {
         get;
         private set;
     }
 
-    public void PrepareScene(int sceneIndex)
+    public void PrepareScene(string sceneName)
     {
-        SceneBuildIndex = sceneIndex;
+        SceneName = sceneName;
     }
 
 
     public void UnsetNextScene()
     {
-        if (SceneBuildIndex == null)
+        if (SceneName == null)
         {
             return;
         }
 
-        SceneBuildIndex = null;
+        SceneName = null;
     }
 
     public void TransitionToScene()
     {
         Debug.Log("Scene transition requested");
-        if (SceneBuildIndex == null)
+        if (SceneName == null)
         {
             Debug.LogError("No next scene loaded");
             return;
         }
 
-        pendingSceneLoad = SceneManager.LoadSceneAsync(SceneBuildIndex.Value);
+        pendingSceneLoad = SceneManager.LoadSceneAsync(SceneName);
     }
 }

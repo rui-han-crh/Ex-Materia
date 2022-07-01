@@ -10,6 +10,7 @@ namespace Transitions
     {
         public static Task Fade(CanvasGroup canvasGroup, float start, float end, float time = 1)
         {
+            canvasGroup.alpha = start;
             IEnumerator FadeEnumerator()
             {
                 canvasGroup.alpha = start;

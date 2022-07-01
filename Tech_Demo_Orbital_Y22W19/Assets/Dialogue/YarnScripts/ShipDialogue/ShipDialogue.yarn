@@ -7,14 +7,16 @@ Lucien: I'm Lucien, it's a pleasure to meet you!
 Lucien: I'm a historian, son of a former PAM-Researcher...
 Lucien: Enough about me...
 Lucien: I have an interesting proposal 
-Lucien: Behind me is a gate to a tutorial 
-Lucien: Tell me, do you want to learn more about how we fight enemies
+Lucien: Behind me is a gate to our <B> training grounds </B>
+Lucien: Tell me, would you like to learn more about how we fight enemies?
 -> Nah I'm good
 	<<jump NeglectTutorial>>
 
 -> Take me in!
 	Lucien: Great
-	Lucien: Follow me 
+	Lucien: Follow me
+	Lucien: At this point, both Emmanuel and Lucien should jump to the tutorial scene.
+
 ===
 
 
@@ -22,6 +24,36 @@ title: NeglectTutorial
 tags:
 ---
 <<load Speaker Lucien Sad>>
-Lucien: It's all good
-Lucien: See you next time!
+Lucien: It's all right then.
+Lucien: See you anytime you need a refresher on the combat!
 ===
+
+
+title: OliviaRoom
+tags:
+---
+<<load Speaker Olivia Happy>>
+Olivia: Hi there!
+Olivia: Welcome to my room!
+Olivia: It's pretty similar to yours wayy downstairs at the entrance 
+Olivia: Feel free to check it out
+<<load Speaker Olivia Angry>>
+Olivia: We have to turn in soon though
+Olivia: Heresay we might hit a blockade tomorrow
+Olivia: We need all hands on deck for tomorrow's encounter
+===
+
+
+title: EvelynMainRoom
+tags:
+---
+<<load Speaker Evelyn Neutral>>
+Evelyn: This is the main room where we control navigations for the ship 
+Evelyn: As you can see, it's a bit empty as of now 
+Evelyn: We're still in the process of loading items on board 
+Evelyn: Any discussions regarding the Progeny's movement will take place here 
+===
+
+
+
+

@@ -18,7 +18,7 @@ namespace OrderStatisticsTest
             public override int Compare(string x, string y)
             {
                 //jus tcompares by ASCII
-                return string.CompareOrdinal(y, x);
+                return string.CompareOrdinal(x, y);
             }
         }
         public class SampleIntComparer : Comparer<int>
@@ -40,7 +40,7 @@ namespace OrderStatisticsTest
         public void SampleSame10kIntegers()
         {
             List<int> vs = new List<int>();
-            for (int i = 0; i < 100000; i++)
+            for (int i = 0; i < 10000; i++)
             {
                 vs.Add(5);
             }
@@ -55,7 +55,7 @@ namespace OrderStatisticsTest
         {
             string[] myStrings = new string[] { "abc", "bc", "a", "abcd", "123", "420", "blazeit" };
             string thirdSmallest = OrderStatistics.QuickSelect(myStrings, new SampleStringComparer(), 3);
-            Assert.AreEqual("abcd", thirdSmallest);
+            Assert.AreEqual("a", thirdSmallest);
         }
 
 

@@ -9,7 +9,7 @@ public class MovementController : MonoBehaviour
     private Animator animator;
 
     [SerializeField]
-    private int speed;
+    private float speed;
 
     [SerializeField]
     private Tilemap groundReference;
