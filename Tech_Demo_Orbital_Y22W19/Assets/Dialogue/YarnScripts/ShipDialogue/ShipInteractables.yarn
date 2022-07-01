@@ -49,3 +49,27 @@ Lucien: On a side note, my dad was once a former PAM researcher
 Lucien: This book details the rise of PAM
 Lucien: TBC
 ===
+
+
+title: Fireplace
+tags:
+---
+//They should all be Emmanuel, some weird import error 
+<<load Speaker Lucien Happy>>
+Emmanuel: My very own fireplace!
+Emmanuel: Callesmere is freezing out there 
+Emmanuel: The lowest recorded temperature was around negative 70 degrees 
+
+<<load Speaker Lucien Neutral>>
+
+
+title: Kitchen
+tags:
+---
+<<load Speaker Evelyn Happy>>
+Evelyn: Luckily there weren't many dishes today 
+<<load Speaker Evelyn Neutral>>
+Evelyn: Here's our pantry and kitchen 
+Evelyn: It's small and humble 
+Evelyn: But it's got everything we need
+===
