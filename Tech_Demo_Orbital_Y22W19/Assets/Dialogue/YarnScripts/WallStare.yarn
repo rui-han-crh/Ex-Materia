@@ -2,7 +2,7 @@ title: WallStare_Entry
 tags: 
 position: -62.515716552734375,-81
 ---
-<<load Speaker Evelyn Neutral>>
+<<clear Speaker>>
 Wall: A peeling, dilapidated wall stands in front of you. It is but a small constituent in the facade of the brutalistic looking architecture looming over you.
 Wall: The elongated shadows of the structure against the setting sun shrouds the snowscape in a deep, unsettling darkness.
 -> Stare at the wall

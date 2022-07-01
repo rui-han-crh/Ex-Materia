@@ -1,0 +1,72 @@
+﻿title: BarDoorB_Entry
+tags:
+position: -143,-55
+---
+<<clear Speaker>>
+Door: A strange warmth fills the surroundings. 
+
+Door: It's from a distinct source of heating, someone's here. 
+
+Door: Through the howling and whistling of the whirling winds, a cacophany of jesting and joshing can be heard.
+
+<<load Speaker Emmanuel Neutral>>
+Emmanuel: This must be it!
+
+-> Knock on door
+    <<jump Bar_Door_Knock>>
+-> Press ear against door
+    <<jump BarDoorB_Press_Ear>>
+-> Leave
+    <<unsetNextScene>>
+===
+title: BarDoorB_Press_Ear
+position: -103,118
+---
+<<clear Speaker>>
+Evelyn: ...to expect me to reciprocate like that?!
+
+Olivia: I mean... He probably didn't mean it that way.
+
+Evelyn: No, it's not what he <i>said</i>, it's what he <i>did</i>.
+
+Olivia: You can just tell him.
+
+Olivia: Tell him that you don't like it when he waves you off like that.
+
+Evelyn: I <b>did</b>!
+
+Evelyn: I did so many times. It goes in one ear, through his hollow brain, then out the other.
+
+-> Knock on door
+    <<jump Bar_Door_Knock>>
+-> Leave
+    <<unsetNextScene>>
+===
+
+title: Bar_Door_Knock
+position: 274,94
+---
+<<clear Speaker>>
+Door: Emmanuel knocks on the door.
+
+Door: Momentarily, the voices stop. It's silent inside.
+
+Door: Then, a shrill voice punctutates the silence.
+
+Olivia: Ahoy matey! Who dare disturbs the great captain of lands yonder, mine wrath be thy owe!
+
+Olivia: Thy transgressions shall not sully these lands, the scourge of evil permeates your presence.
+
+Evelyn: Stop...
+
+<<load Speaker Emmanuel Neutral>>
+Emmanuel: Olivia, I know that's you. It's Emmanuel
+
+Emmanuel: I heard your voice in the intraservers back at HQ.
+
+Emmnauel: Open the door, it's cold here.
+
+<<clear Speaker>>
+Door: The clanking of metal bolts can be heard loosening.
+<<transitionScene>>
+===
