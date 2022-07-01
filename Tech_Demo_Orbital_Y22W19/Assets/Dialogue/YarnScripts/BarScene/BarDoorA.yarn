@@ -1,0 +1,36 @@
+﻿title: Bar-Door-A
+tags:
+position: -23,-43
+---
+Door: Knock on the door?
+-> Yes
+    <<jump Door_Knock>>
+-> No
+    <<jump Door_Leave>>
+===
+title: Door_Knock
+position: -11,91
+---
+Door: Emmanuel knocks on the door. It feels filmsy, as if it were made of cardboard.
+
+Door: There is no response.
+
+<<load Speaker Emmanuel Neutral>>
+Emmanuel: Wait... This is...
+
+<<clear Speaker>>
+Door: Emmanuel examines the door closer. On further inspection, its hinges are bent and the timbre doorframe seems to be splintering. Clear vivisected lines of expansion are engraved into wood.
+
+<<load Speaker Emmanuel Neutral>>
+Emmanuel: Poor design indeed...
+
+Emmanuel: Water seeped into the doors and its door frame. The water froze in the cold and expanded the wood, fracturing it.
+
+Emmanuel: There's no way I'll be entering this house, at least not through this door.
+===
+title: Door_Leave
+position: 0,1
+---
+<<load Speaker Emmanuel Neutral>>
+Emmanuel: They're probably not here.
+===

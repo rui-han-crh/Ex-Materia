@@ -1,0 +1,10 @@
+﻿title: DoorInteriorExit
+tags:
+---
+<<clear Speaker>>
+Door: Exit bar?
+-> Exit bar
+    <<transitionScene>>
+-> Stay inside
+    <<unsetNextScene>>
+===

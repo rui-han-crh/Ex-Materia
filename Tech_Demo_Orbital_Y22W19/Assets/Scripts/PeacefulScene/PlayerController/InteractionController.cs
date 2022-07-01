@@ -72,6 +72,11 @@ public class InteractionController : MonoBehaviour
 
     private void Interact()
     {
+        if (thisInteractable.IsInteracting)
+        {
+            return;
+        }
+
         IEnumerable<Interactable> allInteractables = GetAllInteractables(permittedRadius);
         if (allInteractables.Count() == 0)
         {
@@ -83,8 +88,7 @@ public class InteractionController : MonoBehaviour
             return;
         }
 
-        thisInteractable.EndedInteract += () => movementController.OnEnable();
-        movementController.OnDisable();
+        AfterInteraction();
     }
 
     public void InteractUsing(Interactable interactable)
@@ -94,7 +98,21 @@ public class InteractionController : MonoBehaviour
             return;
         }
 
-        thisInteractable.EndedInteract += () => movementController.OnEnable();
+        AfterInteraction();
+    }
+
+    private void AfterInteraction()
+    {
+        float savedRadius = permittedRadius;
+        permittedRadius = 0;
+        CheckForInteractables();
+
+        thisInteractable.EndedInteract += () =>
+        {
+            permittedRadius = savedRadius;
+            movementController.OnEnable();
+        };
+
         movementController.OnDisable();
     }
 

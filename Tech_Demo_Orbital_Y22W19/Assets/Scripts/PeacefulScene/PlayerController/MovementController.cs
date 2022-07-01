@@ -22,12 +22,16 @@ public class MovementController : MonoBehaviour
     {
         Debug.Log("Enabled movement controller");
         keyboardControls?.Enable();
+
+        if (SaveFile.file.HasData(gameObject, typeof(MovementController), "position"))
+            transform.position = SaveFile.file.Load<Vector3>(gameObject, typeof(MovementController), "position");
     }
 
     public void OnDisable()
     {
         Debug.Log("Disabled movement controller");
         keyboardControls?.Disable();
+        SaveFile.file.Save(gameObject, typeof(MovementController), "position", transform.position);
     }
 
     private void Awake()
