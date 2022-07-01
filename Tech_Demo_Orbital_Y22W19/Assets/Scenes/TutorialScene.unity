@@ -4109,7 +4109,6 @@ MonoBehaviour:
   - {fileID: 613088133}
   - {fileID: 2103424041}
   - {fileID: 1212855922}
-  actionUI: {fileID: 0}
   dialogueHolder: {fileID: 1798498337}
   Myself: {fileID: 1357131185}
   DialogueHolder: {fileID: 1798498339}
@@ -5902,7 +5901,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 63.95
+  m_fontSize: 53.5
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -6693,7 +6692,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 4
   m_Sprite: {fileID: 5992888193114086619, guid: a7491d0ce3e668d4398c92928ae7e4bf, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9622642, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -9091,7 +9090,7 @@ Animator:
   m_GameObject: {fileID: 1153391636}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 1de4c27809997254a95eae10fd0cba0b, type: 2}
+  m_Controller: {fileID: 9100000, guid: 13bbe8c400a982744bdd83f77a5b5234, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -9586,7 +9585,7 @@ GameObject:
   - component: {fileID: 1311215943}
   - component: {fileID: 1311215944}
   m_Layer: 0
-  m_Name: Evelyn
+  m_Name: Emmanuel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9632,7 +9631,7 @@ MonoBehaviour:
   ultimateSkillName: 
   riskCalculationMethod: 0
   faction: 0
-  avatar: {fileID: 21300000, guid: 70f229560a2817b44a08bca131996f10, type: 3}
+  avatar: {fileID: 21300000, guid: 709dcb3e36bf6e74389e2a318ba5f28c, type: 3}
 --- !u!1 &1324253130
 GameObject:
   m_ObjectHideFlags: 0
@@ -9717,7 +9716,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 63.95
+  m_fontSize: 53.5
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -56626,7 +56625,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 4
   m_Sprite: {fileID: 5992888193114086619, guid: a7491d0ce3e668d4398c92928ae7e4bf, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -57082,7 +57081,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 63.95
+  m_fontSize: 53.5
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -112526,7 +112525,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 59.95
+  m_fontSize: 50.15
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -115109,7 +115108,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 59.95
+  m_fontSize: 50.15
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

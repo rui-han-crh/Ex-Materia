@@ -15,7 +15,7 @@ Lucien: Tell me, would you like to learn more about how we fight enemies?
 -> Take me in!
 	Lucien: Great
 	Lucien: Follow me
-	Lucien: At this point, both Emmanuel and Lucien should jump to the tutorial scene.
+	<<transitionScene>>
 
 ===
 
@@ -26,6 +26,7 @@ tags:
 <<load Speaker Lucien Sad>>
 Lucien: It's all right then.
 Lucien: See you anytime you need a refresher on the combat!
+<<unsetNextScene>>
 ===
 
 
