@@ -1,0 +1,162 @@
+title: Start
+tags: 
+---
+<<load Speaker Lucien Neutral>>
+Lucien: Welcome to the training grounds
+Lucien: In this tutorial, you will learn the basics of our combat
+Lucien: In general, the combat System is turn-based 
+Lucien: A turn consists of many different possible actions.
+Lucien: With each Action costing a set amount of action points, or <B> AP </B>
+Lucien: <B> Pressing control </B> brings up the action menu!
+Lucien: Try it now!
+===
+
+
+
+title: MoveTutorial
+tags: 
+---
+<<load Speaker Lucien Neutral>>
+Lucien: Now, press control to bring up the menu as like before
+Lucien: Notice that only the first option is available to you!
+Lucien: The icon with the alert symbol will trigger a move request.
+Lucien: You can select it by pressing it, and then letting go of the control button 
+Lucien: Try it now!
+
+===
+title: MoveIntermediate
+tags: 
+---
+<<load Speaker Lucien Neutral>>
+Lucien: Excellent! Now there's a series of highlighted steps in your range
+Lucien: Select anywhere near the <B> BROWN </B> Colored tile to move to it 
+Lucien: Remember to confirm the action request by double clicking!
+===
+
+
+title: ShootTutorial
+tags: 
+---
+<<load Speaker Olivia Neutral>>
+Olivia: Now, we'll move onto shooting 
+Olivia: Open up the menu as usual, and select the sword icon.
+Olivia: Try it now!
+Olivia: One more thing...
+Olivia: The enemies might not be open to being shot...
+Olivia: This is known as the cover mechanic..
+Olivia: If the <B> Direct line of Sight between you and the enemy happens to contain a full wall </B>
+Olivia: He can't be shot!
+Olivia: Now then...
+Olivia: Reposition yourself and take a shot! 
+===
+title: ShootIntermediate
+tags: 
+---
+<<load Speaker Olivia Angry>>
+Olivia: Now, see that enemy over there?
+Olivia: If he's within your range, there's an option double click him to attack!
+===
+
+title: HideTutorial
+tags:
+---
+
+<<load Speaker Lucien Neutral>>
+Lucien: There are also other covers in the game 
+Lucien: Covers are a <B> Hide </B> mechanic 
+Lucien: Firstly, let's talk about half-covers.
+Lucien: If the straight line of sight between you and the enemy passes through a Half-Cover
+Lucien: It reduces the chance of you being hit by an enemy
+Lucien: So try to position yourself advantageously in between these areas!
+
+
+<<load Speaker Lucien Happy>>
+
+Lucien: Got everything so far?
+-> Yes! 
+    Lucien: Alright
+-> Not really...
+    Lucien: It'll become clearer with the upcoming playthrough
+
+<<load Speaker Lucien Neutral>>
+
+Lucien: Similarly, Full covers work the same way but with an added twist 
+Lucien: You are not able to shoot them, and neither can they shoot you! 
+Lucien: So they essentially act like walls!
+Lucien: As an added fun fact, your allies <B> can act as human meat shields for you! </B>
+Lucien: Which basically means they can block enemy shots, so they act as a de-facto full cover.
+Lucien: Next up is Overwatch
+Lucien: It's that little button with the sword going through.. 
+Lucien: If enemies pass through your line of sight while you're in Overwatch 
+Lucien: They get hit! Your ATK and DEF are also doubled
+Lucien: Okay then..
+Lucien: Let's try it out for real
+Lucien: <B> Use the Overwatch Ability to Continue! </B>
+Lucien: If the enemies are caught in your line of sight while you're in Overwatch
+Lucien: You'll do some bonus damag!e
+===
+
+title: OverwatchIntermediate
+tags: 
+---
+Lucien: <B> Use the Overwatch Ability to Continue! </B>
+Lucien: It's the <B> 4th Button </B>, the one with the <B> sword going through the eye! </B>
+===
+
+title: AbilitiesTutorial
+tags:
+---
+<<load Speaker Evelyn Neutral>>
+Evelyn: Good! 
+Evelyn: You're almost there 
+Evelyn: The last part of the game are the last 2 abilities 
+Evelyn: In this world, each character has their own unique basic ability, and ultimate!
+Evelyn: The basic ability is the <B> 5th button </B>
+Evelyn: And the ultimate ability is the <B> 6th button </B>
+Evelyn: The main difference is the <B> cost in terms of time </B>
+Evelyn: But for the most part, abilities are <B> generally stat boosters </B>
+Evelyn: Now go ahead and practice using a stat ability!
+===
+
+
+title: AbilitiesIntermediate
+tags:
+---
+<<load Speaker Lucien Neutral>>
+Lucien: Use either ability to continue!
+Lucien: Remember, they're the last 2 icons. 
+===
+
+title: EndTutorialInstructions
+tags:
+---
+<<load Speaker Lucien Neutral>>
+Lucien: That's it!
+Lucien: The best way to practice the mechanics is to use them yourself in battle
+Lucien: Kill all the foes to end the map!
+===
+
+
+title: TutorialWon
+tags:
+---
+<<load Speaker Lucien Netural>>
+Lucien: Nice one!
+Lucien: This is the end of the training session 
+Lucien: We shall return on board 
+//load Ship 
+===
+
+title: TutorialLost
+tags:
+---
+<<load Speaker Lucien Angry>>
+Lucien: Would you like to try again?
+-> Yes
+    //load Tutorial Scene 
+-> No
+    //load Ship Scene 
+===
+
+
+
