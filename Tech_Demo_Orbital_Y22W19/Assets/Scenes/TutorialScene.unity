@@ -5926,7 +5926,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 49.7
+  m_fontSize: 61.85
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -6770,6 +6770,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ec85083d95b1da40a819df5c6c6c788, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasIcon: 1
+  interactOnceOnly: 0
+  canInteract: 1
   interactions:
   - {fileID: 960254809}
 --- !u!4 &960254811
@@ -7788,6 +7791,8 @@ MonoBehaviour:
     volume: 1
     playbackSpeed: 1
     hasFade: 0
+    isLooping: 0
+    playImmediately: 0
   - name: MovementSelected
     audioClip: {fileID: 8300000, guid: a89bbc5064818414293166c631148bbc, type: 3}
     startTime: 1
@@ -7795,6 +7800,8 @@ MonoBehaviour:
     volume: 1
     playbackSpeed: 1
     hasFade: 0
+    isLooping: 0
+    playImmediately: 0
   - name: CombatSelected
     audioClip: {fileID: 8300000, guid: 9589efbf9d0ada84893186f887b83009, type: 3}
     startTime: -1
@@ -7802,6 +7809,8 @@ MonoBehaviour:
     volume: 0.6
     playbackSpeed: 1
     hasFade: 0
+    isLooping: 0
+    playImmediately: 0
   - name: OverwatchSelected
     audioClip: {fileID: 8300000, guid: 5da0524fbccde0746b58f0cb534b2c32, type: 3}
     startTime: 0
@@ -7809,6 +7818,8 @@ MonoBehaviour:
     volume: 1
     playbackSpeed: 1
     hasFade: 0
+    isLooping: 0
+    playImmediately: 0
   - name: WaitSelected
     audioClip: {fileID: 8300000, guid: 7e20badb898bae442a89f564c2a7fc24, type: 3}
     startTime: 0.5
@@ -7816,6 +7827,8 @@ MonoBehaviour:
     volume: 1
     playbackSpeed: 1
     hasFade: 0
+    isLooping: 0
+    playImmediately: 0
   - name: TurnBegin
     audioClip: {fileID: 8300000, guid: 66d9a604fb56dce4caa0d3daecd68cd5, type: 3}
     startTime: 6.5
@@ -7823,6 +7836,8 @@ MonoBehaviour:
     volume: 1
     playbackSpeed: 1
     hasFade: 0
+    isLooping: 0
+    playImmediately: 0
   - name: WaitCommandPressed
     audioClip: {fileID: 8300000, guid: 713ad9cc3c6121c428f7181c7f9876f1, type: 3}
     startTime: 0
@@ -7830,6 +7845,8 @@ MonoBehaviour:
     volume: 0.35
     playbackSpeed: 1
     hasFade: 1
+    isLooping: 0
+    playImmediately: 0
   - name: QueueUpdated
     audioClip: {fileID: 8300000, guid: 95abaa358729a9e429134c01c6b9eb24, type: 3}
     startTime: 0
@@ -7837,6 +7854,8 @@ MonoBehaviour:
     volume: 1
     playbackSpeed: 1
     hasFade: 0
+    isLooping: 0
+    playImmediately: 0
   - name: Tutorial_Prevailing
     audioClip: {fileID: 8300000, guid: c85d178ce5d419346a735713b20ae453, type: 3}
     startTime: -1
@@ -7844,6 +7863,8 @@ MonoBehaviour:
     volume: 0.7
     playbackSpeed: 1
     hasFade: 0
+    isLooping: 1
+    playImmediately: 1
 --- !u!114 &1103755088
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9875,7 +9896,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 49.7
+  m_fontSize: 61.85
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -10088,6 +10109,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ec85083d95b1da40a819df5c6c6c788, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasIcon: 1
+  interactOnceOnly: 0
+  canInteract: 1
   interactions: []
 --- !u!4 &1357131186
 Transform:
@@ -55571,7 +55595,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileMapFacade: {fileID: 1485908918}
   indicatorMap: {fileID: 1738298423}
-  indicator: {fileID: 11400000, guid: f9fc026d4ad690442a886a7dadf5e32f, type: 2}
+  indicator: {fileID: 11400000, guid: 960e199b1615f674bbf0767e565a77fe, type: 2}
 --- !u!1 &1498853361
 GameObject:
   m_ObjectHideFlags: 0
@@ -55629,6 +55653,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ec85083d95b1da40a819df5c6c6c788, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasIcon: 1
+  interactOnceOnly: 0
+  canInteract: 1
   interactions:
   - {fileID: 1498853362}
 --- !u!1 &1512267880
@@ -57215,7 +57242,7 @@ Tilemap:
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: 0, y: 0, z: 0}
   m_Size: {x: 0, y: 0, z: 1}
-  m_TileAnchor: {x: 0.5, y: 0.5, z: 2}
+  m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
   m_TileOrientation: 0
   m_TileOrientationMatrix:
     e00: 1
@@ -57399,7 +57426,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 49.7
+  m_fontSize: 61.85
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -112730,6 +112757,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ec85083d95b1da40a819df5c6c6c788, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasIcon: 1
+  interactOnceOnly: 0
+  canInteract: 1
   interactions:
   - {fileID: 1798498339}
 --- !u!4 &1798498338
@@ -112843,7 +112873,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 46.6
+  m_fontSize: 58
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -115426,7 +115456,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 46.6
+  m_fontSize: 58
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

@@ -44,12 +44,23 @@ public class AudioManager : MonoBehaviour
         [SerializeField]
         private bool hasFade;
 
+        [SerializeField]
+        private bool isLooping;
+
+        [SerializeField]
+        private bool playImmediately;
+
         public AudioClip Clip => audioClip;
         public float StartTime => startTime == -1 ? 0 : startTime / playbackSpeed;
         public float EndTime => endTime == -1 ? Clip.length / playbackSpeed : endTime / playbackSpeed;
         public float Volume => volume;
         public float Duration => EndTime - StartTime;
         public bool HasFade => hasFade;
+
+        public bool IsLooping => isLooping;
+
+        public bool PlayImmediately => playImmediately;
+
         public float PlaybackSpeed => playbackSpeed;
     }
 
@@ -76,8 +87,13 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        PlayTrack("HowlingWind", looping: true);
-        PlayTrack("HowlingWind", delay: FIVE_MINUTES, looping: true);
+        foreach (Audio audio in audioCollection)
+        {
+            if (audio.PlayImmediately)
+            {
+                PlayTrack(audio);
+            }
+        }
     }
 
     public void PlayTrack(string name)

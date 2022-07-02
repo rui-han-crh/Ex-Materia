@@ -57,9 +57,9 @@ class AudioPlayerGroup : MonoBehaviour
             audioSource.time = audio.StartTime;
 
             audioSource.loop = looping;
-            if (audioSource.loop)
+            if (audio.IsLooping)
             {
-                Debug.Log($"{audioSource.clip} is set to loop");
+                audioSource.loop = true;
             }
 
             if (audio.HasFade)
