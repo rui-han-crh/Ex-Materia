@@ -16,6 +16,7 @@ using ColorLookUp;
 using UnityEngine.EventSystems;
 using AsyncTask = System.Threading.Tasks.Task;
 using System.Collections;
+using UnityEngine.InputSystem.UI;
 
 namespace Managers
 {
@@ -98,9 +99,24 @@ namespace Managers
 
         public Vector3Int CurrentActingUnitPosition => currentMap[currentMap.CurrentActingUnit];
 
-        private bool isPointerOverUI;
+        public bool IsPointerOverUI 
+        {
+            get
+            {
+                // [Only works well while there is not PhysicsRaycaster on the Camera)
+                //EventSystem eventSystem = EventSystem.current;
+                //return (eventSystem != null && eventSystem.IsPointerOverGameObject());
 
-        public bool IsPointerOverUI => isPointerOverUI;
+                // [Works with PhysicsRaycaster on the Camera. Requires New Input System. Assumes mouse.)
+                if (EventSystem.current == null)
+                {
+                    return false;
+                }
+                RaycastResult lastRaycastResult = ((InputSystemUIInputModule)EventSystem.current.currentInputModule).GetLastRaycastResult(Mouse.current.deviceId);
+                const int uiLayer = 5;
+                return lastRaycastResult.gameObject != null && lastRaycastResult.gameObject.layer == uiLayer;
+            }
+        }
 
         public Unit CurrentActingUnit => currentMap.CurrentActingUnit;
 
@@ -271,8 +287,11 @@ namespace Managers
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public void SelectCommand(CommandType command)
         {
+            Debug.Log($"Command selected {command}");
+
             if (!routineManager.IsDormant())
             {
+                Debug.Log("Not allowed, the routine queue was not dormant");
                 return;
             }
 
@@ -334,6 +353,7 @@ namespace Managers
 
             ParseRequest(request);
             StateReset();
+            UnsubscribeAllControls();
         }
 
 
@@ -353,6 +373,7 @@ namespace Managers
                     break;
 
                 case MapActionRequest.RequestType.Attack:
+
                     AttackRequest attackRequest = (AttackRequest)request;
 
                     currentMap = currentMap.DoAction(attackRequest);
@@ -471,7 +492,6 @@ namespace Managers
 
         private void Update()
         {
-            isPointerOverUI = EventSystem.current.IsPointerOverGameObject();
 
             switch (gameState)
             {

@@ -20,4 +20,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/InteriorBar.unity
     guid: 2d54563a82bcdd1469231f87f0969570
+  - enabled: 1
+    path: Assets/Scenes/InteriorBarHallway.unity
+    guid: 6f1f1c0e849ead84e96957a011090104
+  - enabled: 1
+    path: Assets/Scenes/InteriorBarStorage.unity
+    guid: 01b0246457146e64795ce81b416ad05c
   m_configObjects: {}

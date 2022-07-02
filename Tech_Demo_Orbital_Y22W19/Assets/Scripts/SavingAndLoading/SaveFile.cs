@@ -34,8 +34,6 @@ public class SaveFile
             data[gameObject.scene.buildIndex][gameObject.name].Add(type, new Dictionary<string, object>());
         }
 
-        Debug.Log($"Saving {gameObject.scene.name} {gameObject.name} {type.Name} {variableName} {value}");
-
         data[gameObject.scene.buildIndex][gameObject.name][type][variableName] = value;
     }
 

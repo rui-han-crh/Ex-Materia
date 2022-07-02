@@ -22,8 +22,18 @@ ScriptedImporter:
   - {fileID: 6391573757903218779, guid: 98e10c5c40134f54f9b9d1383a602336, type: 3}
   - {fileID: 6391573757903218779, guid: ff78b54337b47194d9f083bd89d942b3, type: 3}
   - {fileID: 6391573757903218779, guid: fb98c0c7cea68444696d6f5f3e942248, type: 3}
+  - {fileID: 6391573757903218779, guid: 62e42e29d8f104841a723a40376d1b08, type: 3}
+  - {fileID: 6391573757903218779, guid: 1674c639f1d421d4482be6c18739118c, type: 3}
   compileErrors: []
-  serializedDeclarations: []
+  serializedDeclarations:
+  - name: $hasCrowbar
+    typeName: Bool
+    defaultValueBool: 0
+    defaultValueNumber: 0
+    defaultValueString: 
+    description: Implicitly declared in InteriorBar.yarn, node EvelynAndOlivia
+    isImplicit: 1
+    sourceYarnAsset: {fileID: 6391573757903218779, guid: 62e42e29d8f104841a723a40376d1b08, type: 3}
   defaultLanguage: en-US
   languagesToSourceAssets: []
   useAddressableAssets: 0

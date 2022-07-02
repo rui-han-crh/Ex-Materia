@@ -129,20 +129,22 @@ public class GameMap
     public MapActionRequest GetKthBestAction(int k)
     {
         IEnumerable<MovementRequest> movementRequests = MovementConsultant.GetAllMovements(gameMapData, currentActingUnit);
-
-        Debug.Log(movementRequests.Count());
-
-        int maximumMovementRating = movementRequests.Max(x => x.GetUtility(this));
-        int stationarySafetyRating = MovementConsultant.GetRemainStationaryRating(this, currentActingUnit);
-
         List<MapActionRequest> actions = new List<MapActionRequest>(CombatConsultant.GetAllAttacks(gameMapData, currentActingUnit));
         actions.AddRange(new MapActionRequest[] { new WaitRequest(currentActingUnit, 75, 75) });
         actions.AddRange(new MapActionRequest[] { new OverwatchRequest(currentActingUnit) });
 
-        if (maximumMovementRating > stationarySafetyRating)
+
+        if (movementRequests.Count() > 0)
         {
-            Debug.Log($"Moving is a valid decision in this stage, movement rating: {maximumMovementRating} | stationary rating : {stationarySafetyRating}");
-            actions.AddRange(movementRequests);
+
+            int maximumMovementRating = movementRequests.Max(x => x.GetUtility(this));
+            int stationarySafetyRating = MovementConsultant.GetRemainStationaryRating(this, currentActingUnit);
+
+            if (maximumMovementRating > stationarySafetyRating)
+            {
+                Debug.Log($"Moving is a valid decision in this stage, movement rating: {maximumMovementRating} | stationary rating : {stationarySafetyRating}");
+                actions.AddRange(movementRequests);
+            }
         }
 
         Debug.Log($"Actions consolidated, {actions.Count()} actions");

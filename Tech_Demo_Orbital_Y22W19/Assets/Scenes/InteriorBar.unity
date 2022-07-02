@@ -867,6 +867,8 @@ MonoBehaviour:
     volume: 1
     playbackSpeed: 1
     hasFade: 1
+    isLooping: 0
+    playImmediately: 0
 --- !u!1 &516933631
 GameObject:
   m_ObjectHideFlags: 0
@@ -2589,7 +2591,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 7383949796990244970, guid: bc2468ad642190a498c934c266e000c6, type: 3}
-  m_Color: {r: 1, g: 0.23319086, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2725,6 +2727,7 @@ Transform:
   - {fileID: 1873705366}
   - {fileID: 549766116}
   - {fileID: 312544170}
+  - {fileID: 2092987596}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3134,7 +3137,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1302241770}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.18, y: 0.33734372, z: 0}
+  m_LocalPosition: {x: -4.18, y: 0.0823437, z: 0}
   m_LocalScale: {x: 0.9, y: 0.9, z: 1}
   m_Children:
   - {fileID: 883377666}
@@ -4202,37 +4205,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1978323888}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1418172191
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1418172192}
-  m_Layer: 0
-  m_Name: Evelyn
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1418172192
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1418172191}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 2037142760}
-  m_Father: {fileID: 1606045841}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1441066871
 GameObject:
@@ -58994,10 +58966,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1606045838}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.815, y: 0.535, z: 0}
+  m_LocalPosition: {x: -3.815, y: 0.28, z: 0}
   m_LocalScale: {x: 0.9, y: 0.9, z: 1}
   m_Children:
-  - {fileID: 1418172192}
+  - {fileID: 2037142760}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -59309,6 +59281,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1873705366}
   - component: {fileID: 1873705367}
+  - component: {fileID: 1873705368}
   m_Layer: 0
   m_Name: EvelynAndOlivia
   m_TagString: Untagged
@@ -59324,7 +59297,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1873705365}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.21, y: 1.1, z: 0}
+  m_LocalPosition: {x: -0.21, y: 0.8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1029112519}
@@ -59345,7 +59318,21 @@ MonoBehaviour:
   hasIcon: 1
   interactOnceOnly: 0
   canInteract: 1
-  interactions: []
+  interactions:
+  - {fileID: 1873705368}
+--- !u!114 &1873705368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1873705365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 762e0cb84d3c1bc4bb19ee41d8e77830, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  yarnScriptName: EvelynAndOlivia
 --- !u!1 &1978323883
 GameObject:
   m_ObjectHideFlags: 0
@@ -59552,7 +59539,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_Children: []
-  m_Father: {fileID: 1418172192}
+  m_Father: {fileID: 1606045841}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2037142761
@@ -59615,7 +59602,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: -5062744296384424521, guid: ff09e03d0c9101942beb5ea98f74ac63, type: 3}
-  m_Color: {r: 1, g: 0.23319086, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -59625,6 +59612,83 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &2092987595
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2092987596}
+  - component: {fileID: 2092987600}
+  - component: {fileID: 2092987599}
+  - component: {fileID: 2092987597}
+  m_Layer: 0
+  m_Name: InteriorDoor_Left
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2092987596
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2092987595}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.48, y: 1.65, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1029112519}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2092987597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2092987595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 762e0cb84d3c1bc4bb19ee41d8e77830, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  yarnScriptName: BarDoorLeft
+--- !u!114 &2092987599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2092987595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24f2555ef049e7d4383c00c50d4541fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneName: InteriorBarHallway
+--- !u!114 &2092987600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2092987595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ec85083d95b1da40a819df5c6c6c788, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasIcon: 1
+  interactOnceOnly: 0
+  canInteract: 1
+  interactions:
+  - {fileID: 2092987599}
+  - {fileID: 2092987597}
 --- !u!1 &2104552067
 GameObject:
   m_ObjectHideFlags: 0
@@ -59797,7 +59861,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3183266952036699624}
   - component: {fileID: 3579681404872046571}
-  - component: {fileID: 3831113771821611004}
+  - component: {fileID: 2753718018969599897}
   - component: {fileID: 2753718018969599896}
   - component: {fileID: 2753718018969599895}
   m_Layer: 5
@@ -59836,6 +59900,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineView: {fileID: 7778558435266364351}
+--- !u!114 &2753718018969599897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2753718018969599894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8a7e6c5b07c42143ad324da0995fb57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showDebug: 0
+  debugTextView: {fileID: 0}
 --- !u!4 &3183266952036699624
 Transform:
   m_ObjectHideFlags: 0
@@ -59958,7 +60036,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   yarnProject: {fileID: 7545569452688597077, guid: 6607dd572aa18a746b6688ec120e8506, type: 3}
-  _variableStorage: {fileID: 3831113771821611004}
+  _variableStorage: {fileID: 2753718018969599897}
   dialogueViews:
   - {fileID: 7778558435266364351}
   - {fileID: 3292657645967504971}
@@ -59979,20 +60057,6 @@ MonoBehaviour:
   onCommand:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &3831113771821611004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2753718018969599894}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 610c541718d694070a21327d1ae62e75, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  showDebug: 0
-  debugTextView: {fileID: 0}
 --- !u!1 &4540255442323274626
 GameObject:
   m_ObjectHideFlags: 0

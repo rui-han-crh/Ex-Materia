@@ -1,0 +1,133 @@
+﻿title: BarHallway
+tags:
+position: 3,-4
+---
+<<load Speaker Emmanuel Neutral>>
+Emmanuel: This is a pretty long hallway.
+
+<<load Speaker Olivia Elated>>
+Olivia: Yea, move to the end, there's another door there.
+
+<<clear Speaker>>
+Tutorial: Hold <b>LEFT CONTROL</b> to open the character menu. Then, press the movement icon to select movement.
+
+Tutorial: Double click the tile you want to move to.
+===
+title: BarHallwayEnd
+position: 19,-73
+---
+<<load Speaker Evelyn Happy>>
+Evelyn: Alright, it should be behind this door, let me see if I can open it.
+
+<<clear Speaker>>
+Door: Evelyn tries the door handle. It makes not even a budge.
+
+Door: It's locked.
+
+Door: She tries it again, this time more vigourously and repetitively.
+
+Door: No luck.
+
+Door: She puts her entire body weight onto the handle. Upon realising that the door remains indifferent to her attempts, she moves onto the weighter performance of body slamming.
+
+Door: The door slightly shudders in response to this theatrical display of violence, but otherwise remains a bulwark between the three intruders and the room beyond.
+
+<<load Speaker Olivia Surprised>>
+Olivia: Woah okay.
+
+Olivia: Maybe chill sis.
+
+Olivia: That's not gonna work.
+
+<<load Speaker Emmanuel Neutral>>
+Emmanuel: Uh, how about I try shooting the lock?
+
+<<clear Speaker>>
+Tutorial: Hold LEFT CONTROL to bring up the menu again. This time, select the <b>Attack Command</b>
+===
+title: BarHallwayShoot
+position: 0,1
+---
+<<load Speaker Evelyn Surprised>>
+Evelyn: NO! WAIT!
+
+<<clear Speaker>>
+Door: Shouts Evelyn, a moment too late, at the instant the firing pin in Emmanuel's pistol impacted the bullet. 
+
+Door: The rest of her voice is drowned out by the sudden tinnitus beset on everyone.
+
+Door: In a single viseral instant, sparks from impact between the high velocity bullet and the aluminium lock spray forth and disappear just as fast.
+
+Door: A residue of smoke envelopes the area, shrouding the already tight and musty hallway in even denser particulates.
+
+<<load Speaker Evelyn Angry>>
+Evelyn: Fuck, has anyone taught you firearm safety before?
+
+Evelyn: Don't discharge weapons in tight and small spaces. It should ricochet and hurt someone!
+
+<<clear Speaker>>
+Disclaimer: <b>In reality, do not discharge firearms at hard objects, or in confined spaces. The bullet can ricochet and hit someone other than the target.</b>
+
+<<load Speaker Emmanuel Surprised>>
+Emmanuel: ...
+
+<<load Speaker Olivia Neutral>>
+Olivia: Cough... Okay, at least the lock's broken now.
+
+Olivia: We can proceed.
+<<transitionScene>>
+===
+title: BarStoreroomEntry
+position: 229,-6
+---
+<<load Speaker Evelyn Neutral>>
+Evelyn: Okay, it should be here and...
+
+<<load Speaker Evelyn Surprised>>
+Evelyn: What in...
+
+<<load Speaker Olivia Surprised>>
+Olivia: Man... That looks bad.
+
+<<load Speaker Emmanuel Neutral>>
+Emmanuel: Are we stuck?
+
+<<load Speaker Olivia Neutral>>
+Olivia: Well, I can see where the filament core but this room is not in a good state.
+
+<<clear Speaker>>
+Storage Room: Evelyn tries to squeeze her way under the fallen tree, but the sheer amount of debris from the caved in room and the outside elements have accumulated too densely to allow any form of passage.
+
+<<load Speaker Evelyn Disgusted>>
+Evelyn: Okay.
+
+Evelyn: We're not making it through here.
+
+Evelyn: See, around the back, there's another door we can enter this room from, but we have to circle around from the backyard.
+
+Evelyn: Hopefully around the other side, things are in better shape than this section.
+
+<<load Speaker Evelyn Neutral>>
+Evelyn: Let's go.
+
+<<load Speaker Olivia Neutral>>
+Olivia: Be careful of the collapsed roof! The snow has fallen onto the floor in front.
+
+Olivia: We'll be significantly slower if you walk through the snow, we need to walk around it from the other side.
+
+<<clear Speaker>>
+Tutorial: Different tiles have different tile costs.
+
+Tutorial: You have a limited number of action points to move with.
+
+Tutorial: Tiles with <b>larger costs</b> will <b>reduce</b> the number of tiles you can move through.
+
+Tutorial: Tiles with <b>smaller costs</b> will <b>increase</b> the number of tiles you can move through.
+
+Tutorial: Hover over the tiles for a while and a tooltip will appear to inform you of that tile's cost.
+
+Tutorial: To maximise the number of tiles that can be walked through, select a destination of the least cost. The path that incurs the lowest action points will be pathed for you automatically.
+
+<<load Speaker Olivia Neutral>>
+Olivia: Come on, let's go, the door's on the other side.
+===
