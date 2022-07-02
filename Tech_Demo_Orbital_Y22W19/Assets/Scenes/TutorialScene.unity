@@ -1779,6 +1779,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: CharacterStats
       objectReference: {fileID: 0}
+    - target: {fileID: 3044899331152506829, guid: a5a886cc7478c2d4697900baa7c29339, type: 3}
+      propertyPath: skillPointsBar
+      value: 
+      objectReference: {fileID: 1857802414}
+    - target: {fileID: 3044899331152506829, guid: a5a886cc7478c2d4697900baa7c29339, type: 3}
+      propertyPath: basicSkillHolder
+      value: 
+      objectReference: {fileID: 502285648}
+    - target: {fileID: 3044899331152506829, guid: a5a886cc7478c2d4697900baa7c29339, type: 3}
+      propertyPath: ultimateSkillHolder
+      value: 
+      objectReference: {fileID: 1094961413}
     - target: {fileID: 3044899331152506865, guid: a5a886cc7478c2d4697900baa7c29339, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -1959,6 +1971,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -111.69974
       objectReference: {fileID: 0}
+    - target: {fileID: 3044899332601303493, guid: a5a886cc7478c2d4697900baa7c29339, type: 3}
+      propertyPath: skillPointsBar
+      value: 
+      objectReference: {fileID: 1857802414}
+    - target: {fileID: 3044899332601303493, guid: a5a886cc7478c2d4697900baa7c29339, type: 3}
+      propertyPath: basicSkillHolder
+      value: 
+      objectReference: {fileID: 502285648}
+    - target: {fileID: 3044899332601303493, guid: a5a886cc7478c2d4697900baa7c29339, type: 3}
+      propertyPath: ultimateSkillHolder
+      value: 
+      objectReference: {fileID: 1094961413}
     - target: {fileID: 3044899332624226060, guid: a5a886cc7478c2d4697900baa7c29339, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -5902,7 +5926,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 49.85
+  m_fontSize: 49.7
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -9792,7 +9816,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 49.85
+  m_fontSize: 49.7
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -57257,7 +57281,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 49.85
+  m_fontSize: 49.7
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -112701,7 +112725,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 46.7
+  m_fontSize: 46.6
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -115284,7 +115308,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 46.7
+  m_fontSize: 46.6
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

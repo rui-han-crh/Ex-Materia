@@ -99,7 +99,7 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
             Vector3 cursorPos = MainCamera.ScreenToWorldPoint(Input.mousePosition);
             Vector3 currentCheckpoint = checkPoints[currentStage];
             float distCLick = Vector3.Distance(cursorPos, currentCheckpoint);
-            if (distCLick < 0.5)
+            if (distCLick < 1.0) //very lenient, essentially allows a one tile radius!
             {
                 CanvasBlock.SetActive(false);
                 if (Input.GetMouseButtonDown(0))
