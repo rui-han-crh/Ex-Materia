@@ -7,7 +7,7 @@ using Yarn.Unity;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
-public class TutorialManager : MonoBehaviour //should be able to interact with yarn also
+public class TutorialManager : MonoBehaviour 
 {
    
 
@@ -34,11 +34,13 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
     private string[] stageNames = new string[] {"MoveTutorial", "ShootTutorial", "SkipTutorial", "HideTutorial" , "AbilitiesTutorial", "AbilitiesTutorial", "EndTutorialInstructions" };
     private string[] stageIntermediate = new string[] { "MoveIntermediate", "ShootIntermediate", "SkipIntermediate", "OverwatchIntermediate", "AbilitiesIntermediate", "AbilitiesIntermediate"};
 
-    //[SerializeField]
-    //private Interactable[] interactables; 
 
+    //STATIC VARIABLES
 
-    private readonly Vector3[] checkPoints = new Vector3[] { new Vector3(0.0f, -5.5f, -10.0f)};
+    private static readonly Vector3[] checkPoints = new Vector3[] { new Vector3(0.0f, -5.25f, -10.0f)};
+
+    private static readonly Vector3 startingPosition = new Vector3(-1, -6, 0); //where the player starts at
+    // END OF STATIC VARIABLES
 
     [SerializeField]
     public Button[] buttonActions;
@@ -49,10 +51,17 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
     private bool isInConfirmed = false;
 
 
+
+    [SerializeField]
+    public GameObject CombatUI;
     //Serialize the interactables that can play dialogue!
     public Interactable dialogueHolder;
     public Interactable Myself;
     public SpeakingInteractionChangeable DialogueHolder;
+
+
+    [SerializeField]
+    public GameObject player;
 
 
 
@@ -60,12 +69,13 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
     public void Awake()
     {
         CanvasBlock.SetActive(false);
+        
 
     }
 
 
     public void Start()
-    {
+    { 
         Debug.Log("Playing Node message: Start");
         StartConvo("Start");
         DisableAllCombatButtons();
@@ -92,33 +102,48 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
 
     private void Update()
     {
-        //New Idea: If isInConfirmed, check where his current position is 
+        //New Idea: If isInConfirmed, check where his current position is
         if (currentStage == 0 && isInConfirmed)
         {
 
             Vector3 cursorPos = MainCamera.ScreenToWorldPoint(Input.mousePosition);
             Vector3 currentCheckpoint = checkPoints[currentStage];
             float distCLick = Vector3.Distance(cursorPos, currentCheckpoint);
-            if (distCLick < 0.5) //allows almost a half-tile radius
+            if (distCLick < 0.20) //allows almost a half-tile radius --> PROBLEM: 
             {
-                CanvasBlock.SetActive(false);
-                if (Input.GetMouseButtonDown(0))
-                {
-                    float timeSinceLastClick = Time.time - lastClickTime;
-                    if (timeSinceLastClick < DOUBLE_CLICK_TIME)
-                    {
-                        Debug.Log("Correct pos");
+                //CanvasBlock.SetActive(false);
+                //if (Input.GetMouseButtonDown(0))
+                //{
+                //    float timeSinceLastClick = Time.time - lastClickTime;
+                //    if (timeSinceLastClick < DOUBLE_CLICK_TIME)
+                //    {
+                //        Debug.Log("Correct pos");
 
-                        //We can go onto the next phase 
-                        currentStage += 1;
-                        Invoke("StartPhase", 1.5f);
-                    }
-                    lastClickTime = Time.time;
-                }
+                //        //We can go onto the next phase 
+                //        currentStage += 1;
+                //        CombatUI.SetActive(true);
+                //        Managers.CombatUIManager.Instance.OnEnable();
+                //        //InputSystem.EnableDevice(Keyboard.current);
+                //        Invoke("StartPhase", 1.5f);
+                //    }
+                //    lastClickTime = Time.time;
+                //}
+                CanvasBlock.SetActive(false);
             }
             else
             {
                 CanvasBlock.SetActive(true);
+            }
+        }
+
+        if (currentStage == 0)
+        {
+            Vector3 CurrentPlayerPos = player.transform.position;
+            if (CurrentPlayerPos != startingPosition) //he has moved
+            {
+                currentStage += 1;
+                Managers.CombatUIManager.Instance.OnEnable();
+                Invoke("StartPhase", 3.0f);
             }
         }
         //Pressing control can initate the start / Overwatch. 
@@ -164,7 +189,7 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
         if (Time.time > nextReminderTime)
         {
             StartConvo(stageIntermediate[currentStage]);
-            nextReminderTime = Time.time + 3.5f;
+            nextReminderTime = Time.time + 4.5f;
         }
         
     }
@@ -221,6 +246,9 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
             Debug.Log("Awaiting Confirm: " + stageIntermediate[currentStage]);
             Debug.Log("Now playing intermediary: " + stageIntermediate[currentStage]);
             StartConvo(stageIntermediate[currentStage]);
+            //CombatUI.SetActive(false);
+            Managers.CombatUIManager.Instance.OnDisable();
+            //InputSystem.DisableDevice(Keyboard.current);
         }
     }
 
