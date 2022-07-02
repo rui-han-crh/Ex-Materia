@@ -140,22 +140,22 @@ Lucien: Kill all the foes to end the map!
 title: TutorialWon
 tags:
 ---
-<<load Speaker Lucien Netural>>
+<<load Speaker Lucien Happy>>
 Lucien: Nice one!
 Lucien: This is the end of the training session 
 Lucien: We shall return on board 
-//load Ship 
+<<transitionScene>>
 ===
 
 title: TutorialLost
 tags:
 ---
 <<load Speaker Lucien Angry>>
-Lucien: Would you like to try again?
--> Yes
-    //load Tutorial Scene 
--> No
-    //load Ship Scene 
+Lucien: Oh Dear
+Lucien: Frankly...
+Lucien: I don't know how it's possible you've lost 
+Lucien: Meet me again at the same place if you want to try again...
+<<transitionScene>>
 ===
 
 

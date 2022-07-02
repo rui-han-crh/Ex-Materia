@@ -3761,11 +3761,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a08437e0c621f614b828d671c157541a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 50
-  currentHealth: 50
+  maxHealth: 40
+  currentHealth: 40
   range: 4
-  attack: 2
-  defence: 0
+  attack: 1
+  defence: 1
   risk: 9999
   maxActionPoints: 150
   maxSkillPoints: 0
@@ -4134,6 +4134,7 @@ MonoBehaviour:
   - {fileID: 2103424041}
   - {fileID: 1212855922}
   CanvasBlock: {fileID: 2004898053}
+  CombatUI: {fileID: 1132280360}
   dialogueHolder: {fileID: 1798498337}
   Myself: {fileID: 1357131185}
   DialogueHolder: {fileID: 1798498339}
@@ -5486,11 +5487,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a08437e0c621f614b828d671c157541a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 50
-  currentHealth: 50
+  maxHealth: 40
+  currentHealth: 40
   range: 4
-  attack: 2
-  defence: 0
+  attack: 1
+  defence: 1
   risk: 9999
   maxActionPoints: 150
   maxSkillPoints: 0
@@ -5926,7 +5927,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 61.85
+  m_fontSize: 63.9
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -6738,6 +6739,7 @@ GameObject:
   - component: {fileID: 960254811}
   - component: {fileID: 960254810}
   - component: {fileID: 960254809}
+  - component: {fileID: 960254812}
   m_Layer: 0
   m_Name: Combat_Lost
   m_TagString: Untagged
@@ -6771,9 +6773,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasIcon: 1
-  interactOnceOnly: 0
+  interactOnceOnly: 1
   canInteract: 1
   interactions:
+  - {fileID: 960254812}
   - {fileID: 960254809}
 --- !u!4 &960254811
 Transform:
@@ -6789,6 +6792,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &960254812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 960254808}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24f2555ef049e7d4383c00c50d4541fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneName: WarshipInternal
 --- !u!1 &968025974
 GameObject:
   m_ObjectHideFlags: 0
@@ -7746,6 +7762,7 @@ GameObject:
   - component: {fileID: 1103755089}
   - component: {fileID: 1103755097}
   - component: {fileID: 1103755098}
+  - component: {fileID: 1103755099}
   m_Layer: 0
   m_Name: WorldData
   m_TagString: Untagged
@@ -8144,6 +8161,18 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 008e9c8aec68e6141802d1d3db9716f8, type: 2}
   - {fileID: 11400000, guid: c3a27ea9cd59ad248acba3912ba2c14f, type: 2}
   - {fileID: 11400000, guid: daf88682fbe4330479c5f8dc16f2dd32, type: 2}
+--- !u!114 &1103755099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1103755085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d6a1154f5a6542479fce2df8ac39e3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1106292415
 GameObject:
   m_ObjectHideFlags: 0
@@ -9690,7 +9719,7 @@ GameObject:
   - component: {fileID: 1219375197}
   - component: {fileID: 1219375199}
   - component: {fileID: 1219375198}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9714,7 +9743,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1000, y: 1000}
+  m_SizeDelta: {x: 1e+9, y: 1e+9}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1219375198
 MonoBehaviour:
@@ -9728,7 +9757,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 1955a4ac711a12f4980e4144395252a3, type: 3}
   m_Color: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -9896,7 +9925,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 61.85
+  m_fontSize: 63.9
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -10092,7 +10121,7 @@ GameObject:
   - component: {fileID: 1357131185}
   m_Layer: 0
   m_Name: Self
-  m_TagString: Untagged
+  m_TagString: UniversalInteractable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -55607,6 +55636,7 @@ GameObject:
   - component: {fileID: 1498853363}
   - component: {fileID: 1498853362}
   - component: {fileID: 1498853364}
+  - component: {fileID: 1498853365}
   m_Layer: 0
   m_Name: Combat_Won
   m_TagString: Untagged
@@ -55654,10 +55684,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasIcon: 1
-  interactOnceOnly: 0
+  interactOnceOnly: 1
   canInteract: 1
   interactions:
+  - {fileID: 1498853365}
   - {fileID: 1498853362}
+--- !u!114 &1498853365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1498853361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24f2555ef049e7d4383c00c50d4541fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneName: WarshipInternal
 --- !u!1 &1512267880
 GameObject:
   m_ObjectHideFlags: 0
@@ -57274,7 +57318,7 @@ GameObject:
   - component: {fileID: 1743332170}
   - component: {fileID: 1743332169}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: GiantCanvasBlocker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57426,7 +57470,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 61.85
+  m_fontSize: 63.9
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -57508,7 +57552,7 @@ GameObject:
   - component: {fileID: 1776453252}
   - component: {fileID: 1776453253}
   m_Layer: 0
-  m_Name: Square
+  m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57554,7 +57598,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 5
-  m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
+  m_Sprite: {fileID: -2413806693520163455, guid: ebe73ca9363db456bacf42c025bb4847, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -57574,7 +57618,7 @@ Transform:
   m_GameObject: {fileID: 1776453249}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -5.25, z: 0}
-  m_LocalScale: {x: 0.3, y: 0.3, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
@@ -112873,7 +112917,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 58
+  m_fontSize: 59.9
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -115456,7 +115500,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 58
+  m_fontSize: 59.9
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

@@ -7,7 +7,7 @@ using Yarn.Unity;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 
-public class TutorialManager : MonoBehaviour //should be able to interact with yarn also
+public class TutorialManager : MonoBehaviour 
 {
    
 
@@ -38,7 +38,9 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
     //private Interactable[] interactables; 
 
 
-    private readonly Vector3[] checkPoints = new Vector3[] { new Vector3(0.0f, -5.5f, -10.0f)};
+    private readonly Vector3[] checkPoints = new Vector3[] { new Vector3(0.0f, -5.25f, -10.0f)};
+
+    public Vector3 startingPosition;
 
     [SerializeField]
     public Button[] buttonActions;
@@ -49,6 +51,9 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
     private bool isInConfirmed = false;
 
 
+
+    [SerializeField]
+    public GameObject CombatUI;
     //Serialize the interactables that can play dialogue!
     public Interactable dialogueHolder;
     public Interactable Myself;
@@ -99,7 +104,7 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
             Vector3 cursorPos = MainCamera.ScreenToWorldPoint(Input.mousePosition);
             Vector3 currentCheckpoint = checkPoints[currentStage];
             float distCLick = Vector3.Distance(cursorPos, currentCheckpoint);
-            if (distCLick < 0.5) //allows almost a half-tile radius
+            if (distCLick < 0.20) //allows almost a half-tile radius --> PROBLEM: 
             {
                 CanvasBlock.SetActive(false);
                 if (Input.GetMouseButtonDown(0))
@@ -111,6 +116,9 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
 
                         //We can go onto the next phase 
                         currentStage += 1;
+                        CombatUI.SetActive(true);
+                        Managers.CombatUIManager.Instance.OnEnable();
+                        //InputSystem.EnableDevice(Keyboard.current);
                         Invoke("StartPhase", 1.5f);
                     }
                     lastClickTime = Time.time;
@@ -164,7 +172,7 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
         if (Time.time > nextReminderTime)
         {
             StartConvo(stageIntermediate[currentStage]);
-            nextReminderTime = Time.time + 3.5f;
+            nextReminderTime = Time.time + 4.5f;
         }
         
     }
@@ -221,6 +229,9 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
             Debug.Log("Awaiting Confirm: " + stageIntermediate[currentStage]);
             Debug.Log("Now playing intermediary: " + stageIntermediate[currentStage]);
             StartConvo(stageIntermediate[currentStage]);
+            //CombatUI.SetActive(false);
+            Managers.CombatUIManager.Instance.OnDisable();
+            //InputSystem.DisableDevice(Keyboard.current);
         }
     }
 
