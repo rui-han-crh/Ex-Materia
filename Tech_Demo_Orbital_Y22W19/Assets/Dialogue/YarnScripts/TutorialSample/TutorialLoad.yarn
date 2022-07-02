@@ -137,4 +137,26 @@ Lucien: Kill all the foes to end the map!
 ===
 
 
+title: TutorialWon
+tags:
+---
+<<load Speaker Lucien Netural>>
+Lucien: Nice one!
+Lucien: This is the end of the training session 
+Lucien: We shall return on board 
+//load Ship 
+===
+
+title: TutorialLost
+tags:
+---
+<<load Speaker Lucien Angry>>
+Lucien: Would you like to try again?
+-> Yes
+    //load Tutorial Scene 
+-> No
+    //load Ship Scene 
+===
+
+
 
