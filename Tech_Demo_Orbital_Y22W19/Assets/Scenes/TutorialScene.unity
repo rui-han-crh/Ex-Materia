@@ -4049,9 +4049,9 @@ MonoBehaviour:
   defenceValueText: {fileID: 430606367}
   attackValueText: {fileID: 616998595}
   speedValueText: {fileID: 1056261947}
-  skillPointsBar: {fileID: 0}
-  basicSkillHolder: {fileID: 0}
-  ultimateSkillHolder: {fileID: 0}
+  skillPointsBar: {fileID: 1857802414}
+  basicSkillHolder: {fileID: 502285648}
+  ultimateSkillHolder: {fileID: 1094961413}
 --- !u!114 &572838950
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5926,7 +5926,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 49.7
+  m_fontSize: 72
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -9816,7 +9816,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 49.7
+  m_fontSize: 72
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -26095,8 +26095,8 @@ Tilemap:
   - first: {x: -11, y: -11, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 3
-      m_TileSpriteIndex: 3
+      m_TileIndex: 0
+      m_TileSpriteIndex: 0
       m_TileMatrixIndex: 0
       m_TileColorIndex: 3
       m_TileObjectToInstantiateIndex: 65535
@@ -26105,8 +26105,8 @@ Tilemap:
   - first: {x: -10, y: -11, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
+      m_TileIndex: 3
+      m_TileSpriteIndex: 3
       m_TileMatrixIndex: 0
       m_TileColorIndex: 3
       m_TileObjectToInstantiateIndex: 65535
@@ -57281,7 +57281,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 49.7
+  m_fontSize: 72
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -57428,7 +57428,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1776453249}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.511, y: -4.976, z: 0}
+  m_LocalPosition: {x: 0, y: -5.25, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -57461,8 +57461,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   referenceTilemap: {fileID: 1476831909}
-  positionInWorldSpace: {x: 0.5, y: -5.25, z: 0}
-  positionInGridSpace: {x: -10, y: -11, z: 0}
+  positionInWorldSpace: {x: 0, y: -5.5, z: 0}
+  positionInGridSpace: {x: -11, y: -11, z: 0}
 --- !u!1 &1776725052
 GameObject:
   m_ObjectHideFlags: 0
@@ -112725,7 +112725,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 46.6
+  m_fontSize: 72
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -115308,7 +115308,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 46.6
+  m_fontSize: 72
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

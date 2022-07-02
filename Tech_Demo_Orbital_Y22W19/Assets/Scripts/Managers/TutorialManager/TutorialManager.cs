@@ -38,7 +38,7 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
     //private Interactable[] interactables; 
 
 
-    private readonly Vector3[] checkPoints = new Vector3[] { new Vector3(0.5f, -5.25f, -10.0f)};
+    private readonly Vector3[] checkPoints = new Vector3[] { new Vector3(0.0f, -5.5f, -10.0f)};
 
     [SerializeField]
     public Button[] buttonActions;
@@ -99,7 +99,7 @@ public class TutorialManager : MonoBehaviour //should be able to interact with y
             Vector3 cursorPos = MainCamera.ScreenToWorldPoint(Input.mousePosition);
             Vector3 currentCheckpoint = checkPoints[currentStage];
             float distCLick = Vector3.Distance(cursorPos, currentCheckpoint);
-            if (distCLick < 1.0) //very lenient, essentially allows a one tile radius!
+            if (distCLick < 0.5) //allows almost a half-tile radius
             {
                 CanvasBlock.SetActive(false);
                 if (Input.GetMouseButtonDown(0))
