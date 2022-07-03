@@ -4973,7 +4973,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 808315046}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 610c541718d694070a21327d1ae62e75, type: 3}
+  m_Script: {fileID: 11500000, guid: b8a7e6c5b07c42143ad324da0995fb57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   showDebug: 0
@@ -9527,7 +9527,6 @@ GameObject:
   - component: {fileID: 1319170345}
   - component: {fileID: 1319170346}
   - component: {fileID: 1319170350}
-  - component: {fileID: 1319170349}
   - component: {fileID: 1319170348}
   - component: {fileID: 1319170347}
   - component: {fileID: 1319170351}
@@ -9609,21 +9608,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   permittedRadius: 0
---- !u!114 &1319170349
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1319170344}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20ed125a6a5b5e94596e0dc04ff9b0ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 0}
-  speed: 0
-  groundReference: {fileID: 0}
 --- !u!114 &1319170350
 MonoBehaviour:
   m_ObjectHideFlags: 0

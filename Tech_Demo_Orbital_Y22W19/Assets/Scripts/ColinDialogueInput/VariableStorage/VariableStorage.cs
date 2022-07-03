@@ -10,19 +10,19 @@ public class VariableStorage : InMemoryVariableStorage
     Dictionary<string, bool> boolDict = new Dictionary<string, bool>();
     private void OnEnable()
     {
-        if (SaveFile.file.HasData(gameObject, typeof(VariableStorage), "floatDict"))
+        if (SaveFile.file.HasData(typeof(VariableStorage), "floatDict"))
         {
-            floatDict = SaveFile.file.Load<Dictionary<string, float>>(gameObject, typeof(VariableStorage), "floatDict");
+            floatDict = SaveFile.file.Load<Dictionary<string, float>>(typeof(VariableStorage), "floatDict");
         }
 
-        if (SaveFile.file.HasData(gameObject, typeof(VariableStorage), "stringDict"))
+        if (SaveFile.file.HasData(typeof(VariableStorage), "stringDict"))
         {
-            stringDict = SaveFile.file.Load<Dictionary<string, string>>(gameObject, typeof(VariableStorage), "stringDict");
+            stringDict = SaveFile.file.Load<Dictionary<string, string>>(typeof(VariableStorage), "stringDict");
         }
 
-        if (SaveFile.file.HasData(gameObject, typeof(VariableStorage), "boolDict"))
+        if (SaveFile.file.HasData(typeof(VariableStorage), "boolDict"))
         {
-            boolDict = SaveFile.file.Load<Dictionary<string, bool>>(gameObject, typeof(VariableStorage), "boolDict");
+            boolDict = SaveFile.file.Load<Dictionary<string, bool>>(typeof(VariableStorage), "boolDict");
         }
 
         SetAllVariables(floatDict, stringDict, boolDict);
@@ -32,8 +32,8 @@ public class VariableStorage : InMemoryVariableStorage
     {
         (floatDict, stringDict, boolDict) = GetAllVariables();
 
-        SaveFile.file.Save(gameObject, typeof(VariableStorage), "floatDict", floatDict);
-        SaveFile.file.Save(gameObject, typeof(VariableStorage), "stringDict", stringDict);
-        SaveFile.file.Save(gameObject, typeof(VariableStorage), "boolDict", boolDict);
+        SaveFile.file.Save(typeof(VariableStorage), "floatDict", floatDict);
+        SaveFile.file.Save(typeof(VariableStorage), "stringDict", stringDict);
+        SaveFile.file.Save(typeof(VariableStorage), "boolDict", boolDict);
     }
 }

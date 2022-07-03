@@ -29,6 +29,7 @@ public class SceneTransitionManager : MonoBehaviour
         dialogueRunner = FindObjectOfType<DialogueRunner>();
         dialogueRunner.AddCommandHandler("transitionScene", TransitionToScene);
         dialogueRunner.AddCommandHandler("unsetNextScene", UnsetNextScene);
+        dialogueRunner.AddCommandHandler("changeScene", (string sceneName) => ChangeScene(sceneName));
     }
 
     public string SceneName
@@ -63,5 +64,10 @@ public class SceneTransitionManager : MonoBehaviour
         }
 
         pendingSceneLoad = SceneManager.LoadSceneAsync(SceneName);
+    }
+
+    public void ChangeScene(string sceneName)
+    {
+        SceneManager.LoadSceneAsync(sceneName);
     }
 }

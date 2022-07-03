@@ -11,13 +11,31 @@ public class GameMenuBehaviour : MonoBehaviour
 
     private CanvasGroup canvasGroup;
 
+    public GameObject[] menusToLoad;
+
+    private Dictionary<string, GameObject> menus = new Dictionary<string, GameObject>();
+
+    [SerializeField]
+    private GameObject currentMenuGameObject;
+
+    private CanvasGroup menuCanvasGroup;
+
+    private GameObject currentOpenMenu;
+
     private void Awake()
     {
         keyboardControls = new KeyboardControls();
 
-        keyboardControls.Mouse.Tab.performed += _ => MenuScreenSetActive();
+        keyboardControls.Mouse.Tab.performed += _ => MenuScreenSetActive(!menuOn);
 
         canvasGroup = GetComponent<CanvasGroup>();
+
+        menuCanvasGroup = currentMenuGameObject.GetComponent<CanvasGroup>();
+
+        foreach (GameObject menu in menusToLoad)
+        {
+            menus.Add(menu.name, menu);
+        }
     }
 
     public void OnEnable()
@@ -30,9 +48,9 @@ public class GameMenuBehaviour : MonoBehaviour
         keyboardControls?.Disable();
     }
 
-    public void MenuScreenSetActive()
+    public void MenuScreenSetActive(bool state)
     {
-        menuOn = !menuOn;
+        menuOn = state;
 
         foreach (Transform child in transform)
         {
@@ -41,14 +59,41 @@ public class GameMenuBehaviour : MonoBehaviour
 
         if (menuOn)
         {
+            MovementController.Instance?.OnDisable();
             canvasGroup.interactable = true;
             CanvasTransitions.Fade(canvasGroup, 0, 1, 0.5f);
         } 
         else
         {
+            MovementController.Instance?.OnEnable();
             canvasGroup.interactable = false;
             CanvasTransitions.Fade(canvasGroup, 1, 0, 0.5f);
         }
     }
 
+    public void LoadMenu(string menuName)
+    {
+        if (!menus.ContainsKey(menuName))
+        {
+            Debug.LogWarning($"There was no menu called {menuName}, did you add it in GameMenuBehaviour?");
+            return;
+        }
+
+        currentMenuGameObject.GetComponent<FadeAnimation>().SetAnimationState(true);
+        menuCanvasGroup.interactable = true;
+
+        MenuScreenSetActive(false);
+
+        currentOpenMenu = Instantiate(menus[menuName], currentMenuGameObject.transform);
+        currentOpenMenu.transform.SetAsFirstSibling();
+    }
+
+    public void CloseCurrentMenu()
+    {
+        currentMenuGameObject.GetComponent<FadeAnimation>().SetAnimationState(false);
+        menuCanvasGroup.interactable = false;
+
+        if (currentOpenMenu != null)
+            Destroy(currentOpenMenu);
+    }
 }

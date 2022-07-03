@@ -12,6 +12,9 @@ public class SaveFile
     public Dictionary<int, Dictionary<string, Dictionary<Type, Dictionary<string, object>>>> data
         = new Dictionary<int, Dictionary<string, Dictionary<Type, Dictionary<string, object>>>>();
 
+    public Dictionary<Type, Dictionary<string, object>> universalData
+        = new Dictionary<Type, Dictionary<string, object>>();
+
     private SaveFile()
     {
 
@@ -37,9 +40,24 @@ public class SaveFile
         data[gameObject.scene.buildIndex][gameObject.name][type][variableName] = value;
     }
 
+    public void Save(Type type, string variableName, object value)
+    {
+        if (!universalData.ContainsKey(type))
+        {
+            universalData.Add(type, new Dictionary<string, object>());
+        }
+
+        universalData[type][variableName] = value;
+    }
+
     public T Load<T>(GameObject gameObject, Type type, string variableName)
     {
         return (T)data[gameObject.scene.buildIndex][gameObject.name][type][variableName];
+    }
+
+    public T Load<T>(Type type, string variableName)
+    {
+        return (T)universalData[type][variableName];
     }
 
     public bool HasData(GameObject gameObject, Type type, string variableName)
@@ -52,6 +70,20 @@ public class SaveFile
         {
             return false;
         } 
+
+        return true;
+    }
+
+    public bool HasData(Type type, string variableName)
+    {
+        try
+        {
+            Load<object>(type, variableName);
+        }
+        catch (Exception)
+        {
+            return false;
+        }
 
         return true;
     }

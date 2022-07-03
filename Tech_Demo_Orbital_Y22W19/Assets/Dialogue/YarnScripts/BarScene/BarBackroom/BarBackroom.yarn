@@ -217,7 +217,7 @@ Tutorial: Recall that you can see the tile type by hovering over the tile with y
 
 Tutorial: This is called a peek attack. This way, you can attack the enemy, but the enemy cannot retaliate without moving to see you. Likewise, enemies can do the same to you.
 
-Tutorial: An attack requires 300 TP to conduct. 
+Tutorial: The amount of TP an attack costs is shown in the attack summary, once you select a unit to attack. Normally, this is 250 TP.
 
 Tutorial: Attack the rabid hound using a peek attack.
 ===
@@ -273,6 +273,9 @@ Olivia: It's inside that chest over there next to the table.
 title: BarStorageRoomOpenChest
 position: 231,270
 ---
+<<declare $hasFilamentCore = false as bool>>
+<<set $hasFilamentCore to true>>
+
 <<clear Speaker>>
 Storage Room: Olivia retrieves a key from the pouch along her belt and unlocks the iron chest. 
 
@@ -306,7 +309,7 @@ position: 46,426
     <<jump BarStorageFilamentCoreDescription>>
 -> So why did you keep the core here?
     <<jump BarStorageKeepingnDescription>>
--> I think it's about time you guys showed me your vehicle. [Leave]
+-> I think it's about time you guys showed me your vehicle. \[Leave\]
     <<jump BarStorageExit>>
 ===
 title: BarStorageFilamentCoreDescription
@@ -332,7 +335,7 @@ Evelyn: Each core of memory can store either a one or a zero, depending on which
 
 Evelyn: Core memory is also non-volatile, so it keeps information stored within it near indefinitely, even without a source of power
 
--> Emmanuel: You still haven't gotten to the filament part yet.
+-> You still haven't gotten to the filament part yet.
 
 Evelyn: Right, I'm getting there.
 

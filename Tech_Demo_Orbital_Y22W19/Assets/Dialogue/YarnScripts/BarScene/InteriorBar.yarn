@@ -1,42 +1,64 @@
 ﻿title: EvelynAndOlivia
 tags:
 ---
-<<load Speaker Evelyn Neutral>>
-Evelyn: There's another reason why we came here.
+<<if $hasFilamentCore == true>>
+    <<load Speaker Emmanuel Neutral>>
+    Emmanuel: Okay, great job back there everyone.
 
-<<load Speaker Olivia Neutral>>
-Olivia: A few months ago, from our last stop before we out to the Bay, we left an old filament core in this building after we removed it from our Landship's navigation system.
+    Emmanuel: But we really all need to get going.
+
+    <<load Speaker Evelyn Neutral>>
+    Evelyn: Meet us outside when you're ready, we'll bring you back to our landship.
+
+<<elseif $hasCrowbar == false>>
+
+    <<load Speaker Evelyn Neutral>>
+    Evelyn: There's another reason why we came here.
+
+    <<load Speaker Olivia Neutral>>
+    Olivia: A few months ago, from our last stop before we out to the Bay, we left an old filament core in this building after we removed it from our Landship's navigation system.
 
 
-<<load Speaker Evelyn Neutral>>
-Evelyn: Yea, we really thought it wouldn't be necessary anymore after we installed the new navigational engines.
+    <<load Speaker Evelyn Neutral>>
+    Evelyn: Yea, we really thought it wouldn't be necessary anymore after we installed the new navigational engines.
 
-Evelyn: But last mission, we realised it wasn't working anymore, so we have to reinstall the old navigations back in, and we can't do it without our filament core.
+    Evelyn: But last mission, we realised it wasn't working anymore, so we have to reinstall the old navigations back in, and we can't do it without our filament core.
 
-<<load Speaker Olivia Neutral>>
-Olivia: We left it in the back room, through the door right behind me.
+    <<load Speaker Olivia Neutral>>
+    Olivia: We left it in the back room, through the door right behind me.
 
-Olivia: Unfortunately, it's jammed. I think the door swelled up or something.
+    Olivia: Unfortunately, it's jammed. I think the door swelled up or something.
 
-Olivia: I've been trying to open it with the crowbar, but I haven't had any luck, may be you can try?
-<<set $hasCrowbar to true>>
+    Olivia: I've been trying to open it with the crowbar, but I haven't had any luck, may be you can try?
+    <<set $hasCrowbar to true>>
+<<else>>
+    <<load Speaker Olivia Neutral>>
+    Olivia: Try opening the door with that crowbar I just gave you.
+
+    Olivia: The door is right behind me, the one nearest to me right there.
+<<endif>>
 ===
 
 title: BarDoorLeft
 position: 0,1
 ---
 <<clear Speaker>>
-Door: This door leads to a room in the back.
+<<if $hasFilamentCore == true>> 
+    Door: You no longer have any need to access this room.
 
-Door: It's jammed and won't open.
+<<elseif $hasCrowbar == true>>
+    Door: You can pry this door open with your crowbar
 
-<<if $hasCrowbar == true>>
     -> Pry it open?
         <<jump BarDoorLeftPry>>
     -> Leave
         <<unsetNextScene>>
-
+        
 <<else>>
+    Door: This door leads to a room in the back.
+
+    Door: It's jammed and won't open.
+
     Door: Maybe you need sturdy object to open it with.
 <<endif>>
 ===
@@ -45,9 +67,4 @@ position: 0,1
 ---
 Door: With a few relenting groans from a door frame that has clearly seen better days, finally, the door gives way.
 <<transitionScene>>
-===
-title: Node1
-position: 0,1
----
-
 ===

@@ -1,10 +1,26 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 
 public class MovementController : MonoBehaviour
 {
+    private static MovementController instance;
+
+    public static MovementController Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<MovementController>();
+            }
+            return instance;
+        }
+    }
+
     [SerializeField]
     private Animator animator;
 
@@ -16,7 +32,9 @@ public class MovementController : MonoBehaviour
 
     private KeyboardControls keyboardControls;
     private Rigidbody2D rb;
-    
+
+    private Action<InputAction.CallbackContext> stop = _ => { };
+
 
     public void OnEnable()
     {
@@ -40,11 +58,16 @@ public class MovementController : MonoBehaviour
 
         keyboardControls = new KeyboardControls();
         keyboardControls.Mouse.Move.performed += ctx => Move(ctx.ReadValue<Vector2>());
+
         keyboardControls.Mouse.Move.canceled += _ => Stop();
     }
 
     public void Move(Vector2 axis)
     {
+        Quaternion rotation = Quaternion.Euler(0, 0, 30);
+        Matrix4x4 matrix = Matrix4x4.Rotate(rotation);
+        axis = matrix.MultiplyPoint3x4(axis);
+
         rb.velocity = axis * speed;
         animator.SetBool("isMoving", true);
         animator.SetFloat("xDirection", axis.x);
@@ -53,7 +76,6 @@ public class MovementController : MonoBehaviour
 
     public void Stop()
     {
-        Debug.Log(rb.gameObject.name);
         rb.velocity = Vector2.zero;
         animator.SetBool("isMoving", false);
     }

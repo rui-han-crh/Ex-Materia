@@ -26,6 +26,14 @@ ScriptedImporter:
   - {fileID: 6391573757903218779, guid: 1674c639f1d421d4482be6c18739118c, type: 3}
   compileErrors: []
   serializedDeclarations:
+  - name: $hasFilamentCore
+    typeName: Bool
+    defaultValueBool: 0
+    defaultValueNumber: 0
+    defaultValueString: 
+    description: 
+    isImplicit: 0
+    sourceYarnAsset: {fileID: 6391573757903218779, guid: 1674c639f1d421d4482be6c18739118c, type: 3}
   - name: $hasCrowbar
     typeName: Bool
     defaultValueBool: 0
