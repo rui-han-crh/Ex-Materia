@@ -91,6 +91,7 @@ namespace Managers
         private void Awake()
         {
             keyboardControls = new KeyboardControls();
+            raycastBlocker.SetActive(false);
         }
 
         private void Start()

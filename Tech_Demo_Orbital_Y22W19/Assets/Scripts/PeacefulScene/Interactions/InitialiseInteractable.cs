@@ -9,12 +9,12 @@ public class InitialiseInteractable : MonoBehaviour
     [SerializeField]
     private Interactable interactable;
 
-    public float time = 1;
+    public float delayTime = 1;
 
     void Start()
     {
         Interactable self = GetComponent<Interactable>();
-        StartCoroutine(LateInvoke(() => interactable.Interact(self), time));
+        StartCoroutine(LateInvoke(() => interactable.Interact(self), delayTime));
     }
 
     private IEnumerator LateInvoke(Action func, float delay)

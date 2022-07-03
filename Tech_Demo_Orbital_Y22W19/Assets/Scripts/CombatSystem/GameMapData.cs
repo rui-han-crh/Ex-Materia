@@ -52,6 +52,16 @@ public class GameMapData
         return tileCensus[position].Cost;
     }
 
+    public string GetTileName(Vector3Int position)
+    {
+        return tileCensus[position].TileName;
+    }
+
+    public TileData.TileType GetTileType(Vector3Int gridPosition)
+    {
+        return tileCensus.GetTileType(gridPosition);
+    }
+
     public bool HasFullCover(Vector3Int position)
     {
         return tileCensus.GetTileType(position).Equals(TileData.TileType.FullCover);

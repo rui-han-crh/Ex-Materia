@@ -2,6 +2,7 @@ using CombatSystem.Entities;
 using Managers;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +14,8 @@ public class HeadAvatarBehaviour : MonoBehaviour
     private BarFillBehaviour healthBar;
     [SerializeField]
     private GameObject boundGameObject;
+    [SerializeField]
+    private TMP_Text timeText;
 
     private int identity = -1;
 
@@ -47,6 +50,11 @@ public class HeadAvatarBehaviour : MonoBehaviour
 
         this.identity = identity;
         avatar.sprite = UnitManager.Instance[identity].CharacterAvatar;
+    }
+
+    public void SetTimeText(int time)
+    {
+        timeText.text = time.ToString();
     }
 
     public void UpdateHealthBar(UnitOld unit)

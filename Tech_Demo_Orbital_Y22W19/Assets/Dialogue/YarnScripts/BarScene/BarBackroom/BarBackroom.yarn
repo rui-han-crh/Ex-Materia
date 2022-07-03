@@ -1,6 +1,6 @@
 ﻿title: BarHallway
 tags:
-position: 3,-4
+position: -215,29
 ---
 <<load Speaker Emmanuel Neutral>>
 Emmanuel: This is a pretty long hallway.
@@ -14,7 +14,7 @@ Tutorial: Hold <b>LEFT CONTROL</b> to open the character menu. Then, press the m
 Tutorial: Double click the tile you want to move to.
 ===
 title: BarHallwayEnd
-position: 19,-73
+position: 16,-169
 ---
 <<load Speaker Evelyn Happy>>
 Evelyn: Alright, it should be behind this door, let me see if I can open it.
@@ -46,7 +46,7 @@ Emmanuel: Uh, how about I try shooting the lock?
 Tutorial: Hold LEFT CONTROL to bring up the menu again. This time, select the <b>Attack Command</b>
 ===
 title: BarHallwayShoot
-position: 0,1
+position: -225,-69
 ---
 <<load Speaker Evelyn Surprised>>
 Evelyn: NO! WAIT!
@@ -78,7 +78,7 @@ Olivia: We can proceed.
 <<transitionScene>>
 ===
 title: BarStoreroomEntry
-position: 229,-6
+position: 251,-92
 ---
 <<load Speaker Evelyn Neutral>>
 Evelyn: Okay, it should be here and...
@@ -130,4 +130,94 @@ Tutorial: To maximise the number of tiles that can be walked through, select a d
 
 <<load Speaker Olivia Neutral>>
 Olivia: Come on, let's go, the door's on the other side.
+===
+title: BarStorageEnd
+position: 238,-171
+---
+<<clear Speaker>>
+Tutorial: You have a set amount of <b>Action Points (AP)</b> that can be consumed per movement <i><b>per turn</b></i>.
+
+Tutorial: Notice, in this level, you may not consume a path cost aggregated to more than 150 AP.
+
+Tutorial: At the end of the movement action, the action points you have consumed will be deposited as <b>Time Points (TP)</b>. 
+
+Tutorial: To check how much Time Points any entity of the game has, hover over the Avatar in the unit queue at the bottom left corner of the screen.
+
+<<load Speaker Evelyn Angry>>
+Evelyn: Dude, what are you looking at...
+
+<<load Speaker Evelyn Neutral>>
+Evelyn: Open the door, it's not locked from this side.
+<<transitionScene>>
+===
+
+title: BarBackyard
+position: 220,27
+---
+<<load Speaker Emmanuel Surprised>>
+Emmanuel: What is that?
+
+<<load Speaker Evelyn Surprised>>
+Evelyn: Damn! Looks like a rabid hound got it.
+
+Evelyn: It wasn't here when we got here, it must have slipped through the walls.
+
+<<load Speaker Olivia Neutral>>
+Olivia: Can we skirt around it and get to the other door?
+
+<<load Speaker Emmanuel Neutral>>
+Emmnauel: It's right in front of the door. I don't think we can avoid its sight.
+
+<<load Speaker Evelyn Neutral>>
+Evelyn: Okay. We have to put it down then.
+
+<<load Speaker Evelyn Angry>>
+Evelyn: I'll do it.
+
+Evelyn: It'll be quick.
+
+Evelyn: I'm going to hide behind the wall and neutralise it when it's not looking alright.
+
+<<clear Speaker>>
+Tutorial: When units are behind <b>Full Cover</b>, they cannot be seen by other units and also cannot be targetted.
+
+Tutorial: Move to tile next to nearest wall.
+===
+title: BarBackyardBadMovement
+position: -9,124
+---
+<<load Speaker Olivia Surprised>>
+Olivia: Wait! Evelyn, where are you going?!
+
+<<clear Speaker>>
+Tutorial: You should move to the tile right behind the wall near the entrance, but no out into the open. Try again.
+<<transitionScene>>
+===
+
+title: BarBackyardMovement
+position: -185,94
+---
+<<clear Speaker>>
+Tutorial: Examine the Time Points (TP) that each unit has in the unit queue.
+
+Tutorial: The unit with the <b>least TP</b> is the unit that will be moving in this current move.
+
+Tutorial: As you have moved your unit and incurred TP, your TP is greater than the next opponent unit.
+
+Tutorial: So, currently, the rabid hound will take this current movement.
+
+Tutorial: Evelyn will be able to move as soon as she has the lowest TP of all units in the unit queue.
+===
+title: BarStoreroomPeek
+position: 223,109
+---
+Tutorial: When behind <b>Full Cover</b>, you can attack a unit from any adjacent tile as long as there is a line of sight from the adjacent tile.
+
+Tutorial: Recall that you can see the tile type by hovering over the tile with your mouse. Only <b>Full Cover</b> tiles can be peeked behind from.
+
+Tutorial: This is called a peek attack. This way, you can attack the enemy, but the enemy cannot retaliate without moving to see you. Likewise, enemies can do the same to you.
+
+Tutorial: An attack requires 300 TP to conduct. 
+
+Tutorial: Attack the rabid hound using a peek attack.
 ===

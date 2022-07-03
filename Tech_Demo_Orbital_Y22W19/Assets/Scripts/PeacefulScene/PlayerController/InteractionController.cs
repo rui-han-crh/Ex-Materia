@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[RequireComponent(typeof(Interactable), typeof(MovementController))]
+[RequireComponent(typeof(Interactable))]
 public class InteractionController : MonoBehaviour
 {
     private KeyboardControls keyboardControls;
@@ -110,10 +110,10 @@ public class InteractionController : MonoBehaviour
         thisInteractable.EndedInteract += () =>
         {
             permittedRadius = savedRadius;
-            movementController.OnEnable();
+            movementController?.OnEnable();
         };
 
-        movementController.OnDisable();
+        movementController?.OnDisable();
     }
 
 

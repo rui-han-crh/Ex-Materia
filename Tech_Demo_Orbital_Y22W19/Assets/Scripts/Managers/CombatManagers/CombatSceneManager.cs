@@ -68,6 +68,8 @@ namespace Managers
 
         public static readonly float UNIT_INTERPOLATION_SPEED = 2f;
 
+        public bool isPaused;
+
         [SerializeField]
         private UnitManager unitManager;
 
@@ -76,6 +78,9 @@ namespace Managers
 
         [SerializeField]
         private Tilemap ground;
+
+        [SerializeField]
+        private bool gameOverAllowed = true;
 
         private RoutineManager routineManager;
 
@@ -126,6 +131,12 @@ namespace Managers
         private bool autoPlayQueued;
         private int timeToWait;
 
+        public void SetIsPaused(bool state)
+        {
+            isPaused = state;
+        }
+
+
         private void OnEnable()
         {
             keyboardControls.Enable();
@@ -135,6 +146,7 @@ namespace Managers
         {
             keyboardControls?.Disable();
             tokenSource?.Cancel();
+            isPaused = true;
         }
 
         private void Awake()
@@ -289,9 +301,9 @@ namespace Managers
         {
             Debug.Log($"Command selected {command}");
 
-            if (!routineManager.IsDormant())
+            if (isPaused || !routineManager.IsDormant())
             {
-                Debug.Log("Not allowed, the routine queue was not dormant");
+                Debug.Log("Not allowed, the routine queue was not dormant or combat paused");
                 return;
             }
 
@@ -492,6 +504,10 @@ namespace Managers
 
         private void Update()
         {
+            if (isPaused)
+            {
+                return;
+            }
 
             switch (gameState)
             {
@@ -504,16 +520,18 @@ namespace Managers
                         CellToWorld(CurrentActingUnitPosition) + UNIT_WORLD_BODY_OFFSET,
                         CombatUIManager.FAST_FOCUS_DURATION);
 
-
-                    if (currentMap.IsLost())
+                    if (gameOverAllowed)
                     {
-                        gameState = SceneState.Lost;
-                        break;
-                    } 
-                    else if (currentMap.IsWon())
-                    {
-                        gameState = SceneState.Won;
-                        break;
+                        if (currentMap.IsLost())
+                        {
+                            gameState = SceneState.Lost;
+                            break;
+                        }
+                        else if (currentMap.IsWon())
+                        {
+                            gameState = SceneState.Won;
+                            break;
+                        }
                     }
 
 
@@ -561,6 +579,19 @@ namespace Managers
 
         public async void Autoplay()
         {
+            IEnumerator WaitForUnpause(MapActionRequest bestRequest)
+            {
+                yield return new WaitForEndOfFrame();
+                if (isPaused)
+                {
+                    StartCoroutine(WaitForUnpause(bestRequest));
+                }
+                else
+                {
+                    ParseRequest(bestRequest);
+                }
+            }
+
             Debug.Log("Please wait");
 
             await AsyncTask.Delay(1000);
@@ -574,8 +605,7 @@ namespace Managers
 
             Debug.Log($"{bestRequest} Utility: {bestRequest.GetUtility(CurrentMap)}");
 
-
-            ParseRequest(bestRequest);
+            StartCoroutine(WaitForUnpause(bestRequest));
         }
     }
 }

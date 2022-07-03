@@ -96,6 +96,7 @@ public class UnitQueueManager : MonoBehaviour
             Unit unit = uniqueIdentities[characterHeadAvatar.BoundIdentity];
 
             characterHeadAvatar.UpdateHealthBar(unit);
+            characterHeadAvatar.SetTimeText(unit.Time);
 
             int index = unitIdentityOrder[characterHeadAvatar.BoundIdentity];
 

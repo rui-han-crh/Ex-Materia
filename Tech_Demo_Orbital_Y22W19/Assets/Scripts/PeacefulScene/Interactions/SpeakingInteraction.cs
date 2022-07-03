@@ -13,6 +13,7 @@ public class SpeakingInteraction : Interaction
     {
         CanvasTransitions.Fade(InteractableCollection.Instance.DialogueSystemCanvasGroup, 0, 1, time: 0.3f);
         InteractableCollection.Instance.DialogueSystemCanvasGroup.interactable = true;
+        InteractableCollection.Instance.DialogueSystemCanvasGroup.blocksRaycasts = true;
         YarnManager.Instance.StartConvoAuto(yarnScriptName);
         YarnManager.Instance.OnEnded += InvokeDelegate;
     }
@@ -21,6 +22,7 @@ public class SpeakingInteraction : Interaction
     {
         CanvasTransitions.Fade(InteractableCollection.Instance.DialogueSystemCanvasGroup, 1, 0, time: 0.3f);
         InteractableCollection.Instance.DialogueSystemCanvasGroup.interactable = false;
+        InteractableCollection.Instance.DialogueSystemCanvasGroup.blocksRaycasts = false;
         OnEnd();
     }
 }

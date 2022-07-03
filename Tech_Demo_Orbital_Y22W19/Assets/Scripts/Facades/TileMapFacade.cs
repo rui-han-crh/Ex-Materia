@@ -16,7 +16,7 @@ namespace Facades
             {
                 if (instance == null)
                 {
-                    instance = new TileMapFacade();
+                    instance = FindObjectOfType<TileMapFacade>();
                     Debug.Assert(instance != null, "There is no TileMapFacade in the scene, consider adding one");
                 }
                 return instance;
@@ -29,6 +29,8 @@ namespace Facades
         public Tilemap indicatorMap;
 
         private TileRegisterFacade tileRegisterFacade;
+
+
         public TileCensus CreateTileCensus()
         {
             tileRegisterFacade = GetComponent<TileRegisterFacade>();
@@ -41,7 +43,9 @@ namespace Facades
                     Vector3Int localPlace = new Vector3Int(pos.x, pos.y, pos.z);
                     if (map.HasTile(localPlace) && !tileData.ContainsKey(localPlace))
                     {
-                        tileData.Add(localPlace, new TileData(cost, tileType));
+                        Tile tile = map.GetTile<Tile>(localPlace);
+                        Tile groundTile = groundTilemaps[0].GetTile<Tile>(localPlace);
+                        tileData.Add(localPlace, new TileData(tileRegisterFacade.GetTileName(groundTile), cost, tileType));
                     }
                 }
             }
@@ -65,7 +69,7 @@ namespace Facades
                     {
                         Tile tile = groundMap.GetTile<Tile>(localPlace);
                         int cost = tileRegisterFacade.Contains(tile) ? tileRegisterFacade[tile] : 0;
-                        tileData.Add(localPlace, new TileData(cost, TileData.TileType.Ground));
+                        tileData.Add(localPlace, new TileData(tileRegisterFacade.GetTileName(tile), cost, TileData.TileType.Ground));
                     }
                 }
             }

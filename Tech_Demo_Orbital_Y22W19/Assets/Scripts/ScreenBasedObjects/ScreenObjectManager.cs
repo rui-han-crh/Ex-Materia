@@ -39,14 +39,14 @@ public class ScreenObjectManager : MonoBehaviour
 
         screenObjects = GetComponentsInChildren<CanvasGroup>();
 
-        foreach (Transform child in transform)
-        {
-            child.gameObject.SetActive(false);
-        }
-
         foreach (CanvasGroup screenObject in screenObjects)
         {
             screenObjectsMapping[screenObject.name] = screenObject;
+        }
+
+        foreach (Transform child in transform)
+        {
+            child.gameObject.SetActive(false);
         }
     }
 
@@ -55,7 +55,7 @@ public class ScreenObjectManager : MonoBehaviour
     {
         if (!screenObjectsMapping.ContainsKey(name))
         {
-            Debug.LogError($"There was no object given with the name {name}");
+            Debug.LogError($"There was no object given with the name {name}. Did you add a CanvasGroup component to {name}?");
         }
 
         currentActiveObject = name;

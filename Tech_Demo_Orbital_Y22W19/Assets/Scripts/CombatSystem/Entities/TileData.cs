@@ -15,6 +15,12 @@ namespace CombatSystem.Entities
             FullCover
         }
 
+        public string TileName
+        {
+            get;
+            private set;
+        }
+
         public int Cost
         {
             get;
@@ -27,8 +33,16 @@ namespace CombatSystem.Entities
             private set;
         }
 
+        public TileData(string tileName, int cost, TileType type) : this()
+        {
+            TileName = tileName;
+            Cost = cost;
+            Type = type;
+        }
+
         public TileData(int cost, TileType type) : this()
         {
+            TileName = "Tile";
             Cost = cost;
             Type = type;
         }

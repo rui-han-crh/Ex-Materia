@@ -3,8 +3,22 @@ using UnityEngine.Tilemaps;
 using System;
 using System.Collections.Generic;
 
-public class TileManager : MonoBehaviour
+public class TileManagerOld : MonoBehaviour
 {
+    private static TileManagerOld instance;
+    public static TileManagerOld Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<TileManagerOld>();
+                Debug.Assert(instance != null, "There was no TileManager in the scene, consider adding one");
+            }
+            return instance;
+        }
+    }
+
     [SerializeField]
     private Tilemap ground;
 
