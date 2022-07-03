@@ -12,7 +12,8 @@ namespace CombatSystem.Entities
         public enum UnitFaction
         {
             Friendly,
-            Enemy
+            Enemy,
+            Neutral
         }
 
         public enum RiskCalculationMethod

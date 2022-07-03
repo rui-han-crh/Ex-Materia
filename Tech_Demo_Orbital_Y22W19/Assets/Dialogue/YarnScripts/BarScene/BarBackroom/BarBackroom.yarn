@@ -184,7 +184,7 @@ Tutorial: When units are behind <b>Full Cover</b>, they cannot be seen by other 
 Tutorial: Move to tile next to nearest wall.
 ===
 title: BarBackyardBadMovement
-position: -9,124
+position: -252,182
 ---
 <<load Speaker Olivia Surprised>>
 Olivia: Wait! Evelyn, where are you going?!
@@ -195,7 +195,7 @@ Tutorial: You should move to the tile right behind the wall near the entrance, b
 ===
 
 title: BarBackyardMovement
-position: -185,94
+position: -211,92
 ---
 <<clear Speaker>>
 Tutorial: Examine the Time Points (TP) that each unit has in the unit queue.
@@ -220,4 +220,175 @@ Tutorial: This is called a peek attack. This way, you can attack the enemy, but 
 Tutorial: An attack requires 300 TP to conduct. 
 
 Tutorial: Attack the rabid hound using a peek attack.
+===
+title: BarBackyardWin
+position: -240,-161
+---
+<<load Speaker Evelyn Angry>>
+Evelyn: Okay, got it. It's over.
+
+<<load Speaker Emmanuel Neutral>>
+Emmanuel: Nice going there.
+
+<<load Speaker Evelyn Neutral>>
+Evelyn: Now that that's settled, let's get the filament core and get out of here.
+
+Evelyn: It's getting pretty cold.
+
+<<clear Speaker>>
+Tutorial: Every attack has a percent chance to hit. The percent chance to hit reflects the chance of hitting an enemy targeted.
+
+Tutorial: A low percent chance to hit means that you are less likely to hit the enemy. There is a large possiblity that you may deal 0 damage as a result of a missed hit.
+
+Tutorial: The converse is true as well. A high percent chance to hit means you are more likely to hit the enemy.
+
+Tutorial: The percent chance to hit decreases the further in distance the enemy is to you, with respect to your unit's range.
+
+Tutorial: Hiding behind <b>Half Cover</b> can significantly reduce the enemy's chance to hit you. Similarly, an enemy behind <b>Half Cover</b> is also harder to hit.
+
+Tutorial: You can practice your shots on the barrels in this backyard. When you're ready, move to the door to continue the game.
+===
+
+title: BarBackyardLeaving
+position: 236,194
+---
+<<clear Speaker>>
+Door: Evelyn fidgets a bit with the door.
+
+Door: This door is significantly more cooperative than others. It rattles a bit before a familiar click is heard.
+
+Door: The door swings inwards, inviting a gust of musty air to assail everyone's nostrils.
+
+Door: The familiar interior of the same storage room ahead greets everyone again.
+<<transitionScene>>
+===
+title: BarStoreroomOtherDoor
+position: -237,279
+---
+<<load Speaker Olivia Elated>>
+Olivia: Hey there it is!
+
+Olivia: It's inside that chest over there next to the table.
+===
+title: BarStorageRoomOpenChest
+position: 231,270
+---
+<<clear Speaker>>
+Storage Room: Olivia retrieves a key from the pouch along her belt and unlocks the iron chest. 
+
+Storage Room: The mechanism makes a weighty click as the bolt disengages from the lock.
+
+Storage Room: Olivia flips open the lid with some effort. The hinges around the back rattle in mechanical agony, betraying its age - a far cry from its younger, well oiled, days.
+
+Storage Room: Almost on cue, the room is illuminated with a bluish glow.
+
+<<load Speaker Emmanuel Surprised>>
+Emmanuel: Woah! That thing glows?
+
+<<load Speaker Evelyn Neutral>>
+Evelyn: No, of course not...
+
+Evelyn: That'll have to be an infinite energy source. We'd have world peace.
+
+<<load Speaker Olivia Happy>>
+Olivia: This core is highly refractive. It's just refracting the light coming from the outside.
+
+Olivia: It's kind of like how you can make a lamp by shining a flashlight below a bottle of water.
+
+<<load Speaker Evelyn Neutral>>
+Evelyn: The filament core is highly effective in being used to transfer information quickly, which is why it's so important to the navigation systems.
+<<jump BarStorageQuestions>>
+===
+title: BarStorageQuestions
+position: 46,426
+---
+-> Why is it called a filament core then? Where's the filament?
+    <<jump BarStorageFilamentCoreDescription>>
+-> So why did you keep the core here?
+    <<jump BarStorageKeepingnDescription>>
+-> I think it's about time you guys showed me your vehicle. [Leave]
+    <<jump BarStorageExit>>
+===
+title: BarStorageFilamentCoreDescription
+position: -249,424
+---
+<<load Speaker Evelyn Neutral>>
+Evelyn: Do you remember, back in the old days, computers used magnetic cores for random access memory?
+
+Evelyn: In a magnetic core memory, rings of conductive iron pins, forming "cores" would have wires threaded through them.
+
+Evelyn: You're probably familiar with how electricity fields can also generate a corresponding magnetic field perpendicular to its traversal?
+
+Evelyn: So when a current is passed through these wires threaded through the ferrite cores, the magnetised core is able to store a state of information called a bit.
+
+<<load Speaker Emmanuel Neutral>>
+Emmanuel: So each core stores a single bit of memory?
+
+<<load Speaker Evelyn Happy>>
+Evelyn: Exactly!
+
+<<load Speaker Evelyn Neutral>>
+Evelyn: Each core of memory can store either a one or a zero, depending on which <i>direction</i> the core is magnetised in.
+
+Evelyn: Core memory is also non-volatile, so it keeps information stored within it near indefinitely, even without a source of power
+
+-> Emmanuel: You still haven't gotten to the filament part yet.
+
+Evelyn: Right, I'm getting there.
+
+Evelyn: So within the shell of the filament core lies a device like a core memory, but instead of just ferrite cores, this filament memory has thin wires attached to each core that can be made incandescent by the current.
+
+Evelyn: When reading from memory, a current is induced to set the bit of information to zero. If it is successful is setting it to zero, the filament briefly glows due to being heated up by the resistance in the wires.
+
+Evelyn: Otherwise, if the bit of information is already zero, then there will not be any glow. 
+
+Evelyn: Of course, this form of reading is a destructive readout, which will destroy information after reading.
+
+Evelyn: So the presence of light at a particular time at one particular area of the shell represents a one, and the absence of it is a zero.
+
+<<load Speaker Olivia Neutral>>
+Olivia: And since this outer shell is so refractive...
+
+<<clear Speaker>>
+Storage Room: Olivia briefly caresses the white polygonally spherical shell, radiating an ecclesiastical bluish bloom from winter godrays as it cascades through the decaying cracks in the battered and collapsed roof overhead.
+
+<<load Speaker Olivia Neutral>>
+Olivia: It communicates and redirects every bit of information to each necessary component of the navigational systems.
+
+Olivia: So when the navigational system is required to store information, it writes information to the filament core.
+
+Olivia: Then any component can access the written information via light through the refractive shell. This removes the information from the filament core.
+<<jump BarStorageQuestions>>
+===
+title: BarStorageKeepingnDescription
+position: 43,618
+---
+<<load Speaker Evelyn Neutral>>
+Evelyn: Before our last mission, just before we sent out to the Bay, another one of our crew, Lucien, thought that the cold near the frozen sea would affect the refractivity of the shell.
+
+Evelyn: Apparently he was afraid the cold would cause the components to contract and affect the readout from the shell, so he suggested we replace the entire navigation system with one that doesn't require a filament memory and has its own internal heating system.
+
+Evelyn: But unfortunately, when the system starts up in the cold, the intense and sudden heating caused differential contraction of the materials in the components.
+
+Evelyn: They all started to buckle and warp because different materials were expanding at different rates and it broke the adhesive that glues the components together.
+
+Evelyn: So yea, after we replaced the old system, we stored the filament core here. No one ever comes here and we were on our usual break here back then, so it was only a matter of convenience.
+
+<<load Speaker Olivia Sad>>
+Olivia: Now the newer system is more of a bane than a boon.
+
+Olivia: On extra bad days, that thing won't even boot up probably. We spent a few hours in the snow without any direction sometimes.
+
+<<load Speaker Olivia Neutral>>
+Olivia: Thankfully, nothing attacked us.
+
+<<load Speaker Evelyn Neutral>>
+Evelyn: Our next mission isn't as cold as the one before, so we're deciding it's a much better idea to stick with what worked before.
+<<jump BarStorageQuestions>>
+===
+title: BarStorageExit
+---
+<<load Speaker Emmanuel Neutral>>
+Emmanuel: I think we've hung out out here from long enough, let's get back. We really need to get our assigned task going.
+<<transitionScene>>
 ===

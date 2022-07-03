@@ -36,10 +36,11 @@ public class MovementController : MonoBehaviour
 
     private void Awake()
     {
+        rb = GetComponent<Rigidbody2D>();
+
         keyboardControls = new KeyboardControls();
         keyboardControls.Mouse.Move.performed += ctx => Move(ctx.ReadValue<Vector2>());
         keyboardControls.Mouse.Move.canceled += _ => Stop();
-        rb = GetComponent<Rigidbody2D>();
     }
 
     public void Move(Vector2 axis)
@@ -52,6 +53,7 @@ public class MovementController : MonoBehaviour
 
     public void Stop()
     {
+        Debug.Log(rb.gameObject.name);
         rb.velocity = Vector2.zero;
         animator.SetBool("isMoving", false);
     }

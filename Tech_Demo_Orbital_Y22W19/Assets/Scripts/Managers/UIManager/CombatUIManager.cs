@@ -100,7 +100,7 @@ namespace Managers
 
             keyboardControls.Mouse.ShowCombatSelections.performed += _ =>
             {
-                CombatSceneManager.Instance.StateReset();
+                CombatSceneManager.Instance.UnsubscribeAllControls();
 
                 AuxillarySubscribers.SubscribeToCharacterMenu(
                     CombatSceneManager.Instance.CurrentActingUnitPosition,

@@ -6279,7 +6279,7 @@ TilemapRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 1
   m_ChunkSize: {x: 32, y: 32, z: 32}
   m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
@@ -9579,6 +9579,7 @@ MonoBehaviour:
   riskCalculationMethod: 0
   faction: 0
   avatar: {fileID: 21300000, guid: 709dcb3e36bf6e74389e2a318ba5f28c, type: 3}
+  startingTime: 0
 --- !u!70 &1319170347
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -66709,7 +66710,7 @@ TilemapRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0.25, z: 0}
+  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 3
@@ -66724,49 +66725,39 @@ Tilemap:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1730694565}
   m_Enabled: 1
-  m_Tiles:
-  - first: {x: -4, y: 3, z: 0}
-    second:
-      serializedVersion: 2
-      m_TileIndex: 0
-      m_TileSpriteIndex: 0
-      m_TileMatrixIndex: 0
-      m_TileColorIndex: 0
-      m_TileObjectToInstantiateIndex: 65535
-      dummyAlignment: 0
-      m_AllTileFlags: 1073741825
+  m_Tiles: {}
   m_AnimatedTiles: {}
   m_TileAssetArray:
-  - m_RefCount: 1
-    m_Data: {fileID: 11400000, guid: 652b576b6b99e004fb41b41d4594a74f, type: 2}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   m_TileSpriteArray:
-  - m_RefCount: 1
-    m_Data: {fileID: -8082837956958420779, guid: f144d05b7e75f21489fc0278d469941a, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   m_TileMatrixArray:
-  - m_RefCount: 1
+  - m_RefCount: 0
     m_Data:
-      e00: 1
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: 1
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
+      e00: -1.084227e-19
+      e01: -2333.0938
+      e02: 4.634509e-39
+      e03: 4.8457985
+      e10: 6.68e-43
+      e11: 4.5905e-41
+      e12: 6.71e-43
+      e13: 6.68e-43
+      e20: 6e-45
+      e21: 1.7202677e+19
+      e22: 1.720171e+19
+      e23: 1.720171e+19
       e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
+      e31: 9.8e-44
+      e32: 9.8e-44
+      e33: 9.8e-44
   m_TileColorArray:
-  - m_RefCount: 1
-    m_Data: {r: 1, g: 1, b: 1, a: 1}
+  - m_RefCount: 0
+    m_Data: {r: 4.634509e-39, g: 4.634509e-39, b: 4.634509e-39, a: 4.634509e-39}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_Origin: {x: -4, y: 0, z: 0}
   m_Size: {x: 4, y: 4, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 2}
@@ -67145,6 +67136,16 @@ Tilemap:
   m_GameObject: {fileID: 1767019051}
   m_Enabled: 1
   m_Tiles:
+  - first: {x: -4, y: 3, z: 0}
+    second:
+      serializedVersion: 2
+      m_TileIndex: 1
+      m_TileSpriteIndex: 1
+      m_TileMatrixIndex: 0
+      m_TileColorIndex: 0
+      m_TileObjectToInstantiateIndex: 65535
+      dummyAlignment: 0
+      m_AllTileFlags: 1073741825
   - first: {x: -5, y: 4, z: 0}
     second:
       serializedVersion: 2
@@ -67159,11 +67160,15 @@ Tilemap:
   m_TileAssetArray:
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: 933b0529524067449aeda143bcb56a22, type: 2}
+  - m_RefCount: 1
+    m_Data: {fileID: 11400000, guid: 86513612b1f2ad440be7f99a634eb9d0, type: 2}
   m_TileSpriteArray:
   - m_RefCount: 1
     m_Data: {fileID: 21300000, guid: 9b7c7ddc897028845ba74bedf665a789, type: 3}
-  m_TileMatrixArray:
   - m_RefCount: 1
+    m_Data: {fileID: -4198798836069982442, guid: f144d05b7e75f21489fc0278d469941a, type: 3}
+  m_TileMatrixArray:
+  - m_RefCount: 2
     m_Data:
       e00: 1
       e01: 0
@@ -67182,7 +67187,7 @@ Tilemap:
       e32: 0
       e33: 1
   m_TileColorArray:
-  - m_RefCount: 1
+  - m_RefCount: 2
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
@@ -69335,9 +69340,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61f04f07d17e4ee4ca84683173de7ced, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPaused: 0
   unitManager: {fileID: 379401309}
   tileManager: {fileID: 1978323885}
   ground: {fileID: 1304809777}
+  gameOverAllowed: 1
 --- !u!114 &1936125352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69893,13 +69900,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileCostPairs:
-  - tile: {fileID: 11400000, guid: 4878b07e0ee6740489b6d133b5a732b3, type: 2}
+  - tileName: Snow
+    tile: {fileID: 11400000, guid: 4878b07e0ee6740489b6d133b5a732b3, type: 2}
     cost: 24
-  - tile: {fileID: 11400000, guid: d0e5cb4c3c9d4634d9f718796997798a, type: 2}
-    cost: 24
-  - tile: {fileID: 11400000, guid: 06c10c7673b644544818353ba0fe8929, type: 2}
+  - tileName: Snow
+    tile: {fileID: 11400000, guid: d0e5cb4c3c9d4634d9f718796997798a, type: 2}
+    cost: 20
+  - tileName: Stone Floor
+    tile: {fileID: 11400000, guid: 06c10c7673b644544818353ba0fe8929, type: 2}
     cost: 10
-  - tile: {fileID: 11400000, guid: 53fe3bab72a61c948916eaff7209d6a5, type: 2}
+  - tileName: Wooden Floor
+    tile: {fileID: 11400000, guid: 53fe3bab72a61c948916eaff7209d6a5, type: 2}
+    cost: 5
+  - tileName: Wooden Floor
+    tile: {fileID: 11400000, guid: 79f38ad59d79ed94fae65c4a4c192938, type: 2}
+    cost: 5
+  - tileName: Wooden Floor
+    tile: {fileID: 11400000, guid: cffd5f34462139d47b547a66250e8af6, type: 2}
+    cost: 5
+  - tileName: Wooden Floor
+    tile: {fileID: 11400000, guid: 61de094952f086e47b5d7efee190fa65, type: 2}
+    cost: 5
+  - tileName: Wooden Floor
+    tile: {fileID: 11400000, guid: d1a71094913ce9542807ab6ae667bd11, type: 2}
+    cost: 5
+  - tileName: Wooden Floor
+    tile: {fileID: 11400000, guid: baa92c1f25f47a143b2897d69b86911a, type: 2}
     cost: 5
 --- !u!114 &1978323885
 MonoBehaviour:
@@ -70156,6 +70182,7 @@ MonoBehaviour:
   riskCalculationMethod: 0
   faction: 1
   avatar: {fileID: 21300000, guid: 9b7c7ddc897028845ba74bedf665a789, type: 3}
+  startingTime: 0
 --- !u!1 &2010958176
 GameObject:
   m_ObjectHideFlags: 0

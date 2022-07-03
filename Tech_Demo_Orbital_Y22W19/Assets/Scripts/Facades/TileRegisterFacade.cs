@@ -47,6 +47,11 @@ namespace Facades
 
         public string GetTileName(Tile tile)
         {
+            if (tile == null)
+            {
+                Debug.LogWarning($"The tile given was null");
+            }
+
             if (!tileNames.ContainsKey(tile))
             {
                 Debug.LogWarning($"Tile {tile.name} was not found in tileNames mapping");

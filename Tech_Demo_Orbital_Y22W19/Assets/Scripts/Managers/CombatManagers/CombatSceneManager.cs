@@ -136,6 +136,10 @@ namespace Managers
             isPaused = state;
         }
 
+        public void SetGameOverAllowed(bool state)
+        {
+            gameOverAllowed = state;
+        }
 
         private void OnEnable()
         {
@@ -529,13 +533,14 @@ namespace Managers
                         }
                         else if (currentMap.IsWon())
                         {
+
                             gameState = SceneState.Won;
                             break;
                         }
                     }
 
 
-                    if (currentMap.CurrentActingUnit.Faction == Unit.UnitFaction.Enemy)
+                    if (currentMap.CurrentActingUnit.Faction != Unit.UnitFaction.Friendly)
                     {
                         gameState = SceneState.OpponentTurn;
                     }

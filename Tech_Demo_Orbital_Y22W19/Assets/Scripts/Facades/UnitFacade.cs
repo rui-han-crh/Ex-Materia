@@ -33,6 +33,9 @@ namespace Facades
         [SerializeField]
         private Sprite avatar;
 
+        [SerializeField]
+        private int startingTime = 0;
+
         public Sprite CharacterAvatar => avatar;
 
         public Unit CreateUnit()
@@ -47,7 +50,7 @@ namespace Facades
                 maxSkillPoints, 
                 currentSkillPoints);
 
-            return Unit.CreateNewUnit(
+            Unit unit = Unit.CreateNewUnit(
                 gameObject.name, 
                 properties, 
                 0, 
@@ -56,6 +59,10 @@ namespace Facades
                 riskCalculationMethod, 
                 basicSkillName, 
                 ultimateSkillName);
+
+            unit = unit.ChangeTime(startingTime);
+
+            return unit;
         }
     }
 }

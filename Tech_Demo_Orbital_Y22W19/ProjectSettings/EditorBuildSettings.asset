@@ -32,4 +32,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Bar/InteriorBarHallway.unity
     guid: 6f1f1c0e849ead84e96957a011090104
+  - enabled: 1
+    path: Assets/Scenes/Bar/BarBackyard.unity
+    guid: fd45f7a4b47f88f40937dcfe1ae7f77e
+  - enabled: 1
+    path: Assets/Scenes/Bar/InteriorBarStoragePeaceful.unity
+    guid: 36204c347c9d6f040bb8fa256d123d97
   m_configObjects: {}
