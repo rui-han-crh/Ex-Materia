@@ -864,11 +864,11 @@ MonoBehaviour:
     audioClip: {fileID: 8300000, guid: 8e2144f4be4d48941a3b253ade494b4f, type: 3}
     startTime: -1
     endTime: -1
-    volume: 1
+    volume: 0.1
     playbackSpeed: 1
-    hasFade: 1
-    isLooping: 0
-    playImmediately: 0
+    hasFade: 0
+    isLooping: 1
+    playImmediately: 1
 --- !u!1 &516933631
 GameObject:
   m_ObjectHideFlags: 0
@@ -59366,11 +59366,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileCostPairs:
-  - tile: {fileID: 11400000, guid: 4878b07e0ee6740489b6d133b5a732b3, type: 2}
+  - tileName: 
+    tile: {fileID: 11400000, guid: 4878b07e0ee6740489b6d133b5a732b3, type: 2}
     cost: 24
-  - tile: {fileID: 11400000, guid: d0e5cb4c3c9d4634d9f718796997798a, type: 2}
+  - tileName: 
+    tile: {fileID: 11400000, guid: d0e5cb4c3c9d4634d9f718796997798a, type: 2}
     cost: 24
-  - tile: {fileID: 11400000, guid: 06c10c7673b644544818353ba0fe8929, type: 2}
+  - tileName: 
+    tile: {fileID: 11400000, guid: 06c10c7673b644544818353ba0fe8929, type: 2}
     cost: 10
 --- !u!114 &1978323885
 MonoBehaviour:

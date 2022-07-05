@@ -55,9 +55,29 @@ public class SaveFile
         return (T)data[gameObject.scene.buildIndex][gameObject.name][type][variableName];
     }
 
+    public object Load(GameObject gameObject, Type type, string variableName)
+    {
+        return Load<object>(gameObject, type, variableName);
+    }
+
+    public Dictionary<string, object> Load(GameObject gameObject, Type type)
+    {
+        return data[gameObject.scene.buildIndex][gameObject.name][type];
+    }
+
     public T Load<T>(Type type, string variableName)
     {
         return (T)universalData[type][variableName];
+    }
+
+    public object Load(Type type, string variableName)
+    {
+        return Load<object>(type, variableName);
+    }
+
+    public Dictionary<string, object> Load(Type type)
+    {
+        return new Dictionary<string, object>(universalData[type]);
     }
 
     public bool HasData(GameObject gameObject, Type type, string variableName)
@@ -74,11 +94,39 @@ public class SaveFile
         return true;
     }
 
+    public bool HasData(GameObject gameObject, Type type)
+    {
+        try
+        {
+            Load(gameObject, type);
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
     public bool HasData(Type type, string variableName)
     {
         try
         {
-            Load<object>(type, variableName);
+            Load(type, variableName);
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool HasData(Type type)
+    {
+        try
+        {
+            Load(type);
         }
         catch (Exception)
         {

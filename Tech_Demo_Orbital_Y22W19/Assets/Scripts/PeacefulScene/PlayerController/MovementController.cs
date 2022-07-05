@@ -64,9 +64,6 @@ public class MovementController : MonoBehaviour
 
     public void Move(Vector2 axis)
     {
-        Quaternion rotation = Quaternion.Euler(0, 0, 30);
-        Matrix4x4 matrix = Matrix4x4.Rotate(rotation);
-        axis = matrix.MultiplyPoint3x4(axis);
 
         rb.velocity = axis * speed;
         animator.SetBool("isMoving", true);

@@ -36,6 +36,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Bar/BarBackyard.unity
     guid: fd45f7a4b47f88f40937dcfe1ae7f77e
   - enabled: 1
+    path: Assets/Scenes/Apartment/AbandonedApartment.unity
+    guid: 97e3016b769b461409e939a30e5997ee
+  - enabled: 1
     path: Assets/Scenes/Bar/InteriorBarStoragePeaceful.unity
     guid: 36204c347c9d6f040bb8fa256d123d97
   m_configObjects: {}
