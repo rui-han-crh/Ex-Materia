@@ -17,6 +17,11 @@ public class PagedLetter : MonoBehaviour
     public void OnEnable()
     {
         currentPage = 0;
+        foreach (Transform child in transform)
+        {
+            child.gameObject.SetActive(false);
+        }
+
         transform.GetChild(currentPage).gameObject.SetActive(true);
     }
 

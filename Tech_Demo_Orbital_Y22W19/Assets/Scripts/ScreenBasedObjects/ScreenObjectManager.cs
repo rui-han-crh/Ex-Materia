@@ -8,7 +8,7 @@ public class ScreenObjectManager : MonoBehaviour
 {
     private static ScreenObjectManager instance;
 
-    private string currentActiveObject;
+    private CanvasGroup currentActiveCanvasGroup;
 
     public event System.Action OnEnded = delegate { };
 
@@ -58,9 +58,21 @@ public class ScreenObjectManager : MonoBehaviour
             Debug.LogError($"There was no object given with the name {name}. Did you add a CanvasGroup component to {name}?");
         }
 
-        currentActiveObject = name;
-        screenObjectsMapping[name].gameObject.SetActive(true);
-        CanvasTransitions.Fade(screenObjectsMapping[name], 0, 1, 0.5f);
+        currentActiveCanvasGroup = screenObjectsMapping[name];
+        currentActiveCanvasGroup.gameObject.SetActive(true);
+        CanvasTransitions.Fade(currentActiveCanvasGroup, 0, 1, 0.5f);
+    }
+
+    public void ShowObject(CanvasGroup canvasGroup)
+    {
+        if (!screenObjectsMapping.ContainsKey(canvasGroup.name))
+        {
+            screenObjectsMapping[canvasGroup.name] = Instantiate(canvasGroup, transform);
+        }
+
+        currentActiveCanvasGroup = screenObjectsMapping[canvasGroup.name];
+        currentActiveCanvasGroup.gameObject.SetActive(true);
+        CanvasTransitions.Fade(currentActiveCanvasGroup, 0, 1, 0.5f);
     }
 
     public void HideObject(string name)
@@ -73,9 +85,14 @@ public class ScreenObjectManager : MonoBehaviour
         screenObjectsMapping[name].gameObject.SetActive(false);
     }
 
+    public void HideObject(CanvasGroup canvasGroup)
+    {
+        canvasGroup.gameObject.SetActive(false);
+    }
+
     public void HideCurrentActiveObject()
     {
-        HideObject(currentActiveObject);
+        HideObject(currentActiveCanvasGroup);
         OnEnded();
         OnEnded = delegate { };
     }

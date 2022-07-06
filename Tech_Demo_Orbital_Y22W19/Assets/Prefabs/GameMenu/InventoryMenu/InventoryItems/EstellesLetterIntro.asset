@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d5355c520b686846a27fc7c81924b46, type: 3}
+  m_Name: EstellesLetterIntro
+  m_EditorClassIdentifier: 
+  sprite: {fileID: 9007783798849973141, guid: 7b79fb198fe60dd48a6d65af65e2fca8, type: 3}
+  itemName: Estelle's Letter
+  description: A letter written by Estelle for Emmnanuel when he was assigned to
+    the Progeny.
+  readableCanvas: {fileID: 2955475972488794644, guid: cba0317e5f0875a42b42bcb4a43606a5, type: 3}
