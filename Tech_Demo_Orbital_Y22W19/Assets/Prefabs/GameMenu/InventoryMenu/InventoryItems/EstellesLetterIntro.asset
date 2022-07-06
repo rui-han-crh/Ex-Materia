@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d5355c520b686846a27fc7c81924b46, type: 3}
   m_Name: EstellesLetterIntro
   m_EditorClassIdentifier: 
-  sprite: {fileID: 9007783798849973141, guid: 7b79fb198fe60dd48a6d65af65e2fca8, type: 3}
+  sprite: {fileID: 21300000, guid: dbb07699bda0677498f0b971376ac033, type: 3}
   itemName: Estelle's Letter
   description: A letter written by Estelle for Emmnanuel when he was assigned to
     the Progeny.

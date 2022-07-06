@@ -11,7 +11,7 @@ using System;
 
 public class YarnManager : MonoBehaviour
 {
-    public event Action OnEnded;
+    public event Action OnEnded = delegate { };
 
 
     private static YarnManager instance;
@@ -106,7 +106,9 @@ public class YarnManager : MonoBehaviour
     {
         isActive = false;
         DialogueManager.Instance.DisableContinue();
+
         OnEnded();
+        OnEnded = delegate { };
     }
 
 }
