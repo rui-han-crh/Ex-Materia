@@ -19,4 +19,19 @@ public class InventoryItem : ScriptableObject
     private string description;
 
     public string Description => description;
+
+    public override int GetHashCode()
+    {
+        return itemName.GetHashCode() ^ description.GetHashCode();
+    }
+
+    public override bool Equals(object other)
+    {
+        if (!(other is InventoryItem))
+        {
+            return false;
+        }
+        InventoryItem otherItem = (InventoryItem)other;
+        return otherItem.itemName == itemName && otherItem.description == description;
+    }
 }

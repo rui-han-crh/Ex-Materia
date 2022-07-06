@@ -1734,7 +1734,7 @@ GameObject:
   - component: {fileID: 237096667}
   - component: {fileID: 237096666}
   m_Layer: 5
-  m_Name: Canvas (1)
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9475,6 +9475,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1306910768}
   - component: {fileID: 1306910769}
+  - component: {fileID: 1306910770}
   m_Layer: 5
   m_Name: DialogueHolder
   m_TagString: Untagged
@@ -9516,6 +9517,18 @@ CanvasGroup:
   m_Interactable: 0
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &1306910770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306910767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 307a161371baa3a44943559adf087fdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1319170344
 GameObject:
   m_ObjectHideFlags: 0
@@ -69636,9 +69649,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d028fddefe1968945b8c3ebf1977cbe7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DialogueSystemCanvasGroup: {fileID: 1306910769}
   InteractIcon: {fileID: 3160081646044813269, guid: e09eb0c8459b11b479ad14741932acda, type: 3}
-  Canvas: {fileID: 237096670}
 --- !u!114 &1936125361
 MonoBehaviour:
   m_ObjectHideFlags: 0

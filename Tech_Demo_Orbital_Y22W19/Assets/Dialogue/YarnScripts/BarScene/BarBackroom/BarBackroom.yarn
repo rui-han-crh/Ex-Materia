@@ -283,7 +283,10 @@ Storage Room: The mechanism makes a weighty click as the bolt disengages from th
 
 Storage Room: Olivia flips open the lid with some effort. The hinges around the back rattle in mechanical agony, betraying its age - a far cry from its younger, well oiled, days.
 
+Storage Room: From the belly of the chest, Olivia retrieves a faceted object no larger than a football.
+
 Storage Room: Almost on cue, the room is illuminated with a bluish glow.
+<<addItem FilamentCore>>
 
 <<load Speaker Emmanuel Surprised>>
 Emmanuel: Woah! That thing glows?

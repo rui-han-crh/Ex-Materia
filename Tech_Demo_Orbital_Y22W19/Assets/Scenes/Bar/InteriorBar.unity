@@ -1254,9 +1254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d028fddefe1968945b8c3ebf1977cbe7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DialogueSystemCanvasGroup: {fileID: 206114438}
   InteractIcon: {fileID: 3160081646044813269, guid: e09eb0c8459b11b479ad14741932acda, type: 3}
-  Canvas: {fileID: 355828946}
 --- !u!4 &510326507
 Transform:
   m_ObjectHideFlags: 0
@@ -1285,8 +1283,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb8fdab1bcbec534495122b0cc078535, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemTest: {fileID: 11400000, guid: 45a3608e7b5ef6c489658628dfd9be4b, type: 2}
-  itemTest2: {fileID: 11400000, guid: 5de6afd7b092935449d555edbca9a3da, type: 2}
+  itemsDatabase: {fileID: 7967358554894078834, guid: 929203ca1fe65f84d8d177029d4fe48e, type: 3}
 --- !u!114 &510326510
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61993,6 +61990,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7084386685793704418}
   - component: {fileID: 206114438}
+  - component: {fileID: 7895946088379559805}
   m_Layer: 5
   m_Name: DialogueHolder
   m_TagString: Untagged
@@ -62000,6 +61998,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &7895946088379559805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7895946088379559804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 307a161371baa3a44943559adf087fdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8428484967228806106
 MonoBehaviour:
   m_ObjectHideFlags: 0

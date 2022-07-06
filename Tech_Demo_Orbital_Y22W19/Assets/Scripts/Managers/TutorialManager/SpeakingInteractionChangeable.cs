@@ -19,14 +19,14 @@ public class SpeakingInteractionChangeable : MonoBehaviour, IInteraction
     }
     public void Interact()
     {
-        CanvasTransitions.Fade(InteractableCollection.Instance.DialogueSystemCanvasGroup, 0, 1, time: 0.3f);
+        CanvasTransitions.Fade(DialogueDisplayBehaviour.Instance.CanvasGroup, 0, 1, time: 0.3f);
         YarnManager.Instance.StartConvoAuto(yarnScriptName);
         YarnManager.Instance.OnEnded += InvokeDelegate;
     }
 
     private void InvokeDelegate()
     {
-        CanvasTransitions.Fade(InteractableCollection.Instance.DialogueSystemCanvasGroup, 1, 0, time: 0.3f);
+        CanvasTransitions.Fade(DialogueDisplayBehaviour.Instance.CanvasGroup, 1, 0, time: 0.3f);
         OnEnded();
         FlushEventHandlers();
     }

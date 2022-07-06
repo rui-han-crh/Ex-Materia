@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Yarn.Unity;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -21,8 +22,9 @@ public class InventoryManager : MonoBehaviour
 
     private Inventory inventory;
 
-    public InventoryItem itemTest;
-    public InventoryItem itemTest2;
+    public InventoryItemsDatabase itemsDatabase;
+
+    private DialogueRunner dialogueRunner;
 
     public IEnumerable<InventoryItem> InventoryItems => inventory.InventoryItems;
 
@@ -43,10 +45,35 @@ public class InventoryManager : MonoBehaviour
         SaveFile.file.Save(typeof(Inventory), "inventory", inventory);
     }
 
-
-    public void Start()
+    private void Awake()
     {
-        inventory.AddItem(itemTest);
-        inventory.AddItem(itemTest2);
+        itemsDatabase = Instantiate(itemsDatabase, transform);
+    }
+
+    private void Start()
+    {
+        dialogueRunner = FindObjectOfType<DialogueRunner>();
+        dialogueRunner.AddCommandHandler("addItem", (string itemName) => AddItem(itemName));
+        dialogueRunner.AddCommandHandler("removeItem", (string itemName) => RemoveItem(itemName));
+    }
+
+    public void AddItem(InventoryItem item)
+    {
+        inventory.AddItem(Instantiate(item));
+    }
+
+    public void RemoveItem(InventoryItem item)
+    {
+        inventory.RemoveItem(item);
+    }
+
+    public void AddItem(string itemName)
+    {
+        inventory.AddItem(itemsDatabase[itemName]);
+    }
+
+    public void RemoveItem(string itemName)
+    {
+        inventory.RemoveItem(itemsDatabase[itemName]);
     }
 }

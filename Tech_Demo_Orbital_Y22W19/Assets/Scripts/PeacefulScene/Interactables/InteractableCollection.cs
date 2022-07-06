@@ -22,18 +22,18 @@ public class InteractableCollection : MonoBehaviour
 
     public HashSet<Interactable> Collection => interactables;
 
-
-    public CanvasGroup DialogueSystemCanvasGroup;
-
     public GameObject InteractIcon;
 
     public static readonly Vector3 HEAD_OFFSET = new Vector3(0, 0.5f, 0);
 
-    public Canvas Canvas;
+    private Canvas canvas;
+
+    public Canvas Canvas => canvas;
 
     private void Awake()
     {
-        DialogueSystemCanvasGroup.alpha = 0;
-        DialogueSystemCanvasGroup.interactable = false;
+        canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
+        Debug.Log(canvas);
+        Debug.Assert(Canvas != null, "Canvas could not be found, is it called \"Canvas\" in the scene?");
     }
 }

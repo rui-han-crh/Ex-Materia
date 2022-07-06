@@ -26,6 +26,8 @@ Emmanuel: I have to find Evelyn and Olivia quickly, this is taking way too much 
 Emmanuel: And all I have is this letter to go by
 
 Emmanuel: Let's see...
+
+<<addItem EstellesLetterIntro>>
 ===
 title: ExteriorBarLeave
 position: -154,64

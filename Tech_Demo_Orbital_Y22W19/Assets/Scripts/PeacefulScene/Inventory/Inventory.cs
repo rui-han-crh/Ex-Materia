@@ -30,4 +30,9 @@ public class Inventory
     {
         inventoryItems.Remove(item);
     }
+
+    public bool ContainsItem(InventoryItem item)
+    {
+        return inventoryItems.Contains(item);
+    }
 }
