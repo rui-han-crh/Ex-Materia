@@ -24,7 +24,7 @@ EditorBuildSettings:
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/Scenes/WarshipInternal.unity
+    path: Assets/Scenes/LandshipInterior.unity
     guid: c5e66cd51bdb2a749b6466f69ef72ba3
   - enabled: 1
     path: Assets/Scenes/Bar/InteriorBarStorage.unity
