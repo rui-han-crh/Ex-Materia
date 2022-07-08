@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Yarn.Unity;
 
-public class InventoryManager : MonoBehaviour
+public class InventoryManager : MonoBehaviour, ISaveable
 {
     private static InventoryManager instance;
 
@@ -28,26 +29,11 @@ public class InventoryManager : MonoBehaviour
 
     public IEnumerable<InventoryItem> InventoryItems => inventory.InventoryItems;
 
-    private void OnEnable()
-    {
-        if (SaveFile.file.HasData(typeof(Inventory)))
-        {
-            inventory = SaveFile.file.Load<Inventory>(typeof(Inventory), "inventory");
-        } 
-        else
-        {
-            inventory = new Inventory();
-        }
-    }
-
-    private void OnDisable()
-    {
-        SaveFile.file.Save(typeof(Inventory), "inventory", inventory);
-    }
 
     private void Awake()
     {
         itemsDatabase = Instantiate(itemsDatabase, transform);
+        inventory = new Inventory();
     }
 
     private void Start()
@@ -55,6 +41,28 @@ public class InventoryManager : MonoBehaviour
         dialogueRunner = FindObjectOfType<DialogueRunner>();
         dialogueRunner.AddCommandHandler("addItem", (string itemName) => AddItem(itemName));
         dialogueRunner.AddCommandHandler("removeItem", (string itemName) => RemoveItem(itemName));
+    }
+
+    public void LoadData()
+    {
+        inventory = new Inventory();
+
+        if (SaveFile.file.HasData(typeof(Inventory)))
+        {
+            string[] itemNames = SaveFile.file.Load<string[]>(typeof(Inventory), "inventoryItems");
+
+            foreach (string itemName in itemNames)
+            {
+                AddItem(itemName);
+            }
+
+            Debug.Log($"Loading {itemNames.Length} items");
+        }
+    }
+
+    public void SaveData()
+    {
+        SaveFile.file.Save(typeof(Inventory), "inventoryItems", inventory.ItemsToString());
     }
 
     public void AddItem(InventoryItem item)
@@ -75,5 +83,5 @@ public class InventoryManager : MonoBehaviour
     public void RemoveItem(string itemName)
     {
         inventory.RemoveItem(itemsDatabase[itemName]);
-    }
+    } 
 }

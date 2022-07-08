@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Yarn.Unity;
@@ -43,6 +44,8 @@ public class DialogueManager : MonoBehaviour
 
     private Action<InputAction.CallbackContext> singleLeftClick;
 
+    private DialogueRunner dialogueRunner;
+
     public void OnEnable()
     {
         keyboardControls?.Enable();
@@ -66,6 +69,17 @@ public class DialogueManager : MonoBehaviour
     void Awake()
     {
         keyboardControls = new KeyboardControls();
+        if (lineView == null)
+        {
+            lineView = FindObjectOfType<LineView>();
+        }
+
+        dialogueRunner = GetComponent<DialogueRunner>();
+
+        if (dialogueRunner.dialogueViews.Any(x => x == null))
+        {
+            dialogueRunner.dialogueViews = FindObjectsOfType<DialogueViewBase>();
+        }
     }
 
     /**

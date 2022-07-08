@@ -1,16 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Yarn.Unity;
 
-public class DialogueVariableStorage : InMemoryVariableStorage
+public class DialogueVariableStorage : InMemoryVariableStorage, ISaveable
 {
     Dictionary<string, float> floatDict = new Dictionary<string, float>();
     Dictionary<string, string> stringDict = new Dictionary<string, string>();
     Dictionary<string, bool> boolDict = new Dictionary<string, bool>();
 
-    private void OnEnable()
+    public void LoadData()
     {
         if (!SaveFile.file.HasData(typeof(DialogueVariableStorage)))
         {
@@ -18,6 +19,8 @@ public class DialogueVariableStorage : InMemoryVariableStorage
         }
 
         Dictionary<string, object> dict = SaveFile.file.Load(typeof(DialogueVariableStorage));
+
+        Debug.Log($"Loading in {dict.Count} variables");
 
         foreach (KeyValuePair<string, object> kvp in dict)
         {
@@ -29,9 +32,13 @@ public class DialogueVariableStorage : InMemoryVariableStorage
             {
                 boolDict.Add(kvp.Key, (bool)kvp.Value);
             }
-            else if (kvp.Value is float)
+            else if (kvp.Value is float || kvp.Value is double)
             {
-                floatDict.Add(kvp.Key, (float)kvp.Value);
+                floatDict.Add(kvp.Key, Convert.ToSingle(kvp.Value));
+            } 
+            else
+            {
+                Debug.LogWarning($"A variable called {kvp.Key} had a type of {kvp.Value.GetType()}, but was not accounted for. No loading was done");
             }
         }
 
@@ -54,7 +61,7 @@ public class DialogueVariableStorage : InMemoryVariableStorage
         Debug.Log(string.Join(", ", boolDict.Select(kvp => kvp.Key + ": " + kvp.Value.ToString())));
     }
 
-    private void OnDisable()
+    public void SaveData()
     {
         (floatDict, stringDict, boolDict) = GetAllVariables();
 

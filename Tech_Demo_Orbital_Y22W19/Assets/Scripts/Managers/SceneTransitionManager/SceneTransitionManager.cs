@@ -27,9 +27,9 @@ public class SceneTransitionManager : MonoBehaviour
     private void Awake()
     {
         dialogueRunner = FindObjectOfType<DialogueRunner>();
-        dialogueRunner.AddCommandHandler("transitionScene", TransitionToScene);
-        dialogueRunner.AddCommandHandler("unsetNextScene", UnsetNextScene);
-        dialogueRunner.AddCommandHandler("changeScene", (string sceneName) => ChangeScene(sceneName));
+        dialogueRunner?.AddCommandHandler("transitionScene", TransitionToScene);
+        dialogueRunner?.AddCommandHandler("unsetNextScene", UnsetNextScene);
+        dialogueRunner?.AddCommandHandler("changeScene", (string sceneName) => ChangeScene(sceneName));
     }
 
     public string SceneName
@@ -63,11 +63,13 @@ public class SceneTransitionManager : MonoBehaviour
             return;
         }
 
+        SaveManager.SerialiseToFile();
         pendingSceneLoad = SceneManager.LoadSceneAsync(SceneName);
     }
 
     public void ChangeScene(string sceneName)
     {
+        SaveManager.SerialiseToFile();
         SceneManager.LoadSceneAsync(sceneName);
     }
 }

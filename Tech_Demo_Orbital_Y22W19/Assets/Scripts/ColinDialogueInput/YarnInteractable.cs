@@ -47,7 +47,7 @@ public class YarnInteractable : MonoBehaviour
         expression.interactable = true;
         interactable = true; //this means he's already awaiting for a call!
         beginNode = startingNode;
-        YarnManager.Instance.eventButton.gameObject.SetActive(true); //set active eventbutton!
+        //YarnManager.Instance.eventButton.gameObject.SetActive(true); //set active eventbutton!
     }
 
 
@@ -64,7 +64,7 @@ public class YarnInteractable : MonoBehaviour
     public void Interact()
     {
         //it depends what we show on interact
-        YarnManager.Instance.eventButton.gameObject.SetActive(false); //always set false regardless after an interact!
+        //YarnManager.Instance.eventButton.gameObject.SetActive(false); //always set false regardless after an interact!
         //check 3 things: Correct startNode, interactable AND legit dialogue running
         if (interactable && !dialogueRunner.IsDialogueRunning && beginNode != "")
         {

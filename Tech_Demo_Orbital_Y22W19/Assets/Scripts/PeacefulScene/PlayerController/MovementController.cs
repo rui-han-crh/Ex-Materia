@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 
-public class MovementController : MonoBehaviour
+public class MovementController : MonoBehaviour, ISaveable
 {
     private static MovementController instance;
 
@@ -40,16 +40,12 @@ public class MovementController : MonoBehaviour
     {
         Debug.Log("Enabled movement controller");
         keyboardControls?.Enable();
-
-        if (SaveFile.file.HasData(gameObject, typeof(MovementController), "position"))
-            transform.position = SaveFile.file.Load<Vector3>(gameObject, typeof(MovementController), "position");
     }
 
     public void OnDisable()
     {
         Debug.Log("Disabled movement controller");
         keyboardControls?.Disable();
-        SaveFile.file.Save(gameObject, typeof(MovementController), "position", transform.position);
     }
 
     private void Awake()
@@ -75,5 +71,20 @@ public class MovementController : MonoBehaviour
     {
         rb.velocity = Vector2.zero;
         animator.SetBool("isMoving", false);
+    }
+
+    public void SaveData()
+    {
+        SaveFile.file.Save(gameObject, typeof(MovementController), "position", 
+            new float[] { transform.position.x, transform.position.y, transform.position.z });
+    }
+
+    public void LoadData()
+    {
+        if (SaveFile.file.HasData(gameObject, typeof(MovementController), "position"))
+        {
+            float[] position = SaveFile.file.Load<float[]>(gameObject, typeof(MovementController), "position");
+            transform.position = new Vector3(position[0], position[1], position[2]);
+        }
     }
 }

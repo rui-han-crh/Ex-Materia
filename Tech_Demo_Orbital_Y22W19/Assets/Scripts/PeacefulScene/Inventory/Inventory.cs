@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using UnityEngine;
 
 [Serializable]
@@ -34,5 +35,10 @@ public class Inventory
     public bool ContainsItem(InventoryItem item)
     {
         return inventoryItems.Contains(item);
+    }
+
+    public string[] ItemsToString()
+    {
+        return inventoryItems.Select(x => x.name).ToArray();
     }
 }

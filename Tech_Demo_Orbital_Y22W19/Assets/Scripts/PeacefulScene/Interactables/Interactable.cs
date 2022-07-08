@@ -5,7 +5,7 @@ using Transitions;
 using System;
 using System.Linq;
 
-public class Interactable : MonoBehaviour
+public class Interactable : MonoBehaviour, ISaveable
 {
     private GameObject icon;
     private bool isInteracting;
@@ -29,26 +29,7 @@ public class Interactable : MonoBehaviour
 
     private void OnEnable()
     {
-        if (SaveFile.file.HasData(gameObject, typeof(Interactable), "hasIcon"))
-        {
-            hasIcon = SaveFile.file.Load<bool>(gameObject, typeof(Interactable), "hasIcon");
-            Debug.Log($"Loaded {gameObject.name} hasIcon as {hasIcon}");
-        }
-
-        if (SaveFile.file.HasData(gameObject, typeof(Interactable), "canInteract")) 
-        {
-            canInteract = SaveFile.file.Load<bool>(gameObject, typeof(Interactable), "canInteract");
-            Debug.Log($"Loaded {gameObject.name} canInteract as {canInteract}");
-        }
-    }
-
-    private void OnDisable()
-    {
-        SaveFile.file.Save(gameObject, typeof(Interactable), "hasIcon", hasIcon);
-
-        SaveFile.file.Save(gameObject, typeof(Interactable), "canInteract", canInteract);
-
-        Debug.Log($"Saving {gameObject.name}, hasIcon {hasIcon} and canInteract {canInteract}");
+        LoadData();
     }
 
     private void Awake()
@@ -156,5 +137,25 @@ public class Interactable : MonoBehaviour
         }
 
         icon.SetActive(state);
+    }
+
+    public void SaveData()
+    {
+        SaveFile.file.Save(gameObject, typeof(Interactable), "hasIcon", hasIcon);
+
+        SaveFile.file.Save(gameObject, typeof(Interactable), "canInteract", canInteract);
+    }
+
+    public void LoadData()
+    {
+        if (SaveFile.file.HasData(gameObject, typeof(Interactable), "hasIcon"))
+        {
+            hasIcon = SaveFile.file.Load<bool>(gameObject, typeof(Interactable), "hasIcon");
+        }
+
+        if (SaveFile.file.HasData(gameObject, typeof(Interactable), "canInteract"))
+        {
+            canInteract = SaveFile.file.Load<bool>(gameObject, typeof(Interactable), "canInteract");
+        }
     }
 }

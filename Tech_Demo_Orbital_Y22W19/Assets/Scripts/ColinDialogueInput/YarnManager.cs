@@ -31,9 +31,6 @@ public class YarnManager : MonoBehaviour
     [SerializeField]
     public CharacterDatabase CharacterDB;
 
-    [SerializeField]
-    public Button eventButton;
-
     //everybody can acceess this!
     public Dictionary<string, FigureCharacter> characterMap = new Dictionary<string, FigureCharacter>();
     public bool isActive = false; //I guess this can be used to signpost to everyone when a dialogue scene is active.
