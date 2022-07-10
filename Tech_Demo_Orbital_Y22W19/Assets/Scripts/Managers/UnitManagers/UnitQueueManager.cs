@@ -7,6 +7,7 @@ using CombatSystem.Entities;
 using UnityEngine.UI;
 using Managers;
 
+[RequireComponent(typeof(LinearAnimation))]
 public class UnitQueueManager : MonoBehaviour
 {
     private static UnitQueueManager instance;
@@ -100,7 +101,7 @@ public class UnitQueueManager : MonoBehaviour
 
             int index = unitIdentityOrder[characterHeadAvatar.BoundIdentity];
 
-            if (unit.Time == GameManagerOld.Instance.CurrentUnit.Time)
+            if (unit.Time == CombatSceneManager.Instance.CurrentActingUnit.Time)
             {
                 skippedUnitsForWaiting++;
             }

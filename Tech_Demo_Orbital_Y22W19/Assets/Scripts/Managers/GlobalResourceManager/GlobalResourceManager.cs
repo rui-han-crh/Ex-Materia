@@ -21,6 +21,6 @@ namespace Managers
         }
 
 
-        public LineRenderer LineRenderer;
+        //public LineRenderer LineRenderer;
     }
 }

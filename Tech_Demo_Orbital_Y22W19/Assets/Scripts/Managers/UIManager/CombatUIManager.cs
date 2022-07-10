@@ -31,13 +31,13 @@ namespace Managers
         }
 
         [SerializeField]
-        private TransitionController characterViewTransitionController;
+        private TransitionController characterViewController;
 
         [SerializeField]
-        private TransitionController attackReviewTransitionController;
+        private TransitionController attackReviewController;
 
         [SerializeField]
-        private TransitionController queueTransitionController;
+        private TransitionController queueController;
 
         [SerializeField]
         private GameObject raycastBlocker;
@@ -57,21 +57,38 @@ namespace Managers
         [SerializeField]
         private AttackReviewUIBehaviour[] attackReviewUI;
 
+        [Header("Selection Button References")]
+        [SerializeField]
+        private Button movementButton;
+
+        [SerializeField]
+        private Button attackButton;
+
+        [SerializeField]
+        private Button attackConfirmationButton;
+
+        [SerializeField]
+        private Button waitButton;
+
+        [SerializeField]
+        private Button overwatchButton;
+
         [SerializeField]
         private Button buttonForBasicSkill;
 
         [SerializeField]
         private Button buttonForUltimateSkill;
 
+        [Header("Skill Button Icons")]
         [SerializeField]
         private Image basicSkillIcon;
 
         [SerializeField]
         private Image ultimateSkillIcon;
 
-        public TransitionController CharacterViewTransitionController => characterViewTransitionController;
-        public TransitionController AttackReviewTransitionController => attackReviewTransitionController;
-        public TransitionController QueueTransitionController => queueTransitionController;
+        public TransitionController CharacterViewTransitionController => characterViewController;
+        public TransitionController AttackReviewTransitionController => attackReviewController;
+        public TransitionController QueueTransitionController => queueController;
 
 
         private KeyboardControls keyboardControls;
@@ -90,8 +107,39 @@ namespace Managers
 
         private void Awake()
         {
+            if (instance != null)
+            {
+                Debug.LogError("CombatUIManager is designed as a singleton, yet more than one instance was found during runtime. " +
+                    "Please remove any additional instances and ensure there is only one instance of CombatUIManager");
+            }
+
             keyboardControls = new KeyboardControls();
             raycastBlocker.SetActive(false);
+
+            GameObject[] loseInteractables = GameObject.FindGameObjectsWithTag("BattleLostInteractable");
+            Debug.Assert(loseInteractables.Length == 1, 
+                $"There were {loseInteractables.Length} gameobjects tagged with BattleLostInteractable, but there can only be 1.");
+            loseInteractable = loseInteractables[0].GetComponent<Interactable>();
+
+
+            GameObject[] winInteractables = GameObject.FindGameObjectsWithTag("BattleWonInteractable");
+            Debug.Assert(winInteractables.Length == 1,
+                $"There were {winInteractables.Length} gameobjects tagged with BattleWonInteractable, but there can only be 1.");
+            winInteractable = winInteractables[0].GetComponent<Interactable>();
+
+            movementButton.onClick.AddListener(() => CombatSceneManager.Instance.BeginMovement());
+
+            attackButton.onClick.AddListener(() => CombatSceneManager.Instance.BeginCombat());
+
+            attackConfirmationButton.onClick.AddListener(() => CombatSceneManager.Instance.SelectCommand(CombatSceneManager.CommandType.Attack));
+
+            overwatchButton.onClick.AddListener(() => CombatSceneManager.Instance.SelectCommand(CombatSceneManager.CommandType.Overwatch));
+
+            buttonForBasicSkill.onClick.AddListener(() => CombatSceneManager.Instance.SelectCommand(CombatSceneManager.CommandType.BasicSkill));
+
+            buttonForUltimateSkill.onClick.AddListener(() => CombatSceneManager.Instance.SelectCommand(CombatSceneManager.CommandType.UltimateSkill));
+
+            queueController ??= GameObject.Find("QueueView").GetComponent<TransitionController>();
         }
 
         private void Start()

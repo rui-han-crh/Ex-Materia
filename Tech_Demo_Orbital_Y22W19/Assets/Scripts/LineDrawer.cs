@@ -37,7 +37,7 @@ public static class LineDrawer
 
     public static void DrawLineOnTileMap(Tilemap tilemap, IEnumerable<Vector3Int> pathPosition)
     {
-        LineRenderer lineRenderer = GlobalResourceManager.Instance.LineRenderer;
+        LineRenderer lineRenderer = CombatSceneManager.Instance.IndicatorLine;
 
         lineRenderer.positionCount = 0;
         lineRenderer.positionCount = pathPosition.Count();
@@ -47,7 +47,7 @@ public static class LineDrawer
 
     public static void ColorLine(Color color)
     {
-        LineRenderer lineRenderer = GlobalResourceManager.Instance.LineRenderer;
+        LineRenderer lineRenderer = CombatSceneManager.Instance.IndicatorLine;
 
         lineRenderer.startColor = color;
         lineRenderer.endColor = color;

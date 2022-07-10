@@ -68,19 +68,26 @@ namespace Managers
 
         public static readonly float UNIT_INTERPOLATION_SPEED = 2f;
 
-        public bool isPaused;
+        [SerializeField]
+        private bool isPaused;
+
+        public bool IsPaused => isPaused;
 
         [SerializeField]
         private UnitManager unitManager;
 
         [SerializeField]
-        private TileMapFacade tileManager;
+        private TileMapFacade tilemapFacade;
 
         [SerializeField]
         private Tilemap ground;
 
         [SerializeField]
         private bool gameOverAllowed = true;
+
+        public bool GameOverAllowed => gameOverAllowed;
+
+        private bool isInitialised = false;
 
         private RoutineManager routineManager;
 
@@ -91,6 +98,12 @@ namespace Managers
 
         private KeyboardControls keyboardControls;
         private Camera mainCamera;
+
+        public LineRenderer IndicatorLine
+        {
+            get;
+            private set;
+        }
 
         // ActionHandlers:
         private Action<InputAction.CallbackContext> leftClickHandler = _ => { };
@@ -141,6 +154,17 @@ namespace Managers
             gameOverAllowed = state;
         }
 
+        public void Initialise(UnitManager unitManager, TileMapFacade tileMapFacade)
+        {
+            if (!isInitialised)
+            {
+                this.unitManager = unitManager;
+                this.tilemapFacade = tileMapFacade;
+                this.ground = tilemapFacade.groundTilemaps[0];
+                isInitialised = true;
+            }
+        }
+
         private void OnEnable()
         {
             keyboardControls.Enable();
@@ -158,13 +182,28 @@ namespace Managers
             Unit.ResetClass();
             keyboardControls = new KeyboardControls();
             routineManager = gameObject.AddComponent<RoutineManager>();
+
+            if (instance != null)
+            {
+                Debug.LogError("CombatSceneManager is designed as a singleton, but more than one instance was discovered during this runtime. " +
+                    "Please remove the other instances and refer to only one instance of CombatSceneManager");
+            }
+
+            IndicatorLine = gameObject.AddComponent<LineRenderer>();
+
+            IndicatorLine.positionCount = 0;
+            IndicatorLine.material = new Material(Shader.Find("Legacy Shaders/Particles/Alpha Blended Premultiply"));
+            IndicatorLine.startWidth = 0.06f;
+            IndicatorLine.endWidth = 0.06f;
+            IndicatorLine.numCornerVertices = 64;
+            IndicatorLine.sortingOrder = 3;
         }
 
         private void Start()
         {
             tokenSource = new CancellationTokenSource();
             mainCamera = Camera.main;
-            currentMap = GameMap.MakeNewMap(unitManager.CreateUnitCensus(), tileManager.CreateTileCensus());
+            currentMap = GameMap.MakeNewMap(unitManager.CreateUnitCensus(), tilemapFacade.CreateTileCensus());
 
             IEnumerable<Unit> units = currentMap.GetUnits(unit => true);
 
@@ -283,7 +322,7 @@ namespace Managers
             //InformationUIManager.Instance.SetCharacterDetails(CurrentActingUnit);
             CombatUIManager.Instance.UpdateCurrentActingUnitInformation();
             TileManager.Instance.IndicatorMap.ClearAllTiles();
-            GlobalResourceManager.Instance.LineRenderer.positionCount = 0;
+            IndicatorLine.positionCount = 0;
         }
 
 
@@ -318,6 +357,7 @@ namespace Managers
                 case CommandType.Movement:
                     if (!executeLastActionAllowed)
                     {
+                        Debug.Log("Command Intercepted: Not allowed");
                         return;
                     }
 

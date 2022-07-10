@@ -6,6 +6,8 @@ TagManager:
   tags:
   - AudioSourceGroup
   - UniversalInteractable
+  - BattleLostInteractable
+  - BattleWonInteractable
   layers:
   - Default
   - TransparentFX

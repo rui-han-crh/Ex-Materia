@@ -104,7 +104,7 @@ public class TileCostTooltipBehaviour : MonoBehaviour
 
         Vector2 worldPosition = mainCamera.ScreenToWorldPoint(mousePosition);
         Vector3Int gridPosition = ground.WorldToCell(worldPosition);
-        
+
         if (combatSceneManager.CurrentMap.Data.HasTile(gridPosition))
         {
             mouseMovementTask = new Task(UpdateTooltip(gridPosition));

@@ -43,7 +43,7 @@ namespace Managers.Subscribers
         {
             if (CombatSceneManager.Instance.IsPointerOverUI)
             {
-                GlobalResourceManager.Instance.LineRenderer.positionCount = 0;
+                CombatSceneManager.Instance.IndicatorLine.positionCount = 0;
                 return;
             }
 
@@ -65,7 +65,7 @@ namespace Managers.Subscribers
 
             if (!MovementConsultant.GetAllMovementPositions(currentMap.Data, currentUnit).Contains(gridPosition))
             {
-                GlobalResourceManager.Instance.LineRenderer.positionCount = 0;
+                CombatSceneManager.Instance.IndicatorLine.positionCount = 0;
                 return;
             }
 
@@ -102,7 +102,7 @@ namespace Managers.Subscribers
             }
 
             CombatSceneManager combatSceneManager = CombatSceneManager.Instance;
-            GlobalResourceManager.Instance.LineRenderer.positionCount = 0;
+            CombatSceneManager.Instance.IndicatorLine.positionCount = 0;
 
             Vector2 mousePosition = mouseClick.ReadValue<Vector2>();
             mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);

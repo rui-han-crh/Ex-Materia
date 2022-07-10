@@ -10,7 +10,7 @@ public class PauseCombatInteraction : Interaction
 
     public override void Interact()
     {
-        CombatSceneManager.Instance.isPaused = isPaused;
+        CombatSceneManager.Instance.SetIsPaused(isPaused);
         OnEnd();
     }
 }

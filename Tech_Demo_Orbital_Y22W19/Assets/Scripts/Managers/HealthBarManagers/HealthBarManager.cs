@@ -29,6 +29,17 @@ namespace Managers
 
         private List<BarFillBehaviour> healthBars = new List<BarFillBehaviour>() { null };
 
+        public void Awake()
+        {
+            if (healthBarCollection == null)
+            {
+                healthBarCollection = GameObject.Find("Healthbar_Collection").GetComponent<RectTransform>();
+                Debug.Assert(healthBarCollection != null, "Could not find a RectTransform on a GameObject called Healthbar_Collection. " +
+                    "Either drag a Transform, as a child of the main Canvas, to gather all healthbar gameobjects onto, " +
+                    "or rename the intended gameobject to \"Healthbar_Collection so the script can retrieve it.");
+            }
+        }
+
         public void InitialiseHealthBars(IEnumerable<Unit> units)
         {
             foreach (Unit unit in units) 
