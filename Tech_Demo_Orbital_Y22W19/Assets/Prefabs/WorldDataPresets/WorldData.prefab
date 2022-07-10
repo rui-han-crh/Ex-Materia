@@ -185,7 +185,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   YI: {fileID: 0}
   CharacterDB: {fileID: 11400000, guid: a0df2a9f19735f643b5e79c813e50bd6, type: 2}
-  eventButton: {fileID: 0}
   isActive: 0
 --- !u!1 &7821883162098638217
 GameObject:
@@ -201,6 +200,7 @@ GameObject:
   - component: {fileID: 7821883162098638219}
   - component: {fileID: 7821883162098638222}
   - component: {fileID: 7821883162098638218}
+  - component: {fileID: 1557708138978036407}
   m_Layer: 0
   m_Name: WorldData
   m_TagString: Untagged
@@ -297,6 +297,19 @@ MonoBehaviour:
     hasFade: 1
     isLooping: 1
     playImmediately: 1
+--- !u!114 &1557708138978036407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7821883162098638217}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 590a127ee9a140240b00e0494748ea24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  consolePrefab: {fileID: 5602583528585839200, guid: 462b280ab90b5094f9d10e7aaa752f4c, type: 3}
 --- !u!1 &7821883162541042373
 GameObject:
   m_ObjectHideFlags: 0

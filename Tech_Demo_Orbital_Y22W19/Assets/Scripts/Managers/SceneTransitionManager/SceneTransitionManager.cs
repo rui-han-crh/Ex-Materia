@@ -32,6 +32,11 @@ public class SceneTransitionManager : MonoBehaviour
         dialogueRunner?.AddCommandHandler("changeScene", (string sceneName) => ChangeScene(sceneName));
     }
 
+    private void Start()
+    {
+        SaveFile.Load();
+    }
+
     public string SceneName
     {
         get;
@@ -63,13 +68,18 @@ public class SceneTransitionManager : MonoBehaviour
             return;
         }
 
-        SaveManager.SerialiseToFile();
-        pendingSceneLoad = SceneManager.LoadSceneAsync(SceneName);
+        StartCoroutine(DelayedSceneSwap(SceneName));
     }
 
     public void ChangeScene(string sceneName)
     {
-        SaveManager.SerialiseToFile();
+        StartCoroutine(DelayedSceneSwap(sceneName));
+    }
+
+    private IEnumerator DelayedSceneSwap(string sceneName)
+    {
+        yield return new WaitForEndOfFrame();
+        SaveFile.Save();
         SceneManager.LoadSceneAsync(sceneName);
     }
 }

@@ -37,6 +37,12 @@ class AudioPlayerGroup : MonoBehaviour
 
         private Task fade;
 
+        public string Name
+        {
+            get;
+            private set;
+        }
+
         public AudioPlayer(AudioSource audioSource)
         {
             this.audioSource = audioSource;
@@ -50,6 +56,7 @@ class AudioPlayerGroup : MonoBehaviour
         /// <param name="audio"></param>
         public void Play(AudioManager.Audio audio, bool looping = false)
         {
+            Name = audio.name;
             audioSource.clip = audio.Clip;
             audioSource.volume = audio.Volume;
             audioSource.pitch = audio.PlaybackSpeed;
@@ -71,6 +78,12 @@ class AudioPlayerGroup : MonoBehaviour
             
             audioSource.Play();
             audioSource.SetScheduledEndTime(AudioSettings.dspTime + audio.Duration);
+        }
+
+        public void Stop()
+        {
+            audioSource?.Stop();
+            OnFinished();
         }
 
         private IEnumerator FadeAudio(float targetVolume, float startTime, float duration)
@@ -111,6 +124,8 @@ class AudioPlayerGroup : MonoBehaviour
 
     private HashSet<AudioPlayer> audioSourcesDormant = new HashSet<AudioPlayer>();
 
+    private Dictionary<string, AudioPlayer> audioPlaying = new Dictionary<string, AudioPlayer>();
+
     /// <summary>
     /// Retrieves any available audio player from the audio group.
     /// If there is none, a new audio player will be created.
@@ -130,12 +145,14 @@ class AudioPlayerGroup : MonoBehaviour
     {
         audioSourcesDormant.Remove(audioPlayer);
         audioSourcesPlaying.Add(audioPlayer);
+        audioPlaying[audioPlayer.Name] = audioPlayer;
     }
 
 
     public void ChangeToDormant(AudioPlayer audioPlayer)
     {
         audioSourcesPlaying.Remove(audioPlayer);
+        audioPlaying.Remove(audioPlayer.Name);
         audioSourcesDormant.Add(audioPlayer);
     }
 
@@ -151,6 +168,11 @@ class AudioPlayerGroup : MonoBehaviour
         audioPlayer.Play(audio, looping);
         ChangeToPlaying(audioPlayer);
         audioPlayer.Finished += () => ChangeToDormant(audioPlayer);
+    }
+
+    public void Stop(AudioManager.Audio audio)
+    {
+        audioPlaying[audio.name].Stop();
     }
 
     private IEnumerator InvokeLater(AudioManager.Audio audio, float delay, bool looping)

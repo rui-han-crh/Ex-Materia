@@ -6602,7 +6602,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   YI: {fileID: 1895463932}
   CharacterDB: {fileID: 11400000, guid: a0df2a9f19735f643b5e79c813e50bd6, type: 2}
-  eventButton: {fileID: 1791929714}
   isActive: 0
 --- !u!114 &808315050
 MonoBehaviour:
@@ -10995,6 +10994,7 @@ GameObject:
   - component: {fileID: 1252654396}
   - component: {fileID: 1252654395}
   - component: {fileID: 1252654394}
+  - component: {fileID: 1252654400}
   m_Layer: 0
   m_Name: Dialogue_Lose
   m_TagString: Untagged
@@ -11090,6 +11090,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1252654400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1252654393}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b08782157fd91c54394c64eae3d327ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactable: {fileID: 1252654398}
+  delayTime: 0
 --- !u!1 &1288639055
 GameObject:
   m_ObjectHideFlags: 0
@@ -21475,7 +21489,7 @@ GameObject:
   - component: {fileID: 1319170349}
   m_Layer: 0
   m_Name: Evelyn
-  m_TagString: UniversalInteractable
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -82375,6 +82389,7 @@ GameObject:
   - component: {fileID: 1936125354}
   - component: {fileID: 1936125356}
   - component: {fileID: 1936125355}
+  - component: {fileID: 1936125362}
   m_Layer: 0
   m_Name: WorldData
   m_TagString: Untagged
@@ -82755,6 +82770,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 008e9c8aec68e6141802d1d3db9716f8, type: 2}
   - {fileID: 11400000, guid: c3a27ea9cd59ad248acba3912ba2c14f, type: 2}
   - {fileID: 11400000, guid: daf88682fbe4330479c5f8dc16f2dd32, type: 2}
+--- !u!114 &1936125362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1936125349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 590a127ee9a140240b00e0494748ea24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  consolePrefab: {fileID: 5602583528585839200, guid: 462b280ab90b5094f9d10e7aaa752f4c, type: 3}
 --- !u!1001 &1938047253
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -83217,6 +83245,7 @@ GameObject:
   - component: {fileID: 2027960923}
   - component: {fileID: 2027960922}
   - component: {fileID: 2027960921}
+  - component: {fileID: 2027960925}
   m_Layer: 0
   m_Name: Dialogue_Win
   m_TagString: Untagged
@@ -83300,7 +83329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ec85083d95b1da40a819df5c6c6c788, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hasIcon: 1
+  hasIcon: 0
   interactOnceOnly: 1
   canInteract: 1
   interactions:
@@ -83320,6 +83349,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2027960925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027960920}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b08782157fd91c54394c64eae3d327ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactable: {fileID: 2027960923}
+  delayTime: 0
 --- !u!1 &2056832084
 GameObject:
   m_ObjectHideFlags: 0

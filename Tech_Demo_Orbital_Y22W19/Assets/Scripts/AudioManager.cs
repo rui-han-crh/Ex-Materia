@@ -122,4 +122,9 @@ public class AudioManager : MonoBehaviour
     {
         audioPlayerGroup.Play(audio, delay, looping);
     }
+
+    public void StopTrack(string name)
+    {
+        audioPlayerGroup.Stop(audioDictionary[name]);
+    }
 }

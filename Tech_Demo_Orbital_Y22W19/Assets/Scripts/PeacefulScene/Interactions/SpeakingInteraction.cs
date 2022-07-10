@@ -11,6 +11,7 @@ public class SpeakingInteraction : Interaction
 
     public override void Interact()
     {
+        Debug.Log($"Beginning speak interaction {yarnScriptName}");
         CanvasTransitions.Fade(DialogueDisplayBehaviour.Instance.CanvasGroup, 0, 1, time: 0.3f);
         DialogueDisplayBehaviour.Instance.CanvasGroup.interactable = true;
         DialogueDisplayBehaviour.Instance.CanvasGroup.blocksRaycasts = true;

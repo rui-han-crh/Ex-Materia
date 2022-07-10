@@ -15,6 +15,7 @@ public class DialogueVariableStorage : InMemoryVariableStorage, ISaveable
     {
         if (!SaveFile.file.HasData(typeof(DialogueVariableStorage)))
         {
+            Debug.Log("No prior DialogueVariableStorage was found in save");
             return;
         }
 
@@ -79,5 +80,7 @@ public class DialogueVariableStorage : InMemoryVariableStorage, ISaveable
         {
             SaveFile.file.Save(typeof(DialogueVariableStorage), kvp.Key, kvp.Value);
         }
+
+        Debug.Log($"Saved {floatDict.Count} float, {stringDict.Count} string and {boolDict.Count} bool variables");
     }
 }

@@ -37,14 +37,6 @@ public class SaveManager : MonoBehaviour
 
     public static void SerialiseToFile()
     {
-        IEnumerable<ISaveable> saveableObjects = FindObjectsOfType<MonoBehaviour>().OfType<ISaveable>();
-
-        foreach (ISaveable saveableObject in saveableObjects)
-        {
-            saveableObject.SaveData();
-            Debug.Log($"Saved {(MonoBehaviour)saveableObject}");
-        }
-
         string dir = Application.persistentDataPath + directoryPath;
 
         if (!Directory.Exists(dir))
@@ -72,13 +64,6 @@ public class SaveManager : MonoBehaviour
         else
         {
             Debug.LogWarning($"There was no file at {fullPath}. Nothing was loaded in.");
-        }
-
-        IEnumerable<ISaveable> saveableObjects = FindObjectsOfType<MonoBehaviour>().OfType<ISaveable>();
-
-        foreach (ISaveable saveableObject in saveableObjects)
-        {
-            saveableObject.LoadData();
         }
     }
 }

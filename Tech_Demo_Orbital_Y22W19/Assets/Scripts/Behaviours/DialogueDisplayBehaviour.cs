@@ -15,7 +15,7 @@ public class DialogueDisplayBehaviour : MonoBehaviour
         {
             instance = FindObjectOfType<DialogueDisplayBehaviour>();
             Debug.Assert(instance != null, "Did you add the dialogue display into the scene? " +
-                "If so, is DialogueDisplayBehaviour an added component?");
+                "If so, is DialogueDisplayBehaviour an added component of the root GameObject of the dialogue elements?");
             return instance;
         }
     }

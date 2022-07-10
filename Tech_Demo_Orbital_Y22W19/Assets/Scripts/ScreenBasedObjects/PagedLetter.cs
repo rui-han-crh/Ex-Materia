@@ -23,6 +23,7 @@ public class PagedLetter : MonoBehaviour
         }
 
         transform.GetChild(currentPage).gameObject.SetActive(true);
+        ModifyNextButtonText();
     }
 
     public void NextPage()

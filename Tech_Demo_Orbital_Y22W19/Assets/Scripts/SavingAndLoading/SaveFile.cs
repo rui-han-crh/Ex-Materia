@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Newtonsoft.Json.Linq;
+using System.Linq;
 
 [Serializable]
 public class SaveFile
@@ -148,5 +149,26 @@ public class SaveFile
         }
 
         return true;
+    }
+
+    public static void Save()
+    {
+        IEnumerable<ISaveable> saveableObjects = UnityEngine.Object.FindObjectsOfType<MonoBehaviour>().OfType<ISaveable>();
+
+        foreach (ISaveable saveableObject in saveableObjects)
+        {
+            saveableObject.SaveData();
+            Debug.Log($"Saved {(MonoBehaviour)saveableObject}");
+        }
+    }
+
+    public static void Load()
+    {
+        IEnumerable<ISaveable> saveableObjects = UnityEngine.Object.FindObjectsOfType<MonoBehaviour>().OfType<ISaveable>();
+
+        foreach (ISaveable saveableObject in saveableObjects)
+        {
+            saveableObject.LoadData();
+        }
     }
 }

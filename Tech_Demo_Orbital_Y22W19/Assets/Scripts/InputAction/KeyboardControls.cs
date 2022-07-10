@@ -125,6 +125,15 @@ public partial class @KeyboardControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Tilde"",
+                    ""type"": ""Button"",
+                    ""id"": ""00af1c94-3f72-4d2e-ad4a-82c37d0847e5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -292,6 +301,17 @@ public partial class @KeyboardControls : IInputActionCollection2, IDisposable
                     ""action"": ""Tab"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d5f25079-48d0-48c0-8f33-75285a2e4f51"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Tilde"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -311,6 +331,7 @@ public partial class @KeyboardControls : IInputActionCollection2, IDisposable
         m_Mouse_ShowCombatSelections = m_Mouse.FindAction("ShowCombatSelections", throwIfNotFound: true);
         m_Mouse_DoubleLeftClick = m_Mouse.FindAction("DoubleLeftClick", throwIfNotFound: true);
         m_Mouse_Tab = m_Mouse.FindAction("Tab", throwIfNotFound: true);
+        m_Mouse_Tilde = m_Mouse.FindAction("Tilde", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -381,6 +402,7 @@ public partial class @KeyboardControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Mouse_ShowCombatSelections;
     private readonly InputAction m_Mouse_DoubleLeftClick;
     private readonly InputAction m_Mouse_Tab;
+    private readonly InputAction m_Mouse_Tilde;
     public struct MouseActions
     {
         private @KeyboardControls m_Wrapper;
@@ -396,6 +418,7 @@ public partial class @KeyboardControls : IInputActionCollection2, IDisposable
         public InputAction @ShowCombatSelections => m_Wrapper.m_Mouse_ShowCombatSelections;
         public InputAction @DoubleLeftClick => m_Wrapper.m_Mouse_DoubleLeftClick;
         public InputAction @Tab => m_Wrapper.m_Mouse_Tab;
+        public InputAction @Tilde => m_Wrapper.m_Mouse_Tilde;
         public InputActionMap Get() { return m_Wrapper.m_Mouse; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -438,6 +461,9 @@ public partial class @KeyboardControls : IInputActionCollection2, IDisposable
                 @Tab.started -= m_Wrapper.m_MouseActionsCallbackInterface.OnTab;
                 @Tab.performed -= m_Wrapper.m_MouseActionsCallbackInterface.OnTab;
                 @Tab.canceled -= m_Wrapper.m_MouseActionsCallbackInterface.OnTab;
+                @Tilde.started -= m_Wrapper.m_MouseActionsCallbackInterface.OnTilde;
+                @Tilde.performed -= m_Wrapper.m_MouseActionsCallbackInterface.OnTilde;
+                @Tilde.canceled -= m_Wrapper.m_MouseActionsCallbackInterface.OnTilde;
             }
             m_Wrapper.m_MouseActionsCallbackInterface = instance;
             if (instance != null)
@@ -475,6 +501,9 @@ public partial class @KeyboardControls : IInputActionCollection2, IDisposable
                 @Tab.started += instance.OnTab;
                 @Tab.performed += instance.OnTab;
                 @Tab.canceled += instance.OnTab;
+                @Tilde.started += instance.OnTilde;
+                @Tilde.performed += instance.OnTilde;
+                @Tilde.canceled += instance.OnTilde;
             }
         }
     }
@@ -492,5 +521,6 @@ public partial class @KeyboardControls : IInputActionCollection2, IDisposable
         void OnShowCombatSelections(InputAction.CallbackContext context);
         void OnDoubleLeftClick(InputAction.CallbackContext context);
         void OnTab(InputAction.CallbackContext context);
+        void OnTilde(InputAction.CallbackContext context);
     }
 }

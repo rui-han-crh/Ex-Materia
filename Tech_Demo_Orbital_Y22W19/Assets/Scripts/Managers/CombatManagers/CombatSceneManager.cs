@@ -529,12 +529,15 @@ namespace Managers
                         if (currentMap.IsLost())
                         {
                             gameState = SceneState.Lost;
+                            CombatUIManager.Instance.ShowLoseScreen();
+                            Debug.Log("The game is over: Lost");
                             break;
                         }
                         else if (currentMap.IsWon())
                         {
-
                             gameState = SceneState.Won;
+                            CombatUIManager.Instance.ShowWinScreen();
+                            Debug.Log("The game is over: Won");
                             break;
                         }
                     }
@@ -557,14 +560,6 @@ namespace Managers
                     //CanvasManager.Instance.DeactivateUI(CanvasManager.UIType.CharacterSheet);
                     Autoplay();
                     gameState = SceneState.OpponentThinking;
-                    break;
-
-                case SceneState.Lost:
-                    CombatUIManager.Instance.ShowLoseScreen();
-                    break;
-
-                case SceneState.Won:
-                    CombatUIManager.Instance.ShowWinScreen();
                     break;
 
             }

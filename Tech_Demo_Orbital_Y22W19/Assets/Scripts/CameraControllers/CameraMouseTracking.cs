@@ -47,7 +47,6 @@ public class CameraMouseTracking : MonoBehaviour
                 MathExtensions.InverseLogit(delta.y, 1, averageGradient) * movementMagnitude
                 );
 
-        Debug.Log(movement);
         transform.position = originPosition + movement;
     }
 

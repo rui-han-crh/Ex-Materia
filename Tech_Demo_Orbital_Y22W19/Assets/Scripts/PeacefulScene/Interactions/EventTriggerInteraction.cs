@@ -11,5 +11,6 @@ public class EventTriggerInteraction : Interaction
     public override void Interact()
     {
         unityEvent.Invoke();
+        OnEnd();
     }
 }

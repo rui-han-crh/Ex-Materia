@@ -152,12 +152,12 @@ namespace Managers
 
         public void ShowLoseScreen()
         {
-            loseInteractable.Interact(GameObject.FindGameObjectWithTag("UniversalInteractable").GetComponent<Interactable>());
+            loseInteractable.GetComponent<InitialiseInteractable>().enabled = true;
         }
 
         public void ShowWinScreen()
         {
-            winInteractable.Interact(GameObject.FindGameObjectWithTag("UniversalInteractable").GetComponent<Interactable>());
+            winInteractable.GetComponent<InitialiseInteractable>().enabled = true;
         }
 
         public void UpdateCurrentActingUnitInformation()

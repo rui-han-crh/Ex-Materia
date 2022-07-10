@@ -16,7 +16,7 @@ namespace Transitions
                 canvasGroup.alpha = start;
                 float journeyLength = end - start;
                 float startTime = Time.time;
-                while (!Mathf.Approximately(canvasGroup.alpha, end))
+                while (!Mathf.Approximately(canvasGroup.alpha, end) && time != 0)
                 {
                     float currentTime = Time.time;
                     canvasGroup.alpha = Mathf.Lerp(start, end, (currentTime - startTime) / time);

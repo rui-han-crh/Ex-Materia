@@ -4949,7 +4949,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   YI: {fileID: 1895463932}
   CharacterDB: {fileID: 11400000, guid: a0df2a9f19735f643b5e79c813e50bd6, type: 2}
-  eventButton: {fileID: 1791929714}
   isActive: 0
 --- !u!114 &808315050
 MonoBehaviour:
@@ -8475,6 +8474,7 @@ GameObject:
   - component: {fileID: 1252654396}
   - component: {fileID: 1252654395}
   - component: {fileID: 1252654394}
+  - component: {fileID: 1252654400}
   m_Layer: 0
   m_Name: Dialogue_Lose
   m_TagString: Untagged
@@ -8570,6 +8570,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1252654400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1252654393}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b08782157fd91c54394c64eae3d327ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactable: {fileID: 1252654398}
+  delayTime: 0
 --- !u!1 &1288639055
 GameObject:
   m_ObjectHideFlags: 0
@@ -70240,6 +70254,7 @@ GameObject:
   - component: {fileID: 2027960923}
   - component: {fileID: 2027960922}
   - component: {fileID: 2027960921}
+  - component: {fileID: 2027960925}
   m_Layer: 0
   m_Name: Dialogue_Win
   m_TagString: Untagged
@@ -70305,6 +70320,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2027960925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027960920}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b08782157fd91c54394c64eae3d327ec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactable: {fileID: 2027960923}
+  delayTime: 0
 --- !u!1 &2056832084
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ public class SaveManagerEditor : Editor
 
         if (GUILayout.Button("Save to File"))
         {
+            SaveFile.Save();
             SaveManager.SerialiseToFile();
         }
 

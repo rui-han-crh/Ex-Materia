@@ -32,8 +32,11 @@ public class InteractableCollection : MonoBehaviour
 
     private void Awake()
     {
-        canvas = GameObject.Find("Canvas").GetComponent<Canvas>();
-        Debug.Log(canvas);
-        Debug.Assert(Canvas != null, "Canvas could not be found, is it called \"Canvas\" in the scene?");
+        GameObject canvasGameObject = GameObject.Find("Canvas");
+        Debug.Assert(canvasGameObject != null, "Canvas could not be found, is it called \"Canvas\" in the scene? " +
+            "Ensure there are no trailing whitespaces in the name.");
+
+        canvas = canvasGameObject.GetComponent<Canvas>();
+        Debug.Assert(Canvas != null, "The Canvas GameObject in the scene has no Canvas component added to the it. Please add one.");
     }
 }
