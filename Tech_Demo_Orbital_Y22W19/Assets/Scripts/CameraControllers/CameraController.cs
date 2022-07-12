@@ -26,7 +26,7 @@ public class CameraController : MonoBehaviour
     private float dragSensitivity = 0.05f;
 
     [SerializeField]
-    private float scrollSensitivity = 1;
+    private float scrollSensitivity = 0.3f;
 
     private const float ZOOM_DRAG_RATIO = 15;
 
@@ -40,7 +40,7 @@ public class CameraController : MonoBehaviour
     private float focusSpeed = 10f;
 
     [SerializeField]
-    private float rotationSpeed = 2f;
+    private float rotationSpeed = 30f;
 
     private Task focusingCoroutine;
 

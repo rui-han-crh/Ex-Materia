@@ -77,7 +77,11 @@ class AudioPlayerGroup : MonoBehaviour
             currentPlayingTask = new Task(TrackClipProgress(audio.Duration));
             
             audioSource.Play();
-            audioSource.SetScheduledEndTime(AudioSettings.dspTime + audio.Duration);
+
+            if (!audio.IsLooping)
+            {
+                audioSource.SetScheduledEndTime(AudioSettings.dspTime + audio.Duration);
+            }
         }
 
         public void Stop()

@@ -80,7 +80,6 @@ namespace CombatSystem.Entities
         public static void ResetClass()
         {
             identityCount = 1;
-            UnitStatusEffectsFacade.Instance.Awake();
         }
 
         private Unit()

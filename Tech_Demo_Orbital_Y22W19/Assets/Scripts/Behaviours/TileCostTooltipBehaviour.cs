@@ -22,7 +22,7 @@ public class TileCostTooltipBehaviour : MonoBehaviour
 
     private Tilemap ground;
 
-    private TileMapFacade tileMapFacade;
+    private TileManager tileManager;
 
     private CombatSceneManager combatSceneManager;
 
@@ -75,9 +75,9 @@ public class TileCostTooltipBehaviour : MonoBehaviour
     private void Awake()
     {
         canvasGroup = GetComponent<CanvasGroup>();
-        tileMapFacade = TileMapFacade.Instance;
+        tileManager = TileManager.Instance;
         combatSceneManager = CombatSceneManager.Instance;
-        ground = tileMapFacade.groundTilemaps[0];
+        ground = tileManager.Ground;
         mainCamera = Camera.main;
         keyboardControls = new KeyboardControls();
         keyboardControls.Mouse.MousePosition.performed += ctx => OnMouseMoved(ctx.ReadValue<Vector2>());

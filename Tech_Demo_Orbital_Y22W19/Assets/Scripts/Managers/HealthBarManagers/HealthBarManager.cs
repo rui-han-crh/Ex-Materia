@@ -29,11 +29,25 @@ namespace Managers
 
         private List<BarFillBehaviour> healthBars = new List<BarFillBehaviour>() { null };
 
-        public void Awake()
+        private void Awake()
         {
+            Debug.Log(healthBarPrefab);
             if (healthBarCollection == null)
             {
-                healthBarCollection = GameObject.Find("Healthbar_Collection").GetComponent<RectTransform>();
+                GameObject healthBarCollectionGameObject = GameObject.Find("Healthbar_Collection");
+                if (healthBarCollectionGameObject == null)
+                {
+                    healthBarCollectionGameObject = new GameObject("Healthbar_Collection", typeof(RectTransform));
+                    healthBarCollectionGameObject.transform.SetParent(InteractableCollection.Instance.Canvas.transform, false);
+                    healthBarCollectionGameObject.transform.SetAsLastSibling();
+                }
+
+                healthBarCollection = healthBarCollectionGameObject.GetComponent<RectTransform>();
+                healthBarCollection.anchorMin = Vector2.zero;
+                healthBarCollection.anchorMax = Vector2.one;
+                healthBarCollection.offsetMax = Vector2.zero;
+                healthBarCollection.offsetMin = Vector2.zero;
+
                 Debug.Assert(healthBarCollection != null, "Could not find a RectTransform on a GameObject called Healthbar_Collection. " +
                     "Either drag a Transform, as a child of the main Canvas, to gather all healthbar gameobjects onto, " +
                     "or rename the intended gameobject to \"Healthbar_Collection so the script can retrieve it.");

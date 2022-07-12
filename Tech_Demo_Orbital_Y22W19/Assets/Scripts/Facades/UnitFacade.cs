@@ -8,8 +8,8 @@ namespace Facades
     public class UnitFacade : MonoBehaviour
     {
         [SerializeField]
-        private int maxHealth,
-            currentHealth,
+        private int maxHealth = 1,
+            currentHealth = 1,
             range,
             attack,
             defence,

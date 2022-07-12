@@ -25,11 +25,12 @@ namespace Managers
         }
 
         [SerializeField]
-        private UnitFacade[] unitFacades;
+        public UnitFacade[] unitFacades = new UnitFacade[0];
+
         private Unit[] units;
 
-        [SerializeField]
         private Tilemap ground;
+
 
         public UnitFacade this[int identity]
         {
@@ -38,12 +39,21 @@ namespace Managers
 
         private void Awake()
         {
+
             units = new Unit[unitFacades.Length];
+
+            if (unitFacades.Length == 0)
+            {
+                Debug.LogWarning("There were no units added to the UnitManager. Was this intended?");
+            }
+
             for (int i = 0; i < unitFacades.Length; i++)
             {
                 Unit unit = unitFacades[i].CreateUnit();
                 units[i] = unit;
             }
+
+            ground = TileManager.Instance.Ground;
         }
 
         public UnitCensus CreateUnitCensus()

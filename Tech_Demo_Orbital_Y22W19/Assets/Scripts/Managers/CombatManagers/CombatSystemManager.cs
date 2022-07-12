@@ -8,40 +8,40 @@ using UnityEngine;
 public class CombatSystemManager : MonoBehaviour
 {
     private UnitManager unitManager;
-    private TileMapFacade tileMapFacade;
-    private UnitStatusEffectsFacade unitStatusEffectsFacade;
+    private TileManager tileManager;
 
     private GameObject combatSystemHolder;
     private CombatSceneManager combatSceneManager;
 
-    public bool autocreateCombatSystemView = false;
+    [SerializeField]
+    private GameObject combatSystemView;
 
-    public GameObject combatSystemViewPrefab;
+    public UnitStatusEffectsFacade statusEffectsDatabase;
 
-    public GameObject combatSystemView;
+    [SerializeField]
+    private bool allowGameOverState;
 
 
     private void Awake()
     {
         unitManager = FindObjectOfType<UnitManager>();
         Debug.Assert(unitManager != null, "There exists no UnitManager in this scene. It is required for the Combat System, please add one");
-        tileMapFacade = FindObjectOfType<TileMapFacade>();
-        Debug.Assert(tileMapFacade != null, "There exists no TileMapFacade in this scene. It is required for the Combat System, please add one");
-        unitStatusEffectsFacade = FindObjectOfType<UnitStatusEffectsFacade>();
-        Debug.Assert(unitStatusEffectsFacade != null, 
-            "There exists no UnitStatusEffectsFacade in this scene. It is required for the Combat System, please add one");
+
+        tileManager = FindObjectOfType<TileManager>();
+        Debug.Assert(tileManager != null, "There exists no TileManager in this scene. It is required for the Combat System, please add one");
 
         combatSystemHolder = new GameObject("CombatSystem");
         combatSystemHolder.transform.SetParent(transform);
 
+        bool state = allowGameOverState;
+        Debug.Log($"state {state}");
         combatSceneManager = combatSystemHolder.AddComponent<CombatSceneManager>();
-        combatSceneManager.Initialise(unitManager, tileMapFacade);
 
-        if (autocreateCombatSystemView)
-        {
-            combatSystemView = Instantiate(combatSystemViewPrefab, InteractableCollection.Instance.Canvas.transform);
-            combatSystemView.transform.SetAsFirstSibling();
-        }
+        combatSceneManager.SetGameOverAllowed(state);
+
+        combatSceneManager.Initialise(unitManager, tileManager);
+
+        statusEffectsDatabase = Instantiate(statusEffectsDatabase);
     }
 
     public void PauseGame(bool isPaused)

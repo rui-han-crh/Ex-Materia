@@ -17,6 +17,7 @@ using UnityEngine.EventSystems;
 using AsyncTask = System.Threading.Tasks.Task;
 using System.Collections;
 using UnityEngine.InputSystem.UI;
+using CombatSystem.Facade;
 
 namespace Managers
 {
@@ -77,7 +78,7 @@ namespace Managers
         private UnitManager unitManager;
 
         [SerializeField]
-        private TileMapFacade tilemapFacade;
+        private TileManager tileManager;
 
         [SerializeField]
         private Tilemap ground;
@@ -154,13 +155,13 @@ namespace Managers
             gameOverAllowed = state;
         }
 
-        public void Initialise(UnitManager unitManager, TileMapFacade tileMapFacade)
+        public void Initialise(UnitManager unitManager, TileManager tileManager)
         {
             if (!isInitialised)
             {
                 this.unitManager = unitManager;
-                this.tilemapFacade = tileMapFacade;
-                this.ground = tilemapFacade.groundTilemaps[0];
+                this.tileManager = tileManager;
+                this.ground = tileManager.Ground;
                 isInitialised = true;
             }
         }
@@ -180,6 +181,7 @@ namespace Managers
         private void Awake()
         {
             Unit.ResetClass();
+
             keyboardControls = new KeyboardControls();
             routineManager = gameObject.AddComponent<RoutineManager>();
 
@@ -203,7 +205,7 @@ namespace Managers
         {
             tokenSource = new CancellationTokenSource();
             mainCamera = Camera.main;
-            currentMap = GameMap.MakeNewMap(unitManager.CreateUnitCensus(), tilemapFacade.CreateTileCensus());
+            currentMap = GameMap.MakeNewMap(unitManager.CreateUnitCensus(), tileManager.CreateTileCensus());
 
             IEnumerable<Unit> units = currentMap.GetUnits(unit => true);
 

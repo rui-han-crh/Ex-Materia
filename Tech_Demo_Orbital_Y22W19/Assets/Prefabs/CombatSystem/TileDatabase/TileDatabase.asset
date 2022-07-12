@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c50ff93a3b422b74c991fed4e51f552b, type: 3}
+  m_Name: TileDatabase
+  m_EditorClassIdentifier: 
+  indicatorTile: {fileID: 11400000, guid: 960e199b1615f674bbf0767e565a77fe, type: 2}
+  tileCostPairs:
+  - tileName: Snow
+    tile: {fileID: 11400000, guid: 4878b07e0ee6740489b6d133b5a732b3, type: 2}
+    cost: 24
+  - tileName: Snow
+    tile: {fileID: 11400000, guid: d0e5cb4c3c9d4634d9f718796997798a, type: 2}
+    cost: 20
+  - tileName: Stone Floor
+    tile: {fileID: 11400000, guid: 06c10c7673b644544818353ba0fe8929, type: 2}
+    cost: 10
+  - tileName: Wooden Floor
+    tile: {fileID: 11400000, guid: 53fe3bab72a61c948916eaff7209d6a5, type: 2}
+    cost: 5
+  - tileName: Wooden Floor
+    tile: {fileID: 11400000, guid: 79f38ad59d79ed94fae65c4a4c192938, type: 2}
+    cost: 5
+  - tileName: Wooden Floor
+    tile: {fileID: 11400000, guid: cffd5f34462139d47b547a66250e8af6, type: 2}
+    cost: 5
+  - tileName: Wooden Floor
+    tile: {fileID: 11400000, guid: 61de094952f086e47b5d7efee190fa65, type: 2}
+    cost: 5
+  - tileName: Wooden Floor
+    tile: {fileID: 11400000, guid: d1a71094913ce9542807ab6ae667bd11, type: 2}
+    cost: 5
+  - tileName: Wooden Floor
+    tile: {fileID: 11400000, guid: baa92c1f25f47a143b2897d69b86911a, type: 2}
+    cost: 5

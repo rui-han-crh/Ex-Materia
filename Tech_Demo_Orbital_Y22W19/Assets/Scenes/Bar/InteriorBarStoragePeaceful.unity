@@ -5373,7 +5373,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   YI: {fileID: 663107065}
   CharacterDB: {fileID: 11400000, guid: a0df2a9f19735f643b5e79c813e50bd6, type: 2}
-  eventButton: {fileID: 30838768}
   isActive: 0
 --- !u!114 &1787101579
 MonoBehaviour:
@@ -6054,9 +6053,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1978323888}
   - component: {fileID: 1978323887}
-  - component: {fileID: 1978323886}
-  - component: {fileID: 1978323885}
-  - component: {fileID: 1978323884}
   - component: {fileID: 1978323889}
   m_Layer: 0
   m_Name: TileManager
@@ -6065,77 +6061,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1978323884
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1978323883}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c868c47013573647829f2ee305b4d8b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tileCostPairs:
-  - tileName: Snow
-    tile: {fileID: 11400000, guid: 4878b07e0ee6740489b6d133b5a732b3, type: 2}
-    cost: 24
-  - tileName: Snow
-    tile: {fileID: 11400000, guid: d0e5cb4c3c9d4634d9f718796997798a, type: 2}
-    cost: 20
-  - tileName: Stone Floor
-    tile: {fileID: 11400000, guid: 06c10c7673b644544818353ba0fe8929, type: 2}
-    cost: 10
-  - tileName: Wooden Floor
-    tile: {fileID: 11400000, guid: 53fe3bab72a61c948916eaff7209d6a5, type: 2}
-    cost: 5
-  - tileName: Wooden Floor
-    tile: {fileID: 11400000, guid: 79f38ad59d79ed94fae65c4a4c192938, type: 2}
-    cost: 5
-  - tileName: Wooden Floor
-    tile: {fileID: 11400000, guid: cffd5f34462139d47b547a66250e8af6, type: 2}
-    cost: 5
-  - tileName: Wooden Floor
-    tile: {fileID: 11400000, guid: 61de094952f086e47b5d7efee190fa65, type: 2}
-    cost: 5
-  - tileName: Wooden Floor
-    tile: {fileID: 11400000, guid: d1a71094913ce9542807ab6ae667bd11, type: 2}
-    cost: 5
---- !u!114 &1978323885
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1978323883}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f3431013fd78b244b2617f8c82468ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  groundTilemaps:
-  - {fileID: 1304809777}
-  halfCoverTilemaps:
-  - {fileID: 1076918059}
-  fullCoverTilemaps:
-  - {fileID: 1730694568}
-  indicatorMap: {fileID: 1060467714}
---- !u!114 &1978323886
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1978323883}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8b117dbe5facaf43adc3bc8974021ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tileMapFacade: {fileID: 1978323885}
-  indicatorMap: {fileID: 1060467714}
-  indicator: {fileID: 11400000, guid: 960e199b1615f674bbf0767e565a77fe, type: 2}
 --- !u!156049354 &1978323887
 Grid:
   m_ObjectHideFlags: 0

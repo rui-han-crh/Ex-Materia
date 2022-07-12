@@ -5,7 +5,8 @@ using CombatSystem.Effects;
 
 namespace CombatSystem.Facade
 {
-    public class UnitStatusEffectsFacade : MonoBehaviour
+    [CreateAssetMenu(fileName = "_UnitStatusEffectsDatabase", menuName = "Assets/CombatSystem/UnitStatusEffectsDatabase")]
+    public class UnitStatusEffectsFacade : ScriptableObject
     {
         private static UnitStatusEffectsFacade instance;
 
@@ -13,11 +14,7 @@ namespace CombatSystem.Facade
         {
             get
             {
-                if (instance == null)
-                {
-                    instance = FindObjectOfType<UnitStatusEffectsFacade>();
-                    Debug.Assert(instance != null, "UnitStatusEffectsFacade does not exist in the scene, consider adding one");
-                }
+                Debug.Assert(instance != null, "UnitStatusEffectsFacade does not exist in the scene, consider adding one");
                 return instance;
             }
         }
@@ -30,8 +27,10 @@ namespace CombatSystem.Facade
 
         public int Count => statusEffects.Length;
 
-        public void Awake()
+        private void Awake()
         {
+            instance = this;
+
             effectsByName = new Dictionary<string, StatusEffect>();
             effectsIndex = new Dictionary<StatusEffect, int>();
 
