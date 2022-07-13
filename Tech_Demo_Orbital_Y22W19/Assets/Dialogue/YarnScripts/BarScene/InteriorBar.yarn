@@ -30,7 +30,6 @@ tags:
     Olivia: Unfortunately, it's jammed. I think the door swelled up or something.
 
     Olivia: I've been trying to open it with the crowbar, but I haven't had any luck, may be you can try?
-    <<addItem OliviaCrowbar>>
     <<set $hasCrowbar to true>>
 <<else>>
     <<load Speaker Olivia Neutral>>

@@ -2,27 +2,11 @@
 tags:
 position: -23,-43
 ---
-<<clear Speaker>>
-<<if visited("Door_Knock")>>
-
-    <<if visited("AbandonedApartmentCrowbarUse")>>
-        <<jump AbandonedApartmentEnterPrompt>>
-    <<endif>>
-
-    Door: The door remains jammed.
-    <<if $hasCrowbar>>
-    -> Use Crowbar on door
-        <<jump AbandonedApartmentCrowbarUse>>
-    -> Leave
-    
-    <<endif>>
-<<else>>
-    Door: Knock on the door?
-    -> Yes
-        <<jump Door_Knock>>
-    -> No
-        <<jump Door_Leave>>
-<<endif>>
+Door: Knock on the door?
+-> Yes
+    <<jump Door_Knock>>
+-> No
+    <<jump Door_Leave>>
 ===
 title: Door_Knock
 position: -11,91
@@ -49,26 +33,4 @@ position: 0,1
 ---
 <<load Speaker Emmanuel Neutral>>
 Emmanuel: They're probably not here.
-===
-title: AbandonedApartmentCrowbarUse
-position: -154,64
----
-<<clear Speaker>>
-Door: Emmanuel positions the pinch point on the claw of the crowbar through the slit between the door frame and the door itself. 
-
-Door: On encountering some resistance, Emmanuel roughly jams the heel of his snow boots against the rounded heel of the crowbar.
-
-Door: Several snapping sounds of wood splintering ensue, followed by the cascading cracks branching out like lightning streaks across the already deteriorating door frame.
-
-Door: With appropriate effort, Emmanuel grabs the shaft of the crowbar with both his hands and heaves it outward like a lever.
-
-Door: The thud of a large chunk of wood breaking off responds. Resistance is immediately alleviated from fulcrum as the door swings out.
-<<jump AbandonedApartmentEnterPrompt>>
-===
-title: AbandonedApartmentEnterPrompt
-position: -154,64
----
--> Enter the Abandoned Apartment
-    <<changeScene AbandonedApartment>>
--> Leave
 ===
