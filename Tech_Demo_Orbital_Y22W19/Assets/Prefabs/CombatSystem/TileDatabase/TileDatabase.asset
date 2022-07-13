@@ -41,3 +41,6 @@ MonoBehaviour:
   - tileName: Wooden Floor
     tile: {fileID: 11400000, guid: baa92c1f25f47a143b2897d69b86911a, type: 2}
     cost: 5
+  - tileName: Dirt Sand
+    tile: {fileID: 11400000, guid: 1f3d07af7e6cdc047b551ffe54dd2978, type: 2}
+    cost: 10

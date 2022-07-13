@@ -10048,6 +10048,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3217703318224809882, guid: 30e34e1b682e1d14896b6851126a3a44, type: 3}
+      propertyPath: startNode
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 3217703318224809882, guid: 30e34e1b682e1d14896b6851126a3a44, type: 3}
+      propertyPath: startAutomatically
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3217703318224809882, guid: 30e34e1b682e1d14896b6851126a3a44, type: 3}
       propertyPath: dialogueViews.Array.data[0]
       value: 
       objectReference: {fileID: 1411804980}
@@ -10067,6 +10075,10 @@ PrefabInstance:
       propertyPath: combatSystemView
       value: 
       objectReference: {fileID: 2141725783}
+    - target: {fileID: 3217703319244483205, guid: 30e34e1b682e1d14896b6851126a3a44, type: 3}
+      propertyPath: allowGameOverState
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3217703319244483219, guid: 30e34e1b682e1d14896b6851126a3a44, type: 3}
       propertyPath: m_Name
       value: WorldDataCombat
