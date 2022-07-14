@@ -56,3 +56,9 @@ MonoBehaviour:
   - tileName: Mud_block
     tile: {fileID: 11400000, guid: 36b4f2ba58c8f12479b54ff32fabbd5a, type: 2}
     cost: 20
+  - tileName: InteriorLab
+    tile: {fileID: 11400000, guid: ca432b4f81ba44c4aace0cd505ca7d57, type: 2}
+    cost: 10
+  - tileName: InteriorLabEnd
+    tile: {fileID: 11400000, guid: f301d7f8c9e995e48b0bbfc2ce311270, type: 2}
+    cost: 90001
