@@ -60539,7 +60539,7 @@ PrefabInstance:
     - target: {fileID: 7821883161382698062, guid: 4ce774ad9dc97364e8e6be49cf6c9884, type: 3}
       propertyPath: yarnProject
       value: 
-      objectReference: {fileID: 7545569452688597077, guid: e48bebb8d958d0943adfbe8862a6e2de, type: 3}
+      objectReference: {fileID: 7545569452688597077, guid: 1e6a8392cb54f3445b3a4b49cb535cc8, type: 3}
     - target: {fileID: 7821883161382698062, guid: 4ce774ad9dc97364e8e6be49cf6c9884, type: 3}
       propertyPath: dialogueViews.Array.data[0]
       value: 
@@ -60965,7 +60965,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 762e0cb84d3c1bc4bb19ee41d8e77830, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  yarnScriptName: EvelynMainRoom
+  yarnScriptName: MysteriousEngineer
 --- !u!114 &890256382
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62112,7 +62112,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1363952293}
   - component: {fileID: 1363952295}
-  - component: {fileID: 1363952294}
   m_Layer: 0
   m_Name: Render
   m_TagString: Untagged
@@ -62129,30 +62128,11 @@ Transform:
   m_GameObject: {fileID: 1363952292}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
+  m_LocalScale: {x: 0.8, y: 0.8, z: 0.75}
   m_Children: []
   m_Father: {fileID: 1594065655}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &1363952294
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1363952292}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 1de4c27809997254a95eae10fd0cba0b, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!212 &1363952295
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -62193,8 +62173,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 1458264148757382470, guid: 64e5be829c708d948bba325595bc96c3, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: af787aac7ef9bf748bc1493f570221d0, type: 3}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -63737,13 +63717,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f3431013fd78b244b2617f8c82468ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundTilemaps:
-  - {fileID: 1799316375}
-  halfCoverTilemaps:
-  - {fileID: 0}
-  fullCoverTilemaps:
-  - {fileID: 0}
-  indicatorMap: {fileID: 0}
 --- !u!114 &1783229825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63756,7 +63729,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c868c47013573647829f2ee305b4d8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileCostPairs: []
 --- !u!114 &1783229826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63880,7 +63852,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 762e0cb84d3c1bc4bb19ee41d8e77830, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  yarnScriptName: OliviaRoom
+  yarnScriptName: PostBlockadeOlivia
 --- !u!114 &1790853970
 MonoBehaviour:
   m_ObjectHideFlags: 0

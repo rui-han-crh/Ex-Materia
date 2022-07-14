@@ -14,7 +14,7 @@ Olivia: We have no idea what to do next!
 <<load Speaker Olivia Happy>>
 Olivia: We managed to capture an engineer from the blockade just now
 Olivia: We don't know much about him, but perhaps he can point us to the way forward 
-Olivia: <B> Go to the main control room in the North to speak to the engineer </B>
+Olivia: <B> Go to the main control room up North to speak to the engineer </B>
 ===
 
 
@@ -57,4 +57,36 @@ Engineer: There are some works a team of us have been pondering over
 Engineer: It involves somehow convincing PAM that it's formulations are flawed 
 Engineer: Theres a defunct research centre a few of my colleagues were working in secret at 
 Engineer: We could use your help to figure out what's going on.
+===
+
+
+title: TutorialStart
+tags:
+---
+<<load Speaker Lucien Neutral>>
+Lucien: Hi there!
+Lucien: I'm Lucien, it's a pleasure to meet you
+Lucien: I'm a historian, son of a former PAM-Researcher...
+Lucien: Enough about me...
+Lucien: I have an interesting proposal 
+Lucien: Behind me is a gate to our <B> training grounds </B>
+Lucien: Tell me, would you like to learn more about how we fight enemies?
+-> Nah I'm good
+	<<jump NeglectTutorial>>
+
+-> Take me in!
+	Lucien: Great
+	Lucien: Follow me
+	<<transitionScene>>
+
+===
+
+
+title: NeglectTutorial
+tags:
+---
+<<load Speaker Lucien Sad>>
+Lucien: It's all right then.
+Lucien: See you anytime you need a refresher on the combat!
+<<unsetNextScene>>
 ===
