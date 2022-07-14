@@ -2016,15 +2016,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a08437e0c621f614b828d671c157541a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
-  currentHealth: 100
-  range: 7
-  attack: 40
+  maxHealth: 300
+  currentHealth: 300
+  range: 10
+  attack: 60
   defence: 15
   risk: 5
-  maxActionPoints: 150
-  maxSkillPoints: 100
-  currentSkillPoints: 90
+  maxActionPoints: 200
+  maxSkillPoints: 200
+  currentSkillPoints: 150
   basicSkillName: Heal35
   ultimateSkillName: AttackUpPercent200
   riskCalculationMethod: 0
@@ -2039,7 +2039,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 210887689}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.86, y: -4.91, z: 0}
+  m_LocalPosition: {x: 4, y: -8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2045605966}
@@ -3591,7 +3591,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 441908263}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.97, y: -0.98, z: 0}
+  m_LocalPosition: {x: 18, y: -8, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 761599962}
@@ -4345,7 +4345,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 565077668}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.45, z: 0}
+  m_LocalPosition: {x: 1.297, y: 1.012, z: 0}
   m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_Children: []
   m_Father: {fileID: 1663052420}
@@ -4447,7 +4447,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 573350213}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.45, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_Children: []
   m_Father: {fileID: 1148524257}
@@ -9876,8 +9876,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a08437e0c621f614b828d671c157541a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 200
-  currentHealth: 200
+  maxHealth: 150
+  currentHealth: 150
   range: 8
   attack: 25
   defence: 25
@@ -9899,7 +9899,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 952165235}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.28, y: -5.16, z: 0}
+  m_LocalPosition: {x: 20, y: -20, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1929338306}
@@ -11174,8 +11174,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a08437e0c621f614b828d671c157541a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 200
-  currentHealth: 200
+  maxHealth: 150
+  currentHealth: 150
   range: 15
   attack: 35
   defence: 30
@@ -11197,7 +11197,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1148524255}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.018, y: -1.463, z: 0}
+  m_LocalPosition: {x: 3, y: -16, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 573350214}
@@ -65110,11 +65110,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a08437e0c621f614b828d671c157541a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
-  currentHealth: 100
+  maxHealth: 300
+  currentHealth: 300
   range: 7
-  attack: 31
-  defence: 25
+  attack: 50
+  defence: 30
   risk: 5
   maxActionPoints: 150
   maxSkillPoints: 100
@@ -65133,7 +65133,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1663052418}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.13, y: -4.37, z: 0}
+  m_LocalPosition: {x: -5, y: -10, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 565077669}
@@ -123210,7 +123210,7 @@ Animator:
   m_GameObject: {fileID: 2045605965}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 1de4c27809997254a95eae10fd0cba0b, type: 2}
+  m_Controller: {fileID: 9100000, guid: dfc237dc1e0dbc54d9984ee77d8aaa6f, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -123259,12 +123259,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 4
-  m_Sprite: {fileID: 5992888193114086619, guid: a7491d0ce3e668d4398c92928ae7e4bf, type: 3}
+  m_Sprite: {fileID: 8632220252908282523, guid: 66552d2c699f6bc4fb2582379138c31e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 2}
+  m_Size: {x: 20.48, y: 20.48}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
