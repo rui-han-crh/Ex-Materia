@@ -43,7 +43,16 @@ MonoBehaviour:
     cost: 5
   - tileName: Water
     tile: {fileID: 11400000, guid: a235738ab066d9545b63dfe26d48fa0d, type: 2}
-    cost: 2147483647
+    cost: 90001
   - tileName: DirtSand
     tile: {fileID: 11400000, guid: 1f3d07af7e6cdc047b551ffe54dd2978, type: 2}
     cost: 10
+  - tileName: DirtTile
+    tile: {fileID: 11400000, guid: 49cb77c7381b1e149b3fb47f053e7304, type: 2}
+    cost: 10
+  - tileName: DirtTile
+    tile: {fileID: 11400000, guid: 6ed4298183d1255469615e740347c808, type: 2}
+    cost: 10
+  - tileName: Mud_block
+    tile: {fileID: 11400000, guid: 36b4f2ba58c8f12479b54ff32fabbd5a, type: 2}
+    cost: 20
