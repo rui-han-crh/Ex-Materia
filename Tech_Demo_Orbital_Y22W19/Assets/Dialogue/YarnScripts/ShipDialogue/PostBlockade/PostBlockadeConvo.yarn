@@ -1,0 +1,60 @@
+﻿title: PostBlockadeOlivia
+tags:
+---
+<<load Speaker Olivia Happy>>
+
+Olivia: Hey thanks for your help in clearing the Blockade!
+
+<<load Speaker Olivia Neutral>>
+Olivia: Although, we do have a problem now..
+-> What's up 
+
+Olivia: We have no idea what to do next!
+
+<<load Speaker Olivia Happy>>
+Olivia: We managed to capture an engineer from the blockade just now
+Olivia: We don't know much about him, but perhaps he can point us to the way forward 
+Olivia: <B> Go to the main control room in the North to speak to the engineer </B>
+===
+
+
+title: MysteriousEngineer
+tags:
+---
+
+<<load Speaker Emmanuel Neutral>> //Need a placeholder for the engineer 
+Mysterious Figure: Don't hurt me!
+
+<<load Speaker Emmanuel Neutral>>
+Emmanuel: Relax..
+Emmanuel: We won't do that 
+Emmanuel: We just wanna know what your role was, I hear you're an engineer of sorts?
+Emmanuel: Our main goal is to take down PAM
+
+
+<<load Speaker Emmanuel Neutral>>
+Engineer: Ah..
+Engineer: I was an engineer of the governmental wing overseeing PAM's maintenance.
+Engineer: Wanna know a secret?
+-> Of course 
+Engineer: PAM was known to have defects decades ago 
+Engineer: It's analytics did not comply with what we deemed as correct
+Engineer: We chalked it up to noise / chance at first 
+Engineer: But eventually we told the Interfacers
+-> Who are said Interfacers?
+
+Engineer: The overlords essentially 
+Engineer: They literally interface between PAM and society
+Engineer: The humans working directly under PAM 
+
+Engineer: Anyways, we expressed our distrust, but the interfacers told us not to worry.
+Engineer: We should've seen it sooner 
+Engineer: He was soon laid off, god knows what happened to him.
+-> What happens now?
+
+Engineer: I've been pondering about this for a while 
+Engineer: There are some works a team of us have been pondering over 
+Engineer: It involves somehow convincing PAM that it's formulations are flawed 
+Engineer: Theres a defunct research centre a few of my colleagues were working in secret at 
+Engineer: We could use your help to figure out what's going on.
+===

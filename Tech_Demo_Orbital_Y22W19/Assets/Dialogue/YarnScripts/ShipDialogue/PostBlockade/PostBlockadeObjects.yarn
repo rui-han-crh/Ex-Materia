@@ -1,0 +1,65 @@
+﻿title: Bookshelf
+tags:
+---
+<<load Speaker Lucien Happy>>
+Lucien: Ah, knowledge is indeed power 
+Lucien: I'll let you decide what you want to learn more of today!
+
+Lucien: Is there any book that piques your interest? 
+-> Impacts of Technology Tax 
+	<<jump TechTax >>
+-> The Rise of PAM
+	<<jump PAMRise>>
+-> Nah I've read enough!
+	<<jump BookshelfEnd>>
+
+===
+
+
+title: BookshelfEnd
+tags:
+---
+<<load Speaker Lucien Neutral>>
+Lucien: Aw..
+Lucien: Do come again should you like to hear more about anything.
+===
+
+
+
+title: TechTax
+tags:
+---
+<<load Speaker Lucien Neutral>>
+Lucien: I'm jumping the gun a little 
+Lucien: But have you ever wondered where Evelyn & Olivia got their fighting skills from?
+-> Not really
+
+Lucien: To combat the fact that we don't have a real army 
+Lucien: Members in the lowest socio-economic bracket have to provide personnel to enlist into the military 
+Lucien: Some of these members broke away
+Lucien: And we're actually a group of mutinied soliders
+Lucien: Known as the Progeny 
+Lucien: You guess it, Evelyn and Olivia were sold off by their Dad
+Lucien: If you wanna know more, try asking them a little later...
+===
+
+
+title: PAMRise
+tags:
+---
+<<load Speaker Lucien Angry>>
+Lucien: After the recruitment of new engineers deciding to build PAM
+Lucien: New ideas were spawned 
+Lucien: These engineers eventually decided that tampering with the algorithm should be disallowed
+-> We don't want to introduce human errors 
+Lucien: Exactly!
+Lucien: On that note actually...
+Lucien: There is the problem of insufficient compute power in decision making 
+Lucien: In any decision making framework, the more potential paths one can take
+Lucien: The longer it takes to come up with a decision
+Lucien: The engineer initially thought about considering potential repercussions spanning 30-50 years 
+Lucien: But they eventually chopped it down to about 1-2 years of "foresight"
+Lucien: This was an unpopular decision with the government, as it encouraged more human interference
+Lucien: Which kinda defeats the purpose of algorithmic governance in the first place. 
+Lucien: And I'll end with that for today!
+===
