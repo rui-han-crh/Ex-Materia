@@ -64119,13 +64119,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f3431013fd78b244b2617f8c82468ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundTilemaps:
-  - {fileID: 1799316375}
-  halfCoverTilemaps:
-  - {fileID: 0}
-  fullCoverTilemaps:
-  - {fileID: 0}
-  indicatorMap: {fileID: 0}
 --- !u!114 &1783229825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64138,7 +64131,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c868c47013573647829f2ee305b4d8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileCostPairs: []
 --- !u!114 &1783229826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64151,9 +64143,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8b117dbe5facaf43adc3bc8974021ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileMapFacade: {fileID: 0}
+  tileDatabase: {fileID: 11400000, guid: 7b3f2c8245064b140863e222f62c2bb3, type: 2}
   indicatorMap: {fileID: 2002880322}
-  indicator: {fileID: 11400000, guid: f9fc026d4ad690442a886a7dadf5e32f, type: 2}
+  groundTilemaps:
+  - {fileID: 1799316375}
+  halfCoverTilemaps: []
+  fullCoverTilemaps: []
 --- !u!1 &1788929699
 GameObject:
   m_ObjectHideFlags: 0
