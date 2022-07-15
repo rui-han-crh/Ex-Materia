@@ -38,6 +38,6 @@ Evelyn: Are you ready to go?
 Olivia: We're unlikely to come back here again.
 
 -> Yes, I'm ready, let's go.
-    <<changeScene LandshipInterior>>
+    <<changeScene ExteriorDocks>>
 -> No, I want to look around more.
 ===
