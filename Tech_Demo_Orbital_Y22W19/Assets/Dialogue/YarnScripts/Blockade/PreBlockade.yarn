@@ -3,7 +3,6 @@ tags:
 position: -16,-12
 ---
 <<load Speaker Lucien Neutral>>
-<<set $test to true>>
 Lucien: Alright listen up
 Lucien: Welcome to the border of East Cajovia
 Lucien: I gathered some intel straight from the frontline 
@@ -73,6 +72,96 @@ tags:
 ---
 Door: Enter?
 -> Yes
-	<<loadScene>>
+	<<transitionScene>>
 -> No
+===
+
+
+title: EnterBlockade
+tags:
+---
+<<load Speaker Evelyn Neutral>>
+Evelyn: Oh?
+Evelyn: You found something?
+-> Yep, take a look at this 
+Evelyn: *unscrolls*
+<<load Speaker Evelyn Surprised>>
+Evelyn: Gosh..
+Evelyn: Where'd you find this 
+Evelyn: Hmm...
+Evelyn: ...
+
+Evelyn: Seems like this entrance is the safest way in 
+Evelyn: We'll definitely still encounter some foes, but they won't expect it 
+Evelyn: On the crack of dawn tomorrow, we breach this gate 
+
+<<load Speaker Lucien Angry>>
+Lucien: Hey!
+Lucien: Who the fuck do you think you are 
+Lucien: We decide on this as a group 
+Lucien: ...
+Lucien: Forget it 
+Lucien: We'll move tomorrow 
+Lucien: But run through us next time 
+Lucien: How about it Emmanuel 
+-> Alright 
+	<<transitionScene>>
+-> No, I wanna explore this place a bit longer
+	<<unsetNextScene>>
+===
+
+
+title: EnterFarmhouse
+tags:
+---
+
+<<load Speaker Olivia Neutral>>
+Olivia: Yo Emmanuel 
+Olivia: Take a look at this...
+Olivia: Seems like something the rest of the group should know
+===
+
+
+title: GainMap
+tags:
+---
+<<if $hasBlockadeMap>>
+<<jump InstructionExitRoom>>
+<<endif>>
+<<load Speaker Olivia Neutral>>
+Olivia: You know.. 
+Olivia: This seems like a map of the enemy's settlement 
+Olivia: No clue why it's conveniently lying around here 
+Olivia: Take it with you!
+<<set $hasBlockadeMap to true>>
+===
+
+title: InstructionExitRoom
+tags:
+---
+<<load Speaker Olivia Neutral>>
+Olivia: Tell Evelyn about the map!
+Olivia: She should be at the East-Most gate.
+===
+
+
+title: Drink
+tags:
+---
+<<load Speaker Olivia Neutral>>
+Olivia: Ew 
+Olivia: I can smell some alcohol from here 
+Olivia: The previous owner must be some drunk bastard 
+Olivia: Not a pleasant memory at all 
+===
+
+title: ExitRoom
+tags:
+---
+<<clear Speaker>>
+Door: Go back to the entrance?
+-> Yes
+	<<transitionScene>>
+-> No
+	<<unsetNextScene>>
 ===
