@@ -10,11 +10,13 @@ public class TriggerInteractable : MonoBehaviour
     [SerializeField]
     private bool triggerOnceOnly;
     private int numberOfTimesTriggered;
+    [SerializeField]
+    private float delay = 0;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("trigger!");
-        Trigger(collision);
+        StartCoroutine(DelayedTrigger(collision, delay));
     }
 
     private void Trigger(Collider2D collision)
@@ -28,5 +30,11 @@ public class TriggerInteractable : MonoBehaviour
 
         interactionController.InteractUsing(interactableToTrigger);
         numberOfTimesTriggered++;
+    }
+
+    private IEnumerator DelayedTrigger(Collider2D collision, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Trigger(collision);
     }
 }

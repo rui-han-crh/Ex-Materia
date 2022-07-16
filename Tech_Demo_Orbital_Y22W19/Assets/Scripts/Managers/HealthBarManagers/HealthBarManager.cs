@@ -39,7 +39,7 @@ namespace Managers
                 {
                     healthBarCollectionGameObject = new GameObject("Healthbar_Collection", typeof(RectTransform));
                     healthBarCollectionGameObject.transform.SetParent(InteractableCollection.Instance.Canvas.transform, false);
-                    healthBarCollectionGameObject.transform.SetAsLastSibling();
+                    healthBarCollectionGameObject.transform.SetAsFirstSibling();
                 }
 
                 healthBarCollection = healthBarCollectionGameObject.GetComponent<RectTransform>();
