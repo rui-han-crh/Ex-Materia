@@ -59,4 +59,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BlockadeIntermediate/PreBoss.unity
     guid: 108c4b9aa4a55aa48bbfc220769ea44c
+  - enabled: 1
+    path: Assets/Scenes/BlockadeIntermediate/BossFight.unity
+    guid: fad4bf8ca8435c74eadb6e738db669b3
   m_configObjects: {}

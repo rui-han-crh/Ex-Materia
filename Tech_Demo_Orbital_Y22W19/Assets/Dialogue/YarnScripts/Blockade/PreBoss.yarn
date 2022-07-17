@@ -40,3 +40,19 @@ Olivia: I'm with Evelyn on this
 Olivia: If we leave now, the Blockade's not cleared 
 Olivia: We can't give the go-ahead to the Frontline 
 ===
+
+
+
+title: BossIntro
+tags:
+---
+<<clear Speaker>>
+Soldier: Growl...
+Soldier: ....
+
+Narrator: You can run 
+Narrator: But you can't hide 
+Narrator: Use your limited cover wisely 
+Narrator: The enemy has high base stats but extremely short range 
+
+===
