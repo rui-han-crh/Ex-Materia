@@ -80,6 +80,23 @@ Door: Enter?
 title: EnterBlockade
 tags:
 ---
+
+<<if $spokenEvelynBlockade>>
+<<load Speaker Lucien Neutral>>
+Lucien: So how about it Emmanuel 
+Lucien: We'll probably face some resistance, but nothing we can't handle 
+Lucien: Shall we enter the Blockade tomorrow?
+
+-> Alright 
+	<<transitionScene>>
+-> No, I wanna explore this place a bit longer
+	<<unsetNextScene>>
+	<<jump EndConvo>>
+
+<<endif>>
+
+
+
 <<load Speaker Evelyn Neutral>>
 Evelyn: Oh?
 Evelyn: You found something?
@@ -93,7 +110,9 @@ Evelyn: ...
 
 Evelyn: Seems like this entrance is the safest way in 
 Evelyn: We'll definitely still encounter some foes, but they won't expect it 
-Evelyn: On the crack of dawn tomorrow, we breach this gate 
+Evelyn: When we're ready, we breach this gate 
+
+<<set $spokenEvelynBlockade to true>>
 
 <<load Speaker Lucien Angry>>
 Lucien: Hey!
@@ -130,8 +149,8 @@ tags:
 <<endif>>
 <<load Speaker Olivia Neutral>>
 Olivia: You know.. 
-Olivia: This seems like a map of the enemy's settlement 
-Olivia: No clue why it's conveniently lying around here 
+Olivia: This seems like a map of the area
+Olivia: Not sure how up to date it is though
 Olivia: Take it with you!
 <<set $hasBlockadeMap to true>>
 ===
@@ -149,9 +168,9 @@ title: Drink
 tags:
 ---
 <<load Speaker Olivia Neutral>>
-Olivia: Ew 
-Olivia: I can smell some alcohol from here 
-Olivia: The previous owner must be some drunk bastard 
+Olivia: Disgusting...
+Olivia: This room reeks of alcohol
+Olivia: The previous owner must be some drunk lowlife
 Olivia: Not a pleasant memory at all 
 ===
 
@@ -164,4 +183,9 @@ Door: Go back to the entrance?
 	<<transitionScene>>
 -> No
 	<<unsetNextScene>>
+===
+
+title: EndConvo
+tags:
+---
 ===
