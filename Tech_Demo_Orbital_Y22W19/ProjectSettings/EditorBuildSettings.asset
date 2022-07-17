@@ -53,4 +53,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BlockadeIntermediate/BlockadeFight.unity
     guid: e9b04bb57d07e664ebf3e620f552e18d
+  - enabled: 1
+    path: Assets/Scenes/BlockadeIntermediate/PostBlockadeFight.unity
+    guid: 46bdd3d7cc61fa8498a659e806e5965c
   m_configObjects: {}

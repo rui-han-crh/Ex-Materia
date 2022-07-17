@@ -11,6 +11,7 @@ ScriptedImporter:
   sourceScripts:
   - {fileID: 6391573757903218779, guid: fdf912d86553dc2459931993688579b1, type: 3}
   - {fileID: 6391573757903218779, guid: 5f763c67d5e86974db250512b29c8c2f, type: 3}
+  - {fileID: 6391573757903218779, guid: 2847fe5cb10ec6c4a91b9b8ec845913d, type: 3}
   compileErrors: []
   serializedDeclarations:
   - name: $spokenEvelynBlockade

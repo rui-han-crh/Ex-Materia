@@ -1,0 +1,43 @@
+﻿title: PostBlockadeStart
+tags:
+---
+<<load Speaker Evelyn Neutral>>
+Evelyn: We're not out of the woods yet 
+Evelyn: Explore the area 
+Evelyn: Gather supplies, intel, whatever you can pick up 
+Evelyn: Let's start with the farmhouse on top
+
+===
+
+
+title: PostBlockadeTent
+tags:
+---
+<<clear Speaker>>
+Tent: Hope we were useful for your fight 
+===
+
+
+title: EnterEngineerRoom
+tags:
+---
+<<load Speaker Evelyn Neutral>>
+Evelyn: I've a good feeling about this one 
+Evelyn: Shall we go?
+-> Yes
+	<<transitionScene>>
+-> No
+	<<unsetNextScene>>
+===
+
+title: Tombstones
+tags:
+---
+<<load Speaker Lucien Neutral>>
+Lucien: A famous and rather cliche quote's etched here 
+Lucien: "War Does not Determine Who is Right"
+Lucien: "But Rather,  Who Is Left"
+Lucien: Regardless of East or West
+Lucien: This rings true
+===
+
