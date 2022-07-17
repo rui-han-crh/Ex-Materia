@@ -10,8 +10,25 @@ ScriptedImporter:
   script: {fileID: 11500000, guid: 053561912b1654d80a424bb0696a74ae, type: 3}
   sourceScripts:
   - {fileID: 6391573757903218779, guid: fdf912d86553dc2459931993688579b1, type: 3}
+  - {fileID: 6391573757903218779, guid: 5f763c67d5e86974db250512b29c8c2f, type: 3}
   compileErrors: []
-  serializedDeclarations: []
+  serializedDeclarations:
+  - name: $spokenEvelynBlockade
+    typeName: Bool
+    defaultValueBool: 0
+    defaultValueNumber: 0
+    defaultValueString: 
+    description: Implicitly declared in PreBlockade.yarn, node EnterBlockade
+    isImplicit: 1
+    sourceYarnAsset: {fileID: 6391573757903218779, guid: fdf912d86553dc2459931993688579b1, type: 3}
+  - name: $hasBlockadeMap
+    typeName: Bool
+    defaultValueBool: 0
+    defaultValueNumber: 0
+    defaultValueString: 
+    description: Implicitly declared in PreBlockade.yarn, node GainMap
+    isImplicit: 1
+    sourceYarnAsset: {fileID: 6391573757903218779, guid: fdf912d86553dc2459931993688579b1, type: 3}
   defaultLanguage: en-US
   languagesToSourceAssets: []
   useAddressableAssets: 0
