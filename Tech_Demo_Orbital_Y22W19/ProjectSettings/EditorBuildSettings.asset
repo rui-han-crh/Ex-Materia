@@ -62,4 +62,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BlockadeIntermediate/BossFight.unity
     guid: fad4bf8ca8435c74eadb6e738db669b3
+  - enabled: 1
+    path: Assets/Scenes/BlockadeIntermediate/EngineerRoom.unity
+    guid: 0b87496bfd6d9ac42a17f8eeab283560
   m_configObjects: {}
