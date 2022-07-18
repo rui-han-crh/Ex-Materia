@@ -65,6 +65,6 @@ MonoBehaviour:
   - tileName: InteriorLabFloor
     tile: {fileID: 11400000, guid: ca432b4f81ba44c4aace0cd505ca7d57, type: 2}
     cost: 10
-  - tileName: InteriorLabFloor
+  - tileName: FrozenWater
     tile: {fileID: 11400000, guid: 502eb609032e9324eb4626fa0c43a942, type: 2}
     cost: 901
