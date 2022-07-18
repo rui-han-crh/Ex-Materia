@@ -24,7 +24,7 @@ title: NeglectTutorial
 tags:
 ---
 <<load Speaker Lucien Sad>>
-Lucien: It's all right then.
+Lucien: It's all right then
 Lucien: See you anytime you need a refresher on the combat!
 <<unsetNextScene>>
 ===
@@ -36,7 +36,7 @@ tags:
 <<load Speaker Olivia Happy>>
 Olivia: Hi there!
 Olivia: Welcome to my room
-Olivia: It's pretty similar to yours wayy downstairs at the entrance 
+Olivia: Looks a bit similar to your eh
 Olivia: Feel free to check it out
 <<load Speaker Olivia Angry>>
 Olivia: We have to turn in soon though
@@ -55,6 +55,19 @@ Evelyn: We're still in the process of loading items on board
 Evelyn: Any discussions regarding the Progeny's movement will take place here
 ===
 
+title: IntroShip
+tags:
+---
+<<load Speaker Evelyn Happy>>
+Evelyn: Well, it's time to formerly introduce you to our Landship 
+Evelyn: This is where we'll live/train
 
+<<load Speaker Evelyn Neutral>>
 
+Evelyn: We already have a room for you just behind
+Evelyn: Feel free to look around
 
+<<load Speaker Evelyn Angry>>
+Evelyn: Watch out for a grumpy man in the main hallway though 
+Evelyn: Don't take what he says personally 
+===
