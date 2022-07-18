@@ -41,6 +41,30 @@ MonoBehaviour:
   - tileName: Wooden Floor
     tile: {fileID: 11400000, guid: baa92c1f25f47a143b2897d69b86911a, type: 2}
     cost: 5
-  - tileName: Dirt Tile
+  - tileName: Water
+    tile: {fileID: 11400000, guid: a235738ab066d9545b63dfe26d48fa0d, type: 2}
+    cost: 1000
+  - tileName: DirtSand
+    tile: {fileID: 11400000, guid: 1f3d07af7e6cdc047b551ffe54dd2978, type: 2}
+    cost: 10
+  - tileName: DirtTile
+    tile: {fileID: 11400000, guid: 49cb77c7381b1e149b3fb47f053e7304, type: 2}
+    cost: 10
+  - tileName: DirtTile
     tile: {fileID: 11400000, guid: 6ed4298183d1255469615e740347c808, type: 2}
     cost: 10
+  - tileName: Mud_block
+    tile: {fileID: 11400000, guid: 36b4f2ba58c8f12479b54ff32fabbd5a, type: 2}
+    cost: 20
+  - tileName: InteriorLabEnd
+    tile: {fileID: 11400000, guid: 32555043e2dcc094faed541c25b86cce, type: 2}
+    cost: 901
+  - tileName: InteriorLabRoom
+    tile: {fileID: 11400000, guid: f301d7f8c9e995e48b0bbfc2ce311270, type: 2}
+    cost: 10
+  - tileName: InteriorLabFloor
+    tile: {fileID: 11400000, guid: ca432b4f81ba44c4aace0cd505ca7d57, type: 2}
+    cost: 10
+  - tileName: FrozenWater
+    tile: {fileID: 11400000, guid: 502eb609032e9324eb4626fa0c43a942, type: 2}
+    cost: 901
