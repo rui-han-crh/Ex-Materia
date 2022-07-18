@@ -3,7 +3,7 @@ tags:
 ---
 
 <<load Speaker Emmanuel Neutral>>
-Emmanuel: *explains to the group about the engineer and the soldier in the other room*
+Emmanuel: *explains to the group about the engineer and the super soldier*
 
 
 <<load Speaker Lucien Angry>>
@@ -27,9 +27,9 @@ Lucien: There you go again
 Lucien: ...
 Lucien: Forget it 
 Lucien: I wanna go home in one piece 
-Lucien: You guys can fight 
 Lucien: I'll wait by the ship 
-Lucien: I'm leaving if you guys aren't back by nightfall 
+Lucien: I'm leaving on my own if you guys aren't back by nightfall
+Lucien: Best of luck 
 ===
 
 title: OliviaPreBoss
@@ -38,7 +38,7 @@ tags:
 <<load Speaker Olivia Neutral>>
 Olivia: I'm with Evelyn on this 
 Olivia: If we leave now, the Blockade's not cleared 
-Olivia: We can't give the go-ahead to the Frontline 
+Olivia: We can't give the go-ahead to the Frontline
 ===
 
 
@@ -54,5 +54,4 @@ Narrator: You can run
 Narrator: But you can't hide 
 Narrator: Use your limited cover wisely 
 Narrator: The enemy has high base stats but extremely short range 
-
 ===

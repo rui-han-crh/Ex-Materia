@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 819bfde95d40c534287dbbd0e459c707, type: 3}
-  m_Name: Heal35
+  m_Name: Heal150
   m_EditorClassIdentifier: 
-  statusName: Heal35
+  statusName: Heal150
   flatAttackBonus: 0
   percentageAttackBonus: 1
   flatDefenceBonus: 0
   percentageDefenceBonus: 1
-  flatHealthRecovery: 35
+  flatHealthRecovery: 150
   rangeModifier: 0
   icon: {fileID: 21300000, guid: 9c93078f489605b478771a467d2ed040, type: 3}
-  description: Heals this unit for 35 HP immediately
+  description: Heals for 150 immediately
   duration: 0
-  skillPointCost: 25
+  skillPointCost: 85
