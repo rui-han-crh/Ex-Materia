@@ -1,5 +1,6 @@
 ﻿title: NextToDockBridge
 tags:
+position: -215,256
 ---
 <<load Speaker Lucien Angry>>
 Lucien: ...
@@ -18,6 +19,7 @@ Evelyn brushes past Lucien and heads across the bridge, towards an elephantine v
 ===
 title: LucienSpeechDocks
 tags:
+position: -287,105
 ---
 <<if visited("LucienSpeechDocks") == false>>
     <<load Speaker Emmanuel Neutral>>
@@ -46,12 +48,13 @@ tags:
     <<load Speaker Lucien Neutral>>
     Lucien: Ready to go?
     -> Yes
-
+        <<changeScene ExteriorDocksBelow>>
     -> No
 <<endif>>
 ===
 title: LucienSpeechDocks_Questions
 tags:
+position: 12,-1
 ---
 -> Who are you?
     <<jump LucienSpeechDocks_Person>>
@@ -69,6 +72,7 @@ tags:
 ===
 title: LucienSpeechDocks_Person
 tags:
+position: 269,-6
 ---
 <<clear Speaker>>
 Docks: Before you stands a grim man, his body encased tightly by a black vest, his eyes sunken beneath the weight of the past.
@@ -101,6 +105,7 @@ Docks: Still, his tone betrays a slight hint of disappointment.
 ===
 title: LucienSpeechDocks_Location
 tags:
+position: -3,192
 ---
 <<load Speaker Lucien Neutral>>
 Lucien: We're at the docks.
@@ -118,6 +123,7 @@ Lucien: Evelyn is the captain here.
 ===
 title: LucienSpeechDocks_Destination
 tags:
+position: -293,-73
 ---
 <<load Speaker Lucien Neutral>>
 Lucien: It's East of this location, almost at the dividing line between the East and the West.
@@ -133,6 +139,7 @@ Lucien: So that's when we discovered that the East developed a blockade to restr
 ===
 title: LucienSpeechDocks_Repair
 tags:
+position: 8,-168
 ---
 <<load Speaker Lucien Neutral>>
 Lucien: Wait. Before you go
@@ -140,4 +147,40 @@ Lucien: Wait. Before you go
 Lucien: I was below repairing our autotargetting systems, but it seems like their calibrations are not working.
 
 Lucien: I could use some help. Come find me again when you're ready.
+===
+title: LucienSpeechDocks_BattleStart
+tags:
+position: 174,286
+---
+<<load Speaker Lucien Neutral>>
+Lucien: I've detached this turret here and replaced it's ammo with blanks, you won't be hurt.
+
+Lucien: We're try testing it's auto targetting capabilities. Try walking from this across this length of the corridor.
+===
+title: LucienSpeechDocks_OverwatchHit
+tags:
+position: 174,286
+---
+<<load Speaker Lucien Happy>>
+Lucien: Wonderful!
+
+Lucien: See that shot the turret produced just now? That was an overwatch shot.
+
+<<clear Speaker>>
+Tutorial: <b>Overwatch</b> is a type of attack where the attacker fires upon a moving unit, as soon as that moving unit moves into its line of sight.
+
+Tutorial: Overwatch consumes 1000 units of time. During the duration that the unit is in overwatch, it gains a bonus of 2 times more of its base attack.
+
+<<load Speaker Lucien Neutral>>
+Lucien: Alright, now show me how well you can handle yourself against it.
+===
+title: LucienSpeechDocks_Won
+tags:
+position: 174,286
+---
+<<load Speaker Lucien Happy>>
+Lucien: Good work, these settings work quite well for this model of turrets.
+
+Lucien: Meet me back up at the docks, I'll have more things for you to do.
+<<changeScene ExteriorDocks>>
 ===

@@ -654,6 +654,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactableToTrigger: {fileID: 137243807}
   triggerOnceOnly: 1
+  delay: 0
 --- !u!114 &137243807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1262,6 +1263,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactableToTrigger: {fileID: 307589122}
   triggerOnceOnly: 0
+  delay: 0
 --- !u!60 &307589121
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -3681,6 +3683,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactableToTrigger: {fileID: 1073660831}
   triggerOnceOnly: 0
+  delay: 0
 --- !u!60 &1073660830
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -71406,6 +71409,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactableToTrigger: {fileID: 1718933436}
   triggerOnceOnly: 0
+  delay: 0
 --- !u!60 &1718933439
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -73811,7 +73815,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9100401274090100167, guid: 80b6276042463854a9948ec256a2a548, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9100401274330085890, guid: 80b6276042463854a9948ec256a2a548, type: 3}
       propertyPath: m_IsActive
@@ -73995,7 +73999,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9100401275082186461, guid: 80b6276042463854a9948ec256a2a548, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9100401275099264462, guid: 80b6276042463854a9948ec256a2a548, type: 3}
       propertyPath: m_AnchorMax.y
@@ -74068,6 +74072,14 @@ PrefabInstance:
     - target: {fileID: 9100401275176647808, guid: 80b6276042463854a9948ec256a2a548, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9100401275204273078, guid: 80b6276042463854a9948ec256a2a548, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9100401275223935537, guid: 80b6276042463854a9948ec256a2a548, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9100401275276791191, guid: 80b6276042463854a9948ec256a2a548, type: 3}
       propertyPath: m_AnchorMax.y

@@ -16,6 +16,7 @@ public class CombatSystemManager : MonoBehaviour
     [SerializeField]
     private GameObject combatSystemView;
 
+    [SerializeField]
     public UnitStatusEffectsFacade statusEffectsDatabase;
 
     [SerializeField]

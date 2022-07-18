@@ -10,11 +10,13 @@ public class CombatSystemManagerEditor : Editor
 {
     private SerializedProperty m_AllowGameOver;
     private SerializedProperty m_CombatSystemViewObject;
+    private SerializedProperty m_StatusEffectsDatabase;
 
     private void OnEnable()
     {
         m_AllowGameOver = serializedObject.FindProperty("allowGameOverState");
         m_CombatSystemViewObject = serializedObject.FindProperty("combatSystemView");
+        m_StatusEffectsDatabase = serializedObject.FindProperty("statusEffectsDatabase");
     }
 
     public override void OnInspectorGUI()
@@ -86,7 +88,7 @@ public class CombatSystemManagerEditor : Editor
 
         EditorGUILayout.PropertyField(m_CombatSystemViewObject, true);
 
-        script.statusEffectsDatabase = (UnitStatusEffectsFacade)AssetDatabase.LoadAssetAtPath(
+        m_StatusEffectsDatabase.objectReferenceValue = (UnitStatusEffectsFacade)AssetDatabase.LoadAssetAtPath(
                 "Assets/Prefabs/CombatSystem/Skills/_UnitStatusEffectsDatabase.asset", typeof(UnitStatusEffectsFacade));
 
         EditorGUILayout.Space();
