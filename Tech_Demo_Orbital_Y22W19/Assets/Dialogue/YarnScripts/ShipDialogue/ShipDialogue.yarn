@@ -2,8 +2,13 @@
 tags:
 ---
 <<load Speaker Lucien Neutral>>
-Lucien: Hi there!
-Lucien: I'm Lucien, it's a pleasure to meet you
+Lucien: Oh...
+Lucien: New young blood?
+-> Yes
+Lucien: I see...
+Lucien: Honestly a little disappointing 
+Lucien: I thought you'd look more like a fighter
+Lucien: I'm Lucien
 Lucien: I'm a historian, son of a former PAM-Researcher...
 Lucien: Enough about me...
 Lucien: I have an interesting proposal 
@@ -60,7 +65,9 @@ tags:
 ---
 <<load Speaker Evelyn Happy>>
 Evelyn: Well, it's time to formerly introduce you to our Landship 
-Evelyn: This is where we'll live/train
+Evelyn: This is where we'll live and train for the forseeable future 
+
+
 
 <<load Speaker Evelyn Neutral>>
 
@@ -71,3 +78,4 @@ Evelyn: Feel free to look around
 Evelyn: Watch out for a grumpy man in the main hallway though 
 Evelyn: Don't take what he says personally 
 ===
+
