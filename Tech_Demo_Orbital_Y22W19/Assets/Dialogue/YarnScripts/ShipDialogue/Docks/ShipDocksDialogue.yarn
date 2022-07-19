@@ -1,0 +1,186 @@
+﻿title: NextToDockBridge
+tags:
+position: -215,256
+---
+<<load Speaker Lucien Angry>>
+Lucien: ...
+
+<<load Speaker Evelyn Angry>>
+Evelyn: Shut up.
+
+<<load Speaker Lucien Angry>>
+Lucien: I didn't say anything.
+
+<<load Speaker Evelyn Angry>>
+Evelyn: Just shut up. We got the core, move out of the way. We're installing it.
+
+<<clear Speaker>>
+Evelyn brushes past Lucien and heads across the bridge, towards an elephantine vehicle up ahead.
+===
+title: LucienSpeechDocks
+tags:
+position: -287,105
+---
+<<if visited("LucienSpeechDocks") == false>>
+    <<load Speaker Emmanuel Neutral>>
+    Emmanuel: Why was she so angry at you?
+
+    <<load Speaker Lucien Neutral>>
+    Lucien: It's normal. She's just insufferable.
+
+    Lucien: You know, thinking just because she had a hard life, she has to get back at the world doing whatever she wants.
+
+    Lucien: She gets work done, so I have don't really have an issue, but she's just a straight b-
+
+    <<load Speaker Olivia Angry>>
+    Olivia: Oi.
+
+    Olivia: I've already told you before, Lucien.
+
+    <<load Speaker Olivia Disgusted>>
+    Olivia: You're a dick to her as well.
+
+    <<load Speaker Lucien Neutral>>
+    Lucien: Hmph.
+    <<jump LucienSpeechDocks_Questions>>
+
+<<elseif visited("LucienSpeechDocks_Repair") == true>>
+    <<load Speaker Lucien Neutral>>
+    Lucien: Ready to go?
+    -> Yes
+        <<changeScene ExteriorDocksBelow>>
+    -> No
+<<endif>>
+===
+title: LucienSpeechDocks_Questions
+tags:
+position: 12,-1
+---
+-> Who are you?
+    <<jump LucienSpeechDocks_Person>>
+
+-> Where are we?
+    <<jump LucienSpeechDocks_Location>>
+
+-> Do you know where we are headed?
+    <<jump LucienSpeechDocks_Destination>>
+
+-> I'll look around. \[Leave\]
+    <<if visited("LucienSpeechDocks_Repair") == false>>
+        <<jump LucienSpeechDocks_Repair>>
+    <<endif>>
+===
+title: LucienSpeechDocks_Person
+tags:
+position: 269,-6
+---
+<<clear Speaker>>
+Docks: Before you stands a grim man, his body encased tightly by a black vest, his eyes sunken beneath the weight of the past.
+
+Docks: Yet, from within him, he summons a gentler facade - the extension of friendship.
+
+<<load Speaker Lucien Neutral>>
+Lucien: My name is Lucien.
+
+<<load Speaker Emmanuel Neutral>>
+Emmanuel: I'm Emmanuel.
+
+<<load Speaker Lucien Neutral>>
+Lucien: Good to meet you Emmanuel. I'm glad we got off on the right foot here.
+
+Lucien: Did you have a role assigned here?
+
+<<load Speaker Emmanuel Neutral>>
+Emmanuel: No, Estelle never gave me one. I'm just here to tag along.
+
+<<clear Speaker>>
+Docks: Luciens raises both his hands in the air.
+
+<<load Speaker Lucien Neutral>>
+Lucien: Alright alright, naturally. Usually the newcomers don't start off with assigned roles, they usually just help out wherever they can.
+
+<<clear Speaker>>
+Docks: Still, his tone betrays a slight hint of disappointment.
+<<jump LucienSpeechDocks_Questions>>
+===
+title: LucienSpeechDocks_Location
+tags:
+position: -3,192
+---
+<<load Speaker Lucien Neutral>>
+Lucien: We're at the docks.
+
+Lucien: This is where West Callesmere's ships are docked.
+
+Lucien: No actually... It's just one of the place. We have other docks around the region, just in case the East evicerate this one.
+
+Lucien: Most of us here are those preparing for our next mission. This dock itself is managed by Estelle.
+
+Lucien: This vehicle behind me is our ship. This is the Progeny, we use this ship to conduct our missions.
+
+Lucien: Evelyn is the captain here.
+<<jump LucienSpeechDocks_Questions>>
+===
+title: LucienSpeechDocks_Destination
+tags:
+position: -293,-73
+---
+<<load Speaker Lucien Neutral>>
+Lucien: It's East of this location, almost at the dividing line between the East and the West.
+
+Lucien: The previous mission had developed a pretty strong salient point at the border, but they weren't able to make it through.
+
+Lucien: Then they caught us offguard and cut off a major artery that we use to supply resources over.
+
+Lucien: We noticed our people kept disappearing and those in the frontlines weren't receiving our resources.
+
+Lucien: So that's when we discovered that the East developed a blockade to restrict supply movement. They want to suffocate us from our food and ammunitions.
+<<jump LucienSpeechDocks_Questions>>
+===
+title: LucienSpeechDocks_Repair
+tags:
+position: 8,-168
+---
+<<load Speaker Lucien Neutral>>
+Lucien: Wait. Before you go
+
+Lucien: I was below repairing our autotargetting systems, but it seems like their calibrations are not working.
+
+Lucien: I could use some help. Come find me again when you're ready.
+===
+title: LucienSpeechDocks_BattleStart
+tags:
+position: 174,286
+---
+<<load Speaker Lucien Neutral>>
+Lucien: I've detached this turret here and replaced it's ammo with blanks, you won't be hurt.
+
+Lucien: We're try testing it's auto targetting capabilities. Try walking from this across this length of the corridor.
+===
+title: LucienSpeechDocks_OverwatchHit
+tags:
+position: 174,286
+---
+<<load Speaker Lucien Happy>>
+Lucien: Wonderful!
+
+Lucien: See that shot the turret produced just now? That was an overwatch shot.
+
+<<clear Speaker>>
+Tutorial: <b>Overwatch</b> is a type of attack where the attacker fires upon a moving unit, as soon as that moving unit moves into its line of sight.
+
+Tutorial: Overwatch consumes 1000 units of time. During the duration that the unit is in overwatch, it gains a bonus of 2 times more of its base attack.
+
+<<load Speaker Lucien Neutral>>
+Lucien: Alright, now show me how well you can handle yourself against it.
+===
+title: LucienSpeechDocks_Won
+tags:
+position: 174,286
+---
+<<load Speaker Lucien Happy>>
+Lucien: Good work, these settings work quite well for this model of turrets.
+
+Lucien: Meet me back up at the docks, I'll have more things for you to do.
+<<changeScene ExteriorDocks>>
+===

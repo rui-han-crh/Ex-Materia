@@ -45,6 +45,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Bar/InteriorBarStoragePeaceful.unity
     guid: 36204c347c9d6f040bb8fa256d123d97
   - enabled: 1
+<<<<<<< HEAD
     path: Assets/Scenes/BlockadeIntermediate/BlockadeIntermediate.unity
     guid: fd711acd91bc334458c6ae2cae4b7c1c
   - enabled: 1
@@ -65,4 +66,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BlockadeIntermediate/EngineerRoom.unity
     guid: 0b87496bfd6d9ac42a17f8eeab283560
+=======
+    path: Assets/Scenes/Docks/ExteriorDocksBelow.unity
+    guid: fb8058da496bb924aaa7c0d661711a04
+  - enabled: 1
+    path: Assets/Scenes/Docks/ExteriorDocks.unity
+    guid: 3e03961f613b43f44b764db82296807c
+>>>>>>> main
   m_configObjects: {}
