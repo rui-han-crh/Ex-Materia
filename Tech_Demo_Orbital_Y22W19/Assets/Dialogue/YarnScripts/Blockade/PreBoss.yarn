@@ -54,3 +54,30 @@ Narrator: But you can't hide
 Narrator: Use your limited cover wisely 
 Narrator: The enemy has high base stats but extremely short range 
 ===
+
+
+title: LoseBoss
+tags:
+---
+<<clear Speaker>>
+Soldier: Growl...
+Narrator: You can always try again...
+<<transitionScene>>
+===
+
+
+title: WinBoss
+tags:
+---
+<<load Speaker Emmanuel Neutral>>
+Emmanuel: Now what do we do with this hunk of metal 
+Emmanuel: I can't seem to figure out which parts are useful 
+
+
+<<load Speaker Evelyn Happy>>
+Evelyn: Well, I'm quite sure that was the last of the enemies regardless 
+Evelyn: Let's head back to the ship
+Evelyn: You're carrying the body
+<<transitionScene>>
+===
+

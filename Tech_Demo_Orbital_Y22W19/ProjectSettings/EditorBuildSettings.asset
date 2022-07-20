@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BlockadeIntermediate/BlockadeFight.unity
     guid: e9b04bb57d07e664ebf3e620f552e18d
+  - enabled: 1
+    path: Assets/Scenes/LandShipPostBlockade.unity
+    guid: a520e3762401450448515cd3ff27e885
   m_configObjects: {}

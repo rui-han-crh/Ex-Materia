@@ -2983,8 +2983,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a08437e0c621f614b828d671c157541a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 1500
-  currentHealth: 1500
+  maxHealth: 600
+  currentHealth: 50
   range: 3
   attack: 40
   defence: 30
@@ -3006,7 +3006,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 400846783}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 14.14, y: -6.25, z: 0}
+  m_LocalPosition: {x: 13.89, y: -6.87, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 831144535}
@@ -3889,6 +3889,7 @@ GameObject:
   - component: {fileID: 555819518}
   - component: {fileID: 555819517}
   - component: {fileID: 555819516}
+  - component: {fileID: 555819519}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -3978,6 +3979,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &555819519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 555819514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1733fcf6773e2e64d9cd5d1ed7798724, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &576578191
 GameObject:
   m_ObjectHideFlags: 0
@@ -6113,7 +6126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 762e0cb84d3c1bc4bb19ee41d8e77830, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  yarnScriptName: BlockadeLose
+  yarnScriptName: LoseBoss
 --- !u!114 &832380002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6126,7 +6139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24f2555ef049e7d4383c00c50d4541fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: BlockadeFight
+  sceneName: PreBoss
 --- !u!1 &836998597
 GameObject:
   m_ObjectHideFlags: 0
@@ -6758,7 +6771,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 871010630}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10.41, y: -10.17, z: 0}
+  m_LocalPosition: {x: 12.49, y: -6.84, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1681857672}
@@ -9114,7 +9127,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1185747726}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 16.64, y: -12.12, z: 0}
+  m_LocalPosition: {x: 16.39, y: -12.22, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2118258019}
@@ -11511,7 +11524,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 762e0cb84d3c1bc4bb19ee41d8e77830, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  yarnScriptName: BlockadeWin
+  yarnScriptName: WinBoss
 --- !u!114 &1476024981
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11524,7 +11537,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24f2555ef049e7d4383c00c50d4541fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: PostBlockadeFight
+  sceneName: LandShipPostBlockade
 --- !u!1 &1476831906
 GameObject:
   m_ObjectHideFlags: 0
