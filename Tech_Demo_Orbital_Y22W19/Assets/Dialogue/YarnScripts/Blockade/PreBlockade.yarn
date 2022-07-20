@@ -27,7 +27,7 @@ tags:
 <<clear Speaker>>
 Bench: As the winter's wrath worsens, a once heavily used bench sits in the desolate snow 
 Bench: A very long time ago, this area used to be place of gathering 
-Bench: Children from the East and West would congregate here to play, while weary mothers would rest their feet with this very bench
+Bench: Children from the East and West would congregate here to play, while weary mothers would rest their feet on this very bench
 Bench: Alas, those days are long gone
 === 
 
@@ -151,16 +151,19 @@ tags:
 Olivia: You know.. 
 Olivia: This seems like a map of the area
 Olivia: Not sure how up to date it is though
-Olivia: Take it with you!
+Olivia: Take it with you and let Evelyn know about this
+Olivia: I'll continue to look around for any clues here 
 <<set $hasBlockadeMap to true>>
+<<addItem BlockadeMap>>
 ===
 
 title: InstructionExitRoom
 tags:
 ---
 <<load Speaker Olivia Neutral>>
-Olivia: Tell Evelyn about the map!
-Olivia: She should be at the East-Most gate.
+Olivia: Tell Evelyn about the map
+Olivia: She should be at the gate facing the East 
+Olivia: I'll continue to look around for any clues here
 ===
 
 
