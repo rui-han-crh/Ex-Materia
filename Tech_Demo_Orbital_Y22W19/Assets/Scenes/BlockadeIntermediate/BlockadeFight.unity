@@ -1311,14 +1311,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 150
   currentHealth: 150
-  range: 10
-  attack: 50
+  range: 5
+  attack: 40
   defence: 35
   risk: 5
   maxActionPoints: 200
   maxSkillPoints: 200
   currentSkillPoints: 150
-  basicSkillName: Heal35
+  basicSkillName: DefUp40
   ultimateSkillName: AttackUpPercent200
   riskCalculationMethod: 0
   faction: 0
@@ -1332,7 +1332,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 210887689}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 9.56, y: -10.74, z: 0}
+  m_LocalPosition: {x: 4.03, y: -9.62, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2045605966}
@@ -1929,7 +1929,7 @@ MonoBehaviour:
   currentHealth: 200
   range: 5
   attack: 38
-  defence: 15
+  defence: 30
   risk: 10
   maxActionPoints: 150
   maxSkillPoints: 0
@@ -6568,9 +6568,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 75
   currentHealth: 75
-  range: 20
-  attack: 70
-  defence: 10
+  range: 25
+  attack: 100
+  defence: 20
   risk: 5
   maxActionPoints: 150
   maxSkillPoints: 0
@@ -7990,8 +7990,8 @@ MonoBehaviour:
   maxHealth: 150
   currentHealth: 150
   range: 15
-  attack: 35
-  defence: 30
+  attack: 20
+  defence: 40
   risk: 10
   maxActionPoints: 150
   maxSkillPoints: 0
@@ -25636,7 +25636,7 @@ MonoBehaviour:
   maxHealth: 150
   currentHealth: 100
   range: 5
-  attack: 65
+  attack: 50
   defence: 30
   risk: 10
   maxActionPoints: 150

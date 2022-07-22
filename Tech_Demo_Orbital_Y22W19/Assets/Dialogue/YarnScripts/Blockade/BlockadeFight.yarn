@@ -14,7 +14,7 @@ Lucien: Those tents you see there are <B> half covers </B>
 Lucien: And you <B> can't walk on half frozen water, but you can shoot across them </B>
 
 <<load Speaker Evelyn Neutral>>
-Evelyn: Olivia and Lucien, you guys need to keep a lookout 
+Evelyn: Olivia and Lucien, you guys need to keep a lookout for any enemies flanking
 Evelyn: I'll handle this with Emmanuel 
 
 <<load Speaker Lucien Neutral>>
@@ -23,7 +23,10 @@ Lucien: There she goes again
 
 <<load Speaker Evelyn Angry>>
 Evelyn: Got a problem?
-Evelyn: Let's try and get back to the ship with all of us alive 
+Evelyn: Let's try and get back to the ship with all of us alive
+
+Narrator: Across the lake is a sniper with <B> high range damage </B>
+Narrator: Use covers wisely before approaching him
 ===
 
 
