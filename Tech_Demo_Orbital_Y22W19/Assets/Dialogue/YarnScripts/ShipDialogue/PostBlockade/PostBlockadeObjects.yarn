@@ -3,11 +3,15 @@ tags:
 ---
 <<load Speaker Lucien Happy>>
 Lucien: Ah, knowledge is indeed power 
-Lucien: I'll let you decide what you want to learn more of today!
+Lucien: The more you read 
+Lucien: The less you'll resort to senseless violence 
+Lucien: Like those hot-headed twins 
+Lucien: Anyways...
+Lucien: I'll let you decide what you want to learn more of today
 
 Lucien: Is there any book that piques your interest? 
 -> Impacts of Technology Tax 
-	<<jump TechTax >>
+	<<jump TechTax>>
 -> The Rise of PAM
 	<<jump PAMRise>>
 -> Nah I've read enough!
@@ -62,4 +66,29 @@ Lucien: But they eventually chopped it down to about 1-2 years of "foresight"
 Lucien: This was an unpopular decision with the government, as it encouraged more human interference
 Lucien: Which kinda defeats the purpose of algorithmic governance in the first place. 
 Lucien: And I'll end with that for today!
+===
+
+
+title: KitchenPostBlockade
+tags:
+---
+<<load Speaker Emmanuel Neutral>>
+Emmanuel: Looks like nobody is in the mood to cook today 
+Emmanuel: Hmm
+Emmanuel: Fine 
+Emmanuel: I'll do it myself 
+
+<<clear Speaker>>
+
+<<if $hasSpatula>>
+<<jump EndConvo>>
+<<endif>>
+Narrator: <B> Obtained Golden Spatula! </B>
+<<addItem GoldenSpatula>>
+<<set $hasSpatula to true>>
+===
+
+title: EndConvo
+tags:
+---
 ===
