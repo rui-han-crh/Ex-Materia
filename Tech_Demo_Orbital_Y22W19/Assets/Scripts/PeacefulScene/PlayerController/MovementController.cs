@@ -77,6 +77,7 @@ public class MovementController : MonoBehaviour, ISaveable
     {
         SaveFile.file.Save(gameObject, typeof(MovementController), "position", 
             new float[] { transform.position.x, transform.position.y, transform.position.z });
+        Debug.Log($"Saved MovementController position {transform.position.x}, {transform.position.y}, {transform.position.z}");
     }
 
     public void LoadData()
@@ -85,6 +86,8 @@ public class MovementController : MonoBehaviour, ISaveable
         {
             float[] position = SaveFile.file.Load<float[]>(gameObject, typeof(MovementController), "position");
             transform.position = new Vector3(position[0], position[1], position[2]);
+
+            Debug.Log($"Position was {new Vector3(position[0], position[1], position[2])}");
         }
     }
 }

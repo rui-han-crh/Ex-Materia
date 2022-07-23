@@ -65,6 +65,12 @@ namespace Transitions
                 playingAnimation.Stop();
             }
 
+            if (!rect)
+            {
+                rect = GetComponent<RectTransform>();
+                rect.SetCenterAnchor(isActive ? activeAnchor : inactiveAnchor);
+            }
+
             Vector2 startAnchor = (rect.anchorMin + rect.anchorMax) / 2;
             playingAnimation = CanvasTransitions.InterpolateLinearly(rect, startAnchor, state ? activeAnchor : inactiveAnchor, duration);
             isActive = state;

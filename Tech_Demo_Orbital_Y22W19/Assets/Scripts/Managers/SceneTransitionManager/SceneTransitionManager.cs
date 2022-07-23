@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Yarn.Unity;
 
-public class SceneTransitionManager : MonoBehaviour
+public class SceneTransitionManager : MonoBehaviour, ISaveable
 {
     private static SceneTransitionManager instance;
     public static SceneTransitionManager Instance
@@ -34,6 +34,7 @@ public class SceneTransitionManager : MonoBehaviour
 
     private void Start()
     {
+        SaveFile.file.Save(typeof(SceneTransitionManager), "currentScene", SceneManager.GetActiveScene().name);
         SaveFile.Load();
     }
 
@@ -81,5 +82,23 @@ public class SceneTransitionManager : MonoBehaviour
         yield return new WaitForEndOfFrame();
         SaveFile.Save();
         SceneManager.LoadSceneAsync(sceneName);
+    }
+
+    public void SaveData()
+    {
+        SaveFile.file.Save(typeof(SceneTransitionManager), "currentScene", SceneManager.GetActiveScene().name);
+    }
+
+    public void LoadData()
+    {
+        if (!SaveFile.file.HasData(typeof(SceneTransitionManager), "currentScene"))
+        {
+            return;
+        }
+        string sceneName = SaveFile.file.Load<string>(typeof(SceneTransitionManager), "currentScene");
+        if (sceneName != SceneManager.GetActiveScene().name)
+        {
+            ChangeScene(sceneName);
+        }
     }
 }

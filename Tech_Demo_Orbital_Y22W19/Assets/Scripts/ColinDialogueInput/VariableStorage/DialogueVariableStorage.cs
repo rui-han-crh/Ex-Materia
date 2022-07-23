@@ -27,15 +27,15 @@ public class DialogueVariableStorage : InMemoryVariableStorage, ISaveable
         {
             if (kvp.Value is string)
             {
-                stringDict.Add(kvp.Key, (string)kvp.Value);
+                stringDict[kvp.Key] = (string)kvp.Value;
             } 
             else if (kvp.Value is bool)
             {
-                boolDict.Add(kvp.Key, (bool)kvp.Value);
+                boolDict[kvp.Key] = (bool)kvp.Value;
             }
             else if (kvp.Value is float || kvp.Value is double)
             {
-                floatDict.Add(kvp.Key, Convert.ToSingle(kvp.Value));
+                floatDict[kvp.Key] = Convert.ToSingle(kvp.Value);
             } 
             else
             {

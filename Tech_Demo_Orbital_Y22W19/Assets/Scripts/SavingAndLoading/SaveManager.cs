@@ -32,7 +32,7 @@ public class SaveManager : MonoBehaviour
 
     public void Start()
     {
-        DeserialiseFromFile();
+        //DeserialiseFromFile();
     }
 
     public static void SerialiseToFile()

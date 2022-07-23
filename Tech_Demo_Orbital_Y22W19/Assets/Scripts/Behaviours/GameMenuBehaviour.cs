@@ -52,10 +52,7 @@ public class GameMenuBehaviour : MonoBehaviour
     {
         menuOn = state;
 
-        foreach (Transform child in transform)
-        {
-            child.GetComponent<LerpAnimation>().SetAnimationState(menuOn);
-        }
+        GetComponent<TransitionController>().SetAllTransitions(menuOn);
 
         if (menuOn)
         {
