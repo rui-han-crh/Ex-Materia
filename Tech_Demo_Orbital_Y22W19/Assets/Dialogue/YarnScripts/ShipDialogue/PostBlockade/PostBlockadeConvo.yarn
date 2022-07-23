@@ -3,16 +3,17 @@ tags:
 ---
 <<load Speaker Olivia Happy>>
 
-Olivia: Hey thanks for your help in clearing the Blockade man 
+Olivia: Hey thanks for your help in clearing the Blockade!
 
 <<load Speaker Olivia Neutral>>
 Olivia: Although, we do have a problem now..
 -> What's up 
 
-Olivia: We need to figure out our next course of action
+Olivia: We have no idea what to do next!
 
 <<load Speaker Olivia Happy>>
-Olivia: We don't know much about that engineer dude, but perhaps he can point us to the way forward 
+Olivia: We managed to capture an engineer from the blockade just now
+Olivia: We don't know much about him, but perhaps he can point us to the way forward 
 Olivia: <B> Go to the main control room up North to speak to the engineer </B>
 ===
 
@@ -21,93 +22,71 @@ title: MysteriousEngineer
 tags:
 ---
 
-<<load Speaker Emmanuel Neutral>> 
+<<load Speaker Emmanuel Neutral>> //Need a placeholder for the engineer 
+Mysterious Figure: Don't hurt me!
 
-<<if $SoldierCoreCollected>>
-<<jump EndPlayableContent>>
-<<endif>>
+<<load Speaker Emmanuel Neutral>>
+Emmanuel: Relax..
+Emmanuel: We won't do that 
+Emmanuel: We just wanna know what your role was, I hear you're an engineer of sorts?
+Emmanuel: Our main goal is to take down PAM
 
-Emmanuel: Alright, I've brought you what you wanted 
-Emmanuel: Now talk
 
-
-<<clear Speaker>>
+<<load Speaker Emmanuel Neutral>>
 Engineer: Ah..
-Engineer: I see you've successfully brought the body of the dead soldier
-Engineer: I'll hold up my end of the bargain
 Engineer: I was an engineer of the governmental wing overseeing PAM's maintenance.
-Engineer: Here's what I do know
+Engineer: Wanna know a secret?
+-> Of course 
 Engineer: PAM was known to have defects decades ago 
 Engineer: It's analytics did not comply with what we deemed as correct
 Engineer: We chalked it up to noise / chance at first 
 Engineer: But eventually we told the Interfacers
--> The Interfacers?
+-> Who are said Interfacers?
 
-Engineer: The overlords of PAM essentially 
-Engineer: Literally, they act as the interface between PAM and society
-Engineer: In order words, they are the humans working directly under PAM 
-Engineer: The second in command
+Engineer: The overlords essentially 
+Engineer: They literally interface between PAM and society
+Engineer: The humans working directly under PAM 
 
-Engineer: Anyways, we expressed our distrust to them, but the interfacers told us not to worry.
-Engineer: We should've seen it coming sooner 
+Engineer: Anyways, we expressed our distrust, but the interfacers told us not to worry.
+Engineer: We should've seen it sooner 
 Engineer: He was soon laid off, god knows what happened to him.
 -> What happens now?
 
 Engineer: I've been pondering about this for a while 
 Engineer: There are some works a team of us have been pondering over 
-Engineer: In layman terms, it involves somehow convincing PAM that it's formulations are flawed
-Engineer: Before that, may I see the remains of the soldier 
--> Sure 
-
-Engineer: ....
-Engineer: Fascinating 
-Engineer: It's biometrics data is all stored in it's heart
-Engineer: *yoink*
-Engineer: This will do for now
-Engineer: Keep this safe for me 
-You: <B> Receieved Soldier Core ! </B>
-<<addItem SoldierCore>>
-<<set $SoldierCoreCollected to true>>
-Engineer: If your team is agreeable, we should set our targets for one of my old labs 
-Engineer: We should be able to uncover more secrets regarding PAM.
+Engineer: It involves somehow convincing PAM that it's formulations are flawed 
+Engineer: Theres a defunct research centre a few of my colleagues were working in secret at 
+Engineer: We could use your help to figure out what's going on.
 ===
 
 
-title: SmugLucien
+title: TutorialStart
 tags:
 ---
 <<load Speaker Lucien Neutral>>
-Lucien: We're deviating too much from our core mission
-Lucien: Evelyn will lead us to our death one day 
-Lucien: This is pointless...
+Lucien: Hi there!
+Lucien: I'm Lucien, it's a pleasure to meet you
+Lucien: I'm a historian, son of a former PAM-Researcher...
+Lucien: Enough about me...
+Lucien: I have an interesting proposal 
+Lucien: Behind me is a gate to our <B> training grounds </B>
+Lucien: Tell me, would you like to learn more about how we fight enemies?
+-> Nah I'm good
+	<<jump NeglectTutorial>>
+
+-> Take me in!
+	Lucien: Great
+	Lucien: Follow me
+	<<transitionScene>>
+
 ===
 
 
-title: PostBlockadeIntro
+title: NeglectTutorial
 tags:
 ---
-<<load Speaker Lucien Surprised>>
-Lucien: Oh?
-Lucien: You guys are alive?
-Lucien: Welcome back 
-
-<<load Speaker Evelyn Angry>>
-Evelyn: Yeah 
-Evelyn: You contributed absolutely nothing
-Evelyn: Is the Engineer back?
-
-
-<<load Speaker Lucien Neutral>>
-Lucien: Yeah he's chilling in the main room 
-Lucien: He seemed suprisingly willing to come on board 
-Lucien: Emmanuel, go talk to your new buddy
-Lucien: Let's see if he was really worth the trouble
-===
-
-title: EndPlayableContent
-tags:
----
-<<clear Speaker>>
-Narrator: This is the end of the playable content 
-Narrator: Feel free to interact with the rest of the ship 
+<<load Speaker Lucien Sad>>
+Lucien: It's all right then.
+Lucien: See you anytime you need a refresher on the combat!
+<<unsetNextScene>>
 ===
