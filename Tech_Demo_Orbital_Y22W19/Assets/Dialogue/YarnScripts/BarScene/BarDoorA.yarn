@@ -72,3 +72,12 @@ position: -154,64
     <<changeScene AbandonedApartment>>
 -> Leave
 ===
+title: AbandonedApartment_Chest
+position: 237,121
+---
+<<clear Speaker>>
+Chest: There is a strange golden figurine within this chest. Emmanuel retrieves it from the chest.
+
+<<load Speaker Emmanuel Neutral>>
+Emmanuel: I should ask someone about this.
+===

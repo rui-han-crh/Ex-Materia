@@ -119,6 +119,7 @@ public class Interactable : MonoBehaviour, ISaveable
             }
         }
 
+        SetIconVisibility(false);
         InvokeInteraction();
 
         if (interactOnceOnly)
