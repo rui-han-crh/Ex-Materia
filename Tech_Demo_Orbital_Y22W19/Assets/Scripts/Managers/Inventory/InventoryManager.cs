@@ -67,7 +67,7 @@ public class InventoryManager : MonoBehaviour, ISaveable
 
     public void AddItem(InventoryItem item)
     {
-        inventory.AddItem(Instantiate(item));
+        inventory.AddItem(item);
     }
 
     public void RemoveItem(InventoryItem item)
