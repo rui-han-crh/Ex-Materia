@@ -9,18 +9,8 @@ Lucien: I see...
 Lucien: Honestly a little disappointing 
 Lucien: I thought you'd look more like a fighter
 Lucien: I'm Lucien
-Lucien: I'm a historian, son of a former PAM-Researcher...
-Lucien: Enough about me...
-Lucien: I have an interesting proposal 
-Lucien: Behind me is a gate to our <B> training grounds </B>
-Lucien: Tell me, would you like to learn more about how we fight enemies?
--> Nah I'm good
-	<<jump NeglectTutorial>>
-
--> Take me in!
-	Lucien: Great
-	Lucien: Follow me
-	<<transitionScene>>
+Lucien: I'm a historian, son of a former PAM-Researcher.
+Lucien: I hope we all make it out in one piece...
 
 ===
 
@@ -41,7 +31,7 @@ tags:
 <<load Speaker Olivia Happy>>
 Olivia: Hi there!
 Olivia: Welcome to my room
-Olivia: Looks a bit similar to your eh
+Olivia: Looks a bit similar to your 
 Olivia: Feel free to check it out
 <<load Speaker Olivia Angry>>
 Olivia: We have to turn in soon though
