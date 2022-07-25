@@ -3,9 +3,9 @@ tags:
 ---
 <<load Speaker Lucien Happy>>
 Lucien: Here's one for you 
-Lucien: In the main hall, I have a collection of books I've co-authored or just enjoyed
+Lucien: In the main hall, I have a collection of books I've read...
 Lucien: Some of them are related to my work, but some aren't 
-Lucien: I'll let you decide what you want to learn more of today
+Lucien: I'll let you decide what you want to learn more of today!
 
 Lucien: Is there any book that piques your interest? 
 -> Cajovia Origins
@@ -22,8 +22,8 @@ title: BookshelfEnd
 tags:
 ---
 <<load Speaker Lucien Neutral>>
-Lucien: Shucks...
-Lucien: Do come again should you like to hear more about any of these books
+Lucien: Aw..
+Lucien: Do come again should you like to hear more about
 ===
 
 
@@ -58,14 +58,13 @@ Lucien: A governmental wing was set up to recruit new engineers and researchers 
 Lucien: It's named the Precognisant Analysis Mechanism (PAM)
 <<load Speaker Lucien Angry>>
 Lucien: My dad was one of the founding researchers...
-Lucien: It pains me a little to talk about this 
-Lucien: So I'll leave it till here for today
 ===
 
 
 title: Fireplace
 tags:
 ---
+//They should all be Emmanuel, some weird import error 
 <<load Speaker Emmanuel Happy>>
 Emmanuel: Ah, my very own <B> fireplace </B>
 Emmanuel: Callesmere is freezing out there 
@@ -86,20 +85,4 @@ Evelyn: Luckily there weren't many dishes today
 Evelyn: Here's our pantry and kitchen 
 Evelyn: It's small and humble 
 Evelyn: But it's got everything we need
-===
-
-
-title: BedLoadBlockade
-tags:
----
-<<load Speaker Emmanuel Neutral>>
-Emmanuel: Man...
-Emmanuel: I wonder what all that Blockade Jazz is about 
-Emmanuel: Guess I'll turn in soon 
-<<clear Speaker>>
-Narrator: Go to sleep?
--> Yes
-	<<transitionScene>>
--> No, I want to walk around the ship a little more
-	<<unsetNextScene>>
 ===
