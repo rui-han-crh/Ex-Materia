@@ -380,7 +380,7 @@ namespace Managers
                         return;
                     }
 
-                    CanvasManager.Instance.DeactivateUI(CanvasManager.UIType.OpponentSheet);
+                    //CanvasManager.Instance.DeactivateUI(CanvasManager.UIType.OpponentSheet);
 
                     request = CombatConsultant.SimulateAttack(
                         CurrentActingUnit, CurrentMap[indicatedTiles.Last()], currentMap.Data, considerActionPoints: true);

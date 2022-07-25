@@ -1,0 +1,83 @@
+﻿title: PreBossRally
+tags:
+---
+
+<<load Speaker Emmanuel Neutral>>
+Emmanuel: *explains to the group about the engineer and the super soldier*
+
+
+<<load Speaker Lucien Angry>>
+Lucien: Do you have a screw loose or something?
+Lucien: Why should we even help this guy?!
+Lucien: We have no idea if his lab even exists
+Lucien: For all we know, he's just gonna run away with some expensive scrap metal 
+
+
+<<load Speaker Evelyn Neutral>>
+Evelyn: There's a problem though 
+Evelyn: If we don't clear this entire camp 
+Evelyn: We can't let civillians into the area
+Evelyn: The supply chains can't be restored 
+Evelyn: It's too dangerous to risk it.
+Evelyn: I say we check out the room 
+
+
+<<load Speaker Lucien Angry>>
+Lucien: There you go again
+Lucien: ...
+Lucien: Forget it 
+Lucien: I'll wait by the ship 
+Lucien: I'm leaving on my own if you guys aren't back by nightfall
+Lucien: Best of luck 
+===
+
+title: OliviaPreBoss
+tags:
+---
+<<load Speaker Olivia Neutral>>
+Olivia: I'm with Evelyn on this 
+Olivia: If we leave now, the Blockade's not cleared 
+Olivia: We can't give the go-ahead to the Frontline
+===
+
+
+
+title: BossIntro
+tags:
+---
+<<clear Speaker>>
+Soldier: Growl...
+Soldier: ....
+
+Narrator: You can run 
+Narrator: But you can't hide 
+Narrator: Use your limited cover wisely 
+Narrator: The enemy has high base stats but extremely short range 
+===
+
+
+title: LoseBoss
+tags:
+---
+<<clear Speaker>>
+Soldier: Growl...
+Narrator: You can always try again...
+<<transitionScene>>
+===
+
+
+title: WinBoss
+tags:
+---
+<<load Speaker Emmanuel Neutral>>
+Emmanuel: Now what do we do with this hunk of metal 
+Emmanuel: I can't seem to figure out which parts are useful 
+
+
+<<load Speaker Evelyn Happy>>
+Evelyn: Well, I'm quite sure that was the last of the enemies regardless 
+Evelyn: Let's head back to the ship
+Evelyn: You're carrying the body
+<<transitionScene>>
+===
+

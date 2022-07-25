@@ -1,0 +1,113 @@
+﻿title: PostBlockadeOlivia
+tags:
+---
+<<load Speaker Olivia Happy>>
+
+Olivia: Hey thanks for your help in clearing the Blockade man 
+
+<<load Speaker Olivia Neutral>>
+Olivia: Although, we do have a problem now..
+-> What's up 
+
+Olivia: We need to figure out our next course of action
+
+<<load Speaker Olivia Happy>>
+Olivia: We don't know much about that engineer dude, but perhaps he can point us to the way forward 
+Olivia: <B> Go to the main control room up North to speak to the engineer </B>
+===
+
+
+title: MysteriousEngineer
+tags:
+---
+
+<<load Speaker Emmanuel Neutral>> 
+
+<<if $SoldierCoreCollected>>
+<<jump EndPlayableContent>>
+<<endif>>
+
+Emmanuel: Alright, I've brought you what you wanted 
+Emmanuel: Now talk
+
+
+<<clear Speaker>>
+Engineer: Ah..
+Engineer: I see you've successfully brought the body of the dead soldier
+Engineer: I'll hold up my end of the bargain
+Engineer: I was an engineer of the governmental wing overseeing PAM's maintenance.
+Engineer: Here's what I do know
+Engineer: PAM was known to have defects decades ago 
+Engineer: It's analytics did not comply with what we deemed as correct
+Engineer: We chalked it up to noise / chance at first 
+Engineer: But eventually we told the Interfacers
+-> The Interfacers?
+
+Engineer: The overlords of PAM essentially 
+Engineer: Literally, they act as the interface between PAM and society
+Engineer: In order words, they are the humans working directly under PAM 
+Engineer: The second in command
+
+Engineer: Anyways, we expressed our distrust to them, but the interfacers told us not to worry.
+Engineer: We should've seen it coming sooner 
+Engineer: He was soon laid off, god knows what happened to him.
+-> What happens now?
+
+Engineer: I've been pondering about this for a while 
+Engineer: There are some works a team of us have been pondering over 
+Engineer: In layman terms, it involves somehow convincing PAM that it's formulations are flawed
+Engineer: Before that, may I see the remains of the soldier 
+-> Sure 
+
+Engineer: ....
+Engineer: Fascinating 
+Engineer: It's biometrics data is all stored in it's heart
+Engineer: *yoink*
+Engineer: This will do for now
+Engineer: Keep this safe for me 
+You: <B> Receieved Soldier Core ! </B>
+<<addItem SoldierCore>>
+<<set $SoldierCoreCollected to true>>
+Engineer: If your team is agreeable, we should set our targets for one of my old labs 
+Engineer: We should be able to uncover more secrets regarding PAM.
+===
+
+
+title: SmugLucien
+tags:
+---
+<<load Speaker Lucien Neutral>>
+Lucien: We're deviating too much from our core mission
+Lucien: Evelyn will lead us to our death one day 
+Lucien: This is pointless...
+===
+
+
+title: PostBlockadeIntro
+tags:
+---
+<<load Speaker Lucien Surprised>>
+Lucien: Oh?
+Lucien: You guys are alive?
+Lucien: Welcome back 
+
+<<load Speaker Evelyn Angry>>
+Evelyn: Yeah 
+Evelyn: You contributed absolutely nothing
+Evelyn: Is the Engineer back?
+
+
+<<load Speaker Lucien Neutral>>
+Lucien: Yeah he's chilling in the main room 
+Lucien: He seemed suprisingly willing to come on board 
+Lucien: Emmanuel, go talk to your new buddy
+Lucien: Let's see if he was really worth the trouble
+===
+
+title: EndPlayableContent
+tags:
+---
+<<clear Speaker>>
+Narrator: This is the end of the playable content 
+Narrator: Feel free to interact with the rest of the ship 
+===
