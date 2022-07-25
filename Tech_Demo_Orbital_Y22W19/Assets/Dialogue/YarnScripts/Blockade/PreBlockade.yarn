@@ -2,6 +2,9 @@ title:PreBlockadeEntry
 tags:
 position: -16,-12
 ---
+<<if $PreBlockadeIntro>>
+<<jump EndConvo>>
+<<endif>>
 <<load Speaker Lucien Neutral>>
 Lucien: Alright listen up
 Lucien: Welcome to the border of East Cajovia
@@ -18,6 +21,7 @@ Evelyn: We need to know where we might be able to infiltrate their defences...
 Evelyn: We'll fuck them up where they least expect it
 Evelyn: Tenatively, we strike at night 
 -> Roger that 
+<<set $PreBlockadeIntro to true>>
 ===
 
 

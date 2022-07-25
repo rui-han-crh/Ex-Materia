@@ -1,6 +1,7 @@
 ﻿title: TutorialStart
 tags:
 ---
+<<set $spokenToCoreMember to true>>
 <<load Speaker Lucien Neutral>>
 Lucien: Oh...
 Lucien: New young blood?
@@ -9,50 +10,55 @@ Lucien: I see...
 Lucien: Honestly a little disappointing 
 Lucien: I thought you'd look more like a fighter
 Lucien: I'm Lucien
-Lucien: I'm a historian, son of a former PAM-Researcher.
-Lucien: I hope we all make it out in one piece...
-
+Lucien: I'm a historian, son of a former PAM-Researcher...
+Lucien: I hope we get out alive
+Lucien: You should turn in soon 
+Lucien: We're approaching a Blockade tomorrow
+Lucien: We're expecting hostile Eastern Forces
+Lucien: Go back to your room to sleep
+Lucien: You'll need all the rest you can get kid
 ===
 
-
-title: NeglectTutorial
-tags:
----
-<<load Speaker Lucien Sad>>
-Lucien: It's all right then
-Lucien: See you anytime you need a refresher on the combat!
-<<unsetNextScene>>
-===
 
 
 title: OliviaRoom
 tags:
 ---
+<<set $spokenToCoreMember to true>>
 <<load Speaker Olivia Happy>>
 Olivia: Hi there!
 Olivia: Welcome to my room
-Olivia: Looks a bit similar to your 
+Olivia: Looks a bit similar to your eh
 Olivia: Feel free to check it out
 <<load Speaker Olivia Angry>>
 Olivia: We have to turn in soon though
-Olivia: Heresay we might hit a blockade tomorrow
+Olivia: I overheard Evelyn and Lucien having a small 
+Olivia: uh..
+Olivia: <B> talk... </B>
+Olivia: About a blockade tomorrow
 Olivia: We need all hands on deck for tomorrow's encounter
+Olivia: Rest well tonight man
 ===
 
 
 title: EvelynMainRoom
 tags:
 ---
+<<set $spokenToCoreMember to true>>
 <<load Speaker Evelyn Neutral>>
 Evelyn: This is the main room where we control navigations for the Landship
 Evelyn: As you can see, it's a bit empty as of now 
 Evelyn: We're still in the process of loading items on board 
 Evelyn: Any discussions regarding the Progeny's movement will take place here
+Evelyn: Anyways, go to bed soon yeah
+Evelyn: It's getting late...
+Evelyn: Lucien will brief us tomrrow once we land
 ===
 
 title: IntroShip
 tags:
 ---
+
 <<load Speaker Evelyn Happy>>
 Evelyn: Well, it's time to formerly introduce you to our Landship 
 Evelyn: This is where we'll live and train for the forseeable future 
@@ -61,8 +67,12 @@ Evelyn: This is where we'll live and train for the forseeable future
 
 <<load Speaker Evelyn Neutral>>
 
-Evelyn: We already have a room for you just behind
-Evelyn: Feel free to look around
+Evelyn: We already have a room for you just behind the main entrance 
+Evelyn: Sorry, we only had the ground floor one available
+Evelyn: You'll make do
+Evelyn: Feel free to look around 
+Evelyn: Talk to anyone who seems willing
+Evelyn: Speaking of which...
 
 <<load Speaker Evelyn Angry>>
 Evelyn: Watch out for a grumpy man in the main hallway though 
