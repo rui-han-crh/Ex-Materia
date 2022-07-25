@@ -1,0 +1,198 @@
+title:PreBlockadeEntry
+tags:
+position: -16,-12
+---
+<<if $PreBlockadeIntro>>
+<<jump EndConvo>>
+<<endif>>
+<<load Speaker Lucien Neutral>>
+Lucien: Alright listen up
+Lucien: Welcome to the border of East Cajovia
+Lucien: I gathered some intel straight from the frontline 
+Lucien: They're unable to advance cause of this settlement right here 
+Lucien: These bastards are cutting off our supplies
+Lucien: It's our job to get rid of these cunts 
+
+<<load Speaker Evelyn Neutral>>
+Evelyn: The actual Blockade is further down South, but there could be supplies here we could use to gear up 
+Evelyn: Emmanuel, I need you to investigate that farmhouse over there
+Evelyn: Search for supplies, any clues regarding their camp's layout 
+Evelyn: We need to know where we might be able to infiltrate their defences...
+Evelyn: We'll fuck them up where they least expect it
+Evelyn: Tenatively, we strike at night 
+-> Roger that 
+<<set $PreBlockadeIntro to true>>
+===
+
+
+title: Bench
+tags:
+---
+<<clear Speaker>>
+Bench: As the winter's wrath worsens, a once heavily used bench sits in the desolate snow 
+Bench: A very long time ago, this area used to be place of gathering 
+Bench: Children from the East and West would congregate here to play, while weary mothers would rest their feet on this very bench
+Bench: Alas, those days are long gone
+=== 
+
+
+title: Tent
+tags:
+---
+<<clear Speaker>>
+Tent: Everyone needs a Tent
+Tent: A Tent can be a good source of <B> Cover </B>
+Tent: Whether it's cover from the snow 
+Tent: Or a half-cover from enemy fire 
+Tent: Tents are indeed a wonderful invention
+Tent: Although it might not be very viable to sleep inside one for the night
+Tent: Frostbites' a bitch
+===
+
+
+title: FrozenLake
+tags:
+---
+<<load Speaker Lucien Angry>>
+Lucien: Looks like the farm owners once owned a small lake
+Lucien: In fact, there seems to be many small lakes around this place
+
+<<load Speaker Emmanuel Neutral>>
+Emmanuel: Unsurprising, the border is native to many marine species 
+
+
+<<load Speaker Lucien Neutral>>
+Lucien: You should be careful <B> not to step in any frozen puddles of water </B>
+Lucien: This is just heresay but...
+Lucien: Some men from the 4th division over at the Frontlines fell into a frozen lake
+Lucien: They died a cold and frigid death 
+Lucien: You would be wise to avoid frozen areas
+===
+
+
+
+title: HouseEntry
+tags:
+---
+Door: Enter?
+-> Yes
+	<<transitionScene>>
+-> No
+===
+
+
+title: EnterBlockade
+tags:
+---
+
+<<if $spokenEvelynBlockade>>
+<<load Speaker Lucien Neutral>>
+Lucien: So how about it Emmanuel 
+Lucien: We'll probably face some resistance, but nothing we can't handle 
+Lucien: Shall we enter the Blockade tomorrow?
+
+-> Alright 
+	<<transitionScene>>
+-> No, I wanna explore this place a bit longer
+	<<unsetNextScene>>
+	<<jump EndConvo>>
+
+<<endif>>
+
+
+
+<<load Speaker Evelyn Neutral>>
+Evelyn: Oh?
+Evelyn: You found something?
+-> Yep, take a look at this 
+Evelyn: *unscrolls*
+<<load Speaker Evelyn Surprised>>
+Evelyn: Gosh..
+Evelyn: Where'd you find this 
+Evelyn: Hmm...
+Evelyn: ...
+
+Evelyn: Seems like this entrance is the safest way in 
+Evelyn: We'll definitely still encounter some foes, but they won't expect it 
+Evelyn: When we're ready, we breach this gate 
+
+<<set $spokenEvelynBlockade to true>>
+
+<<load Speaker Lucien Angry>>
+Lucien: Hey!
+Lucien: Who the fuck do you think you are 
+Lucien: We decide on this as a group 
+Lucien: ...
+Lucien: Forget it 
+Lucien: We'll move tomorrow 
+Lucien: But run through us next time 
+Lucien: How about it Emmanuel 
+-> Alright 
+	<<transitionScene>>
+-> No, I wanna explore this place a bit longer
+	<<unsetNextScene>>
+===
+
+
+title: EnterFarmhouse
+tags:
+---
+
+<<load Speaker Olivia Neutral>>
+Olivia: Yo Emmanuel 
+Olivia: Take a look at this...
+Olivia: Seems like something the rest of the group should know
+===
+
+
+title: GainMap
+tags:
+---
+<<if $hasBlockadeMap>>
+<<jump InstructionExitRoom>>
+<<endif>>
+<<load Speaker Olivia Neutral>>
+Olivia: You know.. 
+Olivia: This seems like a map of the area
+Olivia: Not sure how up to date it is though
+Olivia: Take it with you and let Evelyn know about this
+Olivia: I'll continue to look around for any clues here 
+<<set $hasBlockadeMap to true>>
+<<addItem BlockadeMap>>
+===
+
+title: InstructionExitRoom
+tags:
+---
+<<load Speaker Olivia Neutral>>
+Olivia: Tell Evelyn about the map
+Olivia: She should be at the gate facing the East 
+Olivia: I'll continue to look around for any clues here
+===
+
+
+title: Drink
+tags:
+---
+<<load Speaker Olivia Neutral>>
+Olivia: Disgusting...
+Olivia: This room reeks of alcohol
+Olivia: The previous owner must be some drunk lowlife
+Olivia: Not a pleasant memory at all 
+===
+
+title: ExitRoom
+tags:
+---
+<<clear Speaker>>
+Door: Go back to the entrance?
+-> Yes
+	<<transitionScene>>
+-> No
+	<<unsetNextScene>>
+===
+
+title: EndConvo
+tags:
+---
+===
