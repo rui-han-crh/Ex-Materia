@@ -42,7 +42,8 @@ tags:
 ---
 <<load Speaker Evelyn Neutral>>
 Evelyn: I've a good feeling about this one 
-Evelyn: Shall we go?
+Evelyn: Shall we enter?
+<<clear Speaker>>
 -> Yes
 	<<transitionScene>>
 -> No
@@ -164,7 +165,7 @@ Engineer: But if you can dismantle this soldier
 Engineer: Somewhere hidden in it's hunk of metal, it's biometrics have access to special rooms in the lab
 Engineer: The soldier is supposedly able to repair itself, but it never got that far 
 Engineer: However, I've personally seen tests where it's successfully navigated and entered certain restricted areas
-Engineer: Basically, if you destroy the Soldier
+Engineer: Basically, if you destroy the Soldier and bring me his parts
 Engineer: I'll have complete access to my old lab 
 Engineer: And if you have any questions or issues with PAM
 Engineer: I can definitely help 
