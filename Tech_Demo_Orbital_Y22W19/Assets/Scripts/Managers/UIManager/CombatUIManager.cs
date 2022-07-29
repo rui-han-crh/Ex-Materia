@@ -43,6 +43,9 @@ namespace Managers
         private GameObject raycastBlocker;
 
         [SerializeField]
+        private WaitMenuBehaviour waitMenuUI;
+
+        [SerializeField]
         private Interactable loseInteractable;
 
         [SerializeField]
@@ -194,6 +197,7 @@ namespace Managers
                     isPerformed = false;
                     AuxillarySubscribers.UnsubscribeToCharacterMenu(CharacterViewTransitionController);
                     raycastBlocker.SetActive(false);
+                    waitMenuUI.CancelMenu();
                 }
             };
         }

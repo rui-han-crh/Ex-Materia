@@ -5,14 +5,14 @@ using CombatSystem.Entities;
 
 public class WaitRequest : MapActionRequest
 {
-    private readonly int actionPointsReplenished;
+    private readonly int skillPointsReplenished;
 
-    public int ActionPointsReplenished => actionPointsReplenished;
+    public int SkillPointsReplenished => skillPointsReplenished;
 
-    public WaitRequest(Unit actingUnit, int timeSpent, int actionPointsReplenished) 
+    public WaitRequest(Unit actingUnit, int timeSpent) 
         : base(actingUnit, 0, timeSpent, RequestType.Wait)
     {
-        this.actionPointsReplenished = actionPointsReplenished;
+        this.skillPointsReplenished = ConvertTimeToSP(timeSpent);
     }
 
     public override int GetUtility(GameMap map)
@@ -24,5 +24,10 @@ public class WaitRequest : MapActionRequest
 
         calculatedUtilities[map] = map.EvaluatePositionSafetyOf(ActingUnit);
         return calculatedUtilities[map];
+    }
+
+    public static int ConvertTimeToSP(int timeValue)
+    {
+        return timeValue / 20;
     }
 }

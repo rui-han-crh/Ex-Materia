@@ -191,8 +191,8 @@ public class GameMapData
     {
         Unit actingUnit = GetSimilarUnit(waitRequest.ActingUnit);
 
-        actingUnit = actingUnit.ChangeTime(actingUnit.Time + waitRequest.TimeSpent);
-        //  .ChangeActionPoints(actingUnit.CurrentActionPoints + waitRequest.ActionPointsReplenished);
+        actingUnit = actingUnit.ChangeTime(actingUnit.Time + waitRequest.TimeSpent)
+            .ChangeSkillPoints(actingUnit.CurrentSkillPoints + waitRequest.SkillPointsReplenished);
 
         return new GameMapData(unitCensus.UpdateUnit(actingUnit), tileCensus);
     }

@@ -69,9 +69,16 @@ public class CombatSystemManagerEditor : Editor
 
         EditorGUILayout.Space();
 
-        if (GUILayout.Button("Create CombatSystemView"))
+        string word = m_CombatSystemViewObject.objectReferenceValue == null ? "Create" : "Recreate";
+
+        if (GUILayout.Button($"{word} CombatSystemView"))
         {
-            GameObject csvObj = Instantiate((GameObject)AssetDatabase.LoadAssetAtPath(
+            if (m_CombatSystemViewObject.objectReferenceValue != null)
+            {
+                DestroyImmediate(m_CombatSystemViewObject.objectReferenceValue);
+            }
+
+            GameObject csvObj = (GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath(
                 "Assets/Prefabs/CombatSystem/CombatSystemViewPrefab/CombatSystemView.prefab", typeof(GameObject)));
 
             GameObject canvas = GameObject.Find("Canvas");

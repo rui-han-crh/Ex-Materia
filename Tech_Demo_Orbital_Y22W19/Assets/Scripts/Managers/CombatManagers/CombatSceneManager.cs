@@ -388,7 +388,7 @@ namespace Managers
 
                 case CommandType.Wait:
                     Debug.Log(timeToWait);
-                    request = new WaitRequest(CurrentActingUnit, timeToWait, timeToWait);
+                    request = new WaitRequest(CurrentActingUnit, timeToWait);
                     break;
 
                 case CommandType.Overwatch:

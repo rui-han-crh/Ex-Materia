@@ -183,7 +183,7 @@ public class GameMapDataTest
         unitCensus = unitCensus.Add(new Vector3Int(1, 0, 0), unitA).Add(Vector3Int.zero, unitB);
         GameMapData gameMapData = new GameMapData(unitCensus, tileCensus);
 
-        WaitRequest waitRequest = new WaitRequest(unitB, 120, 125);
+        WaitRequest waitRequest = new WaitRequest(unitB, 120);
 
         GameMapData dataAfterWait = gameMapData.WaitUnit(waitRequest);
 

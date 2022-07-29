@@ -130,7 +130,7 @@ public class GameMap
     {
         IEnumerable<MovementRequest> movementRequests = MovementConsultant.GetAllMovements(gameMapData, currentActingUnit);
         List<MapActionRequest> actions = new List<MapActionRequest>(CombatConsultant.GetAllAttacks(gameMapData, currentActingUnit));
-        actions.AddRange(new MapActionRequest[] { new WaitRequest(currentActingUnit, 75, 75) });
+        actions.AddRange(new MapActionRequest[] { new WaitRequest(currentActingUnit, 75) });
         actions.AddRange(new MapActionRequest[] { new OverwatchRequest(currentActingUnit) });
 
 
