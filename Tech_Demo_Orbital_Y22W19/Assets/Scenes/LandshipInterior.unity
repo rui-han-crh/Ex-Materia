@@ -63205,7 +63205,9 @@ GameObject:
   - component: {fileID: 1726878031}
   - component: {fileID: 1726878030}
   - component: {fileID: 1726878029}
+  - component: {fileID: 1726878033}
   - component: {fileID: 1726878028}
+  - component: {fileID: 1726878032}
   m_Layer: 0
   m_Name: StartShipInteractable
   m_TagString: Untagged
@@ -63239,7 +63241,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactable: {fileID: 1726878030}
-  delayTime: 1
+  delayTime: 0
 --- !u!114 &1726878030
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63256,7 +63258,9 @@ MonoBehaviour:
   interactOnceOnly: 1
   canInteract: 1
   interactions:
+  - {fileID: 1726878033}
   - {fileID: 1726878028}
+  - {fileID: 1726878032}
 --- !u!4 &1726878031
 Transform:
   m_ObjectHideFlags: 0
@@ -63271,6 +63275,60 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1726878032
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726878027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54d638eae13bad94f9cd03e0f9c59926, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unityEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1106068541}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: OnEnable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1726878033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726878027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54d638eae13bad94f9cd03e0f9c59926, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unityEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1106068541}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: OnDisable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1771662247
 GameObject:
   m_ObjectHideFlags: 0
