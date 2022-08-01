@@ -9,11 +9,11 @@ Emmanuel rustles the papers in his hands - an array of laminated sheets and crum
 
 Emmanuel: I guess this city really scrimped on their architects,
 
-Emmanuel: How do all these buildings look the same, how am I to find anyone in this mess.
+Emmanuel: All these buildings look the same. In this mess, they expect me to find anyone here?
 
-Emmanuel: And not a single vehicle in sight, but I swear Estelle told me it was this courtyard.
+Emmanuel: I swear Estelle told me it was in this courtyard that I will see them, but they're not here.
 
-Emmanuel: Looks like I'm on my own here
+Emmanuel: Looks like I'm on my own here.
 
 Emmanuel: What a hassle,
 
@@ -23,11 +23,15 @@ Emmanuel: Sigh...
 
 Emmanuel: I have to find Evelyn and Olivia quickly, this is taking way too much effort.
 
-Emmanuel: And all I have is this letter to go by
+<<clear Speaker>>
+Tutorial: Use WASD to move around and scroll the mouse wheel to zoom in and out. 
 
-Emmanuel: Let's see...
+Tutorial: Press <TAB> to open the menu.
 
-<<addItem EstellesLetterIntro>>
+<<load Speaker Emmanuel Neutral>>
+Emmanuel: All I have is this letter to go by
+
+Emmanuel: Let's see here...
 ===
 title: ExteriorBarLeave
 position: -154,64

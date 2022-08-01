@@ -4,10 +4,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
+using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Single;
 
 public class MovementController : MonoBehaviour, ISaveable
 {
     private static MovementController instance;
+
+    private static readonly Matrix<float> ISO_BASIS = DenseMatrix.OfArray(new float[,]
+    {
+        { Mathf.Cos(26.57f * Mathf.Deg2Rad), Mathf.Cos(153.43f * Mathf.Deg2Rad) },
+        { Mathf.Sin(26.57f * Mathf.Deg2Rad), Mathf.Sin(153.43f * Mathf.Deg2Rad) }
+    });
+
+    private static readonly Matrix<float> ROTATION_MATRIX = DenseMatrix.OfArray(new float[,]
+    {
+        { 0.5f, 0.5f },
+        { -0.5f, 0.5f }
+    });
 
     public static MovementController Instance
     {
@@ -40,6 +54,7 @@ public class MovementController : MonoBehaviour, ISaveable
     {
         Debug.Log("Enabled movement controller");
         keyboardControls?.Enable();
+        Debug.Log(ISO_BASIS.ToString());
     }
 
     public void OnDisable()
@@ -60,8 +75,14 @@ public class MovementController : MonoBehaviour, ISaveable
 
     public void Move(Vector2 axis)
     {
+        Vector<float> delta = ISO_BASIS.Multiply(
+            ROTATION_MATRIX.Multiply(
+                DenseVector.OfArray(new float[] { axis.x, axis.y })
+                )
+            );
 
-        rb.velocity = axis * speed;
+        rb.velocity = new Vector2(delta[0], delta[1]).normalized * speed;
+
         animator.SetBool("isMoving", true);
         animator.SetFloat("xDirection", axis.x);
         animator.SetFloat("yDirection", axis.y);
