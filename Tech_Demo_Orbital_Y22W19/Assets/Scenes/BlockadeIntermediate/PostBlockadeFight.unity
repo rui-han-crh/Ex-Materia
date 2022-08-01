@@ -6308,6 +6308,7 @@ GameObject:
   - component: {fileID: 1218960148}
   - component: {fileID: 1218960155}
   - component: {fileID: 1218960147}
+  - component: {fileID: 1218960150}
   - component: {fileID: 1218960146}
   m_Layer: 0
   m_Name: AutoInteractable
@@ -6325,11 +6326,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1218960145}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd6efc78f47c10f40ac01940485f28c8, type: 3}
+  m_Script: {fileID: 11500000, guid: 54d638eae13bad94f9cd03e0f9c59926, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  behaviour: {fileID: 1508984936}
-  active: 1
+  unityEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1508984936}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: OnEnable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1218960147
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6360,6 +6374,7 @@ MonoBehaviour:
   canInteract: 1
   interactions:
   - {fileID: 1218960155}
+  - {fileID: 1218960150}
   - {fileID: 1218960147}
   - {fileID: 1218960146}
 --- !u!4 &1218960149
@@ -6376,6 +6391,33 @@ Transform:
   m_Father: {fileID: 633362903}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1218960150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1218960145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54d638eae13bad94f9cd03e0f9c59926, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unityEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1508984936}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: OnDisable
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1218960155
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87388,8 +87430,6 @@ Tilemap:
     m_Data: {fileID: 21300000, guid: 1fd36899affb12b40a9cf6e124c95cc7, type: 3}
   - m_RefCount: 1
     m_Data: {fileID: 21300000, guid: ad52afac036af30418fd537bf7873ddf, type: 3}
-  - m_RefCount: 0
-    m_Data: {fileID: 0}
   m_TileMatrixArray:
   - m_RefCount: 3
     m_Data:
