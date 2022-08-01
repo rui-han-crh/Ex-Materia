@@ -32,6 +32,9 @@ tags:
     Olivia: I've been trying to open it with the crowbar, but I haven't had any luck, may be you can try?
     <<addItem OliviaCrowbar>>
     <<set $hasCrowbar to true>>
+
+    <<clear Speaker>>
+    Crowbar: Olivia hands you the crowbar.
 <<else>>
     <<load Speaker Olivia Neutral>>
     Olivia: Try opening the door with that crowbar I just gave you.

@@ -43,7 +43,11 @@ Olivia: That's not gonna work.
 Emmanuel: Uh, how about I try shooting the lock?
 
 <<clear Speaker>>
-Tutorial: Hold LEFT CONTROL to bring up the menu again. This time, select the <b>Attack Command</b>
+Tutorial: Hold LEFT CONTROL to bring up the menu again. This time, select the <b>Attack Command</b>.
+
+Tutorial: Scroll your mouse wheel to zoom into and out of the scene.
+
+Tutorial: Pan the camera by holding down the middle mouse button and moving the mouse.
 ===
 title: BarHallwayShoot
 position: -225,-69
@@ -182,6 +186,10 @@ Evelyn: I'm going to hide behind the wall and neutralise it when it's not lookin
 Tutorial: When units are behind <b>Full Cover</b>, they cannot be seen by other units and also cannot be targetted.
 
 Tutorial: Move to tile next to nearest wall.
+
+Tutorial: Scroll your mouse wheel to zoom into and out of the scene.
+
+Tutorial: Pan the camera by holding down the middle mouse button and moving the mouse.
 ===
 title: BarBackyardBadMovement
 position: -252,182
