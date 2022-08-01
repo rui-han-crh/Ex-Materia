@@ -127,4 +127,9 @@ public class AudioManager : MonoBehaviour
     {
         audioPlayerGroup.Stop(audioDictionary[name]);
     }
+
+    public void StopTrackWithFade(string name)
+    {
+        audioPlayerGroup.StopTrackWithFade(audioDictionary[name]);
+    }
 }

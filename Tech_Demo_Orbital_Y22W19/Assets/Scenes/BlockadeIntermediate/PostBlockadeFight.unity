@@ -1666,6 +1666,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followTransform: {fileID: 1118427937}
+  enableSmoothing: 1
+  displacementThreshold: 0.3
+  approachThreshold: 0.01
+  approachRate: 5
 --- !u!4 &522066330
 Transform:
   m_ObjectHideFlags: 0
@@ -86904,27 +86908,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9000901610400255026, guid: 06dbf2efb54f796438977154c70edf49, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9000901610400255026, guid: 06dbf2efb54f796438977154c70edf49, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9000901610400255026, guid: 06dbf2efb54f796438977154c70edf49, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9000901610400255026, guid: 06dbf2efb54f796438977154c70edf49, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9000901610400255026, guid: 06dbf2efb54f796438977154c70edf49, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9000901610400255026, guid: 06dbf2efb54f796438977154c70edf49, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9000901610400255026, guid: 06dbf2efb54f796438977154c70edf49, type: 3}
       propertyPath: m_LocalPosition.x

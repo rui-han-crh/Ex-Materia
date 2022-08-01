@@ -2,19 +2,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SmoothCameraFollow : MonoBehaviour
+public class SmoothCameraFollow : MonoBehaviour, ISaveable
 {
+    private static SmoothCameraFollow instance;
+    public static SmoothCameraFollow Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<SmoothCameraFollow>();
+                Debug.Assert(instance != null, "There was no SmoothCameraFollow in this scene, consider adding one");
+            }
+            return instance;
+        }
+    }
+
     [SerializeField]
     private Transform followTransform;
+
+    [SerializeField]
+    private bool enableSmoothing = true;
+
+    public bool EnableSmoothing
+    {
+        get { return enableSmoothing; }
+        set { enableSmoothing = value; }
+    }
 
     [SerializeField]
     private float displacementThreshold = 0.3f;
 
     [SerializeField]
-    private float approachThreshold = 0.1f;
+    private float approachThreshold = 0.01f;
 
     [SerializeField]
-    private float approachRate = 7f;
+    private float approachRate = 5f;
 
     private bool isApproaching = false;
 
@@ -22,6 +45,15 @@ public class SmoothCameraFollow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!enableSmoothing)
+        {
+            float _z = transform.position.z;
+            Vector3 snapPosition = followTransform.position;
+            snapPosition.z = _z;
+            transform.position = snapPosition;
+            return;
+        }
+
         Vector2 transformPosition = new Vector2(transform.position.x, transform.position.y);
         Vector2 followPosition = new Vector2(followTransform.position.x, followTransform.position.y);
 
@@ -69,5 +101,18 @@ public class SmoothCameraFollow : MonoBehaviour
         Vector3 newPosition = followTransform.position;
         newPosition.z = z;
         transform.position = newPosition;
+    }
+
+    public void SaveData()
+    {
+        SaveFile.file.Save(typeof(SmoothCameraFollow), "enableSmoothing", enableSmoothing);
+    }
+
+    public void LoadData()
+    {
+        if (SaveFile.file.HasData(typeof(SmoothCameraFollow), "enableSmoothing"))
+        {
+            enableSmoothing = SaveFile.file.Load<bool>(typeof(SmoothCameraFollow), "enableSmoothing");
+        }
     }
 }

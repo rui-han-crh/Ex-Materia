@@ -197,7 +197,7 @@ namespace Managers
                     isPerformed = false;
                     AuxillarySubscribers.UnsubscribeToCharacterMenu(CharacterViewTransitionController);
                     raycastBlocker.SetActive(false);
-                    waitMenuUI.CancelMenu();
+                    waitMenuUI?.CancelMenu();
                 }
             };
         }

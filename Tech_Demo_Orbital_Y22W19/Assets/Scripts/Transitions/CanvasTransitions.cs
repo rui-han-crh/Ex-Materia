@@ -37,7 +37,7 @@ namespace Transitions
 
                 float startTime = Time.time;
                 Vector2 currentAnchor = startAnchor;
-                while (Vector2.Distance(currentAnchor, endAnchor) > Mathf.Epsilon)
+                while (Vector2.Distance(currentAnchor, endAnchor) > Mathf.Epsilon && time > 0)
                 {
                     float currentTime = Time.time;
                     currentAnchor = Vector2.Lerp(startAnchor, endAnchor, (currentTime - startTime) / time);

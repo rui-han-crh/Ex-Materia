@@ -54,7 +54,6 @@ public class MovementController : MonoBehaviour, ISaveable
     {
         Debug.Log("Enabled movement controller");
         keyboardControls?.Enable();
-        Debug.Log(ISO_BASIS.ToString());
     }
 
     public void OnDisable()

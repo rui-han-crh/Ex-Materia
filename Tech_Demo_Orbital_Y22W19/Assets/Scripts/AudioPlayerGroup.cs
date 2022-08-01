@@ -90,24 +90,32 @@ class AudioPlayerGroup : MonoBehaviour
             OnFinished();
         }
 
+        public void FadeOut(float duration = 2f)
+        {
+            fade = new Task(FadeAudio(0, audioSource.time, duration));
+            fade.Finished += _ => OnFinished();
+        }
+
         private IEnumerator FadeAudio(float targetVolume, float startTime, float duration)
         {
-            startTime += Time.time;
-
-            while (Time.time < startTime)
+            while (audioSource.time < startTime)
             {
                 yield return null;
             }
 
+            Debug.Log($"Beginning Audio Fade {audioSource.clip.name}");
+
             float endTime = startTime + duration;
             float startingVolume = audioSource.volume;
 
-            while (Time.time < endTime)
+            while (audioSource.time < endTime)
             {
                 float fraction = (Time.time - startTime) / duration;    
                 audioSource.volume = Mathf.Lerp(startingVolume, targetVolume, fraction);
                 yield return null;
             }
+            audioSource.volume = 0;
+            Debug.Log($"Ended Audio Fade {audioSource.clip.name}");
         }
 
         private IEnumerator TrackClipProgress(float duration)
@@ -177,6 +185,11 @@ class AudioPlayerGroup : MonoBehaviour
     public void Stop(AudioManager.Audio audio)
     {
         audioPlaying[audio.name].Stop();
+    }
+
+    public void StopTrackWithFade(AudioManager.Audio audio)
+    {
+        audioPlaying[audio.name].FadeOut();
     }
 
     private IEnumerator InvokeLater(AudioManager.Audio audio, float delay, bool looping)

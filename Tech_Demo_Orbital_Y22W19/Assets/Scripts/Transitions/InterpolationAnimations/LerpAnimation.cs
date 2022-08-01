@@ -23,9 +23,20 @@ namespace Transitions
         [SerializeField]
         private float duration = 0.5f;
 
+        public float Duration
+        {
+            get { return duration; }
+            set { duration = value; }
+        }
+
         [SerializeField]
         private bool startAsActive = false;
 
+        public bool StartAsActive
+        {
+            get { return startAsActive; }
+            set { startAsActive = value; }
+        }
 
         private Task playingAnimation;
 
