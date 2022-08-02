@@ -188,3 +188,16 @@ Lucien: Good work, these settings work quite well for this model of turrets.
 Lucien: Meet me back up at the docks, I'll have more things for you to do.
 <<changeScene ExteriorDocks>>
 ===
+title: ShipEnter
+tags:
+---
+<<set $landshipState to 1>>
+<<clear Speaker>>
+Door: A pallid green door stand in front of you, with an electronic sensor places to the left of the door, next to a protruding handle.
+
+-> Enter Landship
+    <<changeScene LandShipInterior>>
+
+-> Turn around
+
+===
