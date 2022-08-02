@@ -1,4 +1,4 @@
-﻿title: Bookshelf
+﻿title: BookshelfPostBlockade
 tags:
 ---
 <<load Speaker Lucien Happy>>
@@ -13,14 +13,14 @@ Lucien: Is there any book that piques your interest?
 -> Impacts of Technology Tax 
 	<<jump TechTax>>
 -> The Rise of PAM
-	<<jump PAMRise>>
+	<<jump PAMRisePostBlockade>>
 -> Nah I've read enough!
-	<<jump BookshelfEnd>>
+	<<jump BookshelfPostBlockadeEnd>>
 
 ===
 
 
-title: BookshelfEnd
+title: BookshelfPostBlockadeEnd
 tags:
 ---
 <<load Speaker Lucien Neutral>>
@@ -48,7 +48,7 @@ Lucien: If you wanna know more, try asking them a little later...
 ===
 
 
-title: PAMRise
+title: PAMRisePostBlockade
 tags:
 ---
 <<load Speaker Lucien Angry>>

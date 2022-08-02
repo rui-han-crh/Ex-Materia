@@ -85,7 +85,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3217703318224809873}
   - component: {fileID: 3217703318224809882}
-  - component: {fileID: 3217703318224809885}
+  - component: {fileID: 903017342763984076}
   - component: {fileID: 3217703318224809884}
   - component: {fileID: 3217703318224809887}
   - component: {fileID: 3217703318224809886}
@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   yarnProject: {fileID: 7545569452688597077, guid: 6607dd572aa18a746b6688ec120e8506, type: 3}
-  _variableStorage: {fileID: 3217703318224809885}
+  _variableStorage: {fileID: 903017342763984076}
   dialogueViews:
   - {fileID: 0}
   - {fileID: 0}
@@ -145,7 +145,7 @@ MonoBehaviour:
   onCommand:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &3217703318224809885
+--- !u!114 &903017342763984076
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -154,7 +154,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3217703318224809872}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 610c541718d694070a21327d1ae62e75, type: 3}
+  m_Script: {fileID: 11500000, guid: b8a7e6c5b07c42143ad324da0995fb57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   showDebug: 0

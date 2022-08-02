@@ -8,11 +8,25 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 053561912b1654d80a424bb0696a74ae, type: 3}
-  sourceScripts:
-  - {fileID: 6391573757903218779, guid: 5be983e1b651a014c88c3a70fb33bf96, type: 3}
-  - {fileID: 6391573757903218779, guid: 11f2c54cc3a9af54484f1a9ded685e9f, type: 3}
+  sourceScripts: []
   compileErrors: []
-  serializedDeclarations: []
+  serializedDeclarations:
+  - name: $SoldierCoreCollected
+    typeName: Bool
+    defaultValueBool: 0
+    defaultValueNumber: 0
+    defaultValueString: 
+    description: Implicitly declared in PostBlockadeConvo.yarn, node MysteriousEngineer
+    isImplicit: 1
+    sourceYarnAsset: {fileID: 6391573757903218779, guid: 5be983e1b651a014c88c3a70fb33bf96, type: 3}
+  - name: $hasSpatula
+    typeName: Bool
+    defaultValueBool: 0
+    defaultValueNumber: 0
+    defaultValueString: 
+    description: Implicitly declared in PostBlockadeObjects.yarn, node KitchenPostBlockade
+    isImplicit: 1
+    sourceYarnAsset: {fileID: 6391573757903218779, guid: 11f2c54cc3a9af54484f1a9ded685e9f, type: 3}
   defaultLanguage: en-US
   languagesToSourceAssets: []
   useAddressableAssets: 0
