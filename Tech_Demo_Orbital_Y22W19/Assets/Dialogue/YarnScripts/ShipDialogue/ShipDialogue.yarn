@@ -1,26 +1,60 @@
-﻿title: TutorialStart
+﻿title: LucienIntroduction
 tags:
 ---
 <<set $spokenToCoreMember to true>>
 <<load Speaker Lucien Neutral>>
-Lucien: Oh...
-Lucien: New young blood?
--> Yes
-Lucien: I see...
-Lucien: Honestly a little disappointing 
-Lucien: I thought you'd look more like a fighter
-Lucien: I'm Lucien
-Lucien: I'm a historian, son of a former PAM-Researcher...
-Lucien: I hope we get out alive
-Lucien: You should turn in soon 
-Lucien: We're approaching a Blockade tomorrow
-Lucien: We're expecting hostile Eastern Forces
-Lucien: Go back to your room to sleep
-Lucien: You'll need all the rest you can get kid
+Lucien: Hello again... We already met outside.
+Lucien: You know my name, but I believe we haven't been formally introduced
+Lucien: If you already forgot, I'm Lucien.
+Lucien: I'm a historian, my father was once a former PAM-Researcher...
+Lucien: Your turn...
+-> No thank you.
+    <<jump LucienIntroduction_Reject>>
+-> My name is Emmanuel.
+    <<jump LucienIntroduction_Accept>>
 ===
+title: LucienIntroduction_Reject
+tags:
+---
+<<load Speaker Lucien Angry>>
+Lucien: Seriously?
+Lucien: Well suit yourself, it was a mistake to be kind to you, or anyone for that matter in this world.
+Lucien: Fuck off back to your room.
+===
+title: LucienIntroduction_Accept
+tags:
+---
+<<load Speaker Emmanuel Neutral>>
+Emmanuel: My name is Emmanuel. I was a statistician by profession once.
 
+Emmanue: There was one day when I begun looking into PAM's model drift, and I discovered something clearly off track
 
+Emmanuel: To put it simply, the Precognisant Analysis Mechanism wasn't really obeying the initial dataset that it was primed to lead with.
 
+Emmanuel: It was a mistake to allow it to learn openly from its environment, it seemed to have gathered a significant bias over a large period of time.
+
+<<load Speaker Lucien Neutral>>
+Lucien: I see.
+
+Lucien: It's funny how all this divide could be caused by a machine.
+
+<<load Speaker Emmanuel Neutral>>
+Emmanuel: I don't think it was truly the fault of a machine.
+
+Emmanuel: It was ours to begin with, to put it so high on a pedestal that we thought it could be our beacon into the seas of future.
+
+Emmanuel: After all, we were its creators and we're not faultless to begin with.
+
+<<load Speaker Lucien Neutral>>
+Lucien: An error in human decisions then...
+Lucien: Anyway, you should turn in soon.
+
+Lucien: We're approaching a Blockade tomorrow and expecting hostile Eastern Forces.
+
+Lucien: Now, please go back to your room to sleep.
+
+Lucien: You'll need all the rest you can get.
+===
 title: OliviaRoom
 tags:
 ---
@@ -32,8 +66,8 @@ Olivia: Looks a bit similar to your eh
 Olivia: Feel free to check it out
 <<load Speaker Olivia Angry>>
 Olivia: We have to turn in soon though
-Olivia: I overheard Evelyn and Lucien having a small 
-Olivia: uh..
+Olivia: I overheard Evelyn and Lucien having a small...
+Olivia: um..
 Olivia: <B> talk... </B>
 Olivia: About a blockade tomorrow
 Olivia: We need all hands on deck for tomorrow's encounter

@@ -32,7 +32,8 @@ public class UnitQueueManager : MonoBehaviour
     private Transform content;
     [SerializeField]
     private GameObject characterHeadPrefab;
-    [SerializeField]
+
+    //Unused
     private RectTransform waitSlider;
 
     private bool isPlayingAnimation;
@@ -113,7 +114,7 @@ public class UnitQueueManager : MonoBehaviour
             character.gameObject.SetActive(false);
         }
 
-        SetWaitSliderLength(minOrigin.x + displacement.x * skippedUnitsForWaiting, displacement.x * unitIdentityOrder.Count);
+        //SetWaitSliderLength(minOrigin.x + displacement.x * skippedUnitsForWaiting, displacement.x * unitIdentityOrder.Count);
 
         isPlayingAnimation = true;
         linAnim.SetTargets(targets.ToArray());
@@ -172,6 +173,7 @@ public class UnitQueueManager : MonoBehaviour
         waitSlider.anchorMax = new Vector2(maxX, waitSlider.anchorMax.y);
     }
 
+    //Unused
     public void AdjustSliderToUnitTime(Slider slider)
     {
         GameMap currentMap = CombatSceneManager.Instance.CurrentMap;
