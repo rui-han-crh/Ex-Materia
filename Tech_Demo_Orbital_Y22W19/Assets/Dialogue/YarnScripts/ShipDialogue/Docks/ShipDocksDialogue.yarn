@@ -44,6 +44,10 @@ position: -287,105
     Lucien: Hmph.
     <<jump LucienSpeechDocks_Questions>>
 
+<<elseif visited("LucienSpeechDocks_Won") == true>>
+    <<load Speaker Lucien Neutral>>
+    Lucien: Good work, come inside the vehicle, its through this bridge.
+
 <<elseif visited("LucienSpeechDocks_Repair") == true>>
     <<load Speaker Lucien Neutral>>
     Lucien: Ready to go?
