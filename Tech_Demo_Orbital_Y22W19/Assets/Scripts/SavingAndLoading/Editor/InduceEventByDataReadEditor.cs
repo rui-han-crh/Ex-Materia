@@ -41,48 +41,64 @@ public class InduceEventByDataReadEditor : Editor
         if (script.showList)
         {
             EditorGUI.indentLevel++;
-            foreach (InduceEventByDataRead.DataRead dataRead in script.dataToCompare)
+            SerializedProperty dataToCompare = serializedObject.FindProperty("dataToCompare");
+            for (int i = 0; i < dataToCompare.arraySize; i++)
             {
-                dataRead.isUniversalSingletonData = EditorGUILayout.Toggle("Is Universal Singleton", dataRead.isUniversalSingletonData);
+                SerializedProperty dataRead = dataToCompare.GetArrayElementAtIndex(i);
+                SerializedProperty isUniversalSingletonData = dataRead.FindPropertyRelative("isUniversalSingletonData");
 
-                if (!dataRead.isUniversalSingletonData)
+                isUniversalSingletonData.boolValue = EditorGUILayout.Toggle("Is Universal Singleton", isUniversalSingletonData.boolValue);
+
+
+                SerializedProperty gameObjectData = dataRead.FindPropertyRelative("gameObjectData");
+                if (!isUniversalSingletonData.boolValue)
                 {
-                    dataRead.gameObjectData = EditorGUILayout.ObjectField("Scene GameObject", dataRead.gameObjectData, typeof(GameObject), true) as GameObject;
+                    gameObjectData.objectReferenceValue = 
+                        EditorGUILayout.ObjectField("Scene GameObject", gameObjectData.objectReferenceValue, typeof(GameObject), true) as GameObject;
                 } 
                 else
                 {
-                    dataRead.gameObjectData = null;
+                    gameObjectData.objectReferenceValue = null;
                 }
 
-                dataRead.monoBehaviourScript = EditorGUILayout.ObjectField("MonoBehaviour", dataRead.monoBehaviourScript, typeof(MonoBehaviour), true) as MonoBehaviour;
+                SerializedProperty monoBehaviourScript = dataRead.FindPropertyRelative("monoBehaviourScript");
 
-                dataRead.variableName = EditorGUILayout.TextField("Variable Name", dataRead.variableName);
+                monoBehaviourScript.objectReferenceValue
+                    = EditorGUILayout.ObjectField("MonoBehaviour", monoBehaviourScript.objectReferenceValue, typeof(MonoBehaviour), true) as MonoBehaviour;
+
+                EditorGUILayout.PropertyField(dataRead.FindPropertyRelative("variableName"));
 
                 EditorGUILayout.BeginHorizontal();
                 EditorGUILayout.LabelField("Expected Value");
 
-                dataRead.primitiveType = (InduceEventByDataRead.Primitive)EditorGUILayout.EnumPopup(dataRead.primitiveType);
+                EditorGUILayout.PropertyField(dataRead.FindPropertyRelative("primitiveType"), GUIContent.none);
+                
                 EditorGUILayout.EndHorizontal();
 
                 EditorGUILayout.BeginHorizontal();
 
-                switch (dataRead.primitiveType)
+                switch ((InduceEventByDataRead.Primitive)dataRead.FindPropertyRelative("primitiveType").enumValueIndex)
                 {
+
                     case InduceEventByDataRead.Primitive.Integer:
-                        dataRead.ExpectedValue = EditorGUILayout.IntField(dataRead.ExpectedValue is int ? (int)dataRead.ExpectedValue : 0);
+                        EditorGUILayout.PropertyField(dataRead.FindPropertyRelative("expectedInt"), GUIContent.none);
+                        //dataRead.ExpectedValue = EditorGUILayout.IntField(dataRead.ExpectedValue is int ? (int)dataRead.ExpectedValue : 0);
                         break;
 
                     case InduceEventByDataRead.Primitive.Float:
-                        dataRead.ExpectedValue = EditorGUILayout.FloatField(dataRead.ExpectedValue is float ? (float)dataRead.ExpectedValue : 0);
+                        EditorGUILayout.PropertyField(dataRead.FindPropertyRelative("expectedFloat"), GUIContent.none);
+                        //dataRead.ExpectedValue = EditorGUILayout.FloatField(dataRead.ExpectedValue is float ? (float)dataRead.ExpectedValue : 0);
                         break;
 
                     case InduceEventByDataRead.Primitive.String:
-                        dataRead.ExpectedValue = EditorGUILayout.TextField(dataRead.ExpectedValue is string ? (string)dataRead.ExpectedValue : "");
+                        EditorGUILayout.PropertyField(dataRead.FindPropertyRelative("expectedString"), GUIContent.none);
+                        //dataRead.ExpectedValue = EditorGUILayout.TextField(dataRead.ExpectedValue is string ? (string)dataRead.ExpectedValue : "");
                         break;
 
                     case InduceEventByDataRead.Primitive.Boolean:
                         GUILayout.FlexibleSpace();
-                        dataRead.ExpectedValue = EditorGUILayout.Toggle(dataRead.ExpectedValue is bool ? (bool)dataRead.ExpectedValue : false);
+                        EditorGUILayout.PropertyField(dataRead.FindPropertyRelative("expectedBool"), GUIContent.none);
+                        //dataRead.ExpectedValue = EditorGUILayout.Toggle(dataRead.ExpectedValue is bool ? (bool)dataRead.ExpectedValue : false);
                         break;
                 }
                 EditorGUILayout.EndHorizontal();

@@ -1,7 +1,7 @@
 ﻿title: LucienIntroduction
 tags:
 ---
-
+<<set $spokenToCoreMember to true>>
 <<load Speaker Lucien Neutral>>
 Lucien: Hello again... We already met outside.
 Lucien: You know my name, but I believe we haven't been formally introduced
@@ -58,10 +58,9 @@ Lucien: You'll need all the rest you can get.
 title: OliviaRoom
 tags:
 ---
-
+<<set $spokenToCoreMember to true>>
 <<load Speaker Olivia Happy>>
 Olivia: Hi there!
-
 Olivia: Welcome to my room, feel free to check it out
 
 <<load Speaker Olivia Angry>>
@@ -78,6 +77,7 @@ Olivia: Rest well tonight man
 title: EvelynMainRoom
 tags:
 ---
+<<set $spokenToCoreMember to true>>
 <<load Speaker Evelyn Neutral>>
 Evelyn: This is the main room where we control navigations for the Landship
 Evelyn: As you can see, it's a bit empty as of now 
@@ -91,7 +91,6 @@ Evelyn: Lucien will brief us tomrrow once we land
 title: IntroShip
 tags:
 ---
-
 <<load Speaker Evelyn Happy>>
 Evelyn: Well, it's time to formerly introduce you to our Landship 
 Evelyn: This is where we'll live and train for the forseeable future 
