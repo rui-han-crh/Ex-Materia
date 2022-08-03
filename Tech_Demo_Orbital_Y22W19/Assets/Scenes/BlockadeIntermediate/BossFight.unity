@@ -1365,6 +1365,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9100401275010698039, guid: 80b6276042463854a9948ec256a2a548, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.2199707
+      objectReference: {fileID: 0}
+    - target: {fileID: 9100401275010698039, guid: 80b6276042463854a9948ec256a2a548, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.000015258789
+      objectReference: {fileID: 0}
     - target: {fileID: 9100401275082186461, guid: 80b6276042463854a9948ec256a2a548, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1656,11 +1664,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a08437e0c621f614b828d671c157541a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 600
-  currentHealth: 600
+  maxHealth: 1200
+  currentHealth: 1200
   range: 2
-  attack: 100
-  defence: 30
+  attack: 110
+  defence: 35
   risk: 15
   maxActionPoints: 300
   maxSkillPoints: 0
@@ -11518,7 +11526,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1681857671}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.2, z: 0}
+  m_LocalPosition: {x: 0, y: 0.4, z: 0}
   m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_Children: []
   m_Father: {fileID: 871010632}
@@ -67534,7 +67542,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2118258018}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.2, z: 0}
+  m_LocalPosition: {x: 0, y: 0.4, z: 0}
   m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_Children: []
   m_Father: {fileID: 1185747728}
