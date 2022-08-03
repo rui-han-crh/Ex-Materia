@@ -88,6 +88,7 @@ public class TileCostTooltipBehaviour : MonoBehaviour
     {
         mouseMovementTask?.Stop();
         canvasGroup.alpha = 0;
+        canvasGroup.blocksRaycasts = false;
         canvasGroup.interactable = false;
     }
 
