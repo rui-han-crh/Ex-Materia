@@ -3493,6 +3493,7 @@ GameObject:
   - component: {fileID: 1066334753}
   - component: {fileID: 1066334752}
   - component: {fileID: 1066334751}
+  - component: {fileID: 1066334756}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3523,7 +3524,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -3614,6 +3615,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1066334756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1066334750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8978db012dcf9af46aba6e5490c673ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  globalVolumePrefab: {fileID: 416147998720730796, guid: 10804076a573c874c8be745e07b9b737, type: 3}
+  runtimeInstantiateVolume: 1
+  globalVolume: {fileID: 0}
 --- !u!1 &1073660826
 GameObject:
   m_ObjectHideFlags: 0

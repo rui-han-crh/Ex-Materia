@@ -69,6 +69,12 @@ namespace Transitions
             SetAnimationState(!isActive);
         }
 
+        public void Stop()
+        {
+            playingAnimation?.Stop();
+            playingAnimation = null;
+        }
+
         public void SetAnimationState(bool state)
         {
             if (playingAnimation != null && playingAnimation.Running)
