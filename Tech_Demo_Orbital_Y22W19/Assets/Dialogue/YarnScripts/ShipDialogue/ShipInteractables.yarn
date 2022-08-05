@@ -93,13 +93,30 @@ title: BedLoadBlockade
 tags:
 ---
 <<load Speaker Emmanuel Neutral>>
-Emmanuel: Man...
-Emmanuel: I wonder what all that Blockade Jazz is about 
-Emmanuel: Guess I'll turn in soon 
+<<if $spokenToCoreMember == false>>
+	Emmanuel: This is my bed, but I shouldn't sleep yet.
+	Emmanuel: I should talk to someone first.
+<<else>>
+	Emmanuel: Man...
+	Emmanuel: I wonder what all that Blockade Jazz is about 
+	Emmanuel: Guess I'll turn in soon 
+	<<clear Speaker>>
+	Bed: Go to sleep?
+	-> Yes
+		<<transitionScene>>
+	-> No, I want to walk around the ship a little more
+		<<unsetNextScene>>
+<<endif>>
+===
+
+
+title: EngineRoom
+tags:
+---
 <<clear Speaker>>
-Narrator: Go to sleep?
--> Yes
-	<<transitionScene>>
--> No, I want to walk around the ship a little more
-	<<unsetNextScene>>
+Engine Room: Bzzt.
+
+Engine Room: Access Denied.
+
+The electronic sensor to this large door does not respond to your key card.
 ===

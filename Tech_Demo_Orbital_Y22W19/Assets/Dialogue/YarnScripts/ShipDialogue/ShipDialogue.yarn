@@ -1,25 +1,50 @@
 ﻿title: LucienIntroduction
 tags:
 ---
-<<set $spokenToCoreMember to true>>
 <<load Speaker Lucien Neutral>>
-Lucien: Hello again... We already met outside.
-Lucien: You know my name, but I believe we haven't been formally introduced
-Lucien: If you already forgot, I'm Lucien.
-Lucien: I'm a historian, my father was once a former PAM-Researcher...
-Lucien: Your turn...
--> No thank you.
-    <<jump LucienIntroduction_Reject>>
--> My name is Emmanuel.
-    <<jump LucienIntroduction_Accept>>
+<<if visited("LucienIntroduction")>>
+    Lucien: Do you have any questions?
+    -> I would like to apologise for my behaviour earlier. <<if visited("LucienIntroduction_Reject") and visited("LucienIntroduction_Accept") == false>>
+        <<jump LucienIntroduction_Reconcile>>
+    -> What is this behind this large door? <<if visited("LucienIntroduction_Accept") and visited("EngineRoom")>>
+        <<jump Lucien_EngineRoom>>
+    -> No questions.
+
+<<else>>
+    <<set $spokenToCoreMember to true>>
+    Lucien: Hello again... We already met outside.
+    Lucien: You know my name, but I believe we haven't been formally introduced
+    Lucien: If you already forgot, I'm Lucien.
+    Lucien: I'm a historian, my father was once a former PAM-Researcher...
+    Lucien: Your turn...
+    -> No thank you.
+        <<jump LucienIntroduction_Reject>>
+    -> My name is Emmanuel.
+        <<jump LucienIntroduction_Accept>>
+<<endif>>
 ===
 title: LucienIntroduction_Reject
 tags:
 ---
-<<load Speaker Lucien Angry>>
+<<load Speaker Lucien Disgusted>>
 Lucien: Seriously?
 Lucien: Well suit yourself, it was a mistake to be kind to you, or anyone for that matter in this world.
-Lucien: Fuck off back to your room.
+Lucien: You're just like everyone else.
+Lucien: Fuck off.
+===
+title: LucienIntroduction_Reconcile
+tags:
+---
+<<load Speaker Emmanuel Neutral>>
+Emmanuel: I'd like to apologise to you for my rudeness earlier. That was not appropriate of me.
+Emmanuel: Can we start over again.
+
+<<load Speaker Lucien Angry>>
+Lucien: ...
+
+<<load Speaker Lucien Neutral>>
+Lucien: Fine.
+<<jump LucienIntroduction_Accept>>
 ===
 title: LucienIntroduction_Accept
 tags:
@@ -55,6 +80,25 @@ Lucien: Now, please go back to your room to sleep.
 
 Lucien: You'll need all the rest you can get.
 ===
+title: Lucien_EngineRoom
+tags:
+---
+<<load Speaker Lucien Neutral>>
+Lucien: That's the engine room, I was just in there doing maintenance, before you arrived.
+Lucien: This landship runs on fuel and requires a massive amount of power to move.
+Lucien: Engines this size are extremely slow revolving. There's barely any noise coming from the room apart from the occasional hissing of gas because of how slow the crankshafts revolve.
+Lucien: More specifically, this is a two stroke crosshead engine. 
+Lucien: One cycle of intake, compression, combustion and exhaust operation performed by this engine requires only two stroke of the piston.
+Lucien: Despite this, they are incredibly powerful due to there being one power stroke to every two strokes of the engine, yet being more compact than its competitors.
+Lucien: This engine has been with this ship since the start of its service and hasn't let us down once before.
+
+-> Can I enter?
+    Lucien: No.
+    Lucien: Absolutely not, I only just finished my work inside.
+    Lucien: Besides... There's no reason for you to be in there right now.
+    
+-> \[Leave\]
+===
 title: OliviaRoom
 tags:
 ---
@@ -70,7 +114,7 @@ Olivia: um..
 Olivia: <B> talk... </B>
 Olivia: About a blockade tomorrow
 Olivia: We need all hands on deck for tomorrow's encounter
-Olivia: Rest well tonight man
+Olivia: Rest well tonight.
 ===
 
 
