@@ -14,7 +14,7 @@ public class BloomControllerInteraction : Interaction
     private void Awake()
     {
         Volume volume = GetComponent<Volume>();
-        volume.profile.TryGet(out bloom);
+        volume.sharedProfile.TryGet<Bloom>(out bloom);
         if (bloom != null)
         {
             bloom.SetAllOverridesTo(true);

@@ -83,19 +83,7 @@ public class SaveFile
             universalData[type.Name][variableName] = ((JArray)target).ToObject<T>();
         }
 
-        if (target is double && typeof(T).IsAssignableFrom(typeof(float)))
-        {
-            universalData[type.Name][variableName] = Convert.ToSingle(target);
-        }
-
-        try
-        {
-            return (T)universalData[type.Name][variableName];
-        } 
-        catch (InvalidCastException ex)
-        {
-            throw new InvalidCastException($"Could not convert {universalData[type.Name][variableName].GetType()} to {typeof(T)} \n" + ex.Message);
-        }
+        return (T)universalData[type.Name][variableName];
     }
 
     public object Load(Type type, string variableName)

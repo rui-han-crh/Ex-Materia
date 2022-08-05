@@ -49,7 +49,7 @@ public class SaveManager : MonoBehaviour
         string jsonString = JsonConvert.SerializeObject(SaveFile.file);
 
         File.WriteAllText(dir + fileName, jsonString);
-        Debug.Log("<FILE SAVED> The save was successful");
+        Debug.Log("The save was successful");
     }
 
     public static void DeserialiseFromFile()

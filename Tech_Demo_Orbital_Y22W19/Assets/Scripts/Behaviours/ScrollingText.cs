@@ -11,9 +11,6 @@ public class ScrollingText : MonoBehaviour
     private bool horizontalScroll;
 
     [SerializeField]
-    private bool oppositeDirection = false;
-
-    [SerializeField]
     private float duration = 1f;
 
     [SerializeField]
@@ -21,32 +18,11 @@ public class ScrollingText : MonoBehaviour
 
     private LerpAnimation lerpAnimation;
 
-    private bool wasDisabled;
-
-    private Task scrolling;
-
-    public void OnDisable()
-    {
-        lerpAnimation.Stop();
-        scrolling.Stop();
-        wasDisabled = true;
-    }
-
-    public void OnEnable()
-    {
-        if (wasDisabled)
-            scrolling = new Task(Scroll());
-
-        wasDisabled = false;
-    }
-
     // Start is called before the first frame update
     void Start()
     {
         GameObject parent = new GameObject($"{name}_mask", typeof(RectTransform), typeof(RectMask2D));
-
         parent.transform.SetParent(transform.parent);
-        parent.transform.SetSiblingIndex(transform.GetSiblingIndex());
 
         RectTransform rect = GetComponent<RectTransform>();
         RectTransform parentRect = parent.GetComponent<RectTransform>();
@@ -76,35 +52,19 @@ public class ScrollingText : MonoBehaviour
 
             Vector2 center = rect.CenterAnchor();
 
-            Vector2 anchorBegin = horizontalScroll ?
+            lerpAnimation.SetActiveAnchor(horizontalScroll ?
                 new Vector2(1 + center.x * expandBoundsRatio, center.y) :
-                new Vector2(center.x, 1 + center.y * expandBoundsRatio);
+                new Vector2(center.x, 1 + center.y * expandBoundsRatio));
 
-            Vector2 anchorEnd = horizontalScroll ?
+            lerpAnimation.SetInactiveAnchor(horizontalScroll ?
                 new Vector2(-center.x * expandBoundsRatio, center.y) :
-                new Vector2(center.x, -center.y * expandBoundsRatio);
-
-            if (oppositeDirection)
-            {
-                lerpAnimation.SetActiveAnchor(anchorEnd);
-                lerpAnimation.SetInactiveAnchor(anchorBegin);
-            }
-            else
-            {
-                lerpAnimation.SetActiveAnchor(anchorBegin);
-                lerpAnimation.SetInactiveAnchor(anchorEnd);
-            }
+                new Vector2(center.x, -center.y * expandBoundsRatio));
 
             lerpAnimation.StartAsActive = false;
-            scrolling = new Task(Scroll());
+            StartCoroutine(Scroll());
         }
 
-        StartCoroutine(LateStart());
-    }
-
-    private IEnumerator Scroll()
-    {
-        while (true)
+        IEnumerator Scroll()
         {
             yield return new WaitForEndOfFrame();
 
@@ -117,6 +77,9 @@ public class ScrollingText : MonoBehaviour
             lerpAnimation.SetAnimationState(false);
 
             yield return new WaitForSeconds(lerpAnimation.Duration);
+            StartCoroutine(Scroll());
         }
+
+        StartCoroutine(LateStart());
     }
 }
