@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ModifySaveData : MonoBehaviour
@@ -34,40 +35,51 @@ public class ModifySaveData : MonoBehaviour
         Bool = 3
     }
 
+    private Type fetchedType;
+
+    public void Awake()
+    {
+        fetchedType = Type.GetType(componentName);
+        bool isMonoBehaviour = typeof(MonoBehaviour).IsAssignableFrom(fetchedType);
+
+        if (!isMonoBehaviour)
+        {
+            Debug.LogWarning($"{componentName} does not extend from MonoBehaviour, please check that the name you provided is correct.");
+        }
+    }
+
     public void OnModify()
     {
         Dictionary<string, Dictionary<string, object>> universalData = SaveFile.file.universalData;
-        if (!universalData.ContainsKey(componentName))
-        {
-            universalData.Add(componentName, new Dictionary<string, object>());
-        }
+        
 
         switch (valueType)
         {
             case ValueTypes.String:
-                universalData[componentName][variableName] = stringValue;
+                SaveFile.file.Save(fetchedType, variableName, stringValue);
                 break;
 
             case ValueTypes.Float:
-                universalData[componentName][variableName] = floatValue;
+                SaveFile.file.Save(fetchedType, variableName, floatValue);
                 break;
 
             case ValueTypes.Integer:
-                universalData[componentName][variableName] = intValue;
+                SaveFile.file.Save(fetchedType, variableName, intValue);
                 break;
 
             case ValueTypes.Bool:
-                universalData[componentName][variableName] = boolValue;
+                SaveFile.file.Save(fetchedType, variableName, boolValue);
                 break;
         }
 
-        try
+        Debug.Log($"Saved {fetchedType} : {variableName}");
+
+
+        IEnumerable<ISaveable> saveables = FindObjectsOfType(fetchedType).OfType<ISaveable>();
+
+        foreach (ISaveable saveable in saveables)
         {
-            SmoothCameraFollow.Instance?.LoadData(); // temporary measure
-        } 
-        catch (Exception ex)
-        {
-            Debug.Log($"Skipped load of SmoothCameraFollow \n {ex.Message}");
+            saveable.LoadData();
         }
     }
 
@@ -97,8 +109,7 @@ public class ModifySaveData : MonoBehaviour
 
     public bool HasValue()
     {
-        return SaveFile.file.universalData.ContainsKey(componentName) 
-            && SaveFile.file.universalData[componentName].ContainsKey(variableName);
+        return SaveFile.file.HasData(fetchedType, variableName);
     }
 
     public T FetchValue<T>()
@@ -108,6 +119,6 @@ public class ModifySaveData : MonoBehaviour
             return default(T);
         }
 
-        return (T)SaveFile.file.universalData[componentName][variableName];
+        return SaveFile.file.Load<T>(fetchedType, variableName);
     }
 }

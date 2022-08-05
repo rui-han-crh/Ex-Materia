@@ -6,8 +6,12 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Slider))]
 public class MasterVolumeSetterBehaviour : MonoBehaviour
 {
+    private Slider volumeSlider;
     void Start()
     {
-        GetComponent<Slider>().onValueChanged.AddListener(value => AudioListener.volume = value);
+        volumeSlider = GetComponent<Slider>();
+
+        volumeSlider.value = AudioListener.volume;
+        volumeSlider.onValueChanged.AddListener(value => AudioListener.volume = value);
     }
 }
