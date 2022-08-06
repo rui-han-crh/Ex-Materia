@@ -27,8 +27,8 @@ public class ScrollingText : MonoBehaviour
 
     public void OnDisable()
     {
-        lerpAnimation.Stop();
-        scrolling.Stop();
+        lerpAnimation?.Stop();
+        scrolling?.Stop();
         wasDisabled = true;
     }
 
