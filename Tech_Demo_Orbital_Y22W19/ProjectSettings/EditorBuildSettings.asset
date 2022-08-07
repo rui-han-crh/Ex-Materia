@@ -54,7 +54,7 @@ EditorBuildSettings:
     path: Assets/Scenes/BlockadeIntermediate/Farmhouse.unity
     guid: 7b50ad7ca4964ff4aad3183532d79758
   - enabled: 1
-    path: Assets/Scenes/BlockadeIntermediate/PreBoss.unity
+    path: Assets/Scenes/BlockadeIntermediate/Outpost.unity
     guid: 108c4b9aa4a55aa48bbfc220769ea44c
   - enabled: 1
     path: Assets/Scenes/BlockadeIntermediate/PostBlockadeFight.unity

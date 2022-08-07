@@ -2283,7 +2283,8 @@ MonoBehaviour:
     Orbital)\r\n\r\nDevelopers: Chen Ruihan, Colin Toh\r\nAdvisor: Kenneth Hong\r\nMentor:
     Alfred Yip\r\n\r\n\r\n\r\n================================================\r\n\r\nMusic
     retrieved from miscellaneous creators\r\n\r\nCreators:\r\nIlya Kutznetsov - Collision\r\nSchuttle
-    - Home\r\nMonodisc - Confined Spaces\r\n\r\n================================================\r\n\r\nSprite
+    - Home\r\nMonodisc - Confined Spaces\r\nSNTS - Remission\r\nChroma Music - Peaceful
+    Prarie\r\nVatican Shadow - Weapons Inspection\r\n\r\n================================================\r\n\r\nSprite
     assets retrieved from OpenGameArt\r\n\r\nArtists:\r\nScreaming Brain Studios
     - Isometric Floor Tiles\r\nBrian Pressley - 2D Isometric: Homes Part 1\r\nHansj\xF6rg
     Malthaner - Isometric Open Barrels/Chest/Door/Bench/Wall\r\nMicket, Poss and
@@ -2298,7 +2299,10 @@ MonoBehaviour:
     rendered from 3D Models retrieved from BlenderKit\r\n\r\nArtists:\r\nGeorge Novgorodcev
     - Infantry Fight Vehicle/Armored Personel Carrier/Light Tank\r\n\r\n================================================\r\n\r\nOther
     art were created by Precognition through the use of the following softwares:\r\n\r\nVRoid
-    Studios\r\nGIMP\r\nBlender\r\nDisco Diffusion"
+    Studios\r\nGIMP\r\nBlender\r\nDisco Diffusion\n\n================================================\r\n\nSpecial
+    thanks to playtesters who gave feedback for our game\n\nTwitch affliate -Tolin
+    Coh\nMoose trained to operate software and write up excel forms - Cotin Loh\nJournalist
+    - Mike Hawk\nSecond cousin twice removed - Mike Hunt\nI like to ride my by Cycle"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 14ceea5e8de9ac8489f21bb92f278678, type: 2}
   m_sharedMaterial: {fileID: -8495905030488499189, guid: 14ceea5e8de9ac8489f21bb92f278678, type: 2}
@@ -5637,8 +5641,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   horizontalScroll: 0
   oppositeDirection: 1
-  duration: 60
-  expandBoundsRatio: 3
+  duration: 65
+  expandBoundsRatio: 3.5
 --- !u!1 &1580339722
 GameObject:
   m_ObjectHideFlags: 0

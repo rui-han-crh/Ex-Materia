@@ -113,7 +113,7 @@ public class InduceEventByDataRead : MonoBehaviour
                     string output = $"{data.variableName} was not {data.ExpectedValue}. ";
                     if (SaveFile.file.HasData(data.monoBehaviourScript.GetType(), data.variableName))
                     {
-                        output += $"Instead it was {SaveFile.file.Load(data.monoBehaviourScript.GetType(), data.variableName).Equals(data.ExpectedValue)}";
+                        output += $"Instead it was {SaveFile.file.Load(data.monoBehaviourScript.GetType(), data.variableName)}";
                     } 
                     else
                     {

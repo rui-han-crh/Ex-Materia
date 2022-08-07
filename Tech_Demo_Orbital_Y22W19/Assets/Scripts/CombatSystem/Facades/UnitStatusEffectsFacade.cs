@@ -14,7 +14,8 @@ namespace CombatSystem.Facade
         {
             get
             {
-                Debug.Assert(instance != null, "UnitStatusEffectsFacade does not exist in the scene, consider adding one");
+                Debug.Assert(instance != null, "UnitStatusEffectsDatabase does not exist in the scene, consider adding one. " +
+                    "Otherwise, if you are in the Editor, this could be happening because the game has stopped, but the Enemy AI task was not killed.");
                 return instance;
             }
         }

@@ -1099,7 +1099,7 @@ GameObject:
   - component: {fileID: 441908265}
   - component: {fileID: 441908264}
   m_Layer: 0
-  m_Name: EnemyRight
+  m_Name: Callesmerian Foot Soldier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1423,7 +1423,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 565077668}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.2, z: 0}
+  m_LocalPosition: {x: 0, y: 0.4, z: 0}
   m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_Children: []
   m_Father: {fileID: 1663052420}
@@ -1525,7 +1525,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 573350213}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.2, z: 0}
+  m_LocalPosition: {x: 0, y: 0.4, z: 0}
   m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_Children: []
   m_Father: {fileID: 1148524257}
@@ -2877,7 +2877,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 761599961}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.2, z: 0}
+  m_LocalPosition: {x: 0, y: 0.4, z: 0}
   m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_Children: []
   m_Father: {fileID: 441908265}
@@ -3601,6 +3601,58 @@ PrefabInstance:
       propertyPath: m_Name
       value: WorldDataCombat
       objectReference: {fileID: 0}
+    - target: {fileID: 3217703319244483230, guid: 30e34e1b682e1d14896b6851126a3a44, type: 3}
+      propertyPath: audioCollection.Array.size
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 3217703319244483230, guid: 30e34e1b682e1d14896b6851126a3a44, type: 3}
+      propertyPath: audioCollection.Array.data[9].name
+      value: Monodisc_Confined_Spaces
+      objectReference: {fileID: 0}
+    - target: {fileID: 3217703319244483230, guid: 30e34e1b682e1d14896b6851126a3a44, type: 3}
+      propertyPath: audioCollection.Array.data[8].volume
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3217703319244483230, guid: 30e34e1b682e1d14896b6851126a3a44, type: 3}
+      propertyPath: audioCollection.Array.data[9].volume
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3217703319244483230, guid: 30e34e1b682e1d14896b6851126a3a44, type: 3}
+      propertyPath: audioCollection.Array.data[9].endTime
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3217703319244483230, guid: 30e34e1b682e1d14896b6851126a3a44, type: 3}
+      propertyPath: audioCollection.Array.data[9].hasFade
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3217703319244483230, guid: 30e34e1b682e1d14896b6851126a3a44, type: 3}
+      propertyPath: audioCollection.Array.data[8].isLooping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3217703319244483230, guid: 30e34e1b682e1d14896b6851126a3a44, type: 3}
+      propertyPath: audioCollection.Array.data[9].audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 849f2e3cfd59f0147b4d13b5e51908fb, type: 3}
+    - target: {fileID: 3217703319244483230, guid: 30e34e1b682e1d14896b6851126a3a44, type: 3}
+      propertyPath: audioCollection.Array.data[9].isLooping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3217703319244483230, guid: 30e34e1b682e1d14896b6851126a3a44, type: 3}
+      propertyPath: audioCollection.Array.data[9].startTime
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3217703319244483230, guid: 30e34e1b682e1d14896b6851126a3a44, type: 3}
+      propertyPath: audioCollection.Array.data[9].playbackSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3217703319244483230, guid: 30e34e1b682e1d14896b6851126a3a44, type: 3}
+      propertyPath: audioCollection.Array.data[8].playImmediately
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3217703319244483230, guid: 30e34e1b682e1d14896b6851126a3a44, type: 3}
+      propertyPath: audioCollection.Array.data[9].playImmediately
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3217703319244483231, guid: 30e34e1b682e1d14896b6851126a3a44, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -3954,7 +4006,7 @@ GameObject:
   - component: {fileID: 1148524257}
   - component: {fileID: 1148524256}
   m_Layer: 0
-  m_Name: EnemyLeft
+  m_Name: Callesmerian Foot Soldier
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5510,7 +5562,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24f2555ef049e7d4383c00c50d4541fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: PostBlockadeFight
+  sceneName: Outpost
 --- !u!114 &1476024982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74651,7 +74703,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1929338305}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.2, z: 0}
+  m_LocalPosition: {x: 0, y: 0.4, z: 0}
   m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_Children: []
   m_Father: {fileID: 952165237}
@@ -76191,7 +76243,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2045605965}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.2, z: 0}
+  m_LocalPosition: {x: 0, y: 0.4, z: 0}
   m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_Children: []
   m_Father: {fileID: 210887691}

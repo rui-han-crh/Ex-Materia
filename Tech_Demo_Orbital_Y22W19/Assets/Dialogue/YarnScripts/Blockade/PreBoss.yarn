@@ -3,14 +3,16 @@ tags:
 ---
 
 <<load Speaker Emmanuel Neutral>>
-Emmanuel: *explains to the group about the engineer and the super soldier*
+Emmanuel explains to the group about the engineer and the super soldier.
 
 
 <<load Speaker Lucien Angry>>
+Lucien: Woah okay hold on a second.
 Lucien: Do you have a screw loose or something?
 Lucien: Why should we even help this guy?!
 Lucien: We have no idea if his lab even exists
 Lucien: For all we know, he's just gonna run away with some expensive scrap metal 
+Lucien: Who's to say we can trust this guy, let alone let him onto our ship?
 
 
 <<load Speaker Evelyn Neutral>>
@@ -18,15 +20,15 @@ Evelyn: There's a problem though
 Evelyn: If we don't clear this entire camp 
 Evelyn: We can't let civillians into the area
 Evelyn: The supply chains can't be restored 
-Evelyn: It's too dangerous to risk it.
-Evelyn: I say we check out the room 
+Evelyn: It's too dangerous to risk leaving this area unchecked.
+Evelyn: I say we check out the room.
 
 
 <<load Speaker Lucien Angry>>
-Lucien: There you go again
+Lucien: No listen, I...
 Lucien: ...
-Lucien: Forget it 
-Lucien: I'll wait by the ship 
+Lucien: No... Forget it.
+Lucien: I'll wait by the ship.
 Lucien: I'm leaving on my own if you guys aren't back by nightfall
 Lucien: Best of luck 
 ===
@@ -46,7 +48,7 @@ tags:
 ---
 <<load Speaker Lucien Neutral>>
 Lucien: Oh so you're really going?
--> I guess so?
+-> Yes we are.
 Lucien: Fine 
 Lucien: I'll bring the Engineer back onto the ship 
 Lucien: As I said 
@@ -74,7 +76,8 @@ tags:
 ---
 <<clear Speaker>>
 Soldier: Growl...
-Narrator: You can always try again...
+Narrator: The Progeny was eliminate and Callemere fell to the hands of the East.
+Narrator: But you can try again...
 <<transitionScene>>
 ===
 
@@ -82,7 +85,7 @@ Narrator: You can always try again...
 title: WinBoss
 tags:
 ---
-<<set $landshipState to 2>>
+<<set $gameStage to "PostBlockade">>
 <<load Speaker Emmanuel Neutral>>
 Emmanuel: Now what do we do with this hunk of metal 
 Emmanuel: I can't seem to figure out which parts are useful 

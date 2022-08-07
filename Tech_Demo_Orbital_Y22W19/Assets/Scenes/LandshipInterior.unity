@@ -173,9 +173,9 @@ MonoBehaviour:
   - isUniversalSingletonData: 1
     gameObjectData: {fileID: 0}
     monoBehaviourScript: {fileID: 1591812262}
-    variableName: $landshipState
-    primitiveType: 1
-    expectedString: 
+    variableName: $gameStage
+    primitiveType: 3
+    expectedString: PostBlockade
     expectedBool: 0
     expectedInt: 0
     expectedFloat: 2
@@ -57766,7 +57766,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 228560367}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -14.665, y: -3.765, z: 0}
+  m_LocalPosition: {x: -14.492999, y: -3.6969998, z: 0}
   m_LocalScale: {x: 1, y: 0.9, z: 1}
   m_Children: []
   m_Father: {fileID: 2007341181}
@@ -59114,7 +59114,7 @@ GameObject:
   - component: {fileID: 373252637}
   - component: {fileID: 373252636}
   m_Layer: 0
-  m_Name: Lucien
+  m_Name: Lucien(Docks)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62002,7 +62002,7 @@ GameObject:
   - component: {fileID: 812839040}
   - component: {fileID: 812839039}
   m_Layer: 0
-  m_Name: Bookshelf
+  m_Name: Bookshelf (PostBlockade)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62325,7 +62325,7 @@ GameObject:
   - component: {fileID: 890256382}
   - component: {fileID: 890256381}
   m_Layer: 0
-  m_Name: Evelyn
+  m_Name: Evelyn(Docks)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62426,9 +62426,9 @@ MonoBehaviour:
   - isUniversalSingletonData: 1
     gameObjectData: {fileID: 0}
     monoBehaviourScript: {fileID: 1591812262}
-    variableName: $landshipState
-    primitiveType: 1
-    expectedString: 
+    variableName: $gameStage
+    primitiveType: 3
+    expectedString: Docks
     expectedBool: 0
     expectedInt: 0
     expectedFloat: 1
@@ -65679,7 +65679,7 @@ GameObject:
   - component: {fileID: 1365882612}
   - component: {fileID: 1365882611}
   m_Layer: 0
-  m_Name: Lucien
+  m_Name: Lucien (PostBlockade)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67975,7 +67975,7 @@ GameObject:
   - component: {fileID: 1734664085}
   - component: {fileID: 1734664084}
   m_Layer: 0
-  m_Name: Olivia
+  m_Name: Olivia (PostBlockade)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68414,7 +68414,7 @@ GameObject:
   - component: {fileID: 1790853970}
   - component: {fileID: 1790853969}
   m_Layer: 0
-  m_Name: Olivia
+  m_Name: Olivia(Docks)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81731,7 +81731,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1884391359}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -15.308001, y: -4.097, z: 0}
+  m_LocalPosition: {x: -15.136, y: -4.029, z: 0}
   m_LocalScale: {x: 1, y: 0.9, z: 1}
   m_Children: []
   m_Father: {fileID: 2007341181}

@@ -41,6 +41,7 @@ Narrator: We can always try again
 title: BlockadeWin
 tags:
 ---
+<<set $gameStage to "PostBlockade">>
 <<load Speaker Lucien Happy>>
 Lucien: Well 
 Lucien: Great job kids 

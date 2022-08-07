@@ -2480,7 +2480,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1017679041}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -8.89, y: -2.77, z: -8.455443}
+  m_LocalPosition: {x: -8.89, y: -2.77, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2979,7 +2979,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1302241770}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.99, y: -3.68, z: 0}
+  m_LocalPosition: {x: -8.353, y: -4.695, z: 0}
   m_LocalScale: {x: 0.9, y: 0.9, z: 1}
   m_Children:
   - {fileID: 883377666}
@@ -59587,7 +59587,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24f2555ef049e7d4383c00c50d4541fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: PreBoss
+  sceneName: Outpost
 --- !u!114 &2143531917
 MonoBehaviour:
   m_ObjectHideFlags: 0

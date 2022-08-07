@@ -11,7 +11,7 @@ public class InitialiseInteractable : MonoBehaviour
 
     public float delayTime = 1;
 
-    void Start()
+    public void OnEnable()
     {
         Interactable self = GetComponent<Interactable>();
         StartCoroutine(LateInvoke(() => interactable.Interact(self), delayTime));

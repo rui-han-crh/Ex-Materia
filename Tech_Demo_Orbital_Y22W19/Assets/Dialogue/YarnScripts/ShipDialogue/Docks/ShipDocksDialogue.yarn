@@ -191,7 +191,7 @@ Lucien: Meet me back up at the docks, I'll have more things for you to do.
 title: ShipEnter
 tags:
 ---
-<<set $landshipState to 1>>
+<<set $gameStage to "Docks">>
 <<clear Speaker>>
 Door: A pallid green door stand in front of you, with an electronic sensor places to the left of the door, next to a protruding handle.
 

@@ -3,13 +3,13 @@ tags:
 ---
 <<load Speaker Olivia Happy>>
 
-Olivia: Hey thanks for your help in clearing the Blockade man 
+Olivia: Hey thanks for your help in clearing the Blockade.
 
 <<load Speaker Olivia Neutral>>
-Olivia: Although, we do have a problem now..
--> What's up 
+Olivia: Although, we do have a problem now...
+-> What is it?
 
-Olivia: We need to figure out our next course of action
+Olivia: We need to figure out our next course of action.
 
 <<load Speaker Olivia Happy>>
 Olivia: We don't know much about that engineer dude, but perhaps he can point us to the way forward 
@@ -98,7 +98,7 @@ Evelyn: Is the Engineer back?
 
 
 <<load Speaker Lucien Neutral>>
-Lucien: Yeah he's chilling in the main room 
+Lucien: Yeah he's waiting in the main room 
 Lucien: He seemed suprisingly willing to come on board 
 Lucien: Emmanuel, go talk to your new buddy
 Lucien: Let's see if he was really worth the trouble

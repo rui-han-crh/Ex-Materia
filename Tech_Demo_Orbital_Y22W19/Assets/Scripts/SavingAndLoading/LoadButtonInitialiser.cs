@@ -18,7 +18,10 @@ public class LoadButtonInitialiser : MonoBehaviour
         if (File.Exists(fullPath))
         {
             GetComponent<Button>().onClick.AddListener(SaveFunction);
-            saveRecord.text = "Last Saved: " + File.GetLastWriteTime(fullPath).ToString("G", CultureInfo.GetCultureInfo("en-GB"));
+            if (saveRecord)
+            {
+                saveRecord.text = "Last Saved: " + File.GetLastWriteTime(fullPath).ToString("G", CultureInfo.GetCultureInfo("en-GB"));
+            }
         } 
         else
         {

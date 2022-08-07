@@ -60084,7 +60084,7 @@ GameObject:
   - component: {fileID: 1340092675}
   - component: {fileID: 1340092674}
   m_Layer: 5
-  m_Name: BACKGROUND
+  m_Name: KILLED_SCENE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

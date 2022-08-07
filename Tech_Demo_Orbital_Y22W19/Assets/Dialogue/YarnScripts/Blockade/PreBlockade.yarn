@@ -11,15 +11,16 @@ Lucien: Welcome to the border of East Cajovia
 Lucien: I gathered some intel straight from the frontline 
 Lucien: They're unable to advance cause of this settlement right here 
 Lucien: These bastards are cutting off our supplies
-Lucien: It's our job to get rid of these cunts 
+Lucien: It's our job to get rid of them
 
 <<load Speaker Evelyn Neutral>>
 Evelyn: The actual Blockade is further down South, but there could be supplies here we could use to gear up 
 Evelyn: Emmanuel, I need you to investigate that farmhouse over there
 Evelyn: Search for supplies, any clues regarding their camp's layout 
 Evelyn: We need to know where we might be able to infiltrate their defences...
-Evelyn: We'll fuck them up where they least expect it
-Evelyn: Tenatively, we strike at night 
+Evelyn: We'll pinch them where it hurts, when they least expect it...
+Evelyn: At night...
+Evelyn: Tenatively, we strike at night.
 -> Roger that 
 <<set $PreBlockadeIntro to true>>
 ===
@@ -74,6 +75,7 @@ Lucien: You would be wise to avoid frozen areas
 title: HouseEntry
 tags:
 ---
+<<clear Speaker>>
 Door: Enter?
 -> Yes
 	<<transitionScene>>

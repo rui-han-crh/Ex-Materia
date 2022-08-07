@@ -23,7 +23,7 @@ Olivia: Strange...
 <<load Speaker Olivia Neutral>>
 
 Olivia: Years in the academy really screws with your hearing 
-Olivia: Sometimes when I close my eyes, I hear gunshots, I picture violence 
+Olivia: Sometimes when I close my eyes, I hear gunshots... violence 
 Olivia: Not the most pleasant of experiences 
 ===
 
@@ -54,11 +54,12 @@ title: Tombstones
 tags:
 ---
 <<load Speaker Lucien Neutral>>
-Lucien: A famous and rather cliche quote's etched here 
-Lucien: "War Does not Determine Who is Right"
-Lucien: "But Rather,  Who Is Left"
+Lucien: Do you see this? 
+Lucien: A famous quote is etched here, but I find it kind of cliche.
+Lucien: "War does not determine who is right"
+Lucien: "Only,  who is left"
 Lucien: Regardless of East or West
-Lucien: This rings true
+Lucien: This rings true.
 ===
 
 
@@ -111,6 +112,7 @@ Room: Exit?
 title: EngineerPlead
 tags:
 ---
+<<set $gameStage to "PreBoss">>
 <<load Speaker Emmanuel Neutral>>
 Emmanuel: How do I know you're not lying 
 
