@@ -2281,12 +2281,16 @@ MonoBehaviour:
       m_Calls: []
   m_text: "<size=400%>Ex Materia</size>\r\nA game by Precognition for CP2106 (NUS
     Orbital)\r\n\r\nDevelopers: Chen Ruihan, Colin Toh\r\nAdvisor: Kenneth Hong\r\nMentor:
-    Alfred Yip\r\n\r\n\r\n================================================\r\n\r\nSprite
+    Alfred Yip\r\n\r\n\r\n\r\n================================================\r\n\r\nMusic
+    retrieved from miscellaneous creators\r\n\r\nCreators:\r\nIlya Kutznetsov - Collision\r\nSchuttle
+    - Home\r\nMonodisc - Confined Spaces\r\n\r\n================================================\r\n\r\nSprite
     assets retrieved from OpenGameArt\r\n\r\nArtists:\r\nScreaming Brain Studios
     - Isometric Floor Tiles\r\nBrian Pressley - 2D Isometric: Homes Part 1\r\nHansj\xF6rg
     Malthaner - Isometric Open Barrels/Chest/Door/Bench/Wall\r\nMicket, Poss and
     Danimal - Wolf Monsters Animated <size=50%>@ opengameart.org/content/wolf-monsters-animated</size>\r\nClint
-    Bellanger - Flagstone Floor Tiles\r\n\r\n================================================\r\n\r\nSprites
+    Bellanger - Flagstone Floor Tiles\r\nrubberduck - Isometric Snow Tileset / Isometric
+    Medieval Buildings\r\np0ss - Isometric Tile Starter Pack\r\nBleed - Bleed\u2019s
+    Game Art Hut / Medieval Building 03\r\njohndh - Werebear FLARE Sprite Sheets\r\n\r\n\r\n================================================\r\n\r\nSprites
     rendered from 3D Models retrieved from Sketchfab\r\n\r\nArtists:\r\nThunder -
     Military Bridge\r\nColin.Greenall - Low Poly Soviet Apartment Building\r\nBeerP
     - Sci-fi Wall\r\nBailief - Modular Wall\r\nblenderbird - Sci-Fi Floor Panel\r\nNormerSE
@@ -5633,8 +5637,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   horizontalScroll: 0
   oppositeDirection: 1
-  duration: 50
-  expandBoundsRatio: 2.3
+  duration: 60
+  expandBoundsRatio: 3
 --- !u!1 &1580339722
 GameObject:
   m_ObjectHideFlags: 0

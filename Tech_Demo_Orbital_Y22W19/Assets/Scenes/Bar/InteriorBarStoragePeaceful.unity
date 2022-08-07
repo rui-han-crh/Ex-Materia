@@ -1348,7 +1348,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 2
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1405,7 +1405,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 533399143}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: -3.09, y: 3.14, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -4304,11 +4304,20 @@ MonoBehaviour:
     audioClip: {fileID: 8300000, guid: 8e2144f4be4d48941a3b253ade494b4f, type: 3}
     startTime: -1
     endTime: -1
-    volume: 1
+    volume: 0.5
     playbackSpeed: 1
     hasFade: 1
-    isLooping: 0
-    playImmediately: 0
+    isLooping: 1
+    playImmediately: 1
+  - name: Vatican_Shadow_Weapons_Inspection
+    audioClip: {fileID: 8300000, guid: 17f981503339e7040bd1a0b112b8c26b, type: 3}
+    startTime: 60
+    endTime: -1
+    volume: 0.2
+    playbackSpeed: 1
+    hasFade: 1
+    isLooping: 1
+    playImmediately: 1
 --- !u!114 &1735437324
 MonoBehaviour:
   m_ObjectHideFlags: 0

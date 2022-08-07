@@ -71396,7 +71396,7 @@ MonoBehaviour:
     audioClip: {fileID: 8300000, guid: 8e2144f4be4d48941a3b253ade494b4f, type: 3}
     startTime: -1
     endTime: -1
-    volume: 1
+    volume: 0.8
     playbackSpeed: 1
     hasFade: 0
     isLooping: 1

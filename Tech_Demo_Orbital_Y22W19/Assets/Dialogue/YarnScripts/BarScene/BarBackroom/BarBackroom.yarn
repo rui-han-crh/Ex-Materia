@@ -350,13 +350,19 @@ Evelyn: Core memory is also non-volatile, so it keeps information stored within 
 
 Evelyn: Right, I'm getting there.
 
-Evelyn: So within the shell of the filament core lies a device like a core memory, but instead of just ferrite cores, this filament memory has thin wires attached to each core that can be made incandescent by the current.
+Evelyn: So within the shell of the filament core lies a device like a core memory, but instead of just ferrite cores, 
 
-Evelyn: When reading from memory, a current is induced to set the bit of information to zero. If it is successful is setting it to zero, the filament briefly glows due to being heated up by the resistance in the wires.
+<<load Speaker Evelyn Happy>>
+Evelyn: this filament memory has thin wires attached to each core that can be made incandescent by the current.
 
-Evelyn: Otherwise, if the bit of information is already zero, then there will not be any glow. 
+<<load Speaker Evelyn Neutral>>
+Evelyn: When reading from memory, a current is induced to set the bit of information to zero. 
 
-Evelyn: Of course, this form of reading is a destructive readout, which will destroy information after reading.
+Evelyn: If it is successful, the filament briefly glows due to being heated up by the resistance in the wires.
+
+Evelyn: Otherwise, there will not be any glow. 
+
+Evelyn: Of course, this form of reading will destroy information upon reading, as doing so will unset the information.
 
 Evelyn: So the presence of light at a particular time at one particular area of the shell represents a one, and the absence of it is a zero.
 
@@ -364,7 +370,9 @@ Evelyn: So the presence of light at a particular time at one particular area of 
 Olivia: And since this outer shell is so refractive...
 
 <<clear Speaker>>
-Storage Room: Olivia briefly caresses the white polygonally spherical shell, radiating an ecclesiastical bluish bloom from winter godrays as it cascades through the decaying cracks in the battered and collapsed roof overhead.
+Storage Room: Olivia briefly caresses the white polygonally spherical shell. 
+
+Storage Room: It radiates an ecclesiastical bluish bloom from winter godrays as it cascades through the decaying cracks in the battered and collapsed roof overhead.
 
 <<load Speaker Olivia Neutral>>
 Olivia: It communicates and redirects every bit of information to each necessary component of the navigational systems.
@@ -378,15 +386,27 @@ title: BarStorageKeepingnDescription
 position: 43,618
 ---
 <<load Speaker Evelyn Neutral>>
-Evelyn: Before our last mission, just before we sent out to the Bay, another one of our crew, Lucien, thought that the cold near the frozen sea would affect the refractivity of the shell.
+Evelyn: Before our last mission, just before we sent out to the Bay, another one of our crew, Lucien, 
 
-Evelyn: Apparently he was afraid the cold would cause the components to contract and affect the readout from the shell, so he suggested we replace the entire navigation system with one that doesn't require a filament memory and has its own internal heating system.
+Evelyn: thought that the cold near the frozen sea would affect the refractivity of the shell.
 
+Evelyn: Apparently he was afraid the cold would cause the components to contract and affect the readout from the shell,
+
+<<load Speaker Evelyn Angry>>
+Evelyn: so he suggested we replace the entire navigation system with one that doesn't require a filament memory and has its own internal heating system.
+
+<<load Speaker Evelyn Neutral>>
 Evelyn: But unfortunately, when the system starts up in the cold, the intense and sudden heating caused differential contraction of the materials in the components.
 
-Evelyn: They all started to buckle and warp because different materials were expanding at different rates and it broke the adhesive that glues the components together.
+Evelyn: They all started to buckle and warp because different materials were expanding at different rates.
 
-Evelyn: So yea, after we replaced the old system, we stored the filament core here. No one ever comes here and we were on our usual break here back then, so it was only a matter of convenience.
+<<load Speaker Evelyn Disgusted>>
+Evelyn: It broke the adhesive that glues the components together.
+
+<<load Speaker Evelyn Neutral>>
+Evelyn: So yea, after we replaced the old system, we stored the filament core here.
+
+Evelyn: No one ever comes here and we were on our usual break here back then, so it was only a matter of convenience.
 
 <<load Speaker Olivia Sad>>
 Olivia: Now the newer system is more of a bane than a boon.
