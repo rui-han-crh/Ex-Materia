@@ -36,7 +36,7 @@ public class Interactable : MonoBehaviour, ISaveable
     {
         if (hasIcon)
         {
-            icon = Instantiate(InteractableCollection.Instance.InteractIcon, InteractableCollection.Instance.Canvas.transform);
+            icon = Instantiate(InteractableCollection.Instance.InteractIcon, InteractableCollection.Instance.InteractableIconsHolder.transform);
         }
 
         RepositionIcon();

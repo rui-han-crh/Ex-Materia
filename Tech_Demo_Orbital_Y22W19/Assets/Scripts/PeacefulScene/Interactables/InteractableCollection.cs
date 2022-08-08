@@ -22,6 +22,10 @@ public class InteractableCollection : MonoBehaviour
 
     public HashSet<Interactable> Collection => interactables;
 
+    private GameObject interactableIconsHolder;
+
+    public GameObject InteractableIconsHolder => interactableIconsHolder;
+
     public GameObject InteractIcon;
 
     public static readonly Vector3 HEAD_OFFSET = new Vector3(0, 0.5f, 0);
@@ -38,5 +42,9 @@ public class InteractableCollection : MonoBehaviour
 
         canvas = canvasGameObject.GetComponent<Canvas>();
         Debug.Assert(Canvas != null, "The Canvas GameObject in the scene has no Canvas component added to the it. Please add one.");
+
+        interactableIconsHolder = new GameObject("InteractableIcons");
+        interactableIconsHolder.transform.SetParent(canvasGameObject.transform);
+        interactableIconsHolder.transform.SetAsFirstSibling();
     }
 }
