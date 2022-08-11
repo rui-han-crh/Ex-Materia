@@ -99799,15 +99799,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7821883162098638218, guid: 4ce774ad9dc97364e8e6be49cf6c9884, type: 3}
       propertyPath: audioCollection.Array.data[0].volume
-      value: 0.8
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 7821883162098638218, guid: 4ce774ad9dc97364e8e6be49cf6c9884, type: 3}
       propertyPath: audioCollection.Array.data[1].volume
-      value: 0.23
+      value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 7821883162098638218, guid: 4ce774ad9dc97364e8e6be49cf6c9884, type: 3}
       propertyPath: audioCollection.Array.data[0].hasFade
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7821883162098638218, guid: 4ce774ad9dc97364e8e6be49cf6c9884, type: 3}
       propertyPath: audioCollection.Array.data[1].endTime
