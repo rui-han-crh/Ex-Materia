@@ -76,5 +76,10 @@ Door: The clanking of metal bolts can be heard loosening.
 title: Bar_Door_Visited
 position: 161,-159
 ---
-<<transitionScene>>
+<<clear Speaker>>
+Door: Enter the abandoned bar?
+-> Enter
+    <<transitionScene>>
+-> Leave
+    <<unsetNextScene>>
 ===

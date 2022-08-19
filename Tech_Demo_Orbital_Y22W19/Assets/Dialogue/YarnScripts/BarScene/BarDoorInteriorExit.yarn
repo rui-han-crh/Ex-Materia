@@ -2,7 +2,7 @@
 tags:
 ---
 <<clear Speaker>>
-Door: Exit bar?
+Door: Exit the bar?
 -> Exit bar
     <<transitionScene>>
 -> Stay inside
