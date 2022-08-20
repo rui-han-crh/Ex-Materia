@@ -2299,10 +2299,8 @@ MonoBehaviour:
     rendered from 3D Models retrieved from BlenderKit\r\n\r\nArtists:\r\nGeorge Novgorodcev
     - Infantry Fight Vehicle/Armored Personel Carrier/Light Tank\r\n\r\n================================================\r\n\r\nOther
     art were created by Precognition through the use of the following softwares:\r\n\r\nVRoid
-    Studios\r\nGIMP\r\nBlender\r\nDisco Diffusion\n\n================================================\r\n\nSpecial
-    thanks to playtesters who gave feedback for our game\n\nTwitch affliate -Tolin
-    Coh\nMoose trained to operate software and write up excel forms - Cotin Loh\nJournalist
-    - Mike Hawk\nSecond cousin twice removed - Mike Hunt\nI like to ride my by Cycle"
+    Studios\r\nGIMP\r\nBlender\r\nDisco Diffusion\n\n================================================\r\n\nFinally,
+    special thanks to playtesters who gave feedback for our game"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 14ceea5e8de9ac8489f21bb92f278678, type: 2}
   m_sharedMaterial: {fileID: -8495905030488499189, guid: 14ceea5e8de9ac8489f21bb92f278678, type: 2}
@@ -5642,7 +5640,7 @@ MonoBehaviour:
   horizontalScroll: 0
   oppositeDirection: 1
   duration: 65
-  expandBoundsRatio: 3.5
+  expandBoundsRatio: 3.3
 --- !u!1 &1580339722
 GameObject:
   m_ObjectHideFlags: 0
